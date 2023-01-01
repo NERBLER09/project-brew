@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/supabase-js": "^2.2.3"
+		"@supabase/supabase-js": "^2.2.3",
+		"cypress": "^12.2.0"
 	}
 }
