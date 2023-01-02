@@ -14,7 +14,7 @@
 		<a href="/" class="font-bold text-grey-700">About</a>
 		<a href="/" class="font-bold text-grey-700 mr-md">Github</a>
 		<a class="button--secondary" href="sign-up">Sign up</a>
-		<a class="button--primary" href="login">Log in</a>
+		<a class="button--primary" href="/login">Log in</a>
 	</nav>
 
 	<div class="block md:hidden items-center ml-auto">
@@ -38,7 +38,7 @@
 			<a href="/" class="font-bold text-grey-700">About</a>
 			<a href="/" class="font-bold text-grey-700 mb-auto">Github</a>
 			<a class="button--secondary w-full text-center" href="sign-up">Sign up</a>
-			<a class="button--primary w-full text-center" href="login">Log in</a>
+			<a class="button--primary w-full text-center" href="/login">Log in</a>
 		</nav>
 	</div>
 </header>
@@ -58,6 +58,6 @@
 			So, what are you waiting for! Get started for free and get up and running with you and you
 			team within minutes.
 		</p>
-		<button class="button--primary">Get Started Today</button>
+		<a class="button--primary" href="/sign-up">Get Started Today</a>
 	</div>
 </section>
