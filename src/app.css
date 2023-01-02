@@ -12,16 +12,16 @@
 
 @layer components {
 	.button--primary {
-		@apply bg-accent-light text-grey-200 stroke-grey-200 rounded-md font-bold px-xl py-md hover:bg-accent-light-hover active:bg-accent-light-disabled active:text-accent-light-disabled-text focus:stroke-accent-light-disabled-text;
+		@apply bg-accent-light text-grey-200 stroke-grey-200 rounded-md font-bold px-xl py-md hover:bg-accent-light-hover active:bg-accent-light-disabled active:text-accent-light-disabled-text focus:stroke-accent-light-disabled-text w-fit;
 	}
 	.button--secondary {
-		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 text-grey-700 box-border hover:border-0 hover:bg-grey-300 active:bg-grey-200 active:text-grey-500 active:border-0;
+		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 text-grey-700 box-border hover:border-0 hover:bg-grey-300 active:bg-grey-200 active:text-grey-500 active:border-0 w-fit;
 	}
 	.button--circle {
-		@apply button--primary rounded-full p-md;
+		@apply button--primary rounded-full p-md w-fit;
 	}
 	.button--text {
-		@apply rounded-md font-bold px-xl py-md text-grey-700 box-border hover:underline active:bg-grey-200 active:text-grey-500 active:border-0;
+		@apply rounded-md font-bold px-xl py-md text-grey-700 box-border hover:underline active:bg-grey-200 active:text-grey-500 active:border-0 w-fit;
 	}
 	.input--label {
 		@apply text-base font-bold text-grey-700 mr-[0.875rem];
