@@ -5,7 +5,7 @@
 <header class="p-lg z-50 absolute">
 	<a class="hidden md:flex items-center gap-md" href="/">
 		<div class="w-12 h-12 bg-grey-300 rounded-lg" />
-		<span class="text-md font-bold text-grey-800">Project Brew</span>
+		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</a>
 
 	<a class="flex items-center gap-md md:hidden" href="/">

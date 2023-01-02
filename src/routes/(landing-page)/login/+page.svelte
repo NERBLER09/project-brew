@@ -10,7 +10,7 @@
 	class="text-center mx-6 h-screen md:w-screen place-content-center grid overflow-hidden absolute top-0"
 >
 	<header>
-		<h1 class="text-grey-800 text-xl sm:text-2xl">Log in</h1>
+		<h1 class="text-grey-800 font-semibold text-xl sm:text-2xl">Log in</h1>
 	</header>
 	<form on:submit|preventDefault={handleLogin} class="flex gap-[0.625rem] flex-col items-center">
 		<input type="email" class="input--text w-full md:w-72" placeholder="Email" />

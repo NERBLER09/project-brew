@@ -8,7 +8,7 @@
 <header class="h-20 bg-grey-100 py-lg flex items-center px-lg">
 	<div class="flex items-center gap-md">
 		<div class="w-12 h-12 bg-grey-300 rounded-lg" />
-		<span class="text-md font-bold text-grey-800">Project Brew</span>
+		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
 	<nav class="hidden items-center ml-auto gap-md md:flex">
 		<a href="/" class="font-bold text-grey-700">About</a>
@@ -45,7 +45,7 @@
 
 <section class="text-center mb-md px-lg">
 	<header class="mt-md md:mt-lg">
-		<h1 class="text-lg font-bold text-grey-800 sm:text-2xl">Do project management right</h1>
+		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Do project management right</h1>
 	</header>
 	<div class="flex flex-col gap-[10px] items-center text-grey-700 md:w-1/2 md:mx-auto">
 		<p>
