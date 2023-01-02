@@ -13,8 +13,8 @@
 	<nav class="hidden items-center ml-auto gap-md md:flex">
 		<a href="/" class="font-bold text-grey-700">About</a>
 		<a href="/" class="font-bold text-grey-700 mr-md">Github</a>
-		<button class="button--secondary">Sign up</button>
-		<button class="button--primary">Sign in</button>
+		<a class="button--secondary" href="sign-up">Sign up</a>
+		<a class="button--primary" href="login">Log in</a>
 	</nav>
 
 	<div class="block md:hidden items-center ml-auto">
@@ -37,8 +37,8 @@
 		>
 			<a href="/" class="font-bold text-grey-700">About</a>
 			<a href="/" class="font-bold text-grey-700 mb-auto">Github</a>
-			<button class="button--secondary w-full">Sign up</button>
-			<button class="button--primary w-full">Sign in</button>
+			<a class="button--secondary w-full text-center" href="sign-up">Sign up</a>
+			<a class="button--primary w-full text-center" href="login">Log in</a>
 		</nav>
 	</div>
 </header>
