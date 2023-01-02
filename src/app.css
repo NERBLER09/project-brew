@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,5 +7,22 @@
 @layer base {
 	html {
 		font-family: 'Inter', sans-serif;
+	}
+}
+
+@layer components {
+	.button--primary {
+		@apply bg-accent-light text-grey-200 stroke-grey-200 rounded-md font-bold px-xl py-md hover:bg-accent-light-hover active:bg-accent-light-disabled active:text-accent-light-disabled-text focus:stroke-accent-light-disabled-text;
+	}
+	.button--secondary {
+		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 text-grey-700 box-border hover:border-0 hover:bg-grey-300 active:bg-grey-200 active:text-grey-500 active:border-0;
+	}
+	.button--circle {
+		@apply button--primary rounded-full p-md;
+	}
+	.button--text {
+		@apply rounded-md font-bold px-xl py-md text-grey-700 box-border hover:underline active:bg-grey-200 active:text-grey-500 active:border-0;
+	}
+	.button--icon-only {
 	}
 }
