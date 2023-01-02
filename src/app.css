@@ -23,6 +23,13 @@
 	.button--text {
 		@apply rounded-md font-bold px-xl py-md text-grey-700 box-border hover:underline active:bg-grey-200 active:text-grey-500 active:border-0;
 	}
-	.button--icon-only {
+	.input--label {
+		@apply text-base font-bold text-grey-700 mr-[0.875rem];
+	}
+	.input--text {
+		@apply bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm placeholder:text-grey-700 focus:outline-none;
+	}
+	.input--checkbox {
+		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;
 	}
 }
