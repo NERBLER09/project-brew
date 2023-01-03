@@ -13,24 +13,27 @@
 	<a href="#" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>
 		<Home
-			className="fill-grey-700 h-9 w-9 {($page.data.href = 'home'
+			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('home')
 				? 'fill-accent-light'
-				: 'fill-grey-700')}"
+				: 'fill-grey-700'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {($page.data.href =
-				'home' ? 'block' : 'hidden')}"
+			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
+				'home'
+			)
+				? 'block'
+				: 'hidden'}"
 		/>
 	</a>
 	<a href="#" class="flex flex-col items-center">
 		<span class="sr-only">Projects</span>
 		<Dashboard
-			className="fill-grey-700 h-9 w-9 {$page.data.href.includes('projects')
+			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('projects')
 				? 'fill-accent-light'
 				: 'fill-grey-700'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.data.href.includes(
+			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
 				'projects'
 			)
 				? 'block'
@@ -40,12 +43,12 @@
 	<a href="#" class="flex flex-col items-center">
 		<span class="sr-only">Focus</span>
 		<Clock
-			className="fill-grey-700 h-9 w-9 {$page.data.href.includes('focus')
+			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('focus')
 				? 'fill-accent-light'
 				: 'fill-grey-700'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.data.href.includes(
+			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
 				'focus'
 			)
 				? 'block'
@@ -55,12 +58,12 @@
 	<a href="#" class="flex flex-col items-center">
 		<span class="sr-only">Team</span>
 		<User
-			className="fill-grey-700 h-9 w-9 {$page.data.href.includes('team')
+			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('team')
 				? 'fill-accent-light'
 				: 'fill-grey-700'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.data.href.includes(
+			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
 				'team'
 			)
 				? 'block'
