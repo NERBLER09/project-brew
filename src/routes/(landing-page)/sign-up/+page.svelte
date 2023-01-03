@@ -1,8 +1,14 @@
 <script>
+	import { handleUserSignUp } from '$lib/api/auth';
+
 	import Google from '$lib/assets/Logo/Google.svelte';
 
+	let name = '';
+	let email = '';
+	let password = '';
+
 	const handleSignUp = () => {
-		console.log('Handle user sign up');
+		handleUserSignUp(name, email, password);
 	};
 </script>
 
@@ -13,9 +19,27 @@
 		<h1 class="text-grey-800 font-semibold text-xl sm:text-2xl">Sign Up</h1>
 	</header>
 	<form on:submit|preventDefault={handleSignUp} class="flex gap-[0.625rem] flex-col items-center">
-		<input type="text" class="input--text w-full md:w-72" placeholder="Name" />
-		<input type="email" class="input--text w-full md:w-72" placeholder="Email" />
-		<input type="password" class="input--text w-full md:w-72" placeholder="Password" />
+		<input
+			type="text"
+			class="input--text w-full md:w-72"
+			placeholder="Name"
+			required
+			bind:value={name}
+		/>
+		<input
+			type="email"
+			class="input--text w-full md:w-72"
+			placeholder="Email"
+			required
+			bind:value={email}
+		/>
+		<input
+			type="password"
+			class="input--text w-full md:w-72"
+			placeholder="Password"
+			required
+			bind:value={password}
+		/>
 		<button class="button--primary">Create account</button>
 		<span>or</span>
 		<button class="button--secondary flex items-center justify-center gap-md"
