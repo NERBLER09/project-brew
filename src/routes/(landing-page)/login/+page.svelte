@@ -32,9 +32,9 @@
 			bind:value={password}
 		/>
 		<span class="text-sm empty:hidden">{errorMsg}</span>
-		<button class="button--primary">Log in</button>
+		<button class="button--primary" type="submit">Log in</button>
 		<span>or</span>
-		<button class="button--secondary flex items-center justify-center gap-md"
+		<button class="button--secondary flex items-center justify-center gap-md" type="button"
 			><Google className="h-lg w-lg" /> Continue with Google</button
 		>
 		<p class="text-sm text-grey-700 px-6 md:w-72">

@@ -20,7 +20,7 @@ const handleUserSignUp = async (name: string, email: string, password: string) =
   })
 
   if (error) return new Error(`Failed to sign up user: ${error.message}`)
-  console.log("User login successful")
+  console.log("User sign up successful")
 }
 
 export {
