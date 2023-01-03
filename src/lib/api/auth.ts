@@ -1,5 +1,7 @@
 // Includes commonly used and related functions for user auth
 
+import { goto } from "$app/navigation"
+import { signUpEmail } from "$lib/stores/user"
 import { supabase } from "$lib/supabase"
 
 const handleEmailPasswordLogin = async (email: string, password: string) => {
@@ -20,6 +22,10 @@ const handleUserSignUp = async (email: string, password: string) => {
   })
 
   if (error) return new Error(`Failed to sign up user: ${error.message}`)
+  else {
+    signUpEmail.set(email)
+    goto("/verify")
+  }
 }
 
 export {
