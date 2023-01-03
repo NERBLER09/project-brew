@@ -1,8 +1,19 @@
 <script>
+	import { handleEmailPasswordLogin } from '$lib/api/auth';
+
 	import Google from '$lib/assets/Logo/Google.svelte';
 
-	const handleLogin = () => {
-		console.log('Handle user login');
+	let email = '';
+	let password = '';
+
+	let errorMsg = '';
+
+	const handleAuth = async () => {
+		try {
+			await handleEmailPasswordLogin(email, password);
+		} catch (error) {
+			error = error;
+		}
 	};
 </script>
 
@@ -12,9 +23,15 @@
 	<header>
 		<h1 class="text-grey-800 font-semibold text-xl sm:text-2xl">Log in</h1>
 	</header>
-	<form on:submit|preventDefault={handleLogin} class="flex gap-[0.625rem] flex-col items-center">
-		<input type="email" class="input--text w-full md:w-72" placeholder="Email" />
-		<input type="password" class="input--text w-full md:w-72" placeholder="Password" />
+	<form on:submit|preventDefault={handleAuth} class="flex gap-[0.625rem] flex-col items-center">
+		<input type="email" class="input--text w-full md:w-72" placeholder="Email" bind:value={email} />
+		<input
+			type="password"
+			class="input--text w-full md:w-72"
+			placeholder="Password"
+			bind:value={password}
+		/>
+		<span class="text-sm empty:hidden">{errorMsg}</span>
 		<button class="button--primary">Log in</button>
 		<span>or</span>
 		<button class="button--secondary flex items-center justify-center gap-md"
