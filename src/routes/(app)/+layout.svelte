@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
 
 	import { supabase } from '$lib/supabase';
@@ -21,6 +22,10 @@
 	});
 </script>
 
-<MobileNavbar />
+<aside>
+	<!-- Each automaticly hide based on screen size in tailwind -->
+	<DesktopSidebar />
+	<MobileNavbar />
+</aside>
 
 <slot />
