@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -19,5 +20,7 @@
 		}
 	});
 </script>
+
+<MobileNavbar />
 
 <slot />
