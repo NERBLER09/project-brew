@@ -3,12 +3,11 @@
 
 	import Google from '$lib/assets/Logo/Google.svelte';
 
-	let name = '';
 	let email = '';
 	let password = '';
 
 	const handleSignUp = () => {
-		handleUserSignUp(name, email, password);
+		handleUserSignUp(email, password);
 	};
 </script>
 
@@ -19,13 +18,6 @@
 		<h1 class="text-grey-800 font-semibold text-xl sm:text-2xl">Sign Up</h1>
 	</header>
 	<form on:submit|preventDefault={handleSignUp} class="flex gap-[0.625rem] flex-col items-center">
-		<input
-			type="text"
-			class="input--text w-full md:w-72"
-			placeholder="Name"
-			required
-			bind:value={name}
-		/>
 		<input
 			type="email"
 			class="input--text w-full md:w-72"
