@@ -37,7 +37,7 @@ module.exports = {
 			"md": ["1.25rem", "2rem"],
 			"lg": ["1.75rem", "2.8125rem"],
 			"xl": ["2.5rem", "4rem"],
-			"2xl": ["3rem", "5.625rem"]
+			"2xl": ["3rem", "5rem"]
 		}
 	},
 	plugins: [require("@tailwindcss/forms")]

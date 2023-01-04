@@ -1,13 +1,13 @@
 import { goto } from "$app/navigation"
 import { supabase } from "$lib/supabase"
-import { writable } from "svelte/store"
+import { writable, type Writable } from "svelte/store"
 
 // Stores used outside the primary UI
 const signUpEmail = writable("")
 
 // Stores used inside the primary UI
 const userSession = writable()
-const userData = writable()
+const userData: Writable<any> = writable()
 const userId = writable()
 
 const { data } = supabase.auth.onAuthStateChange((event, session) => {

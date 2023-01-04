@@ -7,8 +7,7 @@
 	import { onMount } from 'svelte';
 
 	import '$lib/stores/user';
-	import { userData, userId } from '$lib/stores/user';
-
+	import { userData } from '$lib/stores/user';
 	const checkIfUserIsAuth = async (): Promise<boolean> => {
 		const { data: session } = await supabase.auth.getSession();
 		if (session.session) {
@@ -23,9 +22,9 @@
 			goto('/');
 		} else {
 			if ($userData) return;
-			const { data: user, error } = await supabase.from('profiles').select().eq('id', $userId);
+			const { data: user, error } = await supabase.from('profiles').select();
 			if (error) console.error(error);
-			else $userData = user;
+			else userData.set(user[0]);
 		}
 	});
 </script>

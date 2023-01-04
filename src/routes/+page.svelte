@@ -45,7 +45,7 @@
 
 <section class="text-center mb-md px-lg">
 	<header class="mt-md md:mt-lg">
-		<h1 class="text-lg font-semiboldd text-grey-800 sm:text-2xl">Do project management right</h1>
+		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Do project management right</h1>
 	</header>
 	<div class="flex flex-col gap-[10px] items-center text-grey-700 md:w-1/2 md:mx-auto">
 		<p>
