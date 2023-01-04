@@ -27,7 +27,22 @@ const handleUserSignUp = async (email: string, password: string) => {
   }
 }
 
+const handleGoogleAuth = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "/app/home"
+    }
+  })
+  if (error) return new Error(`Google auth failed: ${error.message}`)
+}
+
+
+
+
+
 export {
   handleEmailPasswordLogin,
-  handleUserSignUp
+  handleUserSignUp,
+  handleGoogleAuth
 }

@@ -8,6 +8,7 @@
 	import Search from '$lib/assets/Search.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
+	import { supabase } from '$lib/supabase';
 	import Switch from '../form/Switch.svelte';
 
 	const handleSearch = () => {
@@ -94,6 +95,7 @@
 
 		<button
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200"
+			on:click={() => supabase.auth.signOut()}
 		>
 			<LogOut className="stroke-grey-700 h-6 w-6" />
 			Log out

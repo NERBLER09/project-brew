@@ -1,5 +1,5 @@
 <script>
-	import { handleEmailPasswordLogin } from '$lib/api/auth';
+	import { handleEmailPasswordLogin, handleGoogleAuth } from '$lib/api/auth';
 
 	import Google from '$lib/assets/Logo/Google.svelte';
 
@@ -34,8 +34,10 @@
 		<span class="text-sm empty:hidden">{errorMsg}</span>
 		<button class="button--primary" type="submit">Log in</button>
 		<span>or</span>
-		<button class="button--secondary flex items-center justify-center gap-md" type="button"
-			><Google className="h-lg w-lg" /> Continue with Google</button
+		<button
+			class="button--secondary flex items-center justify-center gap-md"
+			type="button"
+			on:click={handleGoogleAuth}><Google className="h-lg w-lg" /> Continue with Google</button
 		>
 		<p class="text-sm text-grey-700 px-6 md:w-72">
 			By signing up with email+password you agree to our privacy policy
