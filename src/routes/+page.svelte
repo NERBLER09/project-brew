@@ -48,13 +48,15 @@
 		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Do project management right</h1>
 	</header>
 	<div class="flex flex-col gap-[10px] items-center text-grey-700 md:w-1/2 md:mx-auto">
-		<p>
+		<p class="font-medium">
 			With Project Brew it is incredibly easy to get started managing projects with your team or by
 			yourself.
 		</p>
-		<p>Do it on the go and at home.</p>
-		<p>Brew yourself a coffee and start managing projects <span class="underline">right!</span></p>
-		<p>
+		<p class="font-medium">Do it on the go and at home.</p>
+		<p class="font-medium">
+			Brew yourself a coffee and start managing projects <span class="underline">right!</span>
+		</p>
+		<p class="font-medium">
 			So, what are you waiting for! Get started for free and get up and running with you and you
 			team within minutes.
 		</p>

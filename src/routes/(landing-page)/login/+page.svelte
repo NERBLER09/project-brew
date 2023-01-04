@@ -31,7 +31,7 @@
 			placeholder="Password"
 			bind:value={password}
 		/>
-		<span class="text-sm empty:hidden">{errorMsg}</span>
+		<span class="text-sm font-medium empty:hidden">{errorMsg}</span>
 		<button class="button--primary" type="submit">Log in</button>
 		<span>or</span>
 		<button

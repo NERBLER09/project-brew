@@ -27,7 +27,7 @@
 		@apply text-base font-bold text-grey-700 mr-[0.875rem];
 	}
 	.input--text {
-		@apply border-none bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm placeholder:text-grey-700 focus:outline-none;
+		@apply border-none bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 focus:outline-none;
 	}
 	.input--checkbox {
 		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;

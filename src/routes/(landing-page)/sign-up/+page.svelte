@@ -39,7 +39,7 @@
 			type="button"
 			on:click={handleGoogleAuth}><Google className="h-lg w-lg" /> Continue with Google</button
 		>
-		<p class="text-sm text-grey-700 px-6 md:w-72">
+		<p class="text-sm font-medium text-grey-700 px-6 md:w-72">
 			By signing up with email+password you agree to our privacy policy
 		</p>
 	</form>

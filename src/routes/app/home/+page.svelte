@@ -5,7 +5,7 @@
 <header>
 	<!-- Mobile welcome text -->
 	<div class="flex md:hidden flex-col items-start">
-		<span class="text-grey-800">Welcome Back</span>
+		<span class="text-grey-800 font-medium">Welcome Back</span>
 		<span class="text-lg font-semibold text-grey-900">{$userData?.name}</span>
 	</div>
 	<!-- Desktop welcome text -->
