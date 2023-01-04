@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { userData } from '$lib/stores/user';
+
 	import { supabase } from '$lib/supabase';
+	import { onMount } from 'svelte';
 
 	let name = '';
-
 	let error = '';
 
 	const handleSetUserData = async () => {
@@ -12,14 +15,20 @@
 		const id = user?.id;
 		const email = user?.email;
 
-		const { error: errorMsg } = await supabase.from('profiles').insert({
-			id,
-			email,
-			name
-		});
+		const { data, error: errorMsg } = await supabase
+			.from('profiles')
+			.insert({
+				id,
+				email,
+				name
+			})
+			.select();
 
 		if (error) error = errorMsg?.message!;
-		else console.log('User data set! TODO: Route to main page');
+		else {
+			userData.set(data);
+			goto('/app/home');
+		}
 	};
 </script>
 
