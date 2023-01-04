@@ -6,6 +6,8 @@
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
+	import '$lib/stores/user';
+
 	const checkIfUserIsAuth = async (): Promise<boolean> => {
 		const { data: session } = await supabase.auth.getSession();
 		if (session.session) {
