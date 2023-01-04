@@ -11,8 +11,7 @@ const handleEmailPasswordLogin = async (email: string, password: string) => {
   })
 
   if (error) return new Error(`Failed to login user: ${error.message}`)
-
-  console.log("User login successful")
+  else goto("/app/home")
 }
 
 const handleUserSignUp = async (email: string, password: string) => {
