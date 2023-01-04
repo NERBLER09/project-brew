@@ -8,12 +8,14 @@ const signUpEmail = writable("")
 // Stores used inside the primary UI
 const userSession = writable()
 const userData = writable()
+const userId = writable()
 
 const { data } = supabase.auth.onAuthStateChange((event, session) => {
   switch (event) {
     case "SIGNED_IN":
       console.log("Welcome user")
       userSession.set(session)
+      userId.set(session?.user.id)
       if (!location.pathname.includes("/app")) {
         goto("/app/home")
       }
@@ -33,5 +35,6 @@ const { data } = supabase.auth.onAuthStateChange((event, session) => {
 export {
   signUpEmail,
   userSession,
-  userData
+  userData,
+  userId
 }
