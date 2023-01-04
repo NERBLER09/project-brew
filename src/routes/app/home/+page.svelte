@@ -2,7 +2,10 @@
 	import Bell from '$lib/assets/Bell.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
+	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
 	import { userData } from '$lib/stores/user';
+
+	let showUserDropdown = false;
 </script>
 
 <header class="flex items-center">
@@ -23,15 +26,20 @@
 		</button>
 		<Bell className="stroke-grey-700 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
 		<div>
-			{#if $userData?.avatar_url}
-				<img
-					src={$userData?.avatar_url}
-					alt="User profile"
-					class="w-2xl h-2xl md:h-16 md:w-16 rounded-full"
-				/>
-			{:else}
-				<User className="w-2xl h-2xl stroke-grey-700 md:h-16 md:w-16" />
-			{/if}
+			<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
+				{#if $userData?.avatar_url}
+					<img
+						src={$userData?.avatar_url}
+						alt="User profile"
+						class="w-2xl h-2xl md:h-16 md:w-16 rounded-full"
+					/>
+				{:else}
+					<User className="w-2xl h-2xl stroke-grey-700 md:h-16 md:w-16" />
+				{/if}
+			</button>
 		</div>
 	</div>
+	{#if showUserDropdown}
+		<UserDropdown bind:visibility={showUserDropdown} />
+	{/if}
 </header>

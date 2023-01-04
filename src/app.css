@@ -32,4 +32,16 @@
 	.input--checkbox {
 		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;
 	}
+	.dropdown--container {
+		@apply md:w-fit md:top-[128px] md:rounded-2xl md:p-md md:right-xl md:left-auto bg-grey-100 w-screen h-fit absolute bottom-0 left-0 px-6 py-lg rounded-t-3xl flex flex-col gap-4;
+	}
+	.dropdown--item {
+		@apply flex items-center justify-start gap-md px-md py-sm hover:bg-grey-200 rounded-lg;
+	}
+	.dropdown--label {
+		@apply font-bold text-grey-700;
+	}
+	.dropdown--icon {
+		@apply w-8 h-8 stroke-grey-700;
+	}
 }
