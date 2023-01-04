@@ -33,7 +33,7 @@
 	</form>
 	<nav class="flex flex-col gap-lg">
 		<a
-			href="#"
+			href="/app/home"
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 {$page.url.pathname.includes(
 				'home'
 			)
@@ -44,7 +44,7 @@
 			Dashboard
 		</a>
 		<a
-			href="#"
+			href="/app/projects"
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 {$page.url.pathname.includes(
 				'projects'
 			)
@@ -56,7 +56,7 @@
 		</a>
 
 		<a
-			href="#"
+			href="/app/focus"
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 {$page.url.pathname.includes(
 				'focus'
 			)
@@ -68,7 +68,7 @@
 		</a>
 
 		<a
-			href="#"
+			href="/app/team"
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 {$page.url.pathname.includes(
 				'team'
 			)
@@ -81,7 +81,7 @@
 	</nav>
 	<div class="mt-auto flex flex-col gap-lg">
 		<a
-			href="#"
+			href="/app/settings"
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 {$page.url.pathname.includes(
 				'settings'
 			)

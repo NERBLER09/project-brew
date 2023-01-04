@@ -10,7 +10,7 @@
 <nav
 	class="md:hidden flex gap-md bg-grey-100 h-[6.25rem] p-6 items-center justify-evenly fixed bottom-0 w-screen"
 >
-	<a href="#" class="flex flex-col items-center">
+	<a href="/app/home" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>
 		<Home
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('home')
@@ -25,7 +25,7 @@
 				: 'hidden'}"
 		/>
 	</a>
-	<a href="#" class="flex flex-col items-center">
+	<a href="/app/projects" class="flex flex-col items-center">
 		<span class="sr-only">Projects</span>
 		<Dashboard
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('projects')
@@ -40,7 +40,7 @@
 				: 'hidden'}"
 		/>
 	</a>
-	<a href="#" class="flex flex-col items-center">
+	<a href="/app/focus" class="flex flex-col items-center">
 		<span class="sr-only">Focus</span>
 		<Clock
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('focus')
@@ -55,7 +55,7 @@
 				: 'hidden'}"
 		/>
 	</a>
-	<a href="#" class="flex flex-col items-center">
+	<a href="/app/team" class="flex flex-col items-center">
 		<span class="sr-only">Team</span>
 		<User
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('team')

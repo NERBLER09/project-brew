@@ -36,4 +36,6 @@
 	<MobileNavbar />
 </aside>
 
-<slot />
+<main class="md:absolute md:top-0 md:left-[16.625rem] md:p-8 p-6">
+	<slot />
+</main>
