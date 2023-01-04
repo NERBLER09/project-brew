@@ -30,12 +30,14 @@
 	});
 </script>
 
-<aside>
-	<!-- Each automaticly hide based on screen size in tailwind -->
-	<DesktopSidebar />
-	<MobileNavbar />
-</aside>
+<div class="md:flex">
+	<aside>
+		<!-- Each automaticly hide based on screen size in tailwind -->
+		<DesktopSidebar />
+		<MobileNavbar />
+	</aside>
 
-<main class="md:absolute md:top-0 md:left-[16.625rem] md:p-8 p-6">
-	<slot />
-</main>
+	<main class="md:p-8 p-6 w-full">
+		<slot />
+	</main>
+</div>
