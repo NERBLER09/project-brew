@@ -1,3 +1,7 @@
+<script>
+	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
+</script>
+
 <header>
 	<h1 class="text-lg md:text-2xl text-grey-800">Home</h1>
 </header>
