@@ -6,7 +6,7 @@
 	export let visibility: boolean;
 </script>
 
-<div class="md:top-[128px] md:right-xl md:left-auto dropdown--container">
+<div class="md:top-[6.25rem] lg:top-24 md:right-xl md:left-auto dropdown--container">
 	<a href="#" class="dropdown--item" on:click={() => (visibility = false)}>
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View Profile</span>
