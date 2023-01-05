@@ -16,7 +16,16 @@ const getProjectLists = async (project_id: string) => {
   return data
 }
 
+const getListTasks = async (project_id: string, list_id: string) => {
+  const { data, error } = await supabase.from("tasks").select().eq("project", project_id).eq("list", list_id)
+  if (error) {
+    return new Error(`Failed to fetch tasks: ${error.message}`)
+  }
+  return data
+}
+
 export {
   getUserProjects,
-  getProjectLists
+  getProjectLists,
+  getListTasks
 }
