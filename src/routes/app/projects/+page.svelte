@@ -1,3 +1,9 @@
+<script lang="ts">
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+</script>
+
 <svelte:head>
 	<title>Project Brew - Projects</title>
 </svelte:head>

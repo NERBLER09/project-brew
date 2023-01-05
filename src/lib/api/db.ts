@@ -1,6 +1,6 @@
 import { supabase } from "$lib/supabase"
 
-const getUserProjects = async (uuid: string) => {
+const getUserProjects = async (uuid: string | undefined) => {
   const { data, error } = await supabase.from("projects").select().eq("owner", uuid)
   if (error) {
     return new Error(`Failed to fetch user projects: ${error.message}`)
