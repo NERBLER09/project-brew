@@ -8,6 +8,10 @@
 	let showUserDropdown = false;
 </script>
 
+<svelte:head>
+	<title>Project Brew - Home</title>
+</svelte:head>
+
 <header class="flex items-center">
 	<!-- Mobile welcome text -->
 	<div class="flex md:hidden flex-col items-start">

@@ -5,6 +5,10 @@
 	let showMobileNav = false;
 </script>
 
+<svelte:head>
+	<title>Project Brew</title>
+</svelte:head>
+
 <header class="h-20 bg-grey-100 py-lg flex items-center px-lg">
 	<div class="flex items-center gap-md">
 		<div class="w-12 h-12 bg-grey-300 rounded-lg" />

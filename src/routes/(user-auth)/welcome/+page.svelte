@@ -3,7 +3,6 @@
 	import { userData } from '$lib/stores/user';
 
 	import { supabase } from '$lib/supabase';
-	import { onMount } from 'svelte';
 
 	let name = '';
 	let error = '';
@@ -31,6 +30,10 @@
 		}
 	};
 </script>
+
+<svelte:head>
+	<title>Project Brew - Welcome</title>
+</svelte:head>
 
 <section
 	class="text-center mx-6 h-screen md:w-screen flex items-center justify-center flex-col gap-md"

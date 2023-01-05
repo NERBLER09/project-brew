@@ -11,6 +11,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Project Brew - Sign Up</title>
+</svelte:head>
+
 <section
 	class="text-center mx-6 h-screen md:w-screen place-content-center grid overflow-hidden absolute top-0"
 >
