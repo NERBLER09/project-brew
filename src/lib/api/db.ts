@@ -8,6 +8,15 @@ const getUserProjects = async (uuid: string) => {
   return data
 }
 
+const getProjectLists = async (project_id: string) => {
+  const { data, error } = await supabase.from("list").select().eq("project", project_id)
+  if (error) {
+    return new Error(`Failed to fetch list: ${error.message}`)
+  }
+  return data
+}
+
 export {
-  getUserProjects
+  getUserProjects,
+  getProjectLists
 }
