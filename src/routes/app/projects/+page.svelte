@@ -1,5 +1,8 @@
 <script lang="ts">
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
+	import Filter from '$lib/assets/Filter.svelte';
+	import Search from '$lib/assets/Search.svelte';
 
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import type { PageData } from './$types';
@@ -18,11 +21,49 @@
 		<h2 class="font-semibold text-grey-800 text-md md:text-lg">Pinned Projects</h2>
 		<button class="button--text flex items-center gap-md ml-auto p-0">
 			<Edit className="stroke-grey-700 w-8 h-8" />
-			<span class="sr-only md:not-sr-only">Edit Pinned Projects</span>
+			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
 	<div class="mt-md">
 		{#if data.pinned.length === 0}
+			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
+		{/if}
+		{#each data.pinned as project}
+			<ProjectCard
+				project_name={project.project_name}
+				id={project.id}
+				description={project.description}
+				banner={project.banner}
+				invited_people={project.invited_people}
+			/>
+		{/each}
+	</div>
+</section>
+
+<section>
+	<header class="flex items-center">
+		<h2 class="font-semibold text-grey-800 text-md md:text-lg">All Projects</h2>
+	</header>
+	<div class="flex items-center">
+		<div
+			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-lg p-md placeholder:text-grey-700 text-grey-700 w-2/3"
+		>
+			<Search className="stroke-grey-700 w-6 h-6" />
+			<input type="text" placeholder="Search" class="bg-grey-200 border-none w-full p-0" />
+		</div>
+
+		<button class="flex items-center gap-md p-0 ml-auto md:hidden">
+			<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
+			<span>Filter projects</span>
+		</button>
+
+		<button class="hidden md:flex items-center gap-md  button--secondary ml-auto">
+			<Down className="stroke-grey-700 w-lg h-lg" />
+			<span>Sort</span>
+		</button>
+	</div>
+	<div>
+		{#if data.all.length === 0}
 			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
 		{/if}
 		{#each data.pinned as project}
