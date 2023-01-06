@@ -8,6 +8,7 @@
 
 	import '$lib/stores/user';
 	import { userData } from '$lib/stores/user';
+	import { showMobileNav } from '$lib/stores/ui';
 
 	const checkIfUserIsAuth = async (): Promise<boolean> => {
 		const { data: session } = await supabase.auth.getSession();
@@ -37,7 +38,9 @@
 	<aside>
 		<!-- Each automaticly hide based on screen size in tailwind -->
 		<DesktopSidebar />
-		<MobileNavbar />
+		{#if $showMobileNav}
+			<MobileNavbar />
+		{/if}
 	</aside>
 
 	<main class="md:p-8 p-6 w-full">

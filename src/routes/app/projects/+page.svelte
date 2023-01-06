@@ -28,10 +28,10 @@
 <section class="pt-6">
 	<header class="flex items-center">
 		<h2 class="font-semibold text-grey-800 text-md md:text-lg">Pinned Projects</h2>
-		<button class="button--text flex items-center gap-md ml-auto p-0">
+		<a href="/app/projects/edit-pinned" class="button--text flex items-center gap-md ml-auto p-0">
 			<Edit className="stroke-grey-700 w-8 h-8" />
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
-		</button>
+		</a>
 	</header>
 	<div class="mt-md">
 		{#if data.pinned.length === 0}
@@ -69,7 +69,7 @@
 
 		<button class="flex items-center gap-md p-0 ml-auto md:hidden">
 			<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
-			<span>Filter projects</span>
+			<span class="sr-only">Filter projects</span>
 		</button>
 
 		<button class="hidden md:flex items-center gap-md  button--secondary ml-auto">
