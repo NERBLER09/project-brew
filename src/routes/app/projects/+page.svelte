@@ -114,4 +114,4 @@
 	</div>
 </section>
 
-<EditPinPrompt bind:shown={showEditPinPrompt} />
+<EditPinPrompt bind:shown={showEditPinPrompt} projects={data.all} />

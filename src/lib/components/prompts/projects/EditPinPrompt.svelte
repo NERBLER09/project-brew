@@ -1,9 +1,9 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
-	import { onDestroy } from 'svelte';
 
 	export let shown = false;
+	export let projects: any[];
 	let dialog: HTMLDialogElement;
 
 	const handleModalStatus = (status: boolean) => {
@@ -18,8 +18,6 @@
 	};
 
 	$: handleModalStatus(shown);
-
-	onDestroy(() => {});
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 lg:w-1/3 lg:h-2/3">
@@ -38,6 +36,13 @@
 			placeholder="Search for a project"
 			class="bg-grey-200 border-none w-full p-0"
 		/>
+	</div>
+
+	<div>
+		{#each projects as project}
+			<label for={project.id} class="input--label">{project.project_name}</label>
+			<input id={project.id} type="checkbox" class="input--checkbox" checked={project.pinned} />
+		{/each}
 	</div>
 
 	<footer class="w-1/2 flex items-center justify-evenly mx-auto mt-auto">
