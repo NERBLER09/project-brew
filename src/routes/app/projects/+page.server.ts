@@ -1,6 +1,6 @@
 import { supabase } from "$lib/supabase";
 import { getSupabase } from "@supabase/auth-helpers-sveltekit";
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async (event) => {
@@ -9,11 +9,10 @@ export const load = (async (event) => {
     throw redirect(303, "/")
   }
 
-  // const { data, error: err } = await supabase.from('projects').select().eq('owner', session.user.id);
-  const { data, error: err } = await supabase.from('projects').select().eq('user_id', session.user.id);
+  const { data, error: err } = await supabase.from('projects').select().eq('owner', session.user.id);
   if (data) {
     return { projects: data }
   }
 
-  throw error(parseInt(err.code), err.message)
+  throw error(404, err.message)
 }) satisfies PageServerLoad
