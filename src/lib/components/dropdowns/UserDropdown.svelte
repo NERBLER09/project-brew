@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { signOut } from '$lib/api/auth';
+
 	import LogOut from '$lib/assets/Arrow/Log-Out.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
@@ -15,7 +17,13 @@
 		<Settings className="dropdown--icon" />
 		<span class="dropdown--label">Settings</span>
 	</a>
-	<button class="dropdown--item md:hidden" on:click={() => (visibility = false)}>
+	<button
+		class="dropdown--item md:hidden"
+		on:click={() => {
+			visibility = false;
+			signOut();
+		}}
+	>
 		<LogOut className="dropdown--icon" />
 		<span class="dropdown--label">Log Out</span>
 	</button>

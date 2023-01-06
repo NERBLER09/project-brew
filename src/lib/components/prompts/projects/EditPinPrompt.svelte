@@ -26,7 +26,7 @@
 	$: handleModalStatus(shown);
 </script>
 
-<dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 lg:w-1/3 lg:h-2/3">
+<dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
 	<header class="flex items-center">
 		<h2 class="font-semibold text-grey-800 text-lg">Edit pinned projects</h2>
 		<button on:click={() => (shown = false)} class="ml-auto">

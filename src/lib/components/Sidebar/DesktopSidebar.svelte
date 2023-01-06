@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { signOut } from '$lib/api/auth';
 	import LogOut from '$lib/assets/Arrow/Log-Out.svelte';
 	import Clock from '$lib/assets/Clock.svelte';
 	import Dashboard from '$lib/assets/Dashboard.svelte';
@@ -95,7 +96,7 @@
 
 		<button
 			class="button--text items-start text-grey-700 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200"
-			on:click={() => supabase.auth.signOut()}
+			on:click={signOut}
 		>
 			<LogOut className="stroke-grey-700 h-6 w-6" />
 			Log out

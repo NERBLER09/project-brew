@@ -38,8 +38,14 @@ const handleGoogleAuth = async () => {
   if (error) return new Error(`Google auth failed: ${error.message}`)
 }
 
+const signOut = async () => {
+  await supabase.auth.signOut()
+  goto("/")
+}
+
 export {
   handleEmailPasswordLogin,
   handleUserSignUp,
-  handleGoogleAuth
+  handleGoogleAuth,
+  signOut
 }
