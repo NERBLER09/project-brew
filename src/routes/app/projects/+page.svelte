@@ -2,6 +2,7 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Filter from '$lib/assets/Filter.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Search from '$lib/assets/Search.svelte';
 
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
@@ -29,8 +30,17 @@
 
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
 
-<header>
+<header class="flex items-center">
 	<h1 class="text-lg md:text-2xl text-grey-800">Projects</h1>
+	<button class="hidden button--primary md:flex items-center gap-md ml-auto">
+		<PlusNew className="h-8 w-8 stroke-grey-200" />
+		<span>New project</span>
+	</button>
+
+	<button class="md:hidden button--circle bottom-32 right-8 absolute z-50">
+		<PlusNew className="h-8 w-8 stroke-grey-200" />
+		<span class="sr-only">Create a new project</span>
+	</button>
 </header>
 
 <section class="pt-6">
