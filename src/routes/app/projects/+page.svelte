@@ -15,10 +15,10 @@
 
 <section class="pt-6">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 text-md">Pinned Projects</h2>
+		<h2 class="font-semibold text-grey-800 text-md md:text-lg">Pinned Projects</h2>
 		<button class="button--text flex items-center gap-md ml-auto p-0">
 			<Edit className="stroke-grey-700 w-8 h-8" />
-			<span class="sr-only">Edit Pinned Projects</span>
+			<span class="sr-only md:not-sr-only">Edit Pinned Projects</span>
 		</button>
 	</header>
 	<div class="mt-md">
