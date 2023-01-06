@@ -8,6 +8,15 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	let query = '';
+	let allProjects = data.all;
+
+	const handleSearch = () => {
+		allProjects = data.all;
+		allProjects = data.all.filter((value) => value.project_name?.includes(query));
+		allProjects = [...allProjects];
+	};
 </script>
 
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
@@ -49,7 +58,13 @@
 			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-lg p-md placeholder:text-grey-700 text-grey-700 w-2/3"
 		>
 			<Search className="stroke-grey-700 w-6 h-6" />
-			<input type="text" placeholder="Search" class="bg-grey-200 border-none w-full p-0" />
+			<input
+				type="text"
+				placeholder="Search by name"
+				class="bg-grey-200 border-none w-full p-0"
+				bind:value={query}
+				on:keyup={handleSearch}
+			/>
 		</div>
 
 		<button class="flex items-center gap-md p-0 ml-auto md:hidden">
@@ -66,7 +81,7 @@
 		{#if data.all.length === 0}
 			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
 		{/if}
-		{#each data.pinned as project}
+		{#each allProjects as project}
 			<ProjectCard
 				project_name={project.project_name}
 				id={project.id}
