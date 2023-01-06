@@ -11,7 +11,8 @@ export const load = (async (event) => {
 
   const { data, error: err } = await supabase.from('projects').select().eq('owner', session.user.id);
   if (data) {
-    return { projects: data }
+    const pinned = data.filter(value => value.pinned)
+    return { all: data, pinned }
   }
 
   throw error(404, err.message)
