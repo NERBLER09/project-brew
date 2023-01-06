@@ -3,19 +3,35 @@
 	import Search from '$lib/assets/Search.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 
+	import { supabase } from '$lib/supabase';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	let projects = data.all;
 
 	let unfilteredList = data.all;
 	let query = '';
 	const handleSearch = () => {
 		data.all = unfilteredList.filter((value) => value.project_name.includes(query));
 	};
+
+	const handleUpdatePins = async () => {
+		const { error } = await supabase
+			.from('projects')
+			.upsert([...projects])
+			.select();
+
+		if (error) {
+			console.error(error.message);
+		} else {
+			goto('/app/projects');
+		}
+	};
 </script>
 
 <MobileSubPageLayout pageName="Edit Pinned Projects" previousPage="/app/projects">
-	<p class="font-medium text-grey-700 pt-sm">Chose what projects are displayed first</p>
+	<p class="font-medium text-grey-700 pt-sm">Chose what projects are displayed on top.</p>
 	<div
 		class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-md p-md placeholder:text-grey-700 text-grey-700"
 	>
@@ -31,12 +47,17 @@
 	<div>
 		{#each data.all as project}
 			<label for={project.id} class="input--label">{project.project_name}</label>
-			<input id={project.id} type="checkbox" class="input--checkbox" checked={project.pinned} />
+			<input
+				id={project.id}
+				type="checkbox"
+				class="input--checkbox"
+				bind:checked={project.pinned}
+			/>
 		{/each}
 	</div>
 
-	<button class="button--circle bottom-8 right-8 absolute">
+	<button class="button--circle bottom-8 right-8 absolute" on:click={handleUpdatePins}>
 		<Check className="h-8 w-8 stroke-grey-200" />
-		<span class="sr-only">Save pinned projects</span>
+		<span class="sr-only">Update pinned projects</span>
 	</button>
 </MobileSubPageLayout>
