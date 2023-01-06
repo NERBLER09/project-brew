@@ -8,7 +8,7 @@ export const load = (async (event) => {
     throw redirect(303, "/")
   }
 
-  const { data, error: err } = await supabaseClient.from('projects').select().eq('owner', session.user.id);
+  const { data, error: err } = await supabaseClient.from('projects').select().eq('user_id', session.user.id);
   if (data) {
     return { all: data }
   }
