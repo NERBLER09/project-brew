@@ -5,6 +5,7 @@
 	import Search from '$lib/assets/Search.svelte';
 
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -17,6 +18,13 @@
 		allProjects = data.all.filter((value) => value.project_name?.includes(query));
 		allProjects = [...allProjects];
 	};
+
+	let showEditPinPrompt = false;
+
+	const handleShowEditPinsPrompt = () => {
+		showEditPinPrompt = false;
+		showEditPinPrompt = true;
+	};
 </script>
 
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
@@ -28,10 +36,23 @@
 <section class="pt-6">
 	<header class="flex items-center">
 		<h2 class="font-semibold text-grey-800 text-md md:text-lg">Pinned Projects</h2>
-		<a href="/app/projects/edit-pinned" class="button--text flex items-center gap-md ml-auto p-0">
+		<!-- Shown on mobile -->
+		<a
+			href="/app/projects/edit-pinned"
+			class="button--text flex items-center gap-md ml-auto p-0 md:hidden"
+		>
+			<Edit className="stroke-grey-700 w-8 h-8" />
+			<span class="sr-only">Edit Pinned projects</span>
+		</a>
+		<!-- Shown on desktop -->
+		<button
+			href="/app/projects/edit-pinned"
+			class="button--text md:flex items-center gap-md ml-auto p-0 hidden"
+			on:click={handleShowEditPinsPrompt}
+		>
 			<Edit className="stroke-grey-700 w-8 h-8" />
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
-		</a>
+		</button>
 	</header>
 	<div class="mt-md">
 		{#if data.pinned.length === 0}
@@ -92,3 +113,5 @@
 		{/each}
 	</div>
 </section>
+
+<EditPinPrompt bind:shown={showEditPinPrompt} />
