@@ -6,6 +6,12 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	let unfilteredList = data.all;
+	let query = '';
+	const handleSearch = () => {
+		data.all = unfilteredList.filter((value) => value.project_name.includes(query));
+	};
 </script>
 
 <MobileSubPageLayout pageName="Edit Pinned Projects" previousPage="/app/projects">
@@ -14,7 +20,13 @@
 		class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-md p-md placeholder:text-grey-700 text-grey-700"
 	>
 		<Search className="stroke-grey-700 w-6 h-6" />
-		<input type="text" placeholder="Search by name" class="bg-grey-200 border-none w-full p-0" />
+		<input
+			type="text"
+			placeholder="Search by name"
+			class="bg-grey-200 border-none w-full p-0"
+			bind:value={query}
+			on:keyup={handleSearch}
+		/>
 	</div>
 	<div>
 		{#each data.all as project}

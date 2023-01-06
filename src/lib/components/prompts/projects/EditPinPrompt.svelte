@@ -17,6 +17,12 @@
 		}
 	};
 
+	let unfilteredList = projects;
+	let query = '';
+	const handleSearch = () => {
+		projects = unfilteredList.filter((value) => value.project_name.includes(query));
+	};
+
 	$: handleModalStatus(shown);
 </script>
 
@@ -35,6 +41,8 @@
 			type="text"
 			placeholder="Search for a project"
 			class="bg-grey-200 border-none w-full p-0"
+			bind:value={query}
+			on:keyup={handleSearch}
 		/>
 	</div>
 
