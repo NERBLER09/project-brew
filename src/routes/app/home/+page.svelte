@@ -15,11 +15,11 @@
 	<title>Project Brew - Home</title>
 </svelte:head>
 
-<header class="flex items-center lg:items-start">
+<header class="flex items-start">
 	<!-- Mobile welcome text -->
 	<div class="flex md:hidden flex-col items-start">
 		<span class="text-grey-800 font-medium">Welcome Back</span>
-		<span class="text-lg font-semibold text-grey-900">{data.name}</span>
+		<span class="text-lg font-semibold text-grey-900 w-1/2">{data.name}</span>
 	</div>
 	<!-- Desktop welcome text -->
 	<span class="hidden md:block md:text-lg lg:text-xl text-grey-900 w-1/2 break-words"
@@ -38,7 +38,7 @@
 				<img
 					src={data.avatar_url}
 					alt="User profile"
-					class="w-2xl h-2xl md:h-16 md:w-16 rounded-full"
+					class="w-2xl h-2xl md:h-16 md:w-16 rounded-full aspect-square object-cover"
 				/>
 			{:else}
 				<User className="w-2xl h-2xl stroke-grey-700 md:h-16 md:w-16" />
