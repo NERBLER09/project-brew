@@ -18,21 +18,17 @@
 	};
 
 	$: handleModalStatus(shown);
-
-	const handleNewProject = async () => {
-		console.log('TODO: Add new project to database');
-	};
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
-	<header class="flex items-center mb-md">
+	<header class="flex items-center mb-md sticky top-0 bg-grey-100">
 		<h2 class="font-semibold text-grey-800 text-lg">Create a new project</h2>
 		<button on:click={() => (shown = false)} class="ml-auto">
 			<CloseMultiply className="stroke-grey-700 w-12 h-12" />
 		</button>
 	</header>
 
-	<form on:submit|preventDefault={handleNewProject}>
+	<form method="POST" action="/app/projects?/new">
 		<section class="mt-sm">
 			<header>
 				<h2 class="font-bold text-grey-700 text-md mb-sm">Basic Details</h2>
@@ -41,6 +37,7 @@
 				<label for="name-input" class="input--label w-[22ch]">Enter a project name</label>
 				<input
 					id="name-input"
+					name="name"
 					type="text"
 					class="input--text w-full"
 					placeholder="Enter a project name"
@@ -50,6 +47,7 @@
 			<div class="flex flex-col gap-sm">
 				<label for="description-input" class="input--label">Enter a description</label>
 				<textarea
+					name="description"
 					id="description-input"
 					class="input--text resize-none h-36"
 					placeholder="Enter a breif description"
