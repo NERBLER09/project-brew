@@ -7,6 +7,7 @@
 
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
+	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -21,10 +22,14 @@
 	};
 
 	let showEditPinPrompt = false;
+	let showNewProjectPrompt = false;
 
 	const handleShowEditPinsPrompt = () => {
-		showEditPinPrompt = false;
 		showEditPinPrompt = true;
+	};
+
+	const handleShowNewProjctPrompt = () => {
+		showNewProjectPrompt = true;
 	};
 </script>
 
@@ -32,7 +37,10 @@
 
 <header class="flex items-center">
 	<h1 class="text-lg md:text-2xl text-grey-800">Projects</h1>
-	<button class="hidden button--primary md:flex items-center gap-md ml-auto">
+	<button
+		class="hidden button--primary md:flex items-center gap-md ml-auto"
+		on:click={handleShowNewProjctPrompt}
+	>
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span>New project</span>
 	</button>
@@ -124,4 +132,5 @@
 	</div>
 </section>
 
+<NewProjectPrompt bind:shown={showNewProjectPrompt} />
 <EditPinPrompt bind:shown={showEditPinPrompt} projects={data.all} />
