@@ -37,10 +37,10 @@
 		<span>New project</span>
 	</button>
 
-	<button class="md:hidden button--circle bottom-32 right-8 absolute z-50">
+	<a class="md:hidden button--circle bottom-32 right-8 absolute z-50" href="/app/projects/new">
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span class="sr-only">Create a new project</span>
-	</button>
+	</a>
 </header>
 
 <section class="pt-6">
