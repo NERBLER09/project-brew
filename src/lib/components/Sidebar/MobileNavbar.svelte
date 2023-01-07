@@ -7,9 +7,7 @@
 	import User from '$lib/assets/Fill/User.svelte';
 </script>
 
-<nav
-	class="md:hidden flex gap-md bg-grey-100 h-[6.25rem] p-6 items-center justify-evenly fixed bottom-0 w-screen"
->
+<nav class="md:hidden flex gap-md bg-grey-100 h-[6.25rem] p-6 items-center justify-evenly w-screen">
 	<a href="/app/home" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>
 		<Home

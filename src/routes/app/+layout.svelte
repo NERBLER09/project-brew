@@ -5,7 +5,7 @@
 	import { showMobileNav } from '$lib/stores/ui';
 </script>
 
-<div class="md:flex">
+<div class="flex h-screen flex-col-reverse md:flex-row">
 	<aside>
 		<!-- Each automaticly hide based on screen size in tailwind -->
 		<DesktopSidebar />
@@ -14,7 +14,7 @@
 		{/if}
 	</aside>
 
-	<main class="md:p-8 p-6 w-full">
+	<main class="md:p-8 p-6 w-full h-full overflow-y-auto">
 		<slot />
 	</main>
 </div>
