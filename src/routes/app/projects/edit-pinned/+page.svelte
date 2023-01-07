@@ -44,15 +44,17 @@
 			on:keyup={handleSearch}
 		/>
 	</div>
-	<div>
+	<div class="flex flex-col gap-md">
 		{#each data.all as project}
-			<label for={project.id} class="input--label">{project.project_name}</label>
-			<input
-				id={project.id}
-				type="checkbox"
-				class="input--checkbox"
-				bind:checked={project.pinned}
-			/>
+			<label for={project.id} class="input--label">
+				<span class="input--label">{project.project_name}</span>
+				<input
+					id={project.id}
+					type="checkbox"
+					class="input--checkbox"
+					bind:checked={project.pinned}
+				/>
+			</label>
 		{/each}
 	</div>
 

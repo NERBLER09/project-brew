@@ -61,19 +61,21 @@
 		/>
 	</div>
 
-	<div>
+	<div class="flex flex-col gap-md">
 		{#each projects as project}
-			<label for={project.id} class="input--label">{project.project_name}</label>
-			<input
-				id={project.id}
-				type="checkbox"
-				class="input--checkbox"
-				bind:checked={project.pinned}
-			/>
+			<label for={project.id} class="input--label">
+				<span class="input--label">{project.project_name}</span>
+				<input
+					id={project.id}
+					type="checkbox"
+					class="input--checkbox"
+					bind:checked={project.pinned}
+				/>
+			</label>
 		{/each}
 	</div>
 
-	<footer class="w-1/2 flex items-center justify-evenly mx-auto mt-auto">
+	<footer class="w-1/2 flex items-center justify-evenly mx-auto mt-lg">
 		<button class="button--secondary" on:click={() => (shown = false)}>Cancel</button>
 		<button class="button--primary" on:click={handleUpdatePins}>Update</button>
 	</footer>
