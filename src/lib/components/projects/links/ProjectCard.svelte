@@ -7,7 +7,10 @@
 	export let tags: string[] = [];
 </script>
 
-<section href="/app/projects/{id}" class="bg-grey-100 p-4 rounded-lg w-fit">
+<section
+	href="/app/projects/{id}"
+	class="bg-grey-100 p-4 rounded-lg w-72 h-44 pt-[4.7rem] flex flex-col justify-end"
+>
 	<header>
 		<span class="text-md font-medium text-grey-700">{project_name}</span>
 	</header>

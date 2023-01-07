@@ -72,7 +72,7 @@
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
-	<div class="mt-md">
+	<div class="mt-md flex items-center flex-wrap gap-lg">
 		{#if data.pinned.length === 0}
 			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
 		{/if}
@@ -88,7 +88,7 @@
 	</div>
 </section>
 
-<section>
+<section class="mt-lg">
 	<header class="flex items-center">
 		<h2 class="font-semibold text-grey-800 text-md md:text-lg">All Projects</h2>
 	</header>
@@ -116,7 +116,7 @@
 			<span>Sort</span>
 		</button>
 	</div>
-	<div>
+	<div class="flex flex-wrap gap-lg">
 		{#if data.all.length === 0}
 			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
 		{/if}
