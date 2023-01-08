@@ -9,7 +9,6 @@
 	import Search from '$lib/assets/Search.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
-	import { supabase } from '$lib/supabase';
 	import Switch from '../form/Switch.svelte';
 
 	const handleSearch = () => {
