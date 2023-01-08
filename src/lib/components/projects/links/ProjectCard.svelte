@@ -10,7 +10,8 @@
 <a href="/app/projects/{id}">
 	<section
 		href="/app/projects/{id}"
-		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative"
+		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center"
+		style="background-image: url({banner});"
 	>
 		<div class="relative z-50">
 			<header>
@@ -36,12 +37,5 @@
 				</div>
 			</div>
 		</div>
-		<img
-			src={banner}
-			alt="project banner"
-			class="absolute top-0 left-0 rounded-lg w-72 h-48 {banner
-				? 'block'
-				: 'hidden'} aspect-[2/3] object-cover object-center "
-		/>
 	</section>
 </a>
