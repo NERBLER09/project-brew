@@ -8,7 +8,7 @@
 			Please verify your email address
 		</h1>
 	</header>
-	<div>
+	<div class="flex w-full items-center justify-center">
 		<p class="text-grey-700 px-6 md:w-72">
 			An verification has been sent to {$signUpEmail}. Please verify your email address
 		</p>
