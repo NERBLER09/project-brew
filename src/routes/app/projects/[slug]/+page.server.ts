@@ -14,8 +14,7 @@ export const load = (async (event) => {
 
   // Grabs project info 
   const { data: project, error: errProject } = await supabaseClient.from('projects').select().eq('user_id', session.user.id).eq("id", projectId).limit(1).single()
-  // if (project?.user_id !== session.user.id) throw redirect(301, "/app/projects/not-invited")
-  if (project?.user_id !== session.user.id) throw error(401, "User is not owner or not invited")
+  if (project?.user_id !== session.user.id) throw redirect(301, "/app/projects/not-invited")
   if (project) {
     return {
       name: project?.project_name,
