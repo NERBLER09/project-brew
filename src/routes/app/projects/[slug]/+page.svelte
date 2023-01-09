@@ -11,7 +11,7 @@
 	console.log(data.lists);
 </script>
 
-<header>
+<header class="h-[13.5rem]">
 	<div class="relative z-50">
 		<div class="flex items-center mb-md md:mb-sm md:items-start">
 			<a class="flex items-center gap-md" href="/app/projects">
@@ -62,8 +62,10 @@
 	/>
 </header>
 
-<div class="relative top-20 md:top-[3.75rem]">
+<section
+	class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4 mt-xl md:mt-2xl"
+>
 	{#each data.lists as list}
 		<List name={list.list_name} />
 	{/each}
-</div>
+</section>
