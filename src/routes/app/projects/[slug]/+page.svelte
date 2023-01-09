@@ -2,10 +2,13 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import List from '$lib/components/projects/list/List.svelte';
 
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	console.log(data.lists);
 </script>
 
 <header>
@@ -58,3 +61,9 @@
 			: 'hidden'}"
 	/>
 </header>
+
+<div class="relative top-20 md:top-[3.75rem]">
+	{#each data.lists as list}
+		<List name={list.list_name} />
+	{/each}
+</div>
