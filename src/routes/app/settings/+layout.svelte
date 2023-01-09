@@ -1,5 +1,6 @@
 <script lang="ts">
 	import User from '$lib/assets/User.svelte';
+	import Nav from '$lib/components/settings/nav/Nav.svelte';
 
 	import type { LayoutData } from '.svelte-kit/types/src/routes/app/settings/$types';
 
@@ -9,7 +10,7 @@
 <header>
 	<div
 		class="z-50  h-[15.625rem] flex items-center gap-md {data.avatar_url
-			? 'relative -bottom-28 md:-bottom-[4.5rem]'
+			? 'relative -bottom-[6.4rem] md:-bottom-[4.5rem]'
 			: 'bottom-0 items-start h-fit'}"
 	>
 		{#if data.avatar_url}
@@ -44,5 +45,6 @@
 			: 'hidden'}"
 	/>
 </header>
+<Nav />
 
 <slot />
