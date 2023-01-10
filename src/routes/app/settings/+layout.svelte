@@ -45,8 +45,12 @@
 			: 'hidden'}"
 	/>
 </header>
-<!-- <Nav /> -->
 
-<div class="relative top-10 md:top-0">
+<!-- Only show the desktop nav in all pages -->
+<div class="hidden md:block">
+	<Nav />
+</div>
+
+<div class="relative top-10 md:top-4">
 	<slot />
 </div>
