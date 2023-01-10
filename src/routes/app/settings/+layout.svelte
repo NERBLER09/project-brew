@@ -45,6 +45,8 @@
 			: 'hidden'}"
 	/>
 </header>
-<Nav />
+<!-- <Nav /> -->
 
-<slot />
+<div class="relative top-10 md:top-0">
+	<slot />
+</div>
