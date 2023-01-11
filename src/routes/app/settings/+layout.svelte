@@ -9,7 +9,7 @@
 
 <header>
 	<div
-		class="z-50  h-[15.625rem] flex items-center gap-md {data.avatar_url
+		class="z-20  h-[15.625rem] flex items-center gap-md {data.avatar_url
 			? 'relative -bottom-[6.4rem] md:-bottom-[4.5rem]'
 			: 'bottom-0 items-start h-fit'}"
 	>
