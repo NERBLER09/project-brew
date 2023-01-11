@@ -7,15 +7,13 @@
 	export let data: LayoutData;
 </script>
 
-<div class="relative">
-	<Header {data} />
+<Header {data} />
 
-	<!-- Only show the desktop nav in all pages -->
-	<aside class="hidden md:block relative top-8 left-8">
-		<Nav />
-	</aside>
+<!-- Only show the desktop nav in all pages -->
+<aside class="hidden md:block relative top-8 left-8">
+	<Nav />
+</aside>
 
-	<div class="relative top-14 left-8">
-		<!-- <slot /> -->
-	</div>
+<div class="relative top-14 left-6 md:left-8 w-[calc(100vw-48px)] md:w-[calc(100%-64px)]">
+	<slot />
 </div>

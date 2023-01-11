@@ -4,7 +4,6 @@
 	import Filter from '$lib/assets/Filter.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Search from '$lib/assets/Search.svelte';
-
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';

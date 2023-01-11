@@ -13,28 +13,26 @@
 		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center"
 		style="background-image: url({banner});"
 	>
-		<div class="relative z-50">
-			<header>
-				<span class="text-md font-medium {banner ? 'text-grey-200' : 'text-grey-700'}"
-					>{project_name}</span
-				>
-			</header>
-			<div>
-				<p
-					class="{banner
-						? 'text-grey-200'
-						: 'text-grey-700'} text-sm font-medium h-[4ch] overflow-hidden text-ellipsis empty:hidden"
-				>
-					{description}
-				</p>
+		<header>
+			<span class="text-md font-medium {banner ? 'text-grey-200' : 'text-grey-700'}"
+				>{project_name}</span
+			>
+		</header>
+		<div>
+			<p
+				class="{banner
+					? 'text-grey-200'
+					: 'text-grey-700'} text-sm font-medium h-[4ch] overflow-hidden text-ellipsis empty:hidden"
+			>
+				{description}
+			</p>
 
-				<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden">
-					{#each tags as tag}
-						<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-							<span class="text-grey-700 text-sm font-medium">{tag}</span>
-						</div>
-					{/each}
-				</div>
+			<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden">
+				{#each tags as tag}
+					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
+						<span class="text-grey-700 text-sm font-medium">{tag}</span>
+					</div>
+				{/each}
 			</div>
 		</div>
 	</section>

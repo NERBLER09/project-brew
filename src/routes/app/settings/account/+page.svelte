@@ -40,7 +40,7 @@
 				placeholder="Write something about yourself"
 			/>
 		</div>
-		<button class="md:hidden button--circle -bottom-36 right-2 absolute z-50">
+		<button class="md:hidden button--circle bottom-32 right-8 fixed z-50">
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save info</span>
 		</button>
