@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
 
@@ -14,7 +16,9 @@
 		{/if}
 	</aside>
 
-	<main class="md:p-8 p-6 w-full h-full overflow-y-auto">
+	<main
+		class="w-full h-full overflow-y-auto {$page.url.href.includes('settings') ? '' : 'md:p-8 p-6'}"
+	>
 		<slot />
 	</main>
 </div>
