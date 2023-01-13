@@ -28,7 +28,7 @@
 		Notifications
 	</a>
 	<a
-		href="#"
+		href="/app/settings/about"
 		class="gap-md py-sm px-md font-bold text-grey-700 flex items-center active:bg-grey-200 rounded-md"
 	>
 		<CircleInfo className="w-8 h-8 fill-grey-800 md:hidden" />

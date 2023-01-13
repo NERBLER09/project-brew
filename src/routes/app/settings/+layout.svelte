@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<div class="block md:hiden">
+<div class="block md:hidden">
 	{#if $showMobileSettignsNav}
 		<Nav />
 	{:else}
