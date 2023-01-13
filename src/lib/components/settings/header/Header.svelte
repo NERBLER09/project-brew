@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Menu from '$lib/assets/Menu.svelte';
 	import User from '$lib/assets/User.svelte';
+	import { showMobileSettignsNav } from '$lib/stores/ui';
 	export let data: any;
 </script>
 
@@ -27,7 +28,7 @@
 					<span class="md:hidden text-grey-700 font-medium inline-block truncate">{data.email}</span
 					>
 				</div>
-				<button class="ml-auto">
+				<button class="ml-auto" on:click={() => ($showMobileSettignsNav = !$showMobileSettignsNav)}>
 					<Menu className="w-8 h-8 stroke-grey-700" />
 					<span class="sr-only">Show nav menu</span>
 				</button>
