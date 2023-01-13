@@ -24,12 +24,14 @@
 			<h1 class="text-grey-100 text-lg md:text-xl">Settings</h1>
 			<div class="md:hidden flex w-full gap-md">
 				<div class="flex flex-col w-3/4">
-					<span class="md:hidden text-grey-700 font-bold inline-block truncate">{data.name}</span>    <button class="ml-auto" on:click={() => ($showMobileSettingsNav = !$showMobileSettingsNav)}>
-				
-					<Menu className="w-8 h-8 stroke-grey-700" />
-					<span class="sr-only">Show nav menu</span>
-				</button>
-			</div>
+					<span class="md:hidden text-grey-700 font-bold inline-block truncate">{data.name}</span>
+					<span class="md:hidden text-grey-700 font-medium inline-block truncate">{data.email}</span>
+					</div>
+					<button class="ml-auto" on:click={() => ($showMobileSettingsNav = !$showMobileSettingsNav)}>
+						<Menu className="w-8 h-8 stroke-grey-700" />
+						<span class="sr-only">Show nav menu</span>
+					</button>
+				</div>
 			<span class="text-grey-700 font-bold hidden md:block truncate"
 				>{data.name} <span class="font-medium">- {data.email}</span>
 			</span>
