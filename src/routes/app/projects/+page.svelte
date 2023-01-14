@@ -8,7 +8,9 @@
 	import SortDropdown from '$lib/components/projects/sort/SortDropdown.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
+	import { projectSort, type SortOption } from '$lib/stores/project';
 	import { showProjectsSort } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -19,6 +21,21 @@
 	const handleSearch = () => {
 		allProjects = data.all;
 		allProjects = data.all.filter((value) => value.project_name?.includes(query));
+		allProjects = [...allProjects];
+	};
+	const handleSort = (sort: SortOption) => {
+		switch (sort) {
+			case 'a-z':
+				allProjects = allProjects.sort((a, b) => {
+					if (a.project_name < b.project_name) return -1;
+					else if (a.project_name > b.project_name) return 1;
+					return 0;
+				});
+				break;
+			case 'z-a':
+				allProjects = allProjects.reverse();
+				break;
+		}
 		allProjects = [...allProjects];
 	};
 
@@ -32,6 +49,12 @@
 	const handleShowNewProjctPrompt = () => {
 		showNewProjectPrompt = true;
 	};
+
+	$: handleSort($projectSort);
+
+	onMount(() => {
+		handleSort($projectSort);
+	});
 </script>
 
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
