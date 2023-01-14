@@ -1,5 +1,17 @@
 <script>
+	import { projectSort } from '$lib/stores/project';
+
 	import { showProjectsSort } from '$lib/stores/ui';
+
+	const handleAZSort = () => {
+		$projectSort = 'a-z';
+		$showProjectsSort = !$showProjectsSort;
+	};
+
+	const handleZASort = () => {
+		$projectSort = 'z-a';
+		$showProjectsSort = !$showProjectsSort;
+	};
 </script>
 
 <div
@@ -13,11 +25,11 @@
 		<p class="text-grey-700 font-medium md:hidden">Sorting by: [sort option]</p>
 		<button
 			class="font-bold text-grey-700 p-sm m-sm hover:bg-grey-200 active:bg-grey-200 w-full text-start rounded-sm"
-			on:click={() => ($showProjectsSort = !$showProjectsSort)}>A-Z</button
+			on:click={handleAZSort}>A-Z</button
 		>
 		<button
 			class="font-bold text-grey-700 p-sm m-sm hover:bg-grey-200 active:bg-grey-200 w-full text-start rounded-sm"
-			on:click={() => ($showProjectsSort = !$showProjectsSort)}>Z-A</button
+			on:click={handleZASort}>Z-A</button
 		>
 	</div>
 </div>
