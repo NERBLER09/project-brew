@@ -1,6 +1,7 @@
 <script lang="ts">
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Card from '../card/Card.svelte';
 
 	export let name: string;
 </script>
@@ -16,4 +17,25 @@
 		<PlusNew className="w-6 h-6 stroke-grey-700" />
 		New task
 	</button>
+
+	<div class="flex flex-col gap-md mt-md">
+		<Card 
+			name="Test Card"
+			description="This is a test description meant to test out this component"
+			dueDate="2023-01-16"
+			isPriority={true}
+		/>
+		<Card 
+			name="Test Card"
+			description="This is a test description meant to test out this component"
+			dueDate="2023-01-16"
+			isPriority={true}
+		/>
+		<Card 
+			name="Test Card"
+			description="This is a test description meant to test out this component"
+			dueDate="2023-01-16"
+			isPriority={true}
+		/>
+	</div>
 </section>
