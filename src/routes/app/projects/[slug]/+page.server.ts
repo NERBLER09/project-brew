@@ -19,6 +19,7 @@ export const load = (async (event) => {
   if (project) {
     return {
       name: project?.project_name,
+      id: project.id,
       description: project?.description,
       banner: project?.banner,
       tags: JSON.parse(project?.tags) || [],

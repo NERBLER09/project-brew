@@ -3,12 +3,12 @@
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import List from '$lib/components/projects/list/List.svelte';
+	import { currentProject } from '$lib/stores/project';
 
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
-	console.log(data.lists);
+	currentProject.set(data)
 </script>
 
 <header class="h-[13.5rem]">
@@ -29,7 +29,10 @@
 				</h1>
 			</a>
 			<div class="flex items-center gap-md ml-auto">
-				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<a href="/app/projects/{data.id}/about">
+					<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+					<span class="sr-only">View project info</span>
+				</a>
 				<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 			</div>
 		</div>
