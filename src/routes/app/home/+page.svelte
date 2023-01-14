@@ -3,7 +3,8 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
-	import { userData } from '$lib/stores/user';
+	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
+	import { showNewProjectPrompt } from '$lib/stores/ui';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -28,7 +29,10 @@
 	>
 
 	<div class="ml-auto flex items-center gap-lg md:gap-xl">
-		<button class="button--primary items-center gap-md hidden lg:flex">
+		<button
+			class="button--primary items-center gap-md hidden lg:flex"
+			on:click={() => ($showNewProjectPrompt = true)}
+		>
 			<PlusNew className="h-5 w-5" />
 			New Project
 		</button>
@@ -49,3 +53,5 @@
 		<UserDropdown bind:visibility={showUserDropdown} />
 	{/if}
 </header>
+
+<NewProjectPrompt bind:shown={$showNewProjectPrompt} />

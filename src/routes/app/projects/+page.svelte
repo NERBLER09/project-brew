@@ -9,7 +9,7 @@
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { projectSort, type SortOption } from '$lib/stores/project';
-	import { showProjectsSort } from '$lib/stores/ui';
+	import { showNewProjectPrompt, showProjectsSort } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
@@ -40,14 +40,13 @@
 	};
 
 	let showEditPinPrompt = false;
-	let showNewProjectPrompt = false;
 
 	const handleShowEditPinsPrompt = () => {
 		showEditPinPrompt = true;
 	};
 
 	const handleShowNewProjctPrompt = () => {
-		showNewProjectPrompt = true;
+		$showNewProjectPrompt = true;
 	};
 
 	$: handleSort($projectSort);
@@ -170,5 +169,5 @@
 	</div>
 </section>
 
-<NewProjectPrompt bind:shown={showNewProjectPrompt} />
+<NewProjectPrompt bind:shown={$showNewProjectPrompt} />
 <EditPinPrompt bind:shown={showEditPinPrompt} projects={data.all} />
