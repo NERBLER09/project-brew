@@ -22,7 +22,7 @@
 	</header>
 
 	<div class="flex flex-col gap-md items-start justify-start">
-		<p class="text-grey-700 font-medium md:hidden">Sorting by: [sort option]</p>
+		<p class="text-grey-700 font-medium md:hidden">Sorting by: {$projectSort}</p>
 		<button
 			class="font-bold text-grey-700 p-sm m-sm hover:bg-grey-200 active:bg-grey-200 w-full text-start rounded-sm"
 			on:click={handleAZSort}>A-Z</button

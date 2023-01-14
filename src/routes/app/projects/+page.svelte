@@ -145,7 +145,7 @@
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
 				<Down className="stroke-grey-700 w-lg h-lg" />
-				<span>Sort: Z-A</span>
+				<span>Sort: {$projectSort}</span>
 			</button>
 			{#if $showProjectsSort}
 				<div class="absolute right-0 z-40">
