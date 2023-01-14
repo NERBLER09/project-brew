@@ -5,6 +5,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import SortDropdown from '$lib/components/projects/sort/SortDropdown.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import type { PageData } from './$types';
@@ -105,15 +106,19 @@
 			/>
 		</div>
 
-		<button class="flex items-center gap-md p-0 ml-auto md:hidden">
-			<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
-			<span class="sr-only">Filter projects</span>
-		</button>
-
-		<button class="hidden md:flex items-center gap-md  button--secondary ml-auto">
-			<Down className="stroke-grey-700 w-lg h-lg" />
-			<span>Sort</span>
-		</button>
+		<div class="relative ml-auto">
+			<button class="flex items-center gap-md p-0 md:hidden">
+				<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
+				<span class="sr-only">Filter projects</span>
+			</button>
+			<button class="hidden md:flex items-center gap-md  button--secondary">
+				<Down className="stroke-grey-700 w-lg h-lg" />
+				<span>Sort: Z-A</span>
+			</button>
+			<div class="absolute right-0 z-40">
+				<SortDropdown />
+			</div>
+		</div>
 	</div>
 	<div class="flex flex-wrap gap-lg">
 		{#if data.all.length === 0}
