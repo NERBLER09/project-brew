@@ -1,3 +1,7 @@
+<script>
+	import { showProjectsSort } from '$lib/stores/ui';
+</script>
+
 <div
 	class="bg-grey-100 rounded-lg flex flex-col p-md gap-4 min-w-max border-2 border-grey-700 w-[12.5rem] md:w-[10.3125rem] md:border-t-0 md:rounded-t-none"
 >
@@ -9,11 +13,11 @@
 		<p class="text-grey-700 font-medium md:hidden">Sorting by: [sort option]</p>
 		<button
 			class="font-bold text-grey-700 p-sm m-sm hover:bg-grey-200 active:bg-grey-200 w-full text-start rounded-sm"
-			>A-Z</button
+			on:click={() => ($showProjectsSort = !$showProjectsSort)}>A-Z</button
 		>
 		<button
 			class="font-bold text-grey-700 p-sm m-sm hover:bg-grey-200 active:bg-grey-200 w-full text-start rounded-sm"
-			>Z-A</button
+			on:click={() => ($showProjectsSort = !$showProjectsSort)}>Z-A</button
 		>
 	</div>
 </div>

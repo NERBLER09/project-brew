@@ -8,6 +8,7 @@
 	import SortDropdown from '$lib/components/projects/sort/SortDropdown.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
+	import { showProjectsSort } from '$lib/stores/ui';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -107,17 +108,27 @@
 		</div>
 
 		<div class="relative ml-auto">
-			<button class="flex items-center gap-md p-0 md:hidden">
+			<!-- Only shown on mobile -->
+			<button
+				class="flex items-center gap-md p-0 md:hidden"
+				on:click={() => ($showProjectsSort = !$showProjectsSort)}
+			>
 				<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
 				<span class="sr-only">Filter projects</span>
 			</button>
-			<button class="hidden md:flex items-center gap-md  button--secondary">
+			<!-- Only shown on desktop -->
+			<button
+				class="hidden md:flex items-center gap-md  button--secondary"
+				on:click={() => ($showProjectsSort = !$showProjectsSort)}
+			>
 				<Down className="stroke-grey-700 w-lg h-lg" />
 				<span>Sort: Z-A</span>
 			</button>
-			<div class="absolute right-0 z-40">
-				<SortDropdown />
-			</div>
+			{#if $showProjectsSort}
+				<div class="absolute right-0 z-40">
+					<SortDropdown />
+				</div>
+			{/if}
 		</div>
 	</div>
 	<div class="flex flex-wrap gap-lg">
