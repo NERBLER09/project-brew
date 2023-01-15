@@ -8,7 +8,7 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	currentProject.set(data)
+	currentProject.set(data);
 </script>
 
 <header class="h-[13.5rem]">
@@ -69,6 +69,6 @@
 	class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4 mt-xl md:mt-2xl"
 >
 	{#each data.lists as list}
-		<List name={list.list_name} />
+		<List name={list.list_name} id={list.id} project_id={list.project} />
 	{/each}
 </section>
