@@ -1,5 +1,5 @@
 import { getSupabase } from "@supabase/auth-helpers-sveltekit";
-import { error, redirect } from "@sveltejs/kit";
+import { error, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async (event) => {
@@ -29,3 +29,34 @@ export const load = (async (event) => {
 
   throw error(404, errProject?.message)
 }) satisfies PageServerLoad
+
+export const actions: Actions = {
+  newTask: async (event) => {
+    const { request, params } = event
+    const { session, supabaseClient } = await getSupabase(event)
+    if (!session) {
+      // the user is not signed in
+      throw error(403, { message: 'Unauthorized' })
+    }
+
+    const data = await request.formData()
+    const name = data.get("name")
+    const description = data.get("description")
+    const dueDate = data.get("date")
+    const isPriority = data.get("priority")
+    const list = data.get("list-id")
+    const project = params.slug
+
+    const { error } = await supabaseClient.from('tasks').insert({
+      list,
+      project,
+      name,
+      description,
+      due_date: dueDate?.toString(),
+      is_priority: isPriority,
+      user_id: session.user.id,
+      status: "other"
+    })
+    console.log(error)
+  }
+}
