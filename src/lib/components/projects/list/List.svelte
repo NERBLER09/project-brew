@@ -6,7 +6,8 @@
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
-	import {dndzone} from 'svelte-dnd-action'
+	import { dndzone } from 'svelte-dnd-action';
+	import { userId } from '$lib/stores/user';
 
 	export let name: string;
 	export let id: any;
@@ -15,9 +16,17 @@
 
 	let showCreateTask = false;
 
-	const handleDnd = (event) => {
-		tasks = event.detail.items
-	}
+	const handleDnd = (e) => {
+		tasks = e.detail.items;
+	};
+
+	const handleFinalize = async (event) => {
+		tasks = event.detail.items;
+		const { error } = await supabase
+			.from('tasks')
+			.update({ list: id, user_id: $userId })
+			.eq('id', event.detail.info.id);
+	};
 
 	onMount(async () => {
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
@@ -82,7 +91,12 @@
 			New task
 		</button>
 	{/if}
-	<div class="flex flex-col gap-md mt-md" use:dndzone={{items: tasks, type: 'columns', flipDurationMs: 300}} on:consider={handleDnd} on:finalize={handleDnd}>
+	<div
+		class="flex flex-col gap-md mt-md min-h-[200px]"
+		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}
+		on:consider={handleDnd}
+		on:finalize={handleFinalize}
+	>
 		{#each tasks as task}
 			<Card
 				name={task.name}
