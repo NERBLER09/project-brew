@@ -1,5 +1,6 @@
 <script>
 	import Back from "$lib/assets/Arrow/Back.svelte";
+	import Description from "$lib/components/text/Description.svelte";
 	import { currentProject } from "$lib/stores/project";
 </script>
 <section>
@@ -17,11 +18,7 @@
 				</div>
 			{/each}
 		</div>
-        <p
-            class="font-medium max-h-[6ch] text-ellipsis overflow-hidden text-sm md:text-base"
-        >
-            {$currentProject.description}
-        </p>
+        <Description banner="" description={$currentProject.description}/>
         <h2 class="text-md font-semibold text-grey-700 mt-md">Team management coming.</h2>
     </div>
 </section>

@@ -3,6 +3,7 @@
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import List from '$lib/components/projects/list/List.svelte';
+	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 
 	import type { PageData } from './$types';
@@ -45,18 +46,8 @@
 			</div>
 		{/each}
 	</div>
-	<div>
-		<p
-			class="font-medium max-h-[6ch] text-ellipsis overflow-hidden {data.banner
-				? 'text-grey-200'
-				: 'text-grey-700'} text-sm md:text-base"
-		>
-			{data.description}
-		</p>
-		<span class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700'} text-sm mt-sm"
-			>Read more</span
-		>
-	</div>
+	<Description banner={data.banner} description={data.description}/>
+	
 	<!-- <img -->
 	<!-- 	src={data.banner} -->
 	<!-- 	alt="Project banner" -->
