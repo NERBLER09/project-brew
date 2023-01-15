@@ -33,7 +33,6 @@
 		<div>
 			<label for="bio-input" class="input--label mb-sm">Bio</label>
 			<textarea
-				type="text"
 				class="input--text resize-none h-36 w-full"
 				id="bio-input"
 				name="bio"

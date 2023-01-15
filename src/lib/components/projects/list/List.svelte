@@ -1,11 +1,12 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
-
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Card from '../card/Card.svelte';
+
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
-	import Card from '../card/Card.svelte';
+	import {dndzone} from 'svelte-dnd-action'
 
 	export let name: string;
 	export let id: any;
@@ -13,6 +14,10 @@
 	let tasks: any[] = [];
 
 	let showCreateTask = false;
+
+	const handleDnd = (event) => {
+		tasks = event.detail.items
+	}
 
 	onMount(async () => {
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
@@ -77,7 +82,7 @@
 			New task
 		</button>
 	{/if}
-	<div class="flex flex-col gap-md mt-md">
+	<div class="flex flex-col gap-md mt-md" use:dndzone={{items: tasks, type: 'columns', flipDurationMs: 300}} on:consider={handleDnd} on:finalize={handleDnd}>
 		{#each tasks as task}
 			<Card
 				name={task.name}
@@ -87,23 +92,5 @@
 				tags={task.tags}
 			/>
 		{/each}
-		<Card
-			name="Test Card"
-			description="This is a test description meant to test out this component"
-			dueDate="2023-01-16"
-			isPriority={true}
-		/>
-		<Card
-			name="Test Card"
-			description="This is a test description meant to test out this component"
-			dueDate="2023-01-16"
-			isPriority={true}
-		/>
-		<Card
-			name="Test Card"
-			description="This is a test description meant to test out this component"
-			dueDate="2023-01-16"
-			isPriority={true}
-		/>
 	</div>
 </section>
