@@ -11,7 +11,6 @@
 	export let isPriority: boolean = false;
 
 	onMount(() => {
-		console.log(tags);
 		if (!dueDate) return '';
 
 		const tempDueDate = new Date(dueDate);
@@ -40,16 +39,17 @@
 		<p class="text-sm font-medium text-grey-700 max-h-[10ch] empty:hidden">{description}</p>
 	</div>
 
-	<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden mb-4">
-		{#each tags as tag}
-			<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-				<span class="text-grey-700 text-sm font-medium">{tag}</span>
-			</div>
-		{/each}
-	</div>
+	{#if tags}
+		<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden mb-4">
+			{#each tags as tag}
+				<div class="bg-grey-200 py-1 px-2 w-fit rounded">
+					<span class="text-grey-700 text-sm font-medium">{tag}</span>
+				</div>
+			{/each}
+		</div>
+	{/if}
 
 	{#if isPriority}
 		<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
 	{/if}
 </section>
-
