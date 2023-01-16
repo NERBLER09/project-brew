@@ -18,10 +18,20 @@
 	};
 
 	$: handleModalStatus(shown);
+
+	let addNewTag = false
+		let tags: string[] = []
+		let tagName = ""
+
+		const handleCreateNewTag = () => {
+			tags = [...tags, tagName]
+			tagName = ""
+			addNewTag = false
+	}
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
-	<header class="flex items-center mb-md sticky top-0 bg-grey-100">
+	<header class="flex items-center mb-md bg-grey-100">
 		<h2 class="font-semibold text-grey-800 text-lg">Create a new project</h2>
 		<button on:click={() => (shown = false)} class="ml-auto">
 			<CloseMultiply className="stroke-grey-700 w-12 h-12" />
@@ -59,11 +69,31 @@
 			<header>
 				<h2 class="font-bold text-grey-700 text-md mt-md">Tags</h2>
 			</header>
-			<div>
-				<button type="button">
-					<PlusNew className="h-8 w-8 stroke-grey-700" />
-					<span class="sr-only">Add new tag</span>
-				</button>
+			<div class="flex flex-wrap gap-md mb-md">
+				<input type="hidden" bind:value={tags} name="tags">
+				{#each tags as tag}
+					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
+						<span class="text-grey-700 text-sm font-medium">{tag}</span>
+					</div>
+				{/each}
+				{#if addNewTag}
+					<form on:submit={handleCreateNewTag} class="flex items-center gap-sm ml-auto">
+						<input type="text" class="input--text w-36" placeholder="Tag name" bind:value={tagName}>
+						<button type="submit">
+							<PlusNew className="h-8 w-8 stroke-grey-700" />
+							<span class="sr-only">Add new tag</span>
+						</button>
+						<button type="button" class="ml-sm" on:click={() => addNewTag = false}>
+							<CloseMultiply className="h-8 w-8 stroke-grey-700" />
+							<span class="sr-only">Cancel</span>
+						</button>
+					</form>
+				{:else}
+					<button type="button" on:click={() => addNewTag = true} class="ml-auto">
+						<PlusNew className="h-8 w-8 stroke-grey-700" />
+						<span class="sr-only">Add new tag</span>
+					</button>
+				{/if}
 			</div>
 		</section>
 		<section class="mb-sm">
