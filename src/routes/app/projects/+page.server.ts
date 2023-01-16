@@ -29,10 +29,13 @@ export const actions: Actions = {
     const data = await request.formData()
     const description = data.get("description")
     const project_name = data.get("name")
-    const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id })
+    let formTags = data.get("tags") as string
+    let tags = formTags.split(',') || null
+    
+    const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags })
 
-    if (!error) {
-      throw redirect(301, "Project created successfully")
-    }
+    // if (!error) {
+    //   throw redirect(301, "Project created successfully")
+    // }
   }
 }
