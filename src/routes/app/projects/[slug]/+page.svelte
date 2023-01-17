@@ -3,6 +3,7 @@
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import List from '$lib/components/projects/list/List.svelte';
+	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 
@@ -10,6 +11,8 @@
 
 	export let data: PageData;
 	currentProject.set(data);
+
+	let showAboutPrompt = false;
 </script>
 
 <header
@@ -32,10 +35,14 @@
 			</h1>
 		</a>
 		<div class="flex items-center gap-md ml-auto">
-			<a href="/app/projects/{data.id}/about">
+			<a href="/app/projects/{data.id}/about" class="block md:hidden">
 				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 				<span class="sr-only">View project info</span>
 			</a>
+			<button class="hidden md:block" on:click={() => (showAboutPrompt = true)}>
+				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<span class="sr-only">View project info</span>
+			</button>
 			<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 		</div>
 	</div>
@@ -46,15 +53,8 @@
 			</div>
 		{/each}
 	</div>
-	<Description banner={data.banner} description={data.description}/>
-	
-	<!-- <img -->
-	<!-- 	src={data.banner} -->
-	<!-- 	alt="Project banner" -->
-	<!-- 	class="absolute top-0 left-0 h-[15.625rem] w-full md:w-[calc(100%-16.625rem)] md:left-auto md:right-0 object-cover rounded-b-3xl {data.banner -->
-	<!-- 		? 'block' -->
-	<!-- 		: 'hidden'}" -->
-	<!-- /> -->
+
+	<Description banner={data.banner} description={data.description} />
 </header>
 
 <section
@@ -64,3 +64,5 @@
 		<List name={list.list_name} id={list.id} project_id={list.project} />
 	{/each}
 </section>
+
+<AboutProject shown={showAboutPrompt} />
