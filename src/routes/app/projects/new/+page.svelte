@@ -6,15 +6,26 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 
-	let addNewTag = false
-	let tags: string[] = []
-	let tagName = ""
+	let addNewTag = false;
+	let tags: string[] = [];
+	let tagName = '';
 
 	const handleCreateNewTag = () => {
-		tags = [...tags, tagName]
-		tagName = ""
-		addNewTag = false
-	}
+		tags = [...tags, tagName];
+		tagName = '';
+		addNewTag = false;
+	};
+
+	let files: any = '';
+	let fileURL: string;
+
+	const getFileURL = (file: any) => {
+		console.log(file);
+		if (!file) return;
+		fileURL = URL.createObjectURL(file);
+	};
+
+	$: getFileURL(files[0]);
 </script>
 
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
@@ -47,7 +58,7 @@
 			</header>
 
 			<div class="flex flex-wrap gap-md mb-md">
-				<input type="hidden" bind:value={tags} name="tags">
+				<input type="hidden" bind:value={tags} name="tags" />
 				{#each tags as tag}
 					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
 						<span class="text-grey-700 text-sm font-medium">{tag}</span>
@@ -55,18 +66,23 @@
 				{/each}
 				{#if addNewTag}
 					<form on:submit={handleCreateNewTag} class="flex items-center gap-sm ml-auto">
-						<input type="text" class="input--text w-36" placeholder="Tag name" bind:value={tagName}>
+						<input
+							type="text"
+							class="input--text w-36"
+							placeholder="Tag name"
+							bind:value={tagName}
+						/>
 						<button type="submit">
 							<PlusNew className="h-8 w-8 stroke-grey-700" />
 							<span class="sr-only">Add new tag</span>
 						</button>
-						<button type="button" class="ml-sm" on:click={() => addNewTag = false}>
+						<button type="button" class="ml-sm" on:click={() => (addNewTag = false)}>
 							<CloseMultiply className="h-8 w-8 stroke-grey-700" />
 							<span class="sr-only">Cancel</span>
 						</button>
 					</form>
 				{:else}
-					<button type="button" on:click={() => addNewTag = true} class="ml-auto">
+					<button type="button" on:click={() => (addNewTag = true)} class="ml-auto">
 						<PlusNew className="h-8 w-8 stroke-grey-700" />
 						<span class="sr-only">Add new tag</span>
 					</button>
@@ -96,9 +112,17 @@
 						<Image className="h-8 w-8 stroke-grey-700" />
 						<span class="font-medium text-grey-700">Select a cover image</span>
 					</span>
-					<input type="file" name="file_upload" class="hidden" />
+					<input type="file" name="file_upload" class="hidden" accept=".png, .jpg" bind:files />
 				</label>
 			</div>
+
+			{#if fileURL}
+				<h3 class="text-md text-grey-700 font-semibold mt-md">Cover Preview</h3>
+				<img src={fileURL} alt="cover" class="rounded-md object-cover bg-center max-h-52" />
+				<button class="button--secondary mt-sm w-full" type="button" on:click={() => (fileURL = '')}
+					>Clear cover</button
+				>
+			{/if}
 		</section>
 		<button class="button--circle bottom-8 right-8 absolute" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
