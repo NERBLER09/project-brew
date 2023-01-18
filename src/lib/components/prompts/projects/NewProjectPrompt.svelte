@@ -33,12 +33,20 @@
 	let fileURL: string;
 
 	const getFileURL = (file: any) => {
-		console.log(file);
 		if (!file) return;
 		fileURL = URL.createObjectURL(file);
 	};
 
 	$: getFileURL(files[0]);
+
+	const handleSubmit = async (event) => {
+		const data = new FormData(this);
+		data.append('cover-url', fileURL ?? null);
+		await fetch('/app/projects?/new', {
+			method: 'POST',
+			body: data
+		});
+	};
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
@@ -49,7 +57,7 @@
 		</button>
 	</header>
 
-	<form method="POST" action="/app/projects?/new">
+	<form method="POST" on:submit|preventDefault={handleSubmit}>
 		<section class="mt-sm">
 			<header>
 				<h2 class="font-bold text-grey-700 text-md mb-sm">Basic Details</h2>
@@ -151,7 +159,7 @@
 		</section>
 		<footer class="w-1/2 flex items-center justify-around mx-auto mt-xl">
 			<button class="button--secondary" on:click={() => (shown = false)}>Cancel</button>
-			<button class="button--primary">Update</button>
+			<button class="button--primary" type="submit">Update</button>
 		</footer>
 	</form>
 </dialog>

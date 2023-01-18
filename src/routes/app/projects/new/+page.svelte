@@ -20,18 +20,26 @@
 	let fileURL: string;
 
 	const getFileURL = (file: any) => {
-		console.log(file);
 		if (!file) return;
 		fileURL = URL.createObjectURL(file);
 	};
 
 	$: getFileURL(files[0]);
+
+	const handleSubmit = async (event) => {
+		const data = new FormData(this);
+		data.append('cover-url', fileURL ?? null);
+		await fetch("/app/projects?/new", {
+			method: 'POST',
+			body: data
+		});
+	};
 </script>
 
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
 	<p class="font-medium text-grey-700 pt-sm pb-md">Chose what projects are displayed on top.</p>
 
-	<form method="POST" action="/app/projects?/new">
+	<form method="POST" on:submit|preventDefault={handleSubmit}>
 		<section>
 			<header>
 				<h2 class="font-bold text-grey-700 text-md">Basic Details</h2>
@@ -112,7 +120,7 @@
 						<Image className="h-8 w-8 stroke-grey-700" />
 						<span class="font-medium text-grey-700">Select a cover image</span>
 					</span>
-					<input type="file" name="file_upload" class="hidden" accept=".png, .jpg" bind:files />
+					<input type="file" name="cover-image" class="hidden" accept=".png, .jpg" bind:files />
 				</label>
 			</div>
 

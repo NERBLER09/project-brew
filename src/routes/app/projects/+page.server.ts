@@ -1,41 +1,47 @@
-import { getSupabase } from "@supabase/auth-helpers-sveltekit";
-import { error, redirect, type Actions } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import { getSupabase } from '@supabase/auth-helpers-sveltekit';
+import { error, redirect, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-  const { session, supabaseClient } = await getSupabase(event)
-  if (!session) {
-    throw redirect(303, "/")
-  }
+	const { session, supabaseClient } = await getSupabase(event);
+	if (!session) {
+		throw redirect(303, '/');
+	}
 
-  const { data, error: err } = await supabaseClient.from('projects').select().eq('user_id', session.user.id);
-  if (data) {
-    const pinned = data.filter(value => value.pinned)
-    return { all: data, pinned }
-  }
+	const { data, error: err } = await supabaseClient
+		.from('projects')
+		.select()
+		.eq('user_id', session.user.id);
+	if (data) {
+		const pinned = data.filter((value) => value.pinned);
+		return { all: data, pinned };
+	}
 
-  throw error(404, err.message)
-}) satisfies PageServerLoad
+	throw error(404, err.message);
+}) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  new: async (event) => {
-    const { request } = event
-    const { session, supabaseClient } = await getSupabase(event)
-    if (!session) {
-      // the user is not signed in
-      throw error(403, { message: 'Unauthorized' })
-    }
+	new: async (event) => {
+		const { request } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
 
-    const data = await request.formData()
-    const description = data.get("description")
-    const project_name = data.get("name")
-    let formTags = data.get("tags") as string
-    let tags = formTags.split(',') || null
-    
-    const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags })
+		const data = await request.formData();
+		const description = data.get('description');
+		const project_name = data.get('name');
+		const formTags = data.get('tags') as string;
+		let tags = formTags?.split(',') || null;
+		const cover = data.get('cover-url');
 
-    // if (!error) {
-    //   throw redirect(301, "Project created successfully")
-    // }
-  }
-}
+    // TODO: Upload image
+
+		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags })
+
+		// if (!error) {
+		//   throw redirect(301, "Project created successfully")
+		// }
+	}
+};
