@@ -2,7 +2,6 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
-	import User from '$lib/assets/User.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 
@@ -20,25 +19,38 @@
 			: 'h-[12.5rem]'}"
 		style="background-image: url({$currentProject.banner});"
 	>
-		<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
-			<Back
-				className="w-8 h-8 aspect-square {$currentProject.banner
-					? 'stroke-grey-200'
-					: 'stroke-grey-700'}"
-			/>
+		{#if !inEditMode}
+			<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
+				<Back
+					className="w-8 h-8 aspect-square {$currentProject.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700'}"
+				/>
+				<h1
+					class="w-fit text-lg {$currentProject.banner
+						? 'text-grey-200'
+						: 'text-grey-700'} truncate"
+				>
+					{$currentProject?.name}
+				</h1>
+			</a>
+		{:else}
 			<h1
 				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700'} truncate"
+				contenteditable="true"
+				bind:innerHTML={$currentProject.name}
 			>
 				{$currentProject?.name}
 			</h1>
-		</a>
+		{/if}
+
 		{#if inEditMode}
-			<button class="ml-auto mb-auto" on:click={() => inEditMode = false}>
+			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
 				<Check className="h-8 w-8 stroke-grey-200" />
-				<span class="sr-only">Edit project details</span>
+				<span class="sr-only">Save changes</span>
 			</button>
 		{:else}
-			<button class="ml-auto mb-auto" on:click={() => inEditMode = true}>
+			<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
 				<Edit className="h-8 w-8 stroke-grey-200" />
 				<span class="sr-only">Edit project details</span>
 			</button>
@@ -52,7 +64,17 @@
 				</div>
 			{/each}
 		</div>
-		<Description banner="" description={$currentProject.description} />
-		<p class="font-medium text-grey-700 mt-md">Team management coming soon.</p>
+		{#if !inEditMode}
+			<Description banner="" description={$currentProject.description} />
+			<p class="font-medium text-grey-700 mt-md">Team management coming soon.</p>
+		{:else}
+			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
+			<textarea
+				name="description"
+				class="input--text resize-none h-36 w-full"
+				placeholder="Enter a brief description"
+				bind:value={$currentProject.description}
+			/>
+		{/if}
 	</div>
 </section>
