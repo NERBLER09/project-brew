@@ -11,7 +11,7 @@
 			: 'h-[12.5rem]'}"
 		style="background-image: url({$currentProject.banner});"
 	>
-		<a class="flex items-center gap-md" href="/app/projects">
+		<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
 			<Back
 				className="w-8 h-8 aspect-square {$currentProject.banner
 					? 'stroke-grey-200'
