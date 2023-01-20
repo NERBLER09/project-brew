@@ -1,8 +1,17 @@
 <script>
 	import Back from '$lib/assets/Arrow/Back.svelte';
+	import Check from '$lib/assets/Check.svelte';
+	import Edit from '$lib/assets/Edit.svelte';
+	import User from '$lib/assets/User.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
+
+	let inEditMode = false;
 </script>
+
+<svelte:head>
+	<title>About {$currentProject.name}</title>
+</svelte:head>
 
 <section>
 	<header
@@ -23,6 +32,17 @@
 				{$currentProject?.name}
 			</h1>
 		</a>
+		{#if inEditMode}
+			<button class="ml-auto mb-auto" on:click={() => inEditMode = false}>
+				<Check className="h-8 w-8 stroke-grey-200" />
+				<span class="sr-only">Edit project details</span>
+			</button>
+		{:else}
+			<button class="ml-auto mb-auto" on:click={() => inEditMode = true}>
+				<Edit className="h-8 w-8 stroke-grey-200" />
+				<span class="sr-only">Edit project details</span>
+			</button>
+		{/if}
 	</header>
 	<div>
 		<div class="flex flex-wrap gap-md mb-lg">
@@ -33,6 +53,6 @@
 			{/each}
 		</div>
 		<Description banner="" description={$currentProject.description} />
-		<h2 class="text-md font-semibold text-grey-700 mt-md">Team management coming.</h2>
+		<p class="font-medium text-grey-700 mt-md">Team management coming soon.</p>
 	</div>
 </section>
