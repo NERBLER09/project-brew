@@ -2,6 +2,7 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import ProjectDropdown from '$lib/components/dropdowns/projects/ProjectDropdown.svelte';
 	import List from '$lib/components/projects/list/List.svelte';
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 	import Description from '$lib/components/text/Description.svelte';
@@ -13,6 +14,7 @@
 	currentProject.set(data);
 
 	let showAboutPrompt = false;
+	let showProjectDropdown = false;
 </script>
 
 <header
@@ -43,7 +45,9 @@
 				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 				<span class="sr-only">View project info</span>
 			</button>
-			<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+			<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
+				<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+			</button>
 		</div>
 	</div>
 	<div class="flex flex-wrap gap-md mb-md">
@@ -66,3 +70,7 @@
 </section>
 
 <AboutProject shown={showAboutPrompt} />
+
+{#if showProjectDropdown}
+	<ProjectDropdown bind:visibility={showProjectDropdown} />
+{/if}
