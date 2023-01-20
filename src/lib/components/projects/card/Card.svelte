@@ -23,10 +23,19 @@
 
 <section class="bg-grey-100 p-6 w-full">
 	<header class="flex items-center mb-sm">
-		<h3 class="text-md text-grey-700 font-semibold">{name}</h3>
+		<div>
+			<h3 class="text-md text-grey-700 font-semibold">{name}</h3>
+			{#if dueDate}
+				<div class="flex items-center md:hidden">
+					<Calendar className="h-6 w-6 stroke-accent-light" />
+					<span class="text-sm text-grey-700 font-medium">{dueDate}</span>
+				</div>
+			{/if}
+		</div>
+
 		<div class="ml-auto flex items-center gap-md">
 			{#if dueDate}
-				<div class="flex items-center">
+				<div class="md:flex items-center hidden">
 					<Calendar className="h-6 w-6 stroke-accent-light" />
 					<span class="text-sm text-grey-700 font-medium">{dueDate}</span>
 				</div>

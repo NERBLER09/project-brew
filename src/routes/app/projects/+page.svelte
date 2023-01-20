@@ -95,7 +95,7 @@
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
-	<div class="mt-md flex items-center flex-wrap gap-lg">
+	<div class="mt-md flex items-center flex-nowrap md:flex-wrap gap-lg w-full overflow-x-auto">
 		{#if data.pinned.length === 0}
 			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
 		{/if}
@@ -115,9 +115,9 @@
 	<header class="flex items-center">
 		<h2 class="font-semibold text-grey-800 text-md md:text-lg">All Projects</h2>
 	</header>
-	<div class="flex items-center">
+	<div class="flex items-center mt-md mb-4">
 		<div
-			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-lg p-md placeholder:text-grey-700 text-grey-700 w-2/3"
+			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md p-md placeholder:text-grey-700 text-grey-700 w-full max-w-[15.625rem] lg:max-w-sm"
 		>
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input

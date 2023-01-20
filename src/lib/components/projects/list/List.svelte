@@ -36,7 +36,7 @@
 
 <section class="w-[15.625rem] md:w-[25rem]">
 	<header class="flex items-center w-[15.625rem] md:w-[25rem]">
-		<h2 class="text-grey-900 font-semibold text-lg mb-md md:mb-lg">{name}</h2>
+		<h2 class="text-grey-900 font-semibold text-md md:text-lg mb-md md:mb-lg">{name}</h2>
 		<button class="ml-auto">
 			<MoreHorizontal className="stroke-grey-700 h-8 w-8" />
 		</button>

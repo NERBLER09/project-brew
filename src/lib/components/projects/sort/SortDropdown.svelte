@@ -15,7 +15,7 @@
 </script>
 
 <div
-	class="bg-grey-100 rounded-lg flex flex-col p-md gap-4 min-w-max border-2 border-grey-700 w-[12.5rem] md:w-[10.3125rem] md:border-t-0 md:rounded-t-none"
+	class="bg-grey-100 rounded-lg flex flex-col p-md gap-4 min-w-max border-2 border-grey-700 w-[12.5rem] md:w-[10.3125rem] md:border-t-0"
 >
 	<header class="md:hidden">
 		<h3 class="text-grey-700 font-semibold text-md">Sort Options</h3>

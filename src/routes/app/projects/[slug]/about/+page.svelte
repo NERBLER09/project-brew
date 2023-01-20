@@ -6,7 +6,9 @@
 
 <section>
 	<header
-		class="relative -top-6 -left-6 w-[calc(100%+48px)] h-[12.5rem] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center"
+		class="relative -top-6 -left-6 w-[calc(100%+48px)] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center {!$currentProject.banner
+			? 'w-fit static'
+			: 'h-[12.5rem]'}"
 		style="background-image: url({$currentProject.banner});"
 	>
 		<a class="flex items-center gap-md" href="/app/projects">
