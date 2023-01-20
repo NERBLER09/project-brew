@@ -23,7 +23,7 @@
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
 	<header
-		class="relative -top-8 -left-8 w-[calc(100%+64px)] h-[12.5rem] p-4 flex items-end object-cover rounded-b-3xl"
+		class="relative -top-8 -left-8 w-[calc(100%+64px)] h-[12.5rem] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center"
 		style="background-image: url({$currentProject.banner});"
 	>
 		<h1

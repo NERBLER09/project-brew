@@ -10,7 +10,7 @@
 <a href="/app/projects/{id}">
 	<section
 		href="/app/projects/{id}"
-		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center"
+		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center bg-cover"
 		style="background-image: url({banner});"
 	>
 		<header>
