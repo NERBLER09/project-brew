@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { deserialize } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import type { ActionResult } from '@sveltejs/kit';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -39,13 +42,31 @@
 
 	$: getFileURL(files[0]);
 
+	let name = '';
+	let description = '';
+
+	export let form: ActionData;
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
-		data.append('cover-url', fileURL ?? null);
-		await fetch('/app/projects?/new', {
+		data.append('cover-url', files[0] ?? '');
+		data.append('name', name);
+		data.append('description', description);
+		data.append('tags', tags.toString() ?? null);
+
+		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data
 		});
+
+		const result: ActionResult = deserialize(await response.text());
+		if (result.type === 'success') {
+			goto('/app/projects');
+		}
+	};
+
+	const resetImages = () => {
+		fileURL = '';
+		files = null;
 	};
 </script>
 
@@ -70,6 +91,7 @@
 					type="text"
 					class="input--text w-full"
 					placeholder="Enter a project name"
+					bind:value={name}
 					required
 				/>
 			</div>
@@ -79,7 +101,8 @@
 					name="description"
 					id="description-input"
 					class="input--text resize-none h-36"
-					placeholder="Enter a breif description"
+					placeholder="Enter a brief description"
+					bind:value={description}
 				/>
 			</div>
 		</section>
@@ -89,7 +112,6 @@
 				<h2 class="font-bold text-grey-700 text-md mt-md">Tags</h2>
 			</header>
 			<div class="flex flex-wrap gap-md mb-md">
-				<input type="hidden" bind:value={tags} name="tags" />
 				{#each tags as tag}
 					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
 						<span class="text-grey-700 text-sm font-medium">{tag}</span>
@@ -152,13 +174,15 @@
 			{#if fileURL}
 				<h3 class="text-md text-grey-700 font-semibold mt-md">Cover Preview</h3>
 				<img src={fileURL} alt="cover" class="rounded-md object-cover bg-center max-h-52" />
-				<button class="button--secondary mt-sm w-full" type="button" on:click={() => (fileURL = '')}
+				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
 					>Clear cover</button
 				>
 			{/if}
 		</section>
 		<footer class="w-1/2 flex items-center justify-around mx-auto mt-xl">
-			<button class="button--secondary" on:click={() => (shown = false)}>Cancel</button>
+			<button class="button--secondary" on:click={() => (shown = false)} type="button"
+				>Cancel</button
+			>
 			<button class="button--primary" type="submit">Update</button>
 		</footer>
 	</form>

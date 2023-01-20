@@ -58,8 +58,8 @@ export const actions: Actions = {
 		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL })
 		console.error(err)
 
-		if (!err) {
-			throw redirect(301, "/app/projects")
+		if(!err) {
+			return { success: true };
 		}
 	}
 };

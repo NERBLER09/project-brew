@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { deserialize } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import Check from '$lib/assets/Check.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 
 	import Image from '$lib/assets/Image.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
+	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
 
 	let addNewTag = false;
@@ -37,10 +40,14 @@
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
-		await fetch('/app/projects?/new', {
+		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data
 		});
+		const result: ActionResult = deserialize(await response.text());
+		if (result.type === 'success') {
+			goto('/app/projects');
+		}
 	};
 
 	const resetImages = () => {
@@ -81,7 +88,6 @@
 			</header>
 
 			<div class="flex flex-wrap gap-md mb-md">
-				<input type="hidden" bind:value={tags} name="tags" />
 				{#each tags as tag}
 					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
 						<span class="text-grey-700 text-sm font-medium">{tag}</span>
