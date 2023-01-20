@@ -5,6 +5,7 @@
 	import Image from '$lib/assets/Image.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
+	import type { ActionData } from '../$types';
 
 	let addNewTag = false;
 	let tags: string[] = [];
@@ -26,10 +27,17 @@
 
 	$: getFileURL(files[0]);
 
+	let name = '';
+	let description = '';
+
+	export let form: ActionData;
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
-		data.append('cover-url', fileURL ?? null);
-		await fetch("/app/projects?/new", {
+		data.append('cover-url', files[0] ?? null);
+		data.append('name', name);
+		data.append('description', description);
+		data.append('tags', tags.toString() ?? null);
+		await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data
 		});
@@ -50,12 +58,14 @@
 					type="text"
 					class="input--text w-full mb-4"
 					placeholder="Enter a project name"
+					bind:value={name}
 					required
 				/>
 				<textarea
 					name="description"
 					class="input--text resize-none h-36 w-full"
 					placeholder="Enter a brief description"
+					bind:value={description}
 				/>
 			</div>
 		</section>

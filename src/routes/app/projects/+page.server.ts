@@ -1,6 +1,8 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect, type Actions } from '@sveltejs/kit';
+import { decode } from "base64-arraybuffer"
 import type { PageServerLoad } from './$types';
+import { camelCase } from "lodash"
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -31,17 +33,32 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 		const description = data.get('description');
-		const project_name = data.get('name');
+		const project_name = data.get('name') as string;
 		const formTags = data.get('tags') as string;
 		let tags = formTags?.split(',') || null;
-		const cover = data.get('cover-url');
+		const cover = data.get('cover-url') as File;
 
-    // TODO: Upload image
+		let coverURL = ""
 
-		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags })
+		// TODO: Upload image
+		if (cover) {
+			const ccName = camelCase(project_name)
 
-		// if (!error) {
-		//   throw redirect(301, "Project created successfully")
-		// }
+			const { error: coverErr } = await supabaseClient
+				.storage
+				.from("project-covers")
+				.upload(`${session.user.id}/${ccName}.png`, cover, {
+					cacheControl: '3600',
+					upsert: false
+				})
+			const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/${ccName}.png`)
+			coverURL = url.publicUrl
+		}
+		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL })
+		console.error(err)
+
+		if (!err) {
+			throw redirect(301, "/app/projects")
+		}
 	}
 };
