@@ -2,6 +2,7 @@
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
 	import { onMount } from 'svelte/internal';
 
 	export let name: string;
@@ -9,6 +10,8 @@
 	export let description: string = '';
 	export let dueDate: any;
 	export let isPriority: boolean = false;
+
+	let showCardDropdown = false;
 
 	onMount(() => {
 		if (!dueDate) return '';
@@ -29,7 +32,7 @@
 				</div>
 			{/if}
 
-			<button>
+			<button on:click={() => (showCardDropdown = !showCardDropdown)}>
 				<MoreHorizontal className="h-8 w-8 stroke-grey-700" />
 			</button>
 		</div>
@@ -53,3 +56,7 @@
 		<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
 	{/if}
 </section>
+
+{#if showCardDropdown}
+	<CardDropdown bind:visibility={showCardDropdown} />
+{/if}
