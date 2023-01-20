@@ -25,7 +25,7 @@
 		fileURL = URL.createObjectURL(file);
 	};
 
-	$: getFileURL(files[0]);
+	$: if (files) getFileURL(files[0]);
 
 	let name = '';
 	let description = '';
@@ -33,7 +33,7 @@
 	export let form: ActionData;
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
-		data.append('cover-url', files[0] ?? null);
+		data.append('cover-url', files[0] ?? '');
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
@@ -41,6 +41,11 @@
 			method: 'POST',
 			body: data
 		});
+	};
+
+	const resetImages = () => {
+		fileURL = '';
+		files = null;
 	};
 </script>
 
@@ -137,7 +142,7 @@
 			{#if fileURL}
 				<h3 class="text-md text-grey-700 font-semibold mt-md">Cover Preview</h3>
 				<img src={fileURL} alt="cover" class="rounded-md object-cover bg-center max-h-52" />
-				<button class="button--secondary mt-sm w-full" type="button" on:click={() => (fileURL = '')}
+				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
 					>Clear cover</button
 				>
 			{/if}

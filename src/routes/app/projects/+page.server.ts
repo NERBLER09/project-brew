@@ -1,8 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect, type Actions } from '@sveltejs/kit';
-import { decode } from "base64-arraybuffer"
 import type { PageServerLoad } from './$types';
-import { camelCase } from "lodash"
+import { camelCase } from 'lodash';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -38,7 +37,9 @@ export const actions: Actions = {
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
 
-		let coverURL = ""
+		tags = tags[0] === '' ? [] : tags;
+
+		let coverURL = null;
 
 		// TODO: Upload image
 		if (cover) {
