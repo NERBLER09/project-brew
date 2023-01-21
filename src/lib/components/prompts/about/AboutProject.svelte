@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
+	import Check from '$lib/assets/Check.svelte';
 
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import Edit from '$lib/assets/Edit.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 	export let shown = false;
@@ -19,6 +21,8 @@
 	};
 
 	$: handleModalStatus(shown);
+
+	let inEditMode = false;
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
@@ -33,11 +37,26 @@
 		>
 			{$currentProject?.name}
 		</h1>
-		<button on:click={() => (shown = false)} class="mb-auto ml-auto">
-			<CloseMultiply
-				className=" {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'} w-12 h-12"
-			/>
-		</button>
+		<div class="ml-auto mb-auto flex items-center gap-md">
+			{#if inEditMode}
+				<button on:click={() => (inEditMode = false)}>
+					<Check className="h-8 w-8 stroke-grey-200" />
+					<span class="sr-only">Save changes</span>
+				</button>
+			{:else}
+				<button on:click={() => (inEditMode = true)}>
+					<Edit className="h-8 w-8 stroke-grey-200" />
+					<span class="sr-only">Edit project details</span>
+				</button>
+			{/if}
+
+			<button on:click={() => (shown = false)}>
+				<CloseMultiply
+					className=" {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'} w-12 h-12"
+				/>
+				<span class="sr-only">Close</span>
+			</button>
+		</div>
 	</header>
 
 	<div>
