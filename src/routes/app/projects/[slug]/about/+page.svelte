@@ -1,11 +1,22 @@
 <script>
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import { showMobileNav } from '$lib/stores/ui';
+	import { onDestroy, onMount } from 'svelte';
 
 	let inEditMode = false;
+
+	onMount(() => {
+		$showMobileNav = false;
+	});
+
+	onDestroy(() => {
+		$showMobileNav = true;
+	});
 </script>
 
 <svelte:head>
@@ -46,8 +57,8 @@
 
 		{#if inEditMode}
 			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
-				<Check className="h-8 w-8 stroke-grey-200" />
-				<span class="sr-only">Save changes</span>
+				<CloseMultiply className="h-8 w-8 stroke-grey-200" />
+				<span class="sr-only">Drop changes</span>
 			</button>
 		{:else}
 			<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
@@ -77,4 +88,10 @@
 			/>
 		{/if}
 	</div>
+	{#if inEditMode}
+		<button class="button--circle bottom-8 right-8 absolute" type="submit">
+			<Check className="h-8 w-8 stroke-grey-200" />
+			<span class="sr-only">Save changes</span>
+		</button>
+	{/if}
 </section>

@@ -27,7 +27,7 @@
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
 	<header
-		class="relative -top-8 -left-8 w-[calc(100%+64px)] h-[12.5rem] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center"
+		class="relative -top-8 -left-8 w-[calc(100%+64px)] h-[12.5rem] p-6 flex items-end object-cover rounded-b-3xl bg-cover bg-center"
 		style="background-image: url({$currentProject.banner});"
 	>
 		{#if !inEditMode}
@@ -90,4 +90,10 @@
 			/>
 		{/if}
 	</div>
+	{#if inEditMode}
+		<footer class="w-1/2 flex items-center justify-around mx-auto mt-xl gap-md">
+			<button class="button--secondary" on:click={() => (inEditMode = false)}>Cancel</button>
+			<button class="button--primary" on:click={() => (inEditMode = false)}>Save</button>
+		</footer>
+	{/if}
 </dialog>
