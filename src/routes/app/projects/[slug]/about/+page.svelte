@@ -6,9 +6,12 @@
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
+	import { supabase } from '$lib/supabase';
 	import { onDestroy, onMount } from 'svelte';
 
 	let inEditMode = false;
+	let newProjectName = $currentProject.name;
+	let newProjectDescription = $currentProject.description;
 
 	onMount(() => {
 		$showMobileNav = false;
@@ -17,6 +20,23 @@
 	onDestroy(() => {
 		$showMobileNav = true;
 	});
+
+	const handleUpdateProject = async () => {
+		inEditMode = false;
+		const { data, error } = await supabase
+			.from('projects')
+			.update({ project_name: newProjectName, description: newProjectDescription })
+			.eq('id', $currentProject.id)
+			.select();
+
+		console.error(error);
+
+		if (data) {
+			$currentProject = data[0];
+			$currentProject.tags = JSON.parse(data[0]?.tags) || [];
+			$currentProject.name = data[0]?.project_name;
+		}
+	};
 </script>
 
 <svelte:head>
@@ -49,7 +69,7 @@
 			<h1
 				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700'} truncate"
 				contenteditable="true"
-				bind:innerHTML={$currentProject.name}
+				bind:textContent={newProjectName}
 			>
 				{$currentProject?.name}
 			</h1>
@@ -57,12 +77,16 @@
 
 		{#if inEditMode}
 			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
-				<CloseMultiply className="h-8 w-8 stroke-grey-200" />
+				<CloseMultiply
+					className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'}"
+				/>
 				<span class="sr-only">Drop changes</span>
 			</button>
 		{:else}
 			<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
-				<Edit className="h-8 w-8 stroke-grey-200" />
+				<Edit
+					className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'}"
+				/>
 				<span class="sr-only">Edit project details</span>
 			</button>
 		{/if}
@@ -84,12 +108,12 @@
 				name="description"
 				class="input--text resize-none h-36 w-full"
 				placeholder="Enter a brief description"
-				bind:value={$currentProject.description}
+				bind:value={newProjectDescription}
 			/>
 		{/if}
 	</div>
 	{#if inEditMode}
-		<button class="button--circle bottom-8 right-8 absolute" type="submit">
+		<button class="button--circle bottom-8 right-8 absolute" on:click={handleUpdateProject}>
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save changes</span>
 		</button>
