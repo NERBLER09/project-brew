@@ -30,13 +30,22 @@
 		class="relative -top-8 -left-8 w-[calc(100%+64px)] h-[12.5rem] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center"
 		style="background-image: url({$currentProject.banner});"
 	>
-		<h1
-			class="w-fit text-lg {$currentProject.banner
-				? 'text-grey-200'
-				: 'text-grey-700'} truncate pl-6"
-		>
-			{$currentProject?.name}
-		</h1>
+		{#if !inEditMode}
+			<h1
+				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700'} truncate"
+			>
+				{$currentProject?.name}
+			</h1>
+		{:else}
+			<h1
+				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700'} truncate"
+				contenteditable="true"
+				bind:innerHTML={$currentProject.name}
+			>
+				{$currentProject?.name}
+			</h1>
+		{/if}
+
 		<div class="ml-auto mb-auto flex items-center gap-md">
 			{#if inEditMode}
 				<button on:click={() => (inEditMode = false)}>
@@ -67,7 +76,18 @@
 				</div>
 			{/each}
 		</div>
-		<Description banner="" description={$currentProject.description} />
-		<h2 class="text-md font-semibold text-grey-700 mt-md">Team management coming soon.</h2>
+
+		{#if !inEditMode}
+			<Description banner="" description={$currentProject.description} />
+			<p class="font-medium text-grey-700 mt-md">Team management coming soon.</p>
+		{:else}
+			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
+			<textarea
+				name="description"
+				class="input--text resize-none h-36 w-full"
+				placeholder="Enter a brief description"
+				bind:value={$currentProject.description}
+			/>
+		{/if}
 	</div>
 </dialog>
