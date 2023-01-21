@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import { supabase } from '$lib/supabase';
@@ -35,6 +37,7 @@
 		if (error) {
 			console.error(error.message);
 		} else {
+			invalidate('app:all-projects');
 			shown = false;
 		}
 	};

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import Check from '$lib/assets/Check.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
@@ -43,6 +45,8 @@
 			$currentProject.tags = JSON.parse(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
 		}
+
+		invalidate('app:project');
 	};
 </script>
 

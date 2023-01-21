@@ -9,8 +9,9 @@ export const load = (async (event) => {
   }
 
   let params = event.params
-
   const projectId = params.slug
+
+  event.depends("app:project")
 
   // Grabs project info 
   const { data: project, error: errProject } = await supabaseClient.from('projects').select().eq('user_id', session.user.id).eq("id", projectId).limit(1).single()

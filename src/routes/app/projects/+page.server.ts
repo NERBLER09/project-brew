@@ -9,6 +9,8 @@ export const load = (async (event) => {
 		throw redirect(303, '/');
 	}
 
+	event.depends("app:all-projects")
+
 	const { data, error: err } = await supabaseClient
 		.from('projects')
 		.select()
@@ -41,7 +43,6 @@ export const actions: Actions = {
 
 		let coverURL = null;
 
-		// TODO: Upload image
 		if (cover) {
 			const ccName = camelCase(project_name)
 
@@ -58,7 +59,7 @@ export const actions: Actions = {
 		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL })
 		console.error(err)
 
-		if(!err) {
+		if (!err) {
 			return { success: true };
 		}
 	}
