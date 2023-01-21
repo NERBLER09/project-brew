@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
-	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
+	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
@@ -12,6 +13,7 @@
 	let inEditMode = false;
 	let newProjectName = $currentProject.name;
 	let newProjectDescription = $currentProject.description;
+	let newProjectTags: any[] = $currentProject?.tags;
 
 	onMount(() => {
 		$showMobileNav = false;
@@ -25,7 +27,7 @@
 		inEditMode = false;
 		const { data, error } = await supabase
 			.from('projects')
-			.update({ project_name: newProjectName, description: newProjectDescription })
+			.update({ project_name: newProjectName, description: newProjectDescription, tags: newProjectTags })
 			.eq('id', $currentProject.id)
 			.select();
 
@@ -77,7 +79,7 @@
 
 		{#if inEditMode}
 			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
-				<CloseMultiply
+				<Trash
 					className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'}"
 				/>
 				<span class="sr-only">Drop changes</span>
@@ -93,11 +95,15 @@
 	</header>
 	<div>
 		<div class="flex flex-wrap gap-md mb-lg">
-			{#each $currentProject.tags as tag}
-				<div class="bg-grey-200 py-2 px-3 w-fit rounded">
-					<span class="text-grey-700 font-medium">{tag}</span>
-				</div>
-			{/each}
+			{#if inEditMode}
+				<NewTagsInput bind:newTags={newProjectTags}/>	
+			{:else}
+				{#each $currentProject.tags as tag}
+					<div class="bg-grey-200 py-2 px-3 w-fit rounded">
+						<span class="text-grey-700 font-medium">{tag}</span>
+					</div>
+				{/each}
+			{/if}
 		</div>
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
