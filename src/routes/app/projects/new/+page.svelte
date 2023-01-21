@@ -56,6 +56,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>New Project</title>
+</svelte:head>
+
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
 	<p class="font-medium text-grey-700 pt-sm pb-md">Chose what projects are displayed on top.</p>
 

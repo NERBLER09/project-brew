@@ -17,6 +17,10 @@
 	let showProjectDropdown = false;
 </script>
 
+<svelte:head>
+	<title>{data.name}</title>
+</svelte:head>
+
 <header
 	class="min-h-[13.5rem] object-cover bg-origin-border bg-center bg-cover rounded-b-3xl relative -top-6 -left-6 p-4 w-[calc(100%+48px)] md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: url({data.banner});"

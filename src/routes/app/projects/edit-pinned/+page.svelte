@@ -30,6 +30,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Edit Pinned Projects</title>
+</svelte:head>
+
 <MobileSubPageLayout pageName="Edit Pinned Projects" previousPage="/app/projects">
 	<p class="font-medium text-grey-700 pt-sm">Chose what projects are displayed on top.</p>
 	<div
