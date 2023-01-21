@@ -2,6 +2,7 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
+	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import Description from '$lib/components/text/Description.svelte';
@@ -14,6 +15,8 @@
 	let newProjectName = $currentProject.name;
 	let newProjectDescription = $currentProject.description;
 	let newProjectTags: any[] = $currentProject?.tags;
+	let newCoverURL = $currentProject.banner;
+	let newCoverFile: File;
 
 	onMount(() => {
 		$showMobileNav = false;
@@ -27,7 +30,11 @@
 		inEditMode = false;
 		const { data, error } = await supabase
 			.from('projects')
-			.update({ project_name: newProjectName, description: newProjectDescription, tags: newProjectTags })
+			.update({
+				project_name: newProjectName,
+				description: newProjectDescription,
+				tags: newProjectTags
+			})
 			.eq('id', $currentProject.id)
 			.select();
 
@@ -38,6 +45,10 @@
 			$currentProject.tags = JSON.parse(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
 		}
+	};
+
+	const handleRemoveCover = () => {
+		newCoverURL = '';
 	};
 </script>
 
@@ -50,7 +61,7 @@
 		class="relative -top-6 -left-6 w-[calc(100%+48px)] p-4 flex items-end object-cover rounded-b-3xl bg-cover bg-center {!$currentProject.banner
 			? 'w-fit static'
 			: 'h-[12.5rem]'}"
-		style="background-image: url({$currentProject.banner});"
+		style="background-image: url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
 		{#if !inEditMode}
 			<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
@@ -69,7 +80,7 @@
 			</a>
 		{:else}
 			<h1
-				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700'} truncate"
+				class="w-fit text-lg {newCoverURL ? 'text-grey-200' : 'text-grey-700'} truncate"
 				contenteditable="true"
 				bind:textContent={newProjectName}
 			>
@@ -79,9 +90,7 @@
 
 		{#if inEditMode}
 			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
-				<Trash
-					className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'}"
-				/>
+				<Trash className="h-8 w-8 {newCoverURL ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 				<span class="sr-only">Drop changes</span>
 			</button>
 		{:else}
@@ -96,7 +105,7 @@
 	<div>
 		<div class="flex flex-wrap gap-md mb-lg">
 			{#if inEditMode}
-				<NewTagsInput bind:newTags={newProjectTags}/>	
+				<NewTagsInput bind:newTags={newProjectTags} />
 			{:else}
 				{#each $currentProject.tags as tag}
 					<div class="bg-grey-200 py-2 px-3 w-fit rounded">
@@ -123,5 +132,29 @@
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save changes</span>
 		</button>
+
+		<section class="mt-md">
+			<header>
+				<h2 class="text-grey-900 text-md font-semibold">Cover Properties</h2>
+			</header>
+			{#if !$currentProject.banner}
+				<button class="button--secondary flex items-center justify-center gap-md w-full">
+					<Image className="stroke-grey-700 w-6 h-6" />
+					Set a project cover
+				</button>
+			{:else if $currentProject.banner}
+				<button class="button--primary flex items-center justify-center gap-md w-full">
+					<Image className="stroke-grey-200 w-6 h-6" />
+					Update project cover
+				</button>
+				<button
+					class="button--secondary flex items-center justify-center gap-md w-full mt-sm"
+					on:click={handleRemoveCover}
+				>
+					<Trash className="stroke-grey-700 w-6 h-6" />
+					Remove cover
+				</button>
+			{/if}
+		</section>
 	{/if}
 </section>
