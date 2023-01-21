@@ -32,7 +32,9 @@
 	let newProjectDescription = $currentProject.description;
 	let newProjectTags: any[] = $currentProject?.tags;
 	let newCoverURL = $currentProject.banner;
-	let newCoverFile: File;
+	let newCoverFile: FileList | null;
+
+	let coverInputElement: HTMLInputElement;
 
 	const handleUpdateProject = async () => {
 		inEditMode = false;
@@ -56,9 +58,18 @@
 
 		invalidate('app:project');
 	};
+
 	const handleRemoveCover = () => {
-		newCoverURL = '';
+		newCoverURL = null;
+		newCoverFile = null;
 	};
+
+	const getFileURL = (file: any) => {
+		if (!file) return;
+		newCoverURL = URL.createObjectURL(file);
+	};
+
+	$: if (newCoverFile) getFileURL(newCoverFile[0]);
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
@@ -139,13 +150,22 @@
 			<header>
 				<h2 class="text-grey-900 text-md font-semibold">Cover Properties</h2>
 			</header>
+
+			<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
+
 			{#if !$currentProject.banner}
-				<button class="button--secondary flex items-center justify-center gap-md w-full">
+				<button
+					class="button--secondary flex items-center justify-center gap-md w-full"
+					on:click={() => coverInputElement.click()}
+				>
 					<Image className="stroke-grey-700 w-6 h-6" />
 					Set a project cover
 				</button>
 			{:else if $currentProject.banner}
-				<button class="button--primary flex items-center justify-center gap-md w-full">
+				<button
+					class="button--primary flex items-center justify-center gap-md w-full"
+					on:click={() => coverInputElement.click()}
+				>
 					<Image className="stroke-grey-200 w-6 h-6" />
 					Update project cover
 				</button>
