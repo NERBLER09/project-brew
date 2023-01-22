@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
 	import Calendar from '$lib/assets/Calendar.svelte';
-
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Circle-Priority.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
@@ -18,6 +16,14 @@
 		tasks = tasks.filter((item) => item.id !== id);
 		const { error } = await supabase.from('tasks').delete().eq('id', id);
 	};
+
+	const handleChangePriority = async () => {
+		priority = !priority;
+		const { error } = await supabase.from('tasks').update({ is_priority: !priority }).eq('id', id);
+		if (error) {
+			console.error(error);
+		}
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -33,9 +39,13 @@
 		<Calendar className="dropdown--icon" />
 		<span class="dropdown--label">Edit due date</span>
 	</button>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	<button class="dropdown--item" on:click={handleChangePriority}>
 		<CirclePriority className="dropdown--icon" />
-		<span class="dropdown--label">Un-Prioritize</span>
+		{#if priority}
+			<span class="dropdown--label">Un-Prioritize</span>
+		{:else}
+			<span class="dropdown--label">Prioritize</span>
+		{/if}
 	</button>
 	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<User className="dropdown--icon" />

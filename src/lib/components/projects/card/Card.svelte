@@ -70,5 +70,5 @@
 </section>
 
 {#if showCardDropdown}
-	<CardDropdown bind:visibility={showCardDropdown} {id} priority={isPriority} bind:tasks />
+	<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
 {/if}
