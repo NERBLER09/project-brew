@@ -20,7 +20,7 @@
 	let showCreateTask = false;
 	let newTaskName = '';
 	let newTaskDescription = '';
-	let newTaskDueDate: Date;
+	let newTaskDueDate = new Date();
 	let newTaskPriority = false;
 
 	const handleDnd = (e) => {
@@ -43,7 +43,7 @@
 	const handleCreateNewTask = async (event) => {
 		showCreateTask = false;
 		const form = new FormData(this);
-		console.log(newTaskPriority)
+		console.log(newTaskPriority);
 		form.append('name', newTaskName);
 		form.append('description', newTaskDescription);
 		form.append('date', newTaskDueDate.toString());
@@ -58,10 +58,21 @@
 
 		const result = deserialize(await response.text());
 
+		console.log(result);
+
 		if (result?.type === 'success') {
+			tasks = [result.data?.data, ...tasks];
 			invalidate('app:project');
 		}
 	};
+
+	$: if (!showCreateTask) {
+		showCreateTask = false;
+		newTaskName = '';
+		newTaskDescription = '';
+		newTaskDueDate = new Date();
+		newTaskPriority = false;
+	}
 </script>
 
 <section class="w-[15.625rem] md:w-[25rem]">
@@ -98,11 +109,23 @@
 				bind:value={newTaskDescription}
 			/>
 			<label for="date-input" class="input--label mt-sm">Select a due date</label>
-			<input type="date" class="input--text mt-sm" id="date-input" name="date" bind:value={newTaskDueDate} />
+			<input
+				type="date"
+				class="input--text mt-sm"
+				id="date-input"
+				name="date"
+				bind:value={newTaskDueDate}
+			/>
 			<br />
 
 			<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
-			<input type="checkbox" class="input--checkbox my-sm" id="prority-input" name="priority" bind:checked={newTaskPriority} />
+			<input
+				type="checkbox"
+				class="input--checkbox my-sm"
+				id="prority-input"
+				name="priority"
+				bind:checked={newTaskPriority}
+			/>
 
 			<button
 				class="button--primary w-full flex items-center gap-md justify-center mt-md"

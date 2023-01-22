@@ -56,7 +56,7 @@ export const actions: Actions = {
 
 		dueDate = !dueDate ? dueDate : null;
 
-		const { error: err } = await supabaseClient
+		const { data: task, error: err } = await supabaseClient
 			.from('tasks')
 			.insert({
 				list,
@@ -70,12 +70,14 @@ export const actions: Actions = {
 			})
 			.select();
 
-		if (!err) {
+		if (task && !err) {
 			return {
+				data: task[0],
 				status: 'success',
 			};
 		}
 	},
+
 	newList: async (event) => {
 		const { request, params } = event;
 		const { session, supabaseClient } = await getSupabase(event);
