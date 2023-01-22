@@ -4,6 +4,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 
 	export let shown = false;
@@ -78,8 +79,7 @@
 		</button>
 	</header>
 
-	<form method="POST" on:submit|preventDefault={handleSubmit}>
-		<section class="mt-sm">
+	<form method="POST" on:submit|preventDefault={handleSubmit}> <section class="mt-sm">
 			<header>
 				<h2 class="font-bold text-grey-700 text-md mb-sm">Basic Details</h2>
 			</header>
@@ -112,34 +112,7 @@
 				<h2 class="font-bold text-grey-700 text-md mt-md">Tags</h2>
 			</header>
 			<div class="flex flex-wrap gap-md mb-md">
-				{#each tags as tag}
-					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-						<span class="text-grey-700 text-sm font-medium">{tag}</span>
-					</div>
-				{/each}
-				{#if addNewTag}
-					<form on:submit={handleCreateNewTag} class="flex items-center gap-sm ml-auto">
-						<input
-							type="text"
-							class="input--text w-36"
-							placeholder="Tag name"
-							bind:value={tagName}
-						/>
-						<button type="submit">
-							<PlusNew className="h-8 w-8 stroke-grey-700" />
-							<span class="sr-only">Add new tag</span>
-						</button>
-						<button type="button" class="ml-sm" on:click={() => (addNewTag = false)}>
-							<CloseMultiply className="h-8 w-8 stroke-grey-700" />
-							<span class="sr-only">Cancel</span>
-						</button>
-					</form>
-				{:else}
-					<button type="button" on:click={() => (addNewTag = true)} class="ml-auto">
-						<PlusNew className="h-8 w-8 stroke-grey-700" />
-						<span class="sr-only">Add new tag</span>
-					</button>
-				{/if}
+				<NewTagsInput bind:newTags={tags}/>
 			</div>
 		</section>
 		<section class="mb-sm">
