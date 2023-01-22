@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { deserialize } from '$app/forms';
+	import { invalidate } from '$app/navigation';
+
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
@@ -10,7 +13,7 @@
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject } from '$lib/stores/project';
 
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -19,6 +22,25 @@
 	let showProjectDropdown = false;
 
 	let createNewList = false;
+	let newListName = '';
+
+	const handleCreateNewList = async (event) => {
+		createNewList = false;
+		const form = new FormData(this);
+		form.append('list-name', newListName);
+		form.append('project-id', data.id);
+
+		const response = await fetch('/app/projects/{data.id}?/newList', {
+			method: 'POST',
+			body: form
+		});
+
+		const result: ActionData = deserialize(await response.text());
+
+		if (result?.type === 'success') {
+			invalidate('app:project');
+		}
+	};
 </script>
 
 <svelte:head>
@@ -76,7 +98,7 @@
 
 	<div class="min-w-[12.5rem] mt-[2.625rem]">
 		{#if createNewList}
-			<form on:submit|preventDefault={() => (createNewList = false)}>
+			<form on:submit|preventDefault={handleCreateNewList}>
 				<button
 					class="button--secondary w-full flex items-center gap-md justify-center"
 					on:click={() => (createNewList = false)}
@@ -86,7 +108,12 @@
 					Cancel
 				</button>
 
-				<input type="text" class="input--text my-md w-full" placeholder="Enter a list name" />
+				<input
+					type="text"
+					class="input--text my-md w-full"
+					placeholder="Enter a list name"
+					bind:value={newListName}
+				/>
 
 				<button
 					class="button--primary w-full flex items-center gap-md justify-center"

@@ -59,5 +59,33 @@ export const actions: Actions = {
       status: "other"
     })
     console.log(error)
+  },
+  newList: async (event) => {
+    const { request, params } = event
+    const { session, supabaseClient } = await getSupabase(event)
+    if (!session) {
+      // the user is not signed in
+      throw error(403, { message: 'Unauthorized' })
+    }
+
+    const data = await request.formData()
+    const name = data.get("list-name")
+    const project = data.get("project-id") as string
+    const userId = session.user.id
+
+    const { error: err } = await supabaseClient.from("lists").insert({
+      list_name: name,
+      project,
+      user_id: userId,
+      status: "other"
+    })
+      .select()
+
+    if (!err) {
+      return {
+        status: "success",
+      }
+    }
+
   }
 }
