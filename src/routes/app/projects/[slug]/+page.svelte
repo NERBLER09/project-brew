@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import ProjectDropdown from '$lib/components/dropdowns/projects/ProjectDropdown.svelte';
 	import List from '$lib/components/projects/list/List.svelte';
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
@@ -15,6 +17,8 @@
 
 	let showAboutPrompt = false;
 	let showProjectDropdown = false;
+
+	let createNewList = false;
 </script>
 
 <svelte:head>
@@ -69,6 +73,39 @@
 	{#each data.lists as list}
 		<List name={list.list_name} id={list.id} project_id={list.project} />
 	{/each}
+
+	<div class="min-w-[12.5rem] mt-[2.625rem]">
+		{#if createNewList}
+			<form on:submit|preventDefault={() => (createNewList = false)}>
+				<button
+					class="button--secondary w-full flex items-center gap-md justify-center"
+					on:click={() => (createNewList = false)}
+					type="button"
+				>
+					<CloseMultiply className="w-6 h-6 stroke-grey-700" />
+					Cancel
+				</button>
+
+				<input type="text" class="input--text my-md w-full" placeholder="Enter a list name" />
+
+				<button
+					class="button--primary w-full flex items-center gap-md justify-center"
+					type="submit"
+				>
+					<PlusNew className="w-6 h-6 stroke-grey-200" />
+					Create list
+				</button>
+			</form>
+		{:else}
+			<button
+				class="button--primary w-full flex items-center gap-md justify-center"
+				on:click={() => (createNewList = true)}
+			>
+				<PlusNew className="w-6 h-6 stroke-grey-200" />
+				New List
+			</button>
+		{/if}
+	</div>
 </section>
 
 <AboutProject shown={showAboutPrompt} />
