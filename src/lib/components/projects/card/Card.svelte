@@ -10,6 +10,7 @@
 	export let description: string = '';
 	export let dueDate: any;
 	export let isPriority: boolean = false;
+	export let id: number;
 
 	let showCardDropdown = false;
 
@@ -67,5 +68,5 @@
 </section>
 
 {#if showCardDropdown}
-	<CardDropdown bind:visibility={showCardDropdown} />
+	<CardDropdown bind:visibility={showCardDropdown} {id} priority={isPriority} />
 {/if}

@@ -104,6 +104,7 @@
 				dueDate={task.due_date}
 				isPriority={task.is_priority}
 				tags={task.tags}
+				id={task.id}
 			/>
 		{/each}
 	</div>

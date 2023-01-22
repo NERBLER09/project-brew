@@ -1,16 +1,26 @@
-<script>
+<script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Calendar from '$lib/assets/Calendar.svelte';
 
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Circle-Priority.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import User from '$lib/assets/User.svelte';
+	import { supabase } from '$lib/supabase';
 
 	export let visibility = false;
+	export let id: number;
+	export let priority: boolean;
+
+	const handleTaskDelete = async () => {
+		const { error } = await supabase.from('tasks').delete().eq('id', id);
+	};
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="md:-top-[100px] md:right-auto md:left-[calc(100%-272px)] dropdown--container absolute md:relative md:border-grey-701 md:border-2"
+	on:click={() => (visibility = false)}
 >
 	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Check className="dropdown--icon" />
@@ -28,9 +38,8 @@
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">Edit assigned people</span>
 	</button>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	<button class="dropdown--item" on:click={handleTaskDelete}>
 		<Trash className="dropdown--icon" />
 		<span class="dropdown--label">Delete</span>
 	</button>
 </div>
-
