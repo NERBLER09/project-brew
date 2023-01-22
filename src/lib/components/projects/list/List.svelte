@@ -43,7 +43,6 @@
 	const handleCreateNewTask = async (event) => {
 		showCreateTask = false;
 		const form = new FormData(this);
-		console.log(newTaskPriority);
 		form.append('name', newTaskName);
 		form.append('description', newTaskDescription);
 		form.append('date', newTaskDueDate.toString());
@@ -150,7 +149,7 @@
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
 	>
-		{#each tasks as task}
+		{#each tasks as task (task.id)}
 			<Card
 				name={task.name}
 				description={task.description}
