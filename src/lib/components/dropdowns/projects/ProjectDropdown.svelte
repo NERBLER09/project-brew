@@ -12,6 +12,8 @@
 	export let projectId: number;
 
 	const handleProjectDelete = async () => {
+		await supabase.from('tasks').delete().eq('project', projectId);
+		await supabase.from('lists').delete().eq('project', projectId);
 		const { error } = await supabase.from('projects').delete().eq('id', projectId);
 
 		if (!error) {
