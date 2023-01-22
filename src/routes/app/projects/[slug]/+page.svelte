@@ -138,5 +138,5 @@
 <AboutProject shown={showAboutPrompt} />
 
 {#if showProjectDropdown}
-	<ProjectDropdown bind:visibility={showProjectDropdown} />
+	<ProjectDropdown bind:visibility={showProjectDropdown} projectId={data.id} />
 {/if}
