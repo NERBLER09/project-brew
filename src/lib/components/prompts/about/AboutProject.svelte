@@ -70,11 +70,19 @@
 	};
 
 	$: if (newCoverFile) getFileURL(newCoverFile[0]);
+
+	$: if (!inEditMode) {
+		newProjectName = $currentProject.name;
+		newProjectDescription = $currentProject.description;
+		newProjectTags = $currentProject?.tags;
+		newCoverURL = $currentProject.banner;
+		newCoverFile = null;
+	}
 </script>
 
 <dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
 	<header
-		class="relative -top-8 -left-8 w-[calc(100%+64px)] p-6 flex items-end object-cover rounded-b-3xl bg-cover bg-center {!$currentProject.banner
+		class="relative -top-8 -left-8 w-[calc(100%+64px)] p-6 flex items-end object-cover rounded-b-3xl bg-cover bg-center {!newCoverURL
 			? 'w-fit'
 			: 'h-[12.5rem]'}"
 		style="background-image: url({!inEditMode ? $currentProject.banner : newCoverURL});"
@@ -153,7 +161,7 @@
 
 			<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
 
-			{#if !$currentProject.banner}
+			{#if !newCoverURL}
 				<button
 					class="button--secondary flex items-center justify-center gap-md w-full"
 					on:click={() => coverInputElement.click()}
@@ -161,7 +169,7 @@
 					<Image className="stroke-grey-700 w-6 h-6" />
 					Set a project cover
 				</button>
-			{:else if $currentProject.banner}
+			{:else if newCoverURL}
 				<button
 					class="button--primary flex items-center justify-center gap-md w-full"
 					on:click={() => coverInputElement.click()}
