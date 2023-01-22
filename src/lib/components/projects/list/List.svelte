@@ -158,6 +158,7 @@
 				isPriority={task.is_priority}
 				tags={task.tags}
 				id={task.id}
+				bind:tasks
 			/>
 		{/each}
 	</div>

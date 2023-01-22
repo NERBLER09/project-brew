@@ -12,6 +12,8 @@
 	export let isPriority: boolean = false;
 	export let id: number;
 
+	export let tasks: any[];
+
 	let showCardDropdown = false;
 
 	onMount(() => {
@@ -68,5 +70,5 @@
 </section>
 
 {#if showCardDropdown}
-	<CardDropdown bind:visibility={showCardDropdown} {id} priority={isPriority} />
+	<CardDropdown bind:visibility={showCardDropdown} {id} priority={isPriority} bind:tasks />
 {/if}

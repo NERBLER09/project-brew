@@ -12,7 +12,10 @@
 	export let id: number;
 	export let priority: boolean;
 
+	export let tasks: any[];
+
 	const handleTaskDelete = async () => {
+		tasks = tasks.filter((item) => item.id !== id);
 		const { error } = await supabase.from('tasks').delete().eq('id', id);
 	};
 </script>
