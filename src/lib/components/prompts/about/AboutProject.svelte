@@ -36,14 +36,38 @@
 
 	let coverInputElement: HTMLInputElement;
 
+	const uploadNewCover = async (coverList: FileList | null) => {
+		if (!coverList) return '';
+		let cover = coverList[0];
+
+		const ccName = camelCase(newProjectName);
+		const { data: user } = await supabase.auth.getUser();
+
+		const { error: coverErr } = await supabase.storage
+			.from('project-covers')
+			.update(`${user.user?.id}/${ccName}.png`, cover, {
+				cacheControl: '3600',
+				upsert: false
+			});
+		console.log(coverErr);
+
+		const { data: url } = supabase.storage
+			.from('project-covers')
+			.getPublicUrl(`${user.user?.id}/${ccName}.png`);
+
+		return url.publicUrl;
+	};
+
 	const handleUpdateProject = async () => {
+		let updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
 		inEditMode = false;
 		const { data, error } = await supabase
 			.from('projects')
 			.update({
 				project_name: newProjectName,
 				description: newProjectDescription,
-				tags: newProjectTags
+				tags: newProjectTags,
+				banner: updatedCoverURL
 			})
 			.eq('id', $currentProject.id)
 			.select();
@@ -120,7 +144,7 @@
 
 			<button on:click={() => (shown = false)}>
 				<CloseMultiply
-					className=" {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'} w-12 h-12"
+					className=" {newCoverURL ? 'stroke-grey-200' : 'stroke-grey-700'} w-12 h-12"
 				/>
 				<span class="sr-only">Close</span>
 			</button>
