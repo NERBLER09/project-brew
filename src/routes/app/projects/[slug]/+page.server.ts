@@ -1,91 +1,108 @@
-import { getSupabase } from "@supabase/auth-helpers-sveltekit";
-import { error, redirect, type Actions } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import { getSupabase } from '@supabase/auth-helpers-sveltekit';
+import { error, redirect, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-  const { session, supabaseClient } = await getSupabase(event)
-  if (!session) {
-    throw redirect(303, "/")
-  }
+	const { session, supabaseClient } = await getSupabase(event);
+	if (!session) {
+		throw redirect(303, '/');
+	}
 
-  let params = event.params
-  const projectId = params.slug
+	let params = event.params;
+	const projectId = params.slug;
 
-  event.depends("app:project")
+	event.depends('app:project');
 
-  // Grabs project info 
-  const { data: project, error: errProject } = await supabaseClient.from('projects').select().eq('user_id', session.user.id).eq("id", projectId).limit(1).single()
-  const { data: lists } = await supabaseClient.from("lists").select().eq("project", projectId)
-  if (project?.user_id !== session.user.id) throw redirect(301, "/app/projects/not-invited")
-  if (project) {
-    return {
-      name: project?.project_name,
-      id: project.id,
-      description: project?.description,
-      banner: project?.banner,
-      tags: JSON.parse(project?.tags) || [],
-      lists: lists || []
-    }
-  }
+	// Grabs project info
+	const { data: project, error: errProject } = await supabaseClient
+		.from('projects')
+		.select()
+		.eq('user_id', session.user.id)
+		.eq('id', projectId)
+		.limit(1)
+		.single();
+	const { data: lists } = await supabaseClient.from('lists').select().eq('project', projectId);
+	if (project?.user_id !== session.user.id) throw redirect(301, '/app/projects/not-invited');
+	if (project) {
+		return {
+			name: project?.project_name,
+			id: project.id,
+			description: project?.description,
+			banner: project?.banner,
+			tags: JSON.parse(project?.tags) || [],
+			lists: lists || []
+		};
+	}
 
-  throw error(404, errProject?.message)
-}) satisfies PageServerLoad
+	throw error(404, errProject?.message);
+}) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  newTask: async (event) => {
-    const { request, params } = event
-    const { session, supabaseClient } = await getSupabase(event)
-    if (!session) {
-      // the user is not signed in
-      throw error(403, { message: 'Unauthorized' })
-    }
+	newTask: async (event) => {
+		const { request, params } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
 
-    const data = await request.formData()
-    const name = data.get("name")
-    const description = data.get("description")
-    const dueDate = data.get("date")
-    const isPriority = data.get("priority")
-    const list = data.get("list-id")
-    const project = params.slug
+		const data = await request.formData();
+		const name = data.get('name');
+		const description = data.get('description');
+		let dueDate = data.get('date');
+		const isPriority = data.get('priority');
+		const list = data.get('list-id');
+		const project = data.get('project');
 
-    const { error } = await supabaseClient.from('tasks').insert({
-      list,
-      project,
-      name,
-      description,
-      due_date: dueDate?.toString(),
-      is_priority: isPriority,
-      user_id: session.user.id,
-      status: "other"
-    })
-    console.log(error)
-  },
-  newList: async (event) => {
-    const { request, params } = event
-    const { session, supabaseClient } = await getSupabase(event)
-    if (!session) {
-      // the user is not signed in
-      throw error(403, { message: 'Unauthorized' })
-    }
+		dueDate = !dueDate ? dueDate : null;
 
-    const data = await request.formData()
-    const name = data.get("list-name")
-    const project = data.get("project-id") as string
-    const userId = session.user.id
+		const { error: err } = await supabaseClient
+			.from('tasks')
+			.insert({
+				list,
+				project,
+				name,
+				description,
+				due_date: dueDate,
+				is_priority: isPriority,
+				user_id: session.user.id,
+				status: 'other'
+			})
+			.select();
 
-    const { error: err } = await supabaseClient.from("lists").insert({
-      list_name: name,
-      project,
-      user_id: userId,
-      status: "other"
-    })
-      .select()
+		if (!err) {
+			return {
+				status: 'success',
+			};
+		}
+	},
+	newList: async (event) => {
+		const { request, params } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
 
-    if (!err) {
-      return {
-        status: "success",
-      }
-    }
+		const data = await request.formData();
+		const name = data.get('list-name');
+		const project = data.get('project-id') as string;
+		const userId = session.user.id;
 
-  }
-}
+		const { error: err } = await supabaseClient
+			.from('lists')
+			.insert({
+				list_name: name,
+				project,
+				user_id: userId,
+				status: 'other'
+			})
+			.select();
+
+		if (!err) {
+			return {
+				status: 'success'
+			};
+		}
+	}
+};

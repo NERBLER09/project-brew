@@ -8,6 +8,9 @@
 	import { onMount } from 'svelte';
 	import { dndzone } from 'svelte-dnd-action';
 	import { userId } from '$lib/stores/user';
+	import { currentProject } from '$lib/stores/project';
+	import { deserialize } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 
 	export let name: string;
 	export let id: any;
@@ -15,6 +18,10 @@
 	let tasks: any[] = [];
 
 	let showCreateTask = false;
+	let newTaskName = '';
+	let newTaskDescription = '';
+	let newTaskDueDate: Date;
+	let newTaskPriority = false;
 
 	const handleDnd = (e) => {
 		tasks = e.detail.items;
@@ -32,6 +39,29 @@
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
 		tasks = data || [];
 	});
+
+	const handleCreateNewTask = async (event) => {
+		showCreateTask = false;
+		const form = new FormData(this);
+		console.log(newTaskPriority)
+		form.append('name', newTaskName);
+		form.append('description', newTaskDescription);
+		form.append('date', newTaskDueDate.toString());
+		form.append('priority', newTaskPriority.toString() ?? null);
+		form.append('list-id', id);
+		form.append('project', $currentProject.id);
+
+		const response = await fetch('/app/projects/{project_id}?/newTask', {
+			method: 'POST',
+			body: form
+		});
+
+		const result = deserialize(await response.text());
+
+		if (result?.type === 'success') {
+			invalidate('app:project');
+		}
+	};
 </script>
 
 <section class="w-[15.625rem] md:w-[25rem]">
@@ -42,7 +72,7 @@
 		</button>
 	</header>
 	{#if showCreateTask}
-		<form method="POST" action="/app/projects/{project_id}?/newTask">
+		<form method="POST" on:submit|preventDefault={handleCreateNewTask}>
 			<button
 				class="button--secondary w-full flex items-center gap-md justify-center"
 				type="button"
@@ -58,21 +88,21 @@
 				name="name"
 				required
 				placeholder="Enter the name of the new task"
+				bind:value={newTaskName}
 			/>
 			<textarea
 				name="description"
 				id="description-input"
 				class="input--text  resize-none h-36 w-full mt-sm"
 				placeholder="Enter a short description"
+				bind:value={newTaskDescription}
 			/>
 			<label for="date-input" class="input--label mt-sm">Select a due date</label>
-			<input type="date" class="input--text mt-sm" id="date-input" name="date" />
+			<input type="date" class="input--text mt-sm" id="date-input" name="date" bind:value={newTaskDueDate} />
 			<br />
 
 			<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
-			<input type="checkbox" class="input--checkbox my-sm" id="prority-input" name="priority" />
-
-			<input type="text" class="hidden" name="list-id" value={id} />
+			<input type="checkbox" class="input--checkbox my-sm" id="prority-input" name="priority" bind:checked={newTaskPriority} />
 
 			<button
 				class="button--primary w-full flex items-center gap-md justify-center mt-md"
