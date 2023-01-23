@@ -23,11 +23,13 @@
 
 	let createNewList = false;
 	let newListName = '';
+	let newListStatus = 'other';
 
 	const handleCreateNewList = async (event) => {
 		createNewList = false;
 		const form = new FormData(this);
 		form.append('list-name', newListName);
+		form.append('list-status', newListStatus);
 		form.append('project-id', data.id);
 
 		const response = await fetch('/app/projects/{data.id}?/newList', {
@@ -96,7 +98,7 @@
 		<List name={list.list_name} id={list.id} project_id={list.project} status={list.status} />
 	{/each}
 
-	<div class="min-w-[12.5rem] mt-[2.625rem]">
+	<div class="min-w-[12.5rem] mt-[2.625rem] md:mt-[4.0625rem]">
 		{#if createNewList}
 			<form on:submit|preventDefault={handleCreateNewList}>
 				<button
@@ -110,11 +112,29 @@
 
 				<input
 					type="text"
-					class="input--text my-md w-full"
+					class="input--text mt-md mb-sm w-full"
 					placeholder="Enter a list name"
 					bind:value={newListName}
 				/>
 
+				<div class="mt-sm mb-md">
+					<label for="status-input" class="input--label">Select a task status for this list:</label>
+					<select
+						name="status-input"
+						id="status-input"
+						class="input--text w-full"
+						bind:value={newListStatus}
+					>
+						<option value="todo">To-do</option>
+						<option value="doing">Doing</option>
+						<option value="done">Done</option>
+						<option value="other" default>Other</option>
+					</select>
+
+					<span class="font-medium text-grey-700 text-sm"
+						>Selecting a special status can display tasks in a certain way relative to the status.</span
+					>
+				</div>
 				<button
 					class="button--primary w-full flex items-center gap-md justify-center"
 					type="submit"

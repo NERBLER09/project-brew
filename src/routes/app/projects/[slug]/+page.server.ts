@@ -52,6 +52,7 @@ export const actions: Actions = {
 		let dueDate = data.get('date');
 		const isPriority = data.get('priority');
 		const list = data.get('list-id');
+		const status = data.get("list-status")
 		const project = data.get('project');
 
 		dueDate = !dueDate ? dueDate : null;
@@ -66,7 +67,7 @@ export const actions: Actions = {
 				due_date: dueDate,
 				is_priority: isPriority,
 				user_id: session.user.id,
-				status: 'other'
+				status
 			})
 			.select();
 
@@ -88,6 +89,7 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 		const name = data.get('list-name');
+		const status = data.get("list-status")
 		const project = data.get('project-id') as string;
 		const userId = session.user.id;
 
@@ -97,7 +99,7 @@ export const actions: Actions = {
 				list_name: name,
 				project,
 				user_id: userId,
-				status: 'other'
+				status
 			})
 			.select();
 

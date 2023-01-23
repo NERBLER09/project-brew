@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Calendar from '$lib/assets/Calendar.svelte';
+	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
@@ -28,7 +29,12 @@
 <section class="bg-grey-100 p-6 w-full">
 	<header class="flex items-center mb-sm">
 		<div>
-			<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
+			<div class="flex items-center gap-sm">
+				{#if status === 'done'}
+					<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
+				{/if}
+				<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
+			</div>
 			{#if dueDate}
 				<div class="flex items-center md:hidden">
 					<Calendar className="h-6 w-6 stroke-accent-light" />
@@ -76,6 +82,6 @@
 
 <style>
 	.card__text--done {
-		@apply line-through;
+		@apply line-through text-[#059669];
 	}
 </style>

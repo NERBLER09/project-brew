@@ -30,10 +30,16 @@
 
 	const handleFinalize = async (event) => {
 		tasks = event.detail.items;
+
 		const { error } = await supabase
 			.from('tasks')
 			.update({ list: id, user_id: $userId, status })
 			.eq('id', event.detail.info.id);
+
+		const found = tasks.find((task) => task.id === event.detail.info.id);
+		const index = tasks.indexOf(found);
+		if (index < 0) return; // Prevents error if index is below 0
+		tasks[index].status = status;
 	};
 
 	onMount(async () => {
@@ -49,6 +55,7 @@
 		form.append('date', newTaskDueDate.toString());
 		form.append('priority', newTaskPriority.toString() ?? null);
 		form.append('list-id', id);
+		form.append('list-status', status);
 		form.append('project', $currentProject.id);
 
 		const response = await fetch('/app/projects/{project_id}?/newTask', {
@@ -57,8 +64,6 @@
 		});
 
 		const result = deserialize(await response.text());
-
-		console.log(result);
 
 		if (result?.type === 'success') {
 			tasks = [result.data?.data, ...tasks];
