@@ -158,6 +158,7 @@
 				tags={task.tags}
 				id={task.id}
 				bind:tasks
+				status={task.status}
 			/>
 		{/each}
 	</div>

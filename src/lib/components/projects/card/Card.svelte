@@ -11,6 +11,7 @@
 	export let dueDate: any;
 	export let isPriority: boolean = false;
 	export let id: number;
+	export let status: 'other' | 'todo' | 'done' | 'doing';
 
 	export let tasks: any[];
 
@@ -27,7 +28,7 @@
 <section class="bg-grey-100 p-6 w-full">
 	<header class="flex items-center mb-sm">
 		<div>
-			<h3 class="text-md text-grey-700 font-semibold">{name}</h3>
+			<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
 			{#if dueDate}
 				<div class="flex items-center md:hidden">
 					<Calendar className="h-6 w-6 stroke-accent-light" />
@@ -72,3 +73,9 @@
 {#if showCardDropdown}
 	<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
 {/if}
+
+<style>
+	.card__text--done {
+		@apply line-through;
+	}
+</style>
