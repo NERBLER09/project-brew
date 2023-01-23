@@ -15,6 +15,7 @@
 	export let name: string;
 	export let id: any;
 	export let project_id: any;
+	export let status: string;
 	let tasks: any[] = [];
 
 	let showCreateTask = false;
@@ -31,7 +32,7 @@
 		tasks = event.detail.items;
 		const { error } = await supabase
 			.from('tasks')
-			.update({ list: id, user_id: $userId })
+			.update({ list: id, user_id: $userId, status })
 			.eq('id', event.detail.info.id);
 	};
 

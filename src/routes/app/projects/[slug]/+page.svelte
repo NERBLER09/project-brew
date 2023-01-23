@@ -93,7 +93,7 @@
 
 <section class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4">
 	{#each data.lists as list}
-		<List name={list.list_name} id={list.id} project_id={list.project} />
+		<List name={list.list_name} id={list.id} project_id={list.project} status={list.status} />
 	{/each}
 
 	<div class="min-w-[12.5rem] mt-[2.625rem]">
