@@ -13,16 +13,16 @@
 	export let isPriority: boolean = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
-
 	export let tasks: any[];
 
 	let showCardDropdown = false;
+	let formattedDate = '';
 
 	onMount(() => {
 		if (!dueDate) return '';
 
 		const tempDueDate = new Date(dueDate);
-		dueDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	});
 </script>
 
@@ -38,7 +38,7 @@
 			{#if dueDate}
 				<div class="flex items-center md:hidden">
 					<Calendar className="h-6 w-6 stroke-accent-light" />
-					<span class="text-sm text-grey-700 font-medium">{dueDate}</span>
+					<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
 				</div>
 			{/if}
 		</div>
@@ -47,7 +47,7 @@
 			{#if dueDate}
 				<div class="md:flex items-center hidden">
 					<Calendar className="h-6 w-6 stroke-accent-light" />
-					<span class="text-sm text-grey-700 font-medium">{dueDate}</span>
+					<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
 				</div>
 			{/if}
 
