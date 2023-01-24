@@ -11,6 +11,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+	import NewTagsInput from '../edit/NewTagsInput.svelte';
 
 	export let name: string;
 	export let id: any;
@@ -23,6 +24,7 @@
 	let newTaskDescription = '';
 	let newTaskDueDate = new Date();
 	let newTaskPriority = false;
+	let newTaskTags: string[] = [];
 
 	const handleDnd = (e) => {
 		tasks = e.detail.items;
@@ -52,6 +54,7 @@
 		const form = new FormData(this);
 		form.append('name', newTaskName);
 		form.append('description', newTaskDescription);
+		form.append('tags', newTaskTags);
 		form.append('date', newTaskDueDate.toString());
 		form.append('priority', newTaskPriority.toString() ?? null);
 		form.append('list-id', id);
@@ -134,6 +137,14 @@
 				name="priority"
 				bind:checked={newTaskPriority}
 			/>
+
+			<section>
+				<h4 class="text-grey-700 font-bold">Tags</h4>
+
+				<div class="flex flex-wrap gap-md mb-md">
+					<NewTagsInput bind:newTags={newTaskTags} />
+				</div>
+			</section>
 
 			<button
 				class="button--primary w-full flex items-center gap-md justify-center mt-md"

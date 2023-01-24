@@ -55,6 +55,10 @@ export const actions: Actions = {
 		const status = data.get("list-status")
 		const project = data.get('project');
 
+		const formTags = data.get('tags') as string
+		let tags = formTags?.split(',') || null
+		tags = tags[0] === '' ? [] : tags;
+
 		dueDate = !dueDate ? dueDate : null;
 
 		const { data: task, error: err } = await supabaseClient
@@ -67,7 +71,8 @@ export const actions: Actions = {
 				due_date: dueDate,
 				is_priority: isPriority,
 				user_id: session.user.id,
-				status
+				status,
+				tags
 			})
 			.select();
 
