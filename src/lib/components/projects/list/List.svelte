@@ -83,7 +83,7 @@
 	}
 </script>
 
-<section class="w-[15.625rem] md:w-[25rem]">
+<section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
 	<header class="flex items-center w-[15.625rem] md:w-[25rem]">
 		<div class="flex items-center mb-md md:mb-lg gap-md">
 			<h2 class="text-grey-900 font-semibold text-md md:text-lg">{name}</h2>

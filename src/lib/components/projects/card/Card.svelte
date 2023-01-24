@@ -27,9 +27,9 @@
 </script>
 
 <section class="bg-grey-100 p-6 w-full">
-	<header class="flex items-center mb-sm">
+	<header class="flex items-start mb-sm">
 		<div>
-			<div class="flex items-center gap-sm">
+			<div class="flex items-start gap-sm">
 				{#if status === 'done'}
 					<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
 				{/if}
