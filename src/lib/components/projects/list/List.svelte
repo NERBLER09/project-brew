@@ -82,7 +82,10 @@
 
 <section class="w-[15.625rem] md:w-[25rem]">
 	<header class="flex items-center w-[15.625rem] md:w-[25rem]">
-		<h2 class="text-grey-900 font-semibold text-md md:text-lg mb-md md:mb-lg">{name}</h2>
+		<div class="flex items-center mb-md md:mb-lg gap-md">
+			<h2 class="text-grey-900 font-semibold text-md md:text-lg">{name}</h2>
+			<p class="text-sm md:text-base text-grey-700 font-medium">{tasks.length}</p>
+		</div>
 		<button class="ml-auto">
 			<MoreHorizontal className="stroke-grey-700 h-8 w-8" />
 		</button>
