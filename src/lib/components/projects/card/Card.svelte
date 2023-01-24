@@ -84,4 +84,7 @@
 	.card__text--done {
 		@apply line-through text-[#059669];
 	}
+	.card__text--todo {
+		@apply text-[#b91c1c];
+	}
 </style>
