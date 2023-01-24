@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+	import { currentProject } from '$lib/stores/project';
+	import { dndzone } from 'svelte-dnd-action';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
@@ -11,7 +13,6 @@
 	import List from '$lib/components/projects/list/List.svelte';
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 	import Description from '$lib/components/text/Description.svelte';
-	import { currentProject } from '$lib/stores/project';
 
 	import type { ActionData, PageData } from './$types';
 
@@ -42,6 +43,10 @@
 		if (result?.type === 'success') {
 			invalidate('app:project');
 		}
+	};
+
+	const handleDnd = (event) => {
+		data.lists = event.detail.items;
 	};
 </script>
 
@@ -93,8 +98,13 @@
 	<Description banner={data.banner} description={data.description} />
 </header>
 
-<section class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4">
-	{#each data.lists as list}
+<section
+	class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4"
+	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300 }}
+	on:finalize={handleDnd}
+	on:consider={handleDnd}
+>
+	{#each data.lists as list (list.id)}
 		<List name={list.list_name} id={list.id} project_id={list.project} status={list.status} />
 	{/each}
 
