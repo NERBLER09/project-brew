@@ -12,12 +12,14 @@
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import NewTagsInput from '../edit/NewTagsInput.svelte';
+	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 
 	export let name: string;
 	export let id: any;
-	export let project_id: any;
 	export let status: string;
 	let tasks: any[] = [];
+
+	let showListDropdown = false;
 
 	let showCreateTask = false;
 	let newTaskName = '';
@@ -83,103 +85,109 @@
 	}
 </script>
 
-<section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
-	<header class="flex items-center w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
-		<div class="flex items-center mb-md md:mb-lg gap-md">
-			<h2 class="text-grey-900 font-semibold text-md md:text-lg">{name}</h2>
-			<p class="text-sm md:text-base text-grey-700 font-medium">{tasks.length}</p>
-		</div>
-		<button class="ml-auto">
-			<MoreHorizontal className="stroke-grey-700 h-8 w-8" />
-		</button>
-	</header>
-	{#if showCreateTask}
-		<form method="POST" on:submit|preventDefault={handleCreateNewTask}>
+<div class="md:relative">
+	<section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
+		<header class="flex items-center w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
+			<div class="flex items-center mb-md md:mb-lg gap-md">
+				<h2 class="text-grey-900 font-semibold text-md md:text-lg">{name}</h2>
+				<p class="text-sm md:text-base text-grey-700 font-medium">{tasks.length}</p>
+			</div>
+			<button class="ml-auto" on:click={() => (showListDropdown = !showListDropdown)}>
+				<MoreHorizontal className="stroke-grey-700 h-8 w-8" />
+			</button>
+		</header>
+		{#if showCreateTask}
+			<form method="POST" on:submit|preventDefault={handleCreateNewTask}>
+				<button
+					class="button--secondary w-full flex items-center gap-md justify-center"
+					type="button"
+					on:click={() => (showCreateTask = false)}
+				>
+					<CloseMultiply className="w-6 h-6 stroke-grey-700" />
+					Cancel
+				</button>
+
+				<input
+					type="text"
+					class="input--text w-full mt-md"
+					name="name"
+					required
+					placeholder="Enter the name of the new task"
+					bind:value={newTaskName}
+				/>
+				<textarea
+					name="description"
+					id="description-input"
+					class="input--text  resize-none h-36 w-full mt-sm"
+					placeholder="Enter a short description"
+					bind:value={newTaskDescription}
+				/>
+				<label for="date-input" class="input--label mt-sm">Select a due date</label>
+				<input
+					type="date"
+					class="input--text mt-sm"
+					id="date-input"
+					name="date"
+					bind:value={newTaskDueDate}
+				/>
+				<br />
+
+				<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
+				<input
+					type="checkbox"
+					class="input--checkbox my-sm"
+					id="prority-input"
+					name="priority"
+					bind:checked={newTaskPriority}
+				/>
+
+				<section>
+					<h4 class="text-grey-700 font-bold">Tags</h4>
+
+					<div class="flex flex-wrap gap-md mb-md">
+						<NewTagsInput bind:newTags={newTaskTags} />
+					</div>
+				</section>
+
+				<button
+					class="button--primary w-full flex items-center gap-md justify-center mt-md"
+					type="submit"
+				>
+					<PlusNew className="w-6 h-6 stroke-grey-100" />
+					Create
+				</button>
+			</form>
+		{:else}
 			<button
 				class="button--secondary w-full flex items-center gap-md justify-center"
-				type="button"
-				on:click={() => (showCreateTask = false)}
+				on:click={() => (showCreateTask = true)}
 			>
-				<CloseMultiply className="w-6 h-6 stroke-grey-700" />
-				Cancel
+				<PlusNew className="w-6 h-6 stroke-grey-700" />
+				New task
 			</button>
-
-			<input
-				type="text"
-				class="input--text w-full mt-md"
-				name="name"
-				required
-				placeholder="Enter the name of the new task"
-				bind:value={newTaskName}
-			/>
-			<textarea
-				name="description"
-				id="description-input"
-				class="input--text  resize-none h-36 w-full mt-sm"
-				placeholder="Enter a short description"
-				bind:value={newTaskDescription}
-			/>
-			<label for="date-input" class="input--label mt-sm">Select a due date</label>
-			<input
-				type="date"
-				class="input--text mt-sm"
-				id="date-input"
-				name="date"
-				bind:value={newTaskDueDate}
-			/>
-			<br />
-
-			<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
-			<input
-				type="checkbox"
-				class="input--checkbox my-sm"
-				id="prority-input"
-				name="priority"
-				bind:checked={newTaskPriority}
-			/>
-
-			<section>
-				<h4 class="text-grey-700 font-bold">Tags</h4>
-
-				<div class="flex flex-wrap gap-md mb-md">
-					<NewTagsInput bind:newTags={newTaskTags} />
-				</div>
-			</section>
-
-			<button
-				class="button--primary w-full flex items-center gap-md justify-center mt-md"
-				type="submit"
-			>
-				<PlusNew className="w-6 h-6 stroke-grey-100" />
-				Create
-			</button>
-		</form>
-	{:else}
-		<button
-			class="button--secondary w-full flex items-center gap-md justify-center"
-			on:click={() => (showCreateTask = true)}
+		{/if}
+		<div
+			class="flex flex-col gap-md mt-md min-h-[200px]"
+			use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}
+			on:consider={handleDnd}
+			on:finalize={handleFinalize}
 		>
-			<PlusNew className="w-6 h-6 stroke-grey-700" />
-			New task
-		</button>
+			{#each tasks as task (task.id)}
+				<Card
+					name={task.name}
+					description={task.description}
+					dueDate={task.due_date}
+					isPriority={task.is_priority}
+					tags={task.tags}
+					id={task.id}
+					bind:tasks
+					status={task.status}
+				/>
+			{/each}
+		</div>
+	</section>
+
+	{#if showListDropdown}
+		<ListDropdown bind:visibility={showListDropdown} listId={id} />
 	{/if}
-	<div
-		class="flex flex-col gap-md mt-md min-h-[200px]"
-		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}
-		on:consider={handleDnd}
-		on:finalize={handleFinalize}
-	>
-		{#each tasks as task (task.id)}
-			<Card
-				name={task.name}
-				description={task.description}
-				dueDate={task.due_date}
-				isPriority={task.is_priority}
-				tags={task.tags}
-				id={task.id}
-				bind:tasks
-				status={task.status}
-			/>
-		{/each}
-	</div>
-</section>
+</div>

@@ -26,7 +26,7 @@
 	});
 </script>
 
-<div class="relative">
+<div class="md:relative">
 	<section class="bg-grey-100 p-6 w-full">
 		<header class="flex items-start mb-sm">
 			<div>
