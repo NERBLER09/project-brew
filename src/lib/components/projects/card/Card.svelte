@@ -26,59 +26,61 @@
 	});
 </script>
 
-<section class="bg-grey-100 p-6 w-full">
-	<header class="flex items-start mb-sm">
-		<div>
-			<div class="flex items-start gap-sm">
-				{#if status === 'done'}
-					<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
+<div class="relative">
+	<section class="bg-grey-100 p-6 w-full">
+		<header class="flex items-start mb-sm">
+			<div>
+				<div class="flex items-start gap-sm">
+					{#if status === 'done'}
+						<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
+					{/if}
+					<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
+				</div>
+				{#if dueDate}
+					<div class="flex items-center md:hidden">
+						<Calendar className="h-6 w-6 stroke-accent-light" />
+						<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
+					</div>
 				{/if}
-				<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
 			</div>
-			{#if dueDate}
-				<div class="flex items-center md:hidden">
-					<Calendar className="h-6 w-6 stroke-accent-light" />
-					<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
-				</div>
-			{/if}
+
+			<div class="ml-auto flex items-center gap-md">
+				{#if dueDate}
+					<div class="md:flex items-center hidden">
+						<Calendar className="h-6 w-6 stroke-accent-light" />
+						<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
+					</div>
+				{/if}
+
+				<button on:click={() => (showCardDropdown = !showCardDropdown)}>
+					<MoreHorizontal className="h-8 w-8 stroke-grey-700" />
+				</button>
+			</div>
+		</header>
+
+		<div class="mb-md">
+			<p class="text-sm font-medium text-grey-700 max-h-[10ch] empty:hidden">{description}</p>
 		</div>
 
-		<div class="ml-auto flex items-center gap-md">
-			{#if dueDate}
-				<div class="md:flex items-center hidden">
-					<Calendar className="h-6 w-6 stroke-accent-light" />
-					<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
-				</div>
-			{/if}
+		{#if tags}
+			<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden mb-4">
+				{#each tags as tag}
+					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
+						<span class="text-grey-700 text-sm font-medium">{tag}</span>
+					</div>
+				{/each}
+			</div>
+		{/if}
 
-			<button on:click={() => (showCardDropdown = !showCardDropdown)}>
-				<MoreHorizontal className="h-8 w-8 stroke-grey-700" />
-			</button>
-		</div>
-	</header>
+		{#if isPriority}
+			<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
+		{/if}
+	</section>
 
-	<div class="mb-md">
-		<p class="text-sm font-medium text-grey-700 max-h-[10ch] empty:hidden">{description}</p>
-	</div>
-
-	{#if tags}
-		<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden mb-4">
-			{#each tags as tag}
-				<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-					<span class="text-grey-700 text-sm font-medium">{tag}</span>
-				</div>
-			{/each}
-		</div>
+	{#if showCardDropdown}
+		<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
 	{/if}
-
-	{#if isPriority}
-		<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
-	{/if}
-</section>
-
-{#if showCardDropdown}
-	<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
-{/if}
+</div>
 
 <style>
 	.card__text--done {
