@@ -31,14 +31,14 @@
 	class="md:right-6 md:top-[3.5rem] dropdown--container absolute md:border-grey-700 md:border-2 z-50"
 	on:click={() => (visibility = false)}
 >
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Check className="dropdown--icon" />
 		<span class="dropdown--label">Mark as complete</span>
-	</button>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	</button> -->
+	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Calendar className="dropdown--icon" />
 		<span class="dropdown--label">Edit due date</span>
-	</button>
+	</button> -->
 	<button class="dropdown--item" on:click={handleChangePriority}>
 		<CirclePriority className="dropdown--icon" />
 		{#if priority}
@@ -47,10 +47,10 @@
 			<span class="dropdown--label">Prioritize</span>
 		{/if}
 	</button>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">Edit assigned people</span>
-	</button>
+	</button> -->
 	<button class="dropdown--item" on:click={handleTaskDelete}>
 		<Trash className="dropdown--icon" />
 		<span class="dropdown--label">Delete</span>
