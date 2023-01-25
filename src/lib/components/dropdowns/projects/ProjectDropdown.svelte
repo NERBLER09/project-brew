@@ -6,6 +6,7 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import User from '$lib/assets/User.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 
 	export let visibility = false;
@@ -31,10 +32,14 @@
 		<Filter className="dropdown--icon" parentBg="grey-100" />
 		<span class="dropdown--label">Filter</span>
 	</button>
-	<a class="dropdown--item" href="/app/projects/{$currentProject.id}/about">
+	<a class="dropdown--item md:hidden" href="/app/projects/{$currentProject.id}/about">
 		<CircleInfo className="dropdown--icon" />
 		<span class="dropdown--label">View Info</span>
 	</a>
+	<button class="dropdown--item hidden md:flex items-center" on:click={() => ($showAboutProjectPrompt = true)}>
+		<CircleInfo className="dropdown--icon" />
+		<span class="dropdown--label">View Info</span>
+	</button>
 	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View invited members</span>

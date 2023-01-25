@@ -15,6 +15,7 @@
 	import Description from '$lib/components/text/Description.svelte';
 
 	import type { ActionData, PageData } from './$types';
+	import { showAboutProjectPrompt } from '$lib/stores/ui';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -78,7 +79,7 @@
 				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 				<span class="sr-only">View project info</span>
 			</a>
-			<button class="hidden md:block" on:click={() => (showAboutPrompt = true)}>
+			<button class="hidden md:block" on:click={() => ($showAboutProjectPrompt = true)}>
 				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
 				<span class="sr-only">View project info</span>
 			</button>
@@ -165,7 +166,7 @@
 	</div>
 </section>
 
-<AboutProject shown={showAboutPrompt} />
+<AboutProject bind:shown={$showAboutProjectPrompt} />
 
 {#if showProjectDropdown}
 	<ProjectDropdown bind:visibility={showProjectDropdown} projectId={data.id} />
