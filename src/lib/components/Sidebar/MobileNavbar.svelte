@@ -7,13 +7,15 @@
 	import User from '$lib/assets/Fill/User.svelte';
 </script>
 
-<nav class="md:hidden flex gap-md bg-grey-100 h-[6.25rem] p-6 items-center justify-evenly w-screen">
+<nav
+	class="md:hidden flex gap-md bg-grey-100 dark:bg-grey-800 h-[6.25rem] p-6 items-center justify-evenly w-screen"
+>
 	<a href="/app/home" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>
 		<Home
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('home')
 				? 'fill-accent-light'
-				: 'fill-grey-700'}"
+				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
 			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
@@ -28,7 +30,7 @@
 		<Dashboard
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('projects')
 				? 'fill-accent-light'
-				: 'fill-grey-700'}"
+				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
 			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
@@ -43,7 +45,7 @@
 		<Clock
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('focus')
 				? 'fill-accent-light'
-				: 'fill-grey-700'}"
+				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
 			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
@@ -58,7 +60,7 @@
 		<User
 			className="fill-grey-700 h-9 w-9 {$page.url.pathname.includes('team')
 				? 'fill-accent-light'
-				: 'fill-grey-700'}"
+				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
 			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
