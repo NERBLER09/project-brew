@@ -42,7 +42,7 @@
 				cacheControl: '3600',
 				upsert: false
 			});
-		console.log(coverErr)
+		console.log(coverErr);
 
 		const { data: url } = supabase.storage
 			.from('project-covers')
@@ -111,12 +111,12 @@
 				<Back
 					className="w-8 h-8 aspect-square {$currentProject.banner
 						? 'stroke-grey-200'
-						: 'stroke-grey-700'}"
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
 				<h1
 					class="w-fit text-lg {$currentProject.banner
 						? 'text-grey-200'
-						: 'text-grey-700'} truncate"
+						: 'text-grey-700 dark:text-grey-200'} truncate"
 				>
 					{$currentProject?.name}
 				</h1>
@@ -133,13 +133,19 @@
 
 		{#if inEditMode}
 			<button class="ml-auto mb-auto z-50" on:click={() => (inEditMode = false)}>
-				<Trash className="h-8 w-8 {newCoverURL ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<Trash
+					className="h-8 w-8 {newCoverURL
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
 				<span class="sr-only">Drop changes</span>
 			</button>
 		{:else}
 			<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
 				<Edit
-					className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700'}"
+					className="h-8 w-8 {$currentProject.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
 				<span class="sr-only">Edit project details</span>
 			</button>
@@ -159,7 +165,7 @@
 		</div>
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
-			<p class="font-medium text-grey-700 mt-md">Team management coming soon.</p>
+			<p class="font-medium text-grey-700 dark:text-grey-200 mt-md">Team management coming soon.</p>
 		{:else}
 			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
 			<textarea
@@ -178,7 +184,7 @@
 
 		<section class="mt-md">
 			<header>
-				<h2 class="text-grey-900 text-md font-semibold">Cover Properties</h2>
+				<h2 class="text-grey-900 dark:text-grey-200 text-md font-semibold">Cover Properties</h2>
 			</header>
 
 			<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
