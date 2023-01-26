@@ -19,11 +19,12 @@
 <header class="flex items-start">
 	<!-- Mobile welcome text -->
 	<div class="flex md:hidden flex-col items-start">
-		<span class="text-grey-800 font-medium">Welcome Back</span>
-		<span class="text-lg font-semibold text-grey-900 w-1/2">{data.name}</span>
+		<span class="text-grey-800 dark:text-grey-200 font-medium">Welcome Back</span>
+		<span class="text-lg font-semibold text-grey-900 dark:text-grey-100 w-1/2">{data.name}</span>
 	</div>
 	<!-- Desktop welcome text -->
-	<span class="hidden md:block md:text-lg lg:text-xl text-grey-900 w-1/2 break-words"
+	<span
+		class="hidden md:block md:text-lg lg:text-xl text-grey-900 dark:text-grey-100 w-1/2 break-words"
 		>Welcome Back, <br class="hidden lg:block" /><span class="font-semibold">{data.name}</span
 		></span
 	>
@@ -36,7 +37,7 @@
 			<PlusNew className="h-5 w-5" />
 			New Project
 		</button>
-		<Bell className="stroke-grey-700 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
+		<Bell className="stroke-grey-700 dark:stroke-grey-200 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
 		<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
 			{#if data.avatar_url}
 				<img

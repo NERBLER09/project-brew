@@ -26,7 +26,9 @@
 	</aside>
 
 	<main
-		class="w-full h-full overflow-y-auto {$page.url.href.includes('settings') ? '' : 'md:p-8 p-6'}"
+		class="w-full h-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes('settings')
+			? ''
+			: 'md:p-8 p-6'}"
 	>
 		<slot />
 	</main>
