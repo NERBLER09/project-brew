@@ -59,7 +59,7 @@
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
 
 <header class="flex items-center">
-	<h1 class="text-lg md:text-2xl text-grey-800">Projects</h1>
+	<h1 class="text-lg md:text-2xl text-grey-800 dark:text-grey-200">Projects</h1>
 	<button
 		class="hidden button--primary md:flex items-center gap-md ml-auto"
 		on:click={handleShowNewProjctPrompt}
@@ -76,13 +76,15 @@
 
 <section class="pt-6">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 text-md md:text-lg">Pinned Projects</h2>
+		<h2 class="font-semibold text-grey-800 dark:text-grey-100 text-md md:text-lg">
+			Pinned Projects
+		</h2>
 		<!-- Shown on mobile -->
 		<a
 			href="/app/projects/edit-pinned"
 			class="button--text flex items-center gap-md ml-auto p-0 md:hidden"
 		>
-			<Edit className="stroke-grey-700 w-8 h-8" />
+			<Edit className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" />
 			<span class="sr-only">Edit Pinned projects</span>
 		</a>
 		<!-- Shown on desktop -->
@@ -91,13 +93,15 @@
 			class="button--text md:flex items-center gap-md ml-auto p-0 hidden"
 			on:click={handleShowEditPinsPrompt}
 		>
-			<Edit className="stroke-grey-700 w-8 h-8" />
+			<Edit className="stroke-grey-700 dark:stroke-grey-200 w-8 h-8" />
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
 	<div class="mt-md flex items-center flex-nowrap md:flex-wrap gap-lg w-full overflow-x-auto">
 		{#if data.pinned.length === 0}
-			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
+			<p class="text-grey-700 font-medium dark:text-grey-200">
+				To pin a project click on the edit button.
+			</p>
 		{/if}
 		{#each data.pinned as project}
 			<ProjectCard
@@ -113,7 +117,7 @@
 
 <section class="mt-lg">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 text-md md:text-lg">All Projects</h2>
+		<h2 class="font-semibold text-grey-800 dark:text-grey-100 text-md md:text-lg">All Projects</h2>
 	</header>
 	<div class="flex items-center mt-md mb-4">
 		<div
