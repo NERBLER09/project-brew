@@ -24,10 +24,13 @@
 		@apply rounded-md font-bold px-xl py-md text-grey-700 dark:text-grey-200 box-border hover:underline active:bg-grey-200 active:text-grey-500 dark:active:bg-grey-700 w-fit;
 	}
 	.input--label {
-		@apply text-base font-bold text-grey-700 mr-[0.875rem];
+		@apply text-base font-bold text-grey-700 dark:text-grey-300 mr-[0.875rem];
 	}
 	.input--text {
-		@apply border-none bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 focus:outline-none;
+		@apply border-none bg-grey-200 dark:bg-grey-700 dark:border-grey-200 text-grey-700 dark:text-grey-200 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none;
+	}
+	.input--search {
+		@apply font-bold border-2 border-grey-600 border-solid box-border bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none flex items-center gap-md ;
 	}
 	.input--checkbox {
 		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;

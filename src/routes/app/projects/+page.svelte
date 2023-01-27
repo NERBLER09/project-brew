@@ -120,9 +120,7 @@
 		<h2 class="font-semibold text-grey-800 dark:text-grey-100 text-md md:text-lg">All Projects</h2>
 	</header>
 	<div class="flex items-center mt-md mb-4">
-		<div
-			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md p-md placeholder:text-grey-700 text-grey-700 w-full max-w-[15.625rem] lg:max-w-sm"
-		>
+		<div class="input--search w-full max-w-[15.625rem] lg:max-w-sm">
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input
 				type="text"

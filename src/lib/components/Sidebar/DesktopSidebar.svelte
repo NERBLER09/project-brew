@@ -27,9 +27,7 @@
 		class="h-[2px] border-solid border border-grey-600 mt-lg w-11/12 rounded-full mx-auto drop-shadow-md"
 	/>
 	<form on:submit|preventDefault={handleSearch}>
-		<div
-			class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-lg p-md placeholder:text-grey-700 text-grey-700"
-		>
+		<div class="input--search my-lg p-md">
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input type="text" placeholder="Search" class="bg-grey-200 border-none w-full p-0" />
 		</div>
