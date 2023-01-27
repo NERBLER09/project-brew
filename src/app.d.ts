@@ -6,7 +6,7 @@ declare namespace App {
   // interface Locals {}
   // interface Platform {}
   interface Supabase {
-    Database: import('./DatabaseDefinitions').Database
+    Database: import('$lib/types/supabase').Database
     SchemaName: 'public'
   }
   // interface Locals {}
@@ -18,8 +18,8 @@ declare namespace App {
 declare type Item = import('svelte-dnd-action').Item;
 declare type DndEvent<ItemType = Item> = import('svelte-dnd-action').DndEvent<ItemType>;
 declare namespace svelte.JSX {
-	interface HTMLAttributes<T> {
-		onconsider?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void;
-		onfinalize?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void;
-	}
+  interface HTMLAttributes<T> {
+    onconsider?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void;
+    onfinalize?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void;
+  }
 }
