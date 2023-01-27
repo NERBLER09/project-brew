@@ -43,13 +43,16 @@
 <section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
 	<header class="flex items-center w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
 		<div class="flex items-center mb-md md:mb-lg gap-md">
-			<h2 class="text-grey-900 font-semibold text-md md:text-lg">{name}</h2>
-			<p class="text-sm md:text-base text-grey-700 font-medium">{tasks.length}</p>
+			<h2 class="text-grey-900 dark:text-grey-100 font-semibold text-md md:text-lg">{name}</h2>
+			<p class="text-sm md:text-base text-grey-700 dark:text-grey-200 font-medium">
+				{tasks.length}
+			</p>
 		</div>
 		<button class="ml-auto">
-			<MoreHorizontal className="stroke-grey-700 h-8 w-8" />
+			<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
 		</button>
 	</header>
+
 	{#if showCreateTask}
 		<NewCard bind:showCreateTask bind:tasks listId={id} listStatus={status} />
 	{:else}
@@ -57,10 +60,11 @@
 			class="button--secondary w-full flex items-center gap-md justify-center"
 			on:click={() => (showCreateTask = true)}
 		>
-			<PlusNew className="w-6 h-6 stroke-grey-700" />
+			<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
 			New task
 		</button>
 	{/if}
+
 	<div
 		class="flex flex-col gap-md mt-md min-h-[200px]"
 		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}

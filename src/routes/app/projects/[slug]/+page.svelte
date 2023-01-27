@@ -40,27 +40,27 @@
 			<Back
 				className="w-8 h-8 aspect-square {data.banner
 					? 'stroke-grey-200'
-					: 'stroke-grey-700'} md:h-10 md:w-10"
+					: 'stroke-grey-700 dark:stroke-grey-200'} md:h-10 md:w-10"
 			/>
 			<h1
 				class="w-fit text-lg {data.banner
 					? 'text-grey-200'
-					: 'text-grey-700'} truncate md:text-xl md:font-semibold"
+					: 'text-grey-700 dark:text-grey-200'} truncate md:text-xl md:font-semibold"
 			>
 				{data.name}
 			</h1>
 		</a>
 		<div class="flex items-center gap-md ml-auto">
 			<a href="/app/projects/{data.id}/about" class="block md:hidden">
-				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
 				<span class="sr-only">View project info</span>
 			</a>
 			<button class="hidden md:block" on:click={() => ($showAboutProjectPrompt = true)}>
-				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
 				<span class="sr-only">View project info</span>
 			</button>
 			<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
-				<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700'}" />
+				<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
 			</button>
 		</div>
 	</div>
@@ -85,7 +85,7 @@
 		<List name={list.list_name} id={list.id} status={list.status} />
 	{/each}
 
-	<div class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem] mt-[2.625rem] md:mt-[4.0625rem]">
+	<div class="min-w-[15.625rem] md:min-w-[18.75rem] lg:min-w-[25rem] mt-[2.625rem] md:mt-[4.0625rem]">
 		{#if createNewList}
 			<NewList bind:createNewList />
 		{:else}

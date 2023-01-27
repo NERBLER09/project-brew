@@ -27,19 +27,19 @@
 </script>
 
 <div class="md:relative">
-	<section class="bg-grey-100 p-6 w-full">
+	<section class="bg-grey-100 dark:bg-grey-800 p-6 w-full rounded-lg">
 		<header class="flex items-start mb-sm">
 			<div>
 				<div class="flex items-start gap-sm">
 					{#if status === 'done'}
 						<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
 					{/if}
-					<h3 class="text-md text-grey-700 font-semibold card__text--{status}">{name}</h3>
+					<h3 class="text-md text-grey-700 dark:text-grey-200 font-semibold card__text--{status}">{name}</h3>
 				</div>
 				{#if dueDate}
 					<div class="flex items-center md:hidden">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
+						<span class="text-sm text-grey-700 dark:text-grey-200 font-medium">{formattedDate}</span>
 					</div>
 				{/if}
 			</div>
@@ -48,18 +48,18 @@
 				{#if dueDate}
 					<div class="md:flex items-center hidden">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm text-grey-700 font-medium">{formattedDate}</span>
+						<span class="text-sm text-grey-700 dark:text-grey-200 font-medium">{formattedDate}</span>
 					</div>
 				{/if}
 
 				<button on:click={() => (showCardDropdown = !showCardDropdown)}>
-					<MoreHorizontal className="h-8 w-8 stroke-grey-700" />
+					<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 				</button>
 			</div>
 		</header>
 
 		<div class="mb-md">
-			<p class="text-sm font-medium text-grey-700 max-h-[10ch] empty:hidden">{description}</p>
+			<p class="text-sm font-medium text-grey-700 dark:text-grey-200 max-h-[10ch] empty:hidden">{description}</p>
 		</div>
 
 		{#if tags}

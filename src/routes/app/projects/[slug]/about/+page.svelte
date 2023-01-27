@@ -209,7 +209,7 @@
 					class="button--secondary flex items-center justify-center gap-md w-full mt-sm"
 					on:click={handleRemoveCover}
 				>
-					<Trash className="stroke-grey-700 w-6 h-6" />
+					<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 					Remove cover
 				</button>
 			{/if}
