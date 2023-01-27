@@ -10,11 +10,11 @@
 <a href="/app/projects/{id}">
 	<section
 		href="/app/projects/{id}"
-		class="bg-grey-100 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center bg-cover"
+		class="bg-grey-100 dark:bg-grey-800 p-4 rounded-lg w-72 h-48 flex flex-col justify-end relative object-cover bg-origin-border bg-center bg-cover"
 		style="background-image: url({banner});"
 	>
 		<header>
-			<span class="text-md font-medium {banner ? 'text-grey-200' : 'text-grey-700'}"
+			<span class="text-md font-medium {banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
 				>{project_name}</span
 			>
 		</header>
@@ -22,7 +22,7 @@
 			<p
 				class="{banner
 					? 'text-grey-200'
-					: 'text-grey-700'} text-sm font-medium h-[4ch] overflow-hidden text-ellipsis empty:hidden"
+					: 'text-grey-700 dark:text-grey-200'} text-sm font-medium h-[4ch] overflow-hidden text-ellipsis empty:hidden"
 			>
 				{description}
 			</p>

@@ -52,10 +52,10 @@
 			<option value="todo">To-do</option>
 			<option value="doing">Doing</option>
 			<option value="done">Done</option>
-			<option value="other" default>Other</option>
+			<option value="other">Other</option>
 		</select>
 
-		<span class="font-medium text-grey-700 text-sm"
+		<span class="font-medium text-grey-700 dark:text-grey-200 text-sm"
 			>Selecting a special status can display tasks in a certain way relative to the status.</span
 		>
 	</div>

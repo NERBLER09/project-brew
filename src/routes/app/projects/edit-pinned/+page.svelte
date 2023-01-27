@@ -35,10 +35,10 @@
 </svelte:head>
 
 <MobileSubPageLayout pageName="Edit Pinned Projects" previousPage="/app/projects">
-	<p class="font-medium text-grey-700 pt-sm">Chose what projects are displayed on top.</p>
-	<div
-		class="font-bold border-2 border-grey-600 border-solid box-border input--text flex items-center gap-md my-md p-md placeholder:text-grey-700 text-grey-700"
-	>
+	<p class="font-medium text-grey-700 dark:text-grey-200 pt-sm">
+		Chose what projects are displayed on top.
+	</p>
+	<div class="my-md p-md input--search">
 		<Search className="stroke-grey-700 w-6 h-6" />
 		<input
 			type="text"

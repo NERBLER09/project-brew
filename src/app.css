@@ -15,33 +15,36 @@
 		@apply bg-accent-light text-grey-200 stroke-grey-200 rounded-md font-bold px-xl py-md hover:bg-accent-light-hover active:bg-accent-light-disabled active:text-accent-light-disabled-text focus:stroke-accent-light-disabled-text w-fit;
 	}
 	.button--secondary {
-		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 text-grey-700 box-border hover:border-grey-300 hover:bg-grey-300 active:bg-grey-200 active:text-grey-500 active:border-grey-200 w-fit;
+		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 dark:border-grey-200 text-grey-700 dark:text-grey-200 box-border hover:border-grey-300 dark:hover:border-grey-800 hover:bg-grey-300 dark:hover:bg-grey-800 active:bg-grey-200 dark:active:bg-grey-700 dark:active:border-grey-700 active:border-grey-200 w-fit;
 	}
 	.button--circle {
 		@apply button--primary rounded-full p-md w-fit;
 	}
 	.button--text {
-		@apply rounded-md font-bold px-xl py-md text-grey-700 box-border hover:underline active:bg-grey-200 active:text-grey-500 active:border-0 w-fit;
+		@apply rounded-md font-bold px-xl py-md text-grey-700 dark:text-grey-200 box-border hover:underline active:bg-grey-200 active:text-grey-500 dark:active:bg-grey-700 w-fit;
 	}
 	.input--label {
-		@apply text-base font-bold text-grey-700 mr-[0.875rem];
+		@apply text-base font-bold text-grey-700 dark:text-grey-300 mr-[0.875rem];
 	}
 	.input--text {
-		@apply border-none bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 focus:outline-none;
+		@apply border-none bg-grey-200 dark:bg-grey-700 dark:border-grey-200 text-grey-700 dark:text-grey-200 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none;
+	}
+	.input--search {
+		@apply font-bold border-2 border-grey-600 border-solid box-border bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none flex items-center gap-md ;
 	}
 	.input--checkbox {
 		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;
 	}
 	.dropdown--container {
-		@apply md:w-fit md:top-[128px] md:rounded-2xl md:p-md md:right-xl md:left-auto bg-grey-100 w-screen h-fit absolute bottom-0 left-0 px-6 py-lg rounded-t-3xl flex flex-col gap-4;
+		@apply md:w-fit md:top-[128px] md:rounded-2xl md:p-md md:right-xl md:left-auto bg-grey-100 dark:bg-grey-800 w-screen h-fit absolute bottom-0 left-0 px-6 py-lg rounded-t-3xl flex flex-col gap-4;
 	}
 	.dropdown--item {
-		@apply flex items-center justify-start gap-md px-md py-sm hover:bg-grey-200 rounded-lg;
+		@apply flex items-center justify-start gap-md px-md py-sm hover:bg-grey-200 dark:hover:bg-grey-700 rounded-lg;
 	}
 	.dropdown--label {
-		@apply font-bold text-grey-700;
+		@apply font-bold text-grey-700 dark:text-grey-200;
 	}
 	.dropdown--icon {
-		@apply w-8 h-8 stroke-grey-700;
+		@apply w-8 h-8 stroke-grey-700 dark:stroke-grey-200;
 	}
 }

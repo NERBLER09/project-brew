@@ -2,13 +2,13 @@
 	import Check from '$lib/assets/Check.svelte';
 </script>
 
-<p class="text-grey-700 font-medium">
+<p class="text-grey-700 dark:text-grey-200 font-medium">
 	<span class="font-bold">Note:</span> the name you entered, bio, location, and email used to sign up
 	will be publicly visible.
 </p>
 
 <section>
-	<h2 class="text-grey-800 text-lg font-semibold">Info</h2>
+	<h2 class="text-grey-800 dark:text-grey-100 text-lg font-semibold">Info</h2>
 	<form on:submit|preventDefault={() => {}} class="flex flex-col gap-sm">
 		<div>
 			<label for="name-input" class="input--label">Name</label>

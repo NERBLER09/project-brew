@@ -62,12 +62,14 @@
 </svelte:head>
 
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
-	<p class="font-medium text-grey-700 pt-sm pb-md">Chose what projects are displayed on top.</p>
+	<p class="font-medium text-grey-700 dark:text-grey-200 pt-sm pb-md">
+		Chose what projects are displayed on top.
+	</p>
 
 	<form method="POST" on:submit|preventDefault={handleSubmit}>
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 text-md">Basic Details</h2>
+				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Basic Details</h2>
 			</header>
 			<div>
 				<input
@@ -89,27 +91,27 @@
 
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 text-md">Tags</h2>
+				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Tags</h2>
 			</header>
 
 			<div class="flex flex-wrap gap-md mb-md">
-				<NewTagsInput bind:newTags={tags}/>
+				<NewTagsInput bind:newTags={tags} />
 			</div>
 		</section>
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 text-md">Invite team members</h2>
+				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Invite team members</h2>
 			</header>
 			<div>
 				<button type="button">
-					<PlusNew className="h-8 w-8 stroke-grey-700" />
+					<PlusNew className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 					<span class="sr-only">Add new team member</span>
 				</button>
 			</div>
 		</section>
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 text-md">Cover image</h2>
+				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Cover image</h2>
 			</header>
 			<div class="max-w-xl">
 				<label
@@ -124,7 +126,7 @@
 			</div>
 
 			{#if fileURL}
-				<h3 class="text-md text-grey-700 font-semibold mt-md">Cover Preview</h3>
+				<h3 class="text-md text-grey-700 font-semibold mt-md dark:text-grey-200">Cover Preview</h3>
 				<img src={fileURL} alt="cover" class="rounded-md object-cover bg-center max-h-52" />
 				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
 					>Clear cover</button
@@ -133,7 +135,7 @@
 		</section>
 		<button class="button--circle bottom-8 right-8 absolute" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
-			<span class="sr-only">Update pinned projects</span>
+			<span class="sr-only">Create project</span>
 		</button>
 	</form>
 </MobileSubPageLayout>
