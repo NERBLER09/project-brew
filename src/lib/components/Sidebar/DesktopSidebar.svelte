@@ -9,6 +9,7 @@
 	import Search from '$lib/assets/Search.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
+	import { useDarkMode } from '$lib/stores/ui';
 	import Switch from '../form/Switch.svelte';
 
 	const handleSearch = () => {
@@ -105,7 +106,7 @@
 			class="h-[2px] border-solid border border-grey-600 w-11/12 rounded-full mx-auto drop-shadow-md"
 		/>
 		<div class="ml-md">
-			<Switch id="dark-mode" text="Dark Mode" />
+			<Switch id="dark-mode" text="Dark Mode" bind:checked={$useDarkMode} />
 		</div>
 	</div>
 </section>

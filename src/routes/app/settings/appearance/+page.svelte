@@ -4,9 +4,30 @@
 	import Dark from '$lib/assets/Theme/Dark.svelte';
 	import Light from '$lib/assets/Theme/Light.svelte';
 	import System from '$lib/assets/Theme/System.svelte';
+	import { perferedTheme, useDarkMode, type Theme } from '$lib/stores/ui';
 
-	type Theme = 'light' | 'dark' | 'system';
-	let selectedTheme: Theme = 'light';
+	let selectedTheme: Theme = $perferedTheme;
+
+	const handleUpdateTheme = () => {
+		$perferedTheme = selectedTheme;
+
+		switch ($perferedTheme) {
+			case 'light':
+				$useDarkMode = false;
+				break;
+			case 'dark':
+				$useDarkMode = true;
+				break;
+			case 'system':
+				$useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				break;
+			default:
+				$useDarkMode = false;
+				break;
+		}
+
+		localStorage.setItem('theme', selectedTheme);
+	};
 </script>
 
 <section>
@@ -67,11 +88,17 @@
 			>
 		</button>
 
-		<button class="md:hidden button--circle bottom-32 right-8 fixed z-50">
+		<button
+			class="md:hidden button--circle bottom-32 right-8 fixed z-50"
+			on:click={handleUpdateTheme}
+		>
 			<Check className="h-8 w-8 stroke-grey-200" />
-			<span class="sr-only">Save info</span>
+			<span class="sr-only">Save changes</span>
 		</button>
-		<button class="button--primary absolute right-0 -top-36 z-50 hidden md:block">
+		<button
+			class="button--primary absolute right-0 -top-36 z-50 hidden md:block"
+			on:click={handleUpdateTheme}
+		>
 			<span>Save changes</span>
 		</button>
 	</div>
