@@ -89,7 +89,6 @@
 		</a>
 		<!-- Shown on desktop -->
 		<button
-			href="/app/projects/edit-pinned"
 			class="button--text md:flex items-center gap-md ml-auto p-0 hidden"
 			on:click={handleShowEditPinsPrompt}
 		>
@@ -137,7 +136,7 @@
 				class="flex items-center gap-md p-0 md:hidden"
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
-				<Filter className="stroke-grey-700 w-8 h-8" parentBg="grey-100" />
+				<Filter className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" parentBg="grey-100 dark:stroke-grey-900" />
 				<span class="sr-only">Filter projects</span>
 			</button>
 			<!-- Only shown on desktop -->
@@ -145,7 +144,7 @@
 				class="hidden md:flex items-center gap-md  button--secondary"
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
-				<Down className="stroke-grey-700 w-lg h-lg" />
+				<Down className="stroke-grey-700 dark:stroke-grey-200 w-lg h-lg" />
 				<span>Sort: {$projectSort}</span>
 			</button>
 			{#if $showProjectsSort}
@@ -157,7 +156,7 @@
 	</div>
 	<div class="flex flex-wrap gap-lg">
 		{#if data.all.length === 0}
-			<p class="text-grey-700 font-medium">To pin a project click on the edit button.</p>
+			<p class="text-grey-700 dark:text-grey-200 font-medium">To create a new project click on the plus button.</p>
 		{/if}
 		{#each allProjects as project}
 			<ProjectCard
