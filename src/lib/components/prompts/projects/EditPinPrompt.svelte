@@ -43,14 +43,14 @@
 	};
 </script>
 
-<dialog bind:this={dialog} class="bg-grey-100 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
+<dialog bind:this={dialog} class="bg-grey-100 dark:bg-grey-900 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 text-lg">Edit pinned projects</h2>
+		<h2 class="font-semibold text-grey-800 dark:text-grey-200 text-lg">Edit pinned projects</h2>
 		<button on:click={() => (shown = false)} class="ml-auto">
-			<CloseMultiply className="stroke-grey-700 w-12 h-12" />
+			<CloseMultiply className="stroke-grey-700 dark:stroke-grey-200 w-12 h-12" />
 		</button>
 	</header>
-	<p class="font-medium text-grey-700 pt-sm">Chose what projects are displayed on top.</p>
+	<p class="font-medium text-grey-700 dark:text-grey-200 pt-sm">Chose what projects are displayed on top.</p>
 	<div class="my-md p-md input--search">
 		<Search className="stroke-grey-700 w-6 h-6" />
 		<input
