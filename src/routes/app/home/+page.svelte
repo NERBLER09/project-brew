@@ -64,8 +64,8 @@
 	{/if}
 </header>
 
-<div class="grid grid-cols-3 grid-rows-2">
-	<div class="col-span-2">
+<div class="grid-cols-5 grid-rows-2 gap-lg lg:grid">
+	<div class="col-span-3">
 		<section class="pt-6">
 			<header class="flex items-center">
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
@@ -106,6 +106,18 @@
 			</div>
 		</section>
 	</div>
+
+	<section class="col-span-1 hidden md:inline">
+		<header>
+			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
+		</header>
+		<div>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				Your focus time will display here after you complete a focus session
+			</p>
+		</div>
+	</section>
 </div>
+
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
 <EditPinPrompt bind:shown={showEditPinPrompt} projects={data.all} />
