@@ -9,16 +9,27 @@ export const load = (async (event) => {
     throw redirect(303, "/")
   }
 
+  event.depends("app:all-projects")
+
+  const { data: projects, error: projectsErr } = await supabaseClient
+    .from('projects')
+    .select()
+    .eq('user_id', session.user.id);
+
+
   const { data: user, error: err } = await supabaseClient.from('profiles').select().eq('id', session.user.id);
-  if (user) {
+  if (user && !projectsErr) {
     if (user?.length === 0) throw redirect(303, '/welcome');
 
-    console.log(user)
     userData.set(user[0])
+
+    const pinned = projects.filter((value) => value.pinned);
 
     return {
       name: user[0]?.name,
-      avatar_url: user[0].avatar_url
+      avatar_url: user[0].avatar_url,
+      all: projects,
+      pinned
     }
   }
 

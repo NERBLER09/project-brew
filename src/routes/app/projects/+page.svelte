@@ -23,6 +23,7 @@
 		allProjects = data.all.filter((value) => value.project_name?.includes(query));
 		allProjects = [...allProjects];
 	};
+
 	const handleSort = (sort: SortOption) => {
 		switch (sort) {
 			case 'a-z':
@@ -59,16 +60,16 @@
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
 
 <header class="flex items-center">
-	<h1 class="text-lg md:text-2xl text-grey-800 dark:text-grey-200">Projects</h1>
+	<h1 class="text-lg text-grey-800 dark:text-grey-200 md:text-2xl">Projects</h1>
 	<button
-		class="hidden button--primary md:flex items-center gap-md ml-auto"
+		class="button--primary ml-auto hidden items-center gap-md md:flex"
 		on:click={handleShowNewProjctPrompt}
 	>
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span>New project</span>
 	</button>
 
-	<a class="md:hidden button--circle bottom-32 right-8 absolute z-50" href="/app/projects/new">
+	<a class="button--circle absolute bottom-32 right-8 z-50 md:hidden" href="/app/projects/new">
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span class="sr-only">Create a new project</span>
 	</a>
@@ -76,29 +77,29 @@
 
 <section class="pt-6">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 dark:text-grey-100 text-md md:text-lg">
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
 			Pinned Projects
 		</h2>
 		<!-- Shown on mobile -->
 		<a
 			href="/app/projects/edit-pinned"
-			class="button--text flex items-center gap-md ml-auto p-0 md:hidden"
+			class="button--text ml-auto flex items-center gap-md p-0 md:hidden"
 		>
 			<Edit className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" />
 			<span class="sr-only">Edit Pinned projects</span>
 		</a>
 		<!-- Shown on desktop -->
 		<button
-			class="button--text md:flex items-center gap-md ml-auto p-0 hidden"
+			class="button--text ml-auto hidden items-center gap-md p-0 md:flex"
 			on:click={handleShowEditPinsPrompt}
 		>
 			<Edit className="stroke-grey-700 dark:stroke-grey-200 w-8 h-8" />
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
-	<div class="mt-md flex items-center flex-nowrap md:flex-wrap gap-lg w-full overflow-x-auto">
+	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
 		{#if data.pinned.length === 0}
-			<p class="text-grey-700 font-medium dark:text-grey-200">
+			<p class="font-medium text-grey-700 dark:text-grey-200">
 				To pin a project click on the edit button.
 			</p>
 		{/if}
@@ -116,15 +117,15 @@
 
 <section class="mt-lg">
 	<header class="flex items-center">
-		<h2 class="font-semibold text-grey-800 dark:text-grey-100 text-md md:text-lg">All Projects</h2>
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">All Projects</h2>
 	</header>
-	<div class="flex items-center mt-md mb-4">
+	<div class="mt-md mb-4 flex items-center">
 		<div class="input--search w-full max-w-[15.625rem] lg:max-w-sm">
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input
 				type="text"
 				placeholder="Search by name"
-				class="bg-grey-200 border-none w-full p-0"
+				class="w-full border-none bg-grey-200 p-0"
 				bind:value={query}
 				on:keyup={handleSearch}
 			/>
@@ -136,12 +137,15 @@
 				class="flex items-center gap-md p-0 md:hidden"
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
-				<Filter className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" parentBg="grey-100 dark:stroke-grey-900" />
+				<Filter
+					className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200"
+					parentBg="grey-100 dark:stroke-grey-900"
+				/>
 				<span class="sr-only">Filter projects</span>
 			</button>
 			<!-- Only shown on desktop -->
 			<button
-				class="hidden md:flex items-center gap-md  button--secondary"
+				class="button--secondary hidden items-center gap-md  md:flex"
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
 				<Down className="stroke-grey-700 dark:stroke-grey-200 w-lg h-lg" />
@@ -156,7 +160,9 @@
 	</div>
 	<div class="flex flex-wrap gap-lg">
 		{#if data.all.length === 0}
-			<p class="text-grey-700 dark:text-grey-200 font-medium">To create a new project click on the plus button.</p>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				To create a new project click on the plus button.
+			</p>
 		{/if}
 		{#each allProjects as project}
 			<ProjectCard

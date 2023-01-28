@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Bell from '$lib/assets/Bell.svelte';
+	import Edit from '$lib/assets/Edit.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
+	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
 	import type { PageData } from './$types';
@@ -10,6 +13,12 @@
 	export let data: PageData;
 
 	let showUserDropdown = false;
+
+	let showEditPinPrompt = false;
+
+	const handleShowEditPinsPrompt = () => {
+		showEditPinPrompt = true;
+	};
 </script>
 
 <svelte:head>
@@ -18,20 +27,20 @@
 
 <header class="flex items-start">
 	<!-- Mobile welcome text -->
-	<div class="flex md:hidden flex-col items-start">
-		<span class="text-grey-800 dark:text-grey-200 font-medium">Welcome Back</span>
-		<span class="text-lg font-semibold text-grey-900 dark:text-grey-100 w-1/2">{data.name}</span>
+	<div class="flex flex-col items-start md:hidden">
+		<span class="font-medium text-grey-800 dark:text-grey-200">Welcome Back</span>
+		<span class="w-1/2 text-lg font-semibold text-grey-900 dark:text-grey-100">{data.name}</span>
 	</div>
 	<!-- Desktop welcome text -->
 	<span
-		class="hidden md:block md:text-lg lg:text-xl text-grey-900 dark:text-grey-100 w-1/2 break-words"
+		class="hidden w-1/2 break-words text-grey-900 dark:text-grey-100 md:block md:text-lg lg:text-xl"
 		>Welcome Back, <br class="hidden lg:block" /><span class="font-semibold">{data.name}</span
 		></span
 	>
 
 	<div class="ml-auto flex items-center gap-lg md:gap-xl">
 		<button
-			class="button--primary items-center gap-md hidden lg:flex"
+			class="button--primary hidden items-center gap-md lg:flex"
 			on:click={() => ($showNewProjectPrompt = true)}
 		>
 			<PlusNew className="h-5 w-5" />
@@ -43,7 +52,7 @@
 				<img
 					src={data.avatar_url}
 					alt="User profile"
-					class="w-2xl h-2xl md:h-16 md:w-16 rounded-full aspect-square object-cover"
+					class="aspect-square h-2xl w-2xl rounded-full object-cover md:h-16 md:w-16"
 				/>
 			{:else}
 				<User className="w-2xl h-2xl stroke-grey-700 md:h-16 md:w-16" />
@@ -55,4 +64,48 @@
 	{/if}
 </header>
 
+<div class="grid grid-cols-3 grid-rows-2">
+	<div class="col-span-2">
+		<section class="pt-6">
+			<header class="flex items-center">
+				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
+					Pinned Projects
+				</h2>
+				<!-- Shown on mobile -->
+				<a
+					href="/app/projects/edit-pinned"
+					class="button--text ml-auto flex items-center gap-md p-0 md:hidden"
+				>
+					<Edit className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" />
+					<span class="sr-only">Edit Pinned projects</span>
+				</a>
+				<!-- Shown on desktop -->
+				<button
+					class="button--text ml-auto hidden items-center gap-md p-0 md:flex"
+					on:click={handleShowEditPinsPrompt}
+				>
+					<Edit className="stroke-grey-700 dark:stroke-grey-200 w-8 h-8" />
+					<span class="hidden lg:inline">Edit pinned <span class="sr-only">projects</span></span>
+				</button>
+			</header>
+			<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
+				{#if data.pinned.length === 0}
+					<p class="font-medium text-grey-700 dark:text-grey-200">
+						To pin a project click on the edit button.
+					</p>
+				{/if}
+				{#each data.pinned as project}
+					<ProjectCard
+						project_name={project.project_name}
+						id={project.id}
+						description={project.description}
+						banner={project.banner}
+						invited_people={project.invited_people}
+					/>
+				{/each}
+			</div>
+		</section>
+	</div>
+</div>
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
+<EditPinPrompt bind:shown={showEditPinPrompt} projects={data.all} />
