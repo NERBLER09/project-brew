@@ -22,7 +22,7 @@ test("sign up page can load", async ({ page }) => {
 	await expect(page.getByRole("heading", { name: "Sign up" })).toHaveText("Sign Up")
 })
 
-test("loggin in user works", async ({ page }) => {
+test("logging in user works", async ({ page }) => {
 	await page.goto("http://localhost:5173/login")
 	await page.getByPlaceholder('Email').click();
 	await page.getByPlaceholder('Email').fill('finnegan.beaudin@protonmail.com');
