@@ -14,6 +14,7 @@
 	import type { PageData } from './$types';
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import NewList from '$lib/components/form/forms/NewList.svelte';
+	import TagList from '$lib/components/projects/tags/TagList.svelte';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -32,10 +33,10 @@
 </svelte:head>
 
 <header
-	class="min-h-[13.5rem] object-cover bg-origin-border bg-center bg-cover rounded-b-3xl relative -top-6 -left-6 p-6 w-[calc(100%+48px)] md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
+	class="relative -top-6 -left-6 min-h-[13.5rem] w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: url({data.banner});"
 >
-	<div class="flex items-center mb-md md:mb-sm md:items-start">
+	<div class="mb-md flex items-center md:mb-sm md:items-start">
 		<a class="flex items-center gap-md" href="/app/projects">
 			<Back
 				className="w-8 h-8 aspect-square {data.banner
@@ -50,33 +51,40 @@
 				{data.name}
 			</h1>
 		</a>
-		<div class="flex items-center gap-md ml-auto">
+		<div class="ml-auto flex items-center gap-md">
 			<a href="/app/projects/{data.id}/about" class="block md:hidden">
-				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
+				<CircleInfo
+					className="w-8 h-8 {data.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
 				<span class="sr-only">View project info</span>
 			</a>
 			<button class="hidden md:block" on:click={() => ($showAboutProjectPrompt = true)}>
-				<CircleInfo className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
+				<CircleInfo
+					className="w-8 h-8 {data.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
 				<span class="sr-only">View project info</span>
 			</button>
 			<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
-				<MoreHorizontal className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
+				<MoreHorizontal
+					className="w-8 h-8 {data.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
 			</button>
 		</div>
 	</div>
-	<div class="flex flex-wrap gap-md mb-md">
-		{#each data.tags as tag}
-			<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-				<span class="text-grey-700 text-sm font-medium">{tag}</span>
-			</div>
-		{/each}
-	</div>
+
+	<TagList tags={data.tags} />
 
 	<Description banner={data.banner} description={data.description} />
 </header>
 
 <section
-	class="flex flex-nowrap items-start gap-lg overflow-x-auto md:gap-2xl pb-4"
+	class="flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
 	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300 }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}
@@ -85,12 +93,14 @@
 		<List name={list.list_name} id={list.id} status={list.status} />
 	{/each}
 
-	<div class="min-w-[15.625rem] md:min-w-[18.75rem] lg:min-w-[25rem] mt-[2.625rem] md:mt-[4.0625rem]">
+	<div
+		class="mt-[2.625rem] min-w-[15.625rem] md:mt-[4.0625rem] md:min-w-[18.75rem] lg:min-w-[25rem]"
+	>
 		{#if createNewList}
 			<NewList bind:createNewList />
 		{:else}
 			<button
-				class="button--primary w-full flex items-center gap-md justify-center"
+				class="button--primary flex w-full items-center justify-center gap-md"
 				on:click={() => (createNewList = true)}
 			>
 				<PlusNew className="w-6 h-6 stroke-grey-200" />

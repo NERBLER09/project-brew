@@ -6,6 +6,7 @@
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
+	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 
 	import { currentProject } from '$lib/stores/project';
@@ -104,22 +105,29 @@
 	}
 </script>
 
-<dialog bind:this={dialog} class="bg-grey-100 dark:bg-grey-900 rounded-2xl p-8 w-2/3 h-1/2 xl:w-1/3 xl:h-2/3">
+<dialog
+	bind:this={dialog}
+	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+>
 	<header
-		class="relative -top-8 -left-8 w-[calc(100%+64px)] p-6 flex items-end object-cover rounded-b-3xl bg-cover bg-center {!newCoverURL
+		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!newCoverURL
 			? 'w-fit'
 			: 'h-[12.5rem]'}"
 		style="background-image: url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
 		{#if !inEditMode}
 			<h1
-				class="w-fit text-lg {$currentProject.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'} truncate"
+				class="w-fit text-lg {$currentProject.banner
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate"
 			>
 				{$currentProject?.name}
 			</h1>
 		{:else}
 			<h1
-				class="w-fit text-lg {newCoverURL ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'} truncate"
+				class="w-fit text-lg {newCoverURL
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate"
 				contenteditable="true"
 				bind:textContent={newProjectName}
 			>
@@ -130,13 +138,19 @@
 		<div class="ml-auto mb-auto flex items-center gap-md">
 			{#if inEditMode}
 				<button on:click={() => (inEditMode = false)}>
-					<Trash className="h-8 w-8 {newCoverURL ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}" />
+					<Trash
+						className="h-8 w-8 {newCoverURL
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'}"
+					/>
 					<span class="sr-only">Discard changes</span>
 				</button>
 			{:else}
 				<button on:click={() => (inEditMode = true)}>
 					<Edit
-						className="h-8 w-8 {$currentProject.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
+						className="h-8 w-8 {$currentProject.banner
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'}"
 					/>
 					<span class="sr-only">Edit project details</span>
 				</button>
@@ -144,7 +158,9 @@
 
 			<button on:click={() => (shown = false)}>
 				<CloseMultiply
-					className=" {newCoverURL ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'} w-12 h-12"
+					className=" {newCoverURL
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'} w-12 h-12"
 				/>
 				<span class="sr-only">Close</span>
 			</button>
@@ -152,26 +168,22 @@
 	</header>
 
 	<div>
-		<div class="flex flex-wrap gap-md mb-lg">
+		<div class="mb-lg flex flex-wrap gap-md">
 			{#if inEditMode}
 				<NewTagsInput bind:newTags={newProjectTags} />
 			{:else}
-				{#each $currentProject.tags as tag}
-					<div class="bg-grey-200 py-2 px-3 w-fit rounded">
-						<span class="text-grey-700 font-medium">{tag}</span>
-					</div>
-				{/each}
+				<TagList tags={$currentProject.tags} />
 			{/if}
 		</div>
 
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
-			<p class="font-medium text-grey-700 dark:text-grey-200 mt-md">Team management coming soon.</p>
+			<p class="mt-md font-medium text-grey-700 dark:text-grey-200">Team management coming soon.</p>
 		{:else}
 			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
 			<textarea
 				name="description"
-				class="input--text resize-none h-36 w-full"
+				class="input--text h-36 w-full resize-none"
 				placeholder="Enter a brief description"
 				bind:value={newProjectDescription}
 			/>
@@ -180,14 +192,14 @@
 	{#if inEditMode}
 		<section class="mt-md">
 			<header>
-				<h2 class="text-grey-900 dark:text-grey-100 text-md font-semibold">Cover Properties</h2>
+				<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100">Cover Properties</h2>
 			</header>
 
 			<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
 
 			{#if !newCoverURL}
 				<button
-					class="button--secondary flex items-center justify-center gap-md w-full"
+					class="button--secondary flex w-full items-center justify-center gap-md"
 					on:click={() => coverInputElement.click()}
 				>
 					<Image className="stroke-grey-70 dark:text-grey-1000 w-6 h-6" />
@@ -195,14 +207,14 @@
 				</button>
 			{:else if newCoverURL}
 				<button
-					class="button--primary flex items-center justify-center gap-md w-full"
+					class="button--primary flex w-full items-center justify-center gap-md"
 					on:click={() => coverInputElement.click()}
 				>
 					<Image className="stroke-grey-200 w-6 h-6" />
 					Update project cover
 				</button>
 				<button
-					class="button--secondary flex items-center justify-center gap-md w-full mt-sm"
+					class="button--secondary mt-sm flex w-full items-center justify-center gap-md"
 					on:click={handleRemoveCover}
 				>
 					<Trash className="stroke-grey-700 dark:stroke-grey-100 w-6 h-6" />
@@ -211,7 +223,7 @@
 			{/if}
 		</section>
 
-		<footer class="w-1/2 flex items-center justify-around mx-auto mt-xl gap-md">
+		<footer class="mx-auto mt-xl flex w-1/2 items-center justify-around gap-md">
 			<button class="button--secondary" on:click={() => (inEditMode = false)}>Cancel</button>
 			<button class="button--primary" on:click={handleUpdateProject}>Save</button>
 		</footer>
