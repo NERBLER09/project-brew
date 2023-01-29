@@ -9,8 +9,6 @@
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { recentlyEdited } from '$lib/stores/project';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
-	import { uniq } from 'lodash';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -22,10 +20,6 @@
 	const handleShowEditPinsPrompt = () => {
 		showEditPinPrompt = true;
 	};
-
-	onMount(() => {
-		$recentlyEdited = uniq($recentlyEdited);
-	});
 </script>
 
 <svelte:head>
@@ -114,7 +108,7 @@
 		</section>
 	</div>
 
-	<section class="col-span-2">
+	<section class="col-span-2 hidden md:inline">
 		<header>
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Jump Back Into</h2>
 			<p class="font-medium text-grey-700 dark:text-grey-200">
@@ -123,11 +117,6 @@
 		</header>
 
 		<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
-			{#if $recentlyEdited.length === 0}
-				<p class="font-medium text-grey-700 dark:text-grey-200">
-					Projects you have recently viewed will show up here
-				</p>
-			{/if}
 			{#each $recentlyEdited as project}
 				<ProjectCard
 					project_name={project.project_name}
@@ -136,6 +125,10 @@
 					banner={project.banner}
 					invited_people={project.invited_people}
 				/>
+			{:else}
+				<p class="font-medium text-grey-700 dark:text-grey-200">
+					Projects you have recently viewed will show up here
+				</p>
 			{/each}
 		</div>
 	</section>
