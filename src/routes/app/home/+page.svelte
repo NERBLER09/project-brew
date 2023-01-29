@@ -64,7 +64,7 @@
 	{/if}
 </header>
 
-<div class="grid-cols-5 grid-rows-2 gap-lg lg:grid">
+<div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
 	<div class="col-span-3">
 		<section class="pt-6">
 			<header class="flex items-center">
