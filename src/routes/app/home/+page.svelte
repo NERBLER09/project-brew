@@ -107,6 +107,15 @@
 		</section>
 	</div>
 
+	<section>
+		<header>
+			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Jump Back Into</h2>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				Resume working on recently edited projects
+			</p>
+		</header>
+	</section>
+
 	<section class="col-span-1 hidden md:inline">
 		<header>
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
