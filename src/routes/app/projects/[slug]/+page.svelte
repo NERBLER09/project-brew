@@ -29,6 +29,7 @@
 	};
 
 	onMount(() => {
+		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		$recentlyEdited = [data.project, ...$recentlyEdited];
 	});
 </script>
