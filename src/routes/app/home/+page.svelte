@@ -4,6 +4,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
+	import TeamActivity from '$lib/components/home/TeamActivity.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
@@ -66,6 +67,11 @@
 </header>
 
 <div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
+	<!-- Display first row last col on desktop -->
+	<div class="col-span-1 hidden md:col-start-2 md:inline lg:col-start-5">
+		<TeamActivity />
+	</div>
+
 	<div class="col-span-2">
 		<section class="pt-6">
 			<header class="flex items-center">
@@ -143,6 +149,10 @@
 			</p>
 		</div>
 	</section>
+
+	<div class="md:hidden">
+		<TeamActivity />
+	</div>
 </div>
 
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
