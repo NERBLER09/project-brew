@@ -7,7 +7,10 @@
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
+	import { recentlyEdited } from '$lib/stores/project';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
+	import { uniq } from 'lodash';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -19,6 +22,10 @@
 	const handleShowEditPinsPrompt = () => {
 		showEditPinPrompt = true;
 	};
+
+	onMount(() => {
+		$recentlyEdited = uniq($recentlyEdited);
+	});
 </script>
 
 <svelte:head>
@@ -65,7 +72,7 @@
 </header>
 
 <div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
-	<div class="col-span-3">
+	<div class="col-span-2">
 		<section class="pt-6">
 			<header class="flex items-center">
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
@@ -107,13 +114,30 @@
 		</section>
 	</div>
 
-	<section>
+	<section class="col-span-2">
 		<header>
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Jump Back Into</h2>
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				Resume working on recently edited projects
 			</p>
 		</header>
+
+		<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
+			{#if $recentlyEdited.length === 0}
+				<p class="font-medium text-grey-700 dark:text-grey-200">
+					Projects you have recently viewed will show up here
+				</p>
+			{/if}
+			{#each $recentlyEdited as project}
+				<ProjectCard
+					project_name={project.project_name}
+					id={project.id}
+					description={project.description}
+					banner={project.banner}
+					invited_people={project.invited_people}
+				/>
+			{/each}
+		</div>
 	</section>
 
 	<section class="col-span-1 hidden md:inline">

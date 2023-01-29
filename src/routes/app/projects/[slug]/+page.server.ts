@@ -30,7 +30,8 @@ export const load = (async (event) => {
 			description: project?.description,
 			banner: project?.banner,
 			tags: JSON.parse(project?.tags) || [],
-			lists: lists || []
+			lists: lists || [],
+			project
 		};
 	}
 

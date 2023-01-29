@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, recentlyEdited } from '$lib/stores/project';
 	import { dndzone } from 'svelte-dnd-action';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
@@ -15,6 +15,7 @@
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import NewList from '$lib/components/form/forms/NewList.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -26,6 +27,10 @@
 	const handleDnd = (event) => {
 		data.lists = event.detail.items;
 	};
+
+	onMount(() => {
+		$recentlyEdited = [data.project, ...$recentlyEdited];
+	});
 </script>
 
 <svelte:head>
