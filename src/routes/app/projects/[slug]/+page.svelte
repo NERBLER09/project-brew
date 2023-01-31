@@ -30,7 +30,13 @@
 
 	onMount(() => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
-		$recentlyEdited = [data.project, ...$recentlyEdited];
+		if (!$recentlyEdited.find((item) => item.id === data.id)) {
+			$recentlyEdited = [data.project, ...$recentlyEdited];
+		} else {
+			const index = $recentlyEdited.findIndex((item) => item.id === data.id);
+			$recentlyEdited.splice(index, 1);
+			$recentlyEdited = [data.project, ...$recentlyEdited];
+		}
 	});
 </script>
 
