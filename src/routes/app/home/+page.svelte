@@ -4,6 +4,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
+	import ProjectStatistics from '$lib/components/home/project-statistics/ProjectStatistics.svelte';
 	import TeamActivity from '$lib/components/home/TeamActivity.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
@@ -67,6 +68,8 @@
 </header>
 
 <div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
+	<ProjectStatistics />
+
 	<!-- Display first row last col on desktop -->
 	<div class="col-span-1 hidden md:col-start-2 md:inline lg:col-start-5">
 		<TeamActivity />
@@ -92,7 +95,7 @@
 					on:click={handleShowEditPinsPrompt}
 				>
 					<Edit className="stroke-grey-700 dark:stroke-grey-200 w-8 h-8" />
-					<span class="hidden lg:inline">Edit pinned <span class="sr-only">projects</span></span>
+					<span class="hidden xl:inline">Edit pinned <span class="sr-only">projects</span></span>
 				</button>
 			</header>
 			<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">

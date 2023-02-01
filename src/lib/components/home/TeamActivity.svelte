@@ -1,5 +1,5 @@
 <section class="col-span-1">
-	<header class="pt-6">
+	<header>
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">Team Activity</h2>
 	</header>
 	<div>
