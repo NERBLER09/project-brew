@@ -14,11 +14,9 @@
 			Your progress for each of you pinned project(s) will show up here
 		</p>
 	</header>
-	<div>
-		<div class="flex flex-nowrap gap-lg">
-			{#each pinned_projects as { project_name, id }}
-				<Project {project_name} {id} />
-			{/each}
-		</div>
+	<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
+		{#each pinned_projects as { project_name, id }}
+			<Project {project_name} {id} />
+		{/each}
 	</div>
 </section>

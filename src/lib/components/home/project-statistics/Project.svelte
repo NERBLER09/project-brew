@@ -3,9 +3,11 @@
 	export let id: number | undefined;
 </script>
 
-<section class="text-center">
+<section class="flex flex-col items-center text-center">
 	<header>
-		<h3 class="mb-md text-md font-semibold text-grey-700 dark:text-grey-200">{project_name}</h3>
+		<h3 class="mb-md text-md font-semibold text-grey-700 dark:text-grey-200">
+			{project_name}
+		</h3>
 	</header>
 
 	<div
