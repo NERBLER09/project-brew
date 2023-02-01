@@ -5,7 +5,7 @@
 
 <section class="text-center">
 	<header>
-		<h3 class="text-md font-semibold text-grey-700 dark:text-grey-200">{project_name}</h3>
+		<h3 class="mb-md text-md font-semibold text-grey-700 dark:text-grey-200">{project_name}</h3>
 	</header>
 
 	<div

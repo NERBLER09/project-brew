@@ -67,16 +67,13 @@
 	{/if}
 </header>
 
-<div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
+<div class="grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-2 md:gap-xl lg:grid-cols-5">
 	<ProjectStatistics pinned_projects={data.pinned} />
 
-	<!-- Display first row last col on desktop -->
-	<div class="col-span-1 hidden md:col-start-2 md:inline lg:col-start-5">
-		<TeamActivity />
-	</div>
+	<TeamActivity />
 
 	<div class="col-span-2">
-		<section class="pt-6">
+		<section>
 			<header class="flex items-center">
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
 					Pinned Projects
@@ -152,10 +149,6 @@
 			</p>
 		</div>
 	</section>
-
-	<div class="md:hidden">
-		<TeamActivity />
-	</div>
 </div>
 
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
