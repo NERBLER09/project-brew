@@ -68,7 +68,7 @@
 </header>
 
 <div class="grid-cols-2 grid-rows-2 gap-xl md:grid lg:grid-cols-5">
-	<ProjectStatistics />
+	<ProjectStatistics pinned_projects={data.pinned} />
 
 	<!-- Display first row last col on desktop -->
 	<div class="col-span-1 hidden md:col-start-2 md:inline lg:col-start-5">
