@@ -67,7 +67,7 @@
 	{/if}
 </header>
 
-<div class="grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-2 md:gap-xl lg:grid-cols-5">
+<div class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-2 md:gap-xl lg:grid-cols-5">
 	<ProjectStatistics pinned_projects={data.pinned} />
 
 	<TeamActivity />

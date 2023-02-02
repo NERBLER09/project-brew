@@ -27,7 +27,9 @@
 
 <section class="flex flex-col items-center text-center">
 	<header>
-		<h3 class="mb-md text-md font-semibold text-grey-700 dark:text-grey-200">
+		<h3
+			class="mb-md text-start text-md font-semibold text-grey-700 dark:text-grey-200 md:text-center"
+		>
 			{project_name}
 		</h3>
 	</header>
