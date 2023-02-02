@@ -33,8 +33,29 @@
 	</header>
 
 	<div
-		class="flex aspect-square h-32 w-32 flex-col items-center justify-center gap-sm rounded-full border-8 border-grey-200 dark:border-grey-700"
+		class="relative flex aspect-square h-32 w-32 flex-col items-center justify-center gap-sm rounded-full"
 	>
+		<div class="absolute">
+			<svg class="h-32 w-32">
+				<circle
+					cx="64"
+					cy="64"
+					class="fill-none stroke-grey-200 dark:stroke-grey-700"
+					stroke-width="8"
+					r="60"
+				/>
+				<circle
+					cx="64"
+					cy="64"
+					r="60"
+					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
+					stroke-dashoffset={440 - (440 * percentCompleted) / 100}
+					stroke-dasharray="440"
+					stroke-linecap="round"
+					stroke-width="8"
+				/>
+			</svg>
+		</div>
 		<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
 		<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 	</div>
