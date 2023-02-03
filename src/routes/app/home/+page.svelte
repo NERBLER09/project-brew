@@ -58,7 +58,7 @@
 					class="aspect-square h-2xl w-2xl rounded-full object-cover md:h-16 md:w-16"
 				/>
 			{:else}
-				<User className="w-2xl h-2xl stroke-grey-700 md:h-16 md:w-16" />
+				<User className="w-2xl h-2xl stroke-grey-700 dark:stroke-grey-200 md:h-16 md:w-16" />
 			{/if}
 		</button>
 	</div>
