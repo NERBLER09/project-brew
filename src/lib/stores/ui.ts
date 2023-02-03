@@ -10,3 +10,6 @@ export const showAboutProjectPrompt: Writable<boolean> = writable(false)
 export type Theme = "dark" | "light" | "system"
 export const perferedTheme: Writable<Theme> = writable("light")
 export const useDarkMode = writable(false)
+
+type SettingsPageNames = "Account" | "Appearance" | "Notifications" | "About" | "Settings"
+export const settingsPage: Writable<SettingsPageNames> = writable("Settings")

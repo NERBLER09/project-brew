@@ -5,31 +5,31 @@
 	import User from '$lib/assets/Fill/User.svelte';
 </script>
 
-<nav class="relative top-14 flex flex-col gap-4 z-50 md:flex-row md:top-2">
+<nav class="relative top-14 z-50 flex flex-col gap-4 p-6 md:top-2 md:w-fit md:flex-row md:p-0">
 	<a
 		href="/app/settings/account"
-		class="gap-md py-sm px-md font-bold text-grey-700 dark:text-grey-200 flex items-center active:bg-grey-200 dark:active:bg-grey-700 rounded-md"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
 	>
 		<User className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
 		Account
 	</a>
 	<a
 		href="/app/settings/appearance"
-		class="gap-md py-sm px-md font-bold text-grey-700 dark:text-grey-200 flex items-center active:bg-grey-200 dark:active:bg-grey-700 rounded-md"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
 	>
 		<Image className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
 		Appearance
 	</a>
 	<a
 		href="/app/settings/notifications"
-		class="gap-md py-sm px-md font-bold text-grey-700 dark:text-grey-200 flex items-center active:bg-grey-200 dark:active:bg-grey-700 rounded-md"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
 	>
 		<Bell className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
 		Notifications
 	</a>
 	<a
 		href="/app/settings/about"
-		class="gap-md py-sm px-md font-bold text-grey-700 dark:text-grey-200 flex items-center active:bg-grey-200 dark:active:bg-grey-700 rounded-md"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
 	>
 		<CircleInfo className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
 		About

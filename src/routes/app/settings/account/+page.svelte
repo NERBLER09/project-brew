@@ -1,14 +1,20 @@
 <script>
 	import Check from '$lib/assets/Check.svelte';
+	import { settingsPage } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		$settingsPage = 'Account';
+	});
 </script>
 
-<p class="text-grey-700 dark:text-grey-200 font-medium">
+<p class="font-medium text-grey-700 dark:text-grey-200">
 	<span class="font-bold">Note:</span> the name you entered, bio, location, and email used to sign up
 	will be publicly visible.
 </p>
 
 <section>
-	<h2 class="text-grey-800 dark:text-grey-100 text-lg font-semibold">Info</h2>
+	<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
 	<form on:submit|preventDefault={() => {}} class="flex flex-col gap-sm">
 		<div>
 			<label for="name-input" class="input--label">Name</label>
@@ -33,13 +39,13 @@
 		<div>
 			<label for="bio-input" class="input--label mb-sm">Bio</label>
 			<textarea
-				class="input--text resize-none h-36 w-full"
+				class="input--text h-36 w-full resize-none"
 				id="bio-input"
 				name="bio"
 				placeholder="Write something about yourself"
 			/>
 		</div>
-		<button class="md:hidden button--circle bottom-32 right-8 fixed z-50">
+		<button class="button--circle fixed bottom-32 right-8 z-50 md:hidden">
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save info</span>
 		</button>

@@ -1,8 +1,17 @@
+<script>
+	import { settingsPage } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		$settingsPage = 'About';
+	});
+</script>
+
 <section>
 	<header class="flex items-start gap-md">
-		<div class="w-20 h-20 bg-grey-300 rounded-xl mb-sm" />
+		<div class="mb-sm h-20 w-20 rounded-xl bg-grey-300" />
 		<div>
-			<h2 class="text-lg text-grey-900 dark:text-grey-100 font-semibold">Project Brew</h2>
+			<h2 class="text-lg font-semibold text-grey-900 dark:text-grey-100">Project Brew</h2>
 			<!-- TODO: Show app version -->
 		</div>
 	</header>
@@ -11,14 +20,14 @@
 			href="https://github.com/NERBLER09/project-brew/issues/new"
 			target="_blank"
 			rel="noreferrer"
-			class="text-grey-700 dark:text-grey-200 font-medium">Submit an issue</a
+			class="font-medium text-grey-700 dark:text-grey-200">Submit an issue</a
 		>
-		<a href="#" class="text-grey-700 dark:text-grey-200 font-medium">Privacy Policy</a>
+		<a href="#" class="font-medium text-grey-700 dark:text-grey-200">Privacy Policy</a>
 	</div>
 </section>
 <section class="mb-md">
 	<header>
-		<h2 class="text-lg text-grey-900 dark:text-grey-100 font-semibold">Credits</h2>
+		<h2 class="text-lg font-semibold text-grey-900 dark:text-grey-100">Credits</h2>
 	</header>
 	<div>
 		<p class="font-medium text-grey-700 dark:text-grey-200">

@@ -4,7 +4,8 @@
 	import Dark from '$lib/assets/Theme/Dark.svelte';
 	import Light from '$lib/assets/Theme/Light.svelte';
 	import System from '$lib/assets/Theme/System.svelte';
-	import { perferedTheme, useDarkMode, type Theme } from '$lib/stores/ui';
+	import { perferedTheme, settingsPage, useDarkMode, type Theme } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
 
 	let selectedTheme: Theme = $perferedTheme;
 
@@ -28,14 +29,18 @@
 
 		localStorage.setItem('theme', selectedTheme);
 	};
+
+	onMount(() => {
+		$settingsPage = 'Appearance';
+	});
 </script>
 
 <section>
 	<header>
-		<h2 class="text-lg text-grey-700 dark:text-grey-200 font-semibold">Theme</h2>
+		<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Theme</h2>
 	</header>
 
-	<div class="flex flex-wrap gap-6 mt-md">
+	<div class="mt-md flex flex-wrap gap-6">
 		<button class="relative text-start" on:click={() => (selectedTheme = 'light')}>
 			{#if selectedTheme === 'light'}
 				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
@@ -43,7 +48,7 @@
 			<div
 				class="p-sm {selectedTheme === 'light'
 					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} border-2 rounded-lg mb-md"
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
 			>
 				<Light />
 			</div>
@@ -60,7 +65,7 @@
 			<div
 				class="p-sm {selectedTheme === 'dark'
 					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} border-2 rounded-lg mb-md"
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
 			>
 				<Dark />
 			</div>
@@ -77,7 +82,7 @@
 			<div
 				class="p-sm {selectedTheme === 'system'
 					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} border-2 rounded-lg mb-md"
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
 			>
 				<System />
 			</div>
@@ -89,7 +94,7 @@
 		</button>
 
 		<button
-			class="md:hidden button--circle bottom-32 right-8 fixed z-50"
+			class="button--circle fixed bottom-32 right-8 z-50 md:hidden"
 			on:click={handleUpdateTheme}
 		>
 			<Check className="h-8 w-8 stroke-grey-200" />
