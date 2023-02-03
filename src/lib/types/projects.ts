@@ -8,6 +8,7 @@ export interface User {
   location: string | null
   name: string
   team_members: string[] | null
+  role: string | null
 }
 
 export interface List {

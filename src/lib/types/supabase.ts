@@ -42,6 +42,7 @@ export interface Database {
           invited_projects: number[] | null
           location: string | null
           name: string
+          role: string | null
           team_members: string[] | null
         }
         Insert: {
@@ -53,6 +54,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name: string
+          role?: string | null
           team_members?: string[] | null
         }
         Update: {
@@ -64,6 +66,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name?: string
+          role?: string | null
           team_members?: string[] | null
         }
       }
