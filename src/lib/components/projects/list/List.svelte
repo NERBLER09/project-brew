@@ -1,5 +1,4 @@
 <script lang="ts">
-	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Card from '../card/Card.svelte';
@@ -7,7 +6,7 @@
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import { dndzone } from 'svelte-dnd-action';
-	import { userId } from '$lib/stores/user';
+	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
 
 	export let name: string;
@@ -25,7 +24,7 @@
 
 		const { error } = await supabase
 			.from('tasks')
-			.update({ list: id, user_id: $userId, status })
+			.update({ list: id, user_id: $userData.id, status })
 			.eq('id', event.detail.info.id);
 
 		const found = tasks.find((task) => task.id === event.detail.info.id);
@@ -41,10 +40,10 @@
 </script>
 
 <section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
-	<header class="flex items-center w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
-		<div class="flex items-center mb-md md:mb-lg gap-md">
-			<h2 class="text-grey-900 dark:text-grey-100 font-semibold text-md md:text-lg">{name}</h2>
-			<p class="text-sm md:text-base text-grey-700 dark:text-grey-200 font-medium">
+	<header class="flex w-[15.625rem] items-center md:w-[18.75rem] lg:w-[25rem]">
+		<div class="mb-md flex items-center gap-md md:mb-lg">
+			<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100 md:text-lg">{name}</h2>
+			<p class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
 				{tasks.length}
 			</p>
 		</div>
@@ -57,7 +56,7 @@
 		<NewCard bind:showCreateTask bind:tasks listId={id} listStatus={status} />
 	{:else}
 		<button
-			class="button--secondary w-full flex items-center gap-md justify-center"
+			class="button--secondary flex w-full items-center justify-center gap-md"
 			on:click={() => (showCreateTask = true)}
 		>
 			<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
@@ -66,7 +65,7 @@
 	{/if}
 
 	<div
-		class="flex flex-col gap-md mt-md min-h-[200px]"
+		class="mt-md flex min-h-[200px] flex-col gap-md"
 		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
