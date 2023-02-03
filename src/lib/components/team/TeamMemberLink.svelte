@@ -8,6 +8,7 @@
 
 	let name: string;
 	let avatar_url: string | null;
+	let email: string;
 
 	onMount(async () => {
 		const { data: member, error } = await supabase
@@ -18,6 +19,7 @@
 			.single();
 		if (member) {
 			name = member.name;
+			email = member.email;
 			avatar_url = member.avatar_url;
 		}
 	});
@@ -36,6 +38,9 @@
 		{:else}
 			<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
 		{/if}
-		<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+		<div class="flex flex-col items-start justify-start gap-sm">
+			<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+			<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
+		</div>
 	</a>
 {/if}
