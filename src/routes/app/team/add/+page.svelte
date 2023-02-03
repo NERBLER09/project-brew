@@ -1,0 +1,46 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+
+	import User from '$lib/assets/User.svelte';
+
+	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
+	import { userData } from '$lib/stores/user';
+	import { supabase } from '$lib/supabase';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	const handleInviteNewUser = async (id: string) => {
+		const teamMembers = [id, ...($userData.team_members || [])];
+		const { error } = await supabase
+			.from('profiles')
+			.update({ team_members: teamMembers })
+			.eq('id', $userData.id);
+		if (!error) {
+			goto('/app/team');
+		}
+		console.error(error);
+	};
+</script>
+
+<MobileSubPageLayout pageName="Add new team member" previousPage="/app/team">
+	<p class="font-medium text-grey-700 dark:text-grey-100">
+		Tap on a person to add them to your team.
+	</p>
+	<div class="mt-md flex w-full flex-col items-start gap-lg">
+		{#each data.users as { avatar_url, name, id }}
+			<button class="flex items-start gap-md" on:click={() => handleInviteNewUser(id)}>
+				{#if avatar_url}
+					<img
+						src={avatar_url}
+						alt="User profile"
+						class="aspect-square h-12 w-12 rounded-full object-cover"
+					/>
+				{:else}
+					<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
+				{/if}
+				<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+			</button>
+		{/each}
+	</div>
+</MobileSubPageLayout>

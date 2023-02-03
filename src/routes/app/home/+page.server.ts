@@ -1,4 +1,3 @@
-import { userData } from "$lib/stores/user";
 import { getSupabase } from "@supabase/auth-helpers-sveltekit";
 import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
@@ -21,15 +20,14 @@ export const load = (async (event) => {
   if (user && !projectsErr) {
     if (user?.length === 0) throw redirect(303, '/welcome');
 
-    userData.set(user[0])
-
     const pinned = projects.filter((value) => value.pinned);
 
     return {
       name: user[0]?.name,
       avatar_url: user[0].avatar_url,
       all: projects,
-      pinned
+      pinned,
+      user: user[0]
     }
   }
 

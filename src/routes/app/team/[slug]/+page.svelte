@@ -104,9 +104,7 @@
 		</header>
 
 		{#if invitedProject.length > 0}
-			<div
-				class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row"
-			>
+			<div class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row">
 				{#each invitedProject as project}
 					<div class="relative">
 						<ProjectCard

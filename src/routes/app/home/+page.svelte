@@ -11,6 +11,7 @@
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { recentlyEdited } from '$lib/stores/project';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
+	import { userData } from '$lib/stores/user';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -22,6 +23,8 @@
 	const handleShowEditPinsPrompt = () => {
 		showEditPinPrompt = true;
 	};
+
+	$userData = data.user;
 </script>
 
 <svelte:head>

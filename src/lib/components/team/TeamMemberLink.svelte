@@ -7,7 +7,7 @@
 	export let id: string | undefined;
 
 	let name: string;
-	let avatar_url: string;
+	let avatar_url: string | null;
 
 	onMount(async () => {
 		const { data: member, error } = await supabase
