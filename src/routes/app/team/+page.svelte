@@ -1,14 +1,26 @@
 <script lang="ts">
 	import UserAdd from '$lib/assets/User-Add.svelte';
+	import InviteMember from '$lib/components/prompts/team/InviteMember.svelte';
 
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	let showInvitePrompt = false;
 </script>
 
 <header>
-	<h1 class="text-lg text-grey-800 dark:text-grey-100 md:text-2xl">Team Members</h1>
+	<div class="flex items-center">
+		<h1 class="text-lg text-grey-800 dark:text-grey-100 md:text-2xl">Team Members</h1>
+		<button
+			class="button--primary ml-auto hidden items-center gap-md md:flex"
+			on:click={() => (showInvitePrompt = true)}
+		>
+			<UserAdd className="h-8 w-8 stroke-grey-200" />
+			<span>New project</span>
+		</button>
+	</div>
 	<p class="pt-md font-medium text-grey-700 dark:text-grey-200 md:pt-sm">
 		Tap on a member to view their details.
 	</p>
@@ -24,3 +36,5 @@
 		<TeamMemberLink {id} />
 	{/each}
 </div>
+
+<InviteMember bind:shown={showInvitePrompt} />

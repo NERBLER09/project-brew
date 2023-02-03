@@ -28,7 +28,7 @@
 		Tap on a person to add them to your team.
 	</p>
 	<div class="mt-md flex w-full flex-col items-start gap-lg">
-		{#each data.users as { avatar_url, name, id }}
+		{#each data.users as { avatar_url, name, id, email }}
 			<button class="flex items-start gap-md" on:click={() => handleInviteNewUser(id)}>
 				{#if avatar_url}
 					<img
@@ -39,7 +39,10 @@
 				{:else}
 					<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
 				{/if}
-				<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+				<div class="flex flex-col items-start justify-start gap-sm">
+					<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+					<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
+				</div>
 			</button>
 		{/each}
 	</div>
