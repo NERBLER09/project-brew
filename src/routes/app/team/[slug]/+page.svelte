@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
+	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import { supabase } from '$lib/supabase';
@@ -33,7 +34,7 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex h-[13.5rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:w-full md:rounded-xl md:p-md {!data.banner
+	class="relative -top-6 -left-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:w-full md:rounded-xl md:p-md {!data.banner
 		? 'bg-grey-100 dark:bg-grey-800'
 		: 'bg-grey-100'}"
 	style="background-image: url({data.banner});"
@@ -43,6 +44,12 @@
 			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
 		/>
 		<span class="sr-only">Back</span>
+	</a>
+	<a href="/app/settings/account" class="absolute top-6 right-6">
+		<Settings
+			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
+		/>
+		<span class="sr-only">Account settings</span>
 	</a>
 	<div class=" flex items-center gap-lg">
 		{#if data.avatar_url}
@@ -68,9 +75,13 @@
 				{data.name}
 			</h1>
 
-			<span class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-				>Invited to {invitedProject.length} project(s)</span
-			>
+			{#if !data.currentUser}
+				<span
+					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+					>Invited to {invitedProject.length} project(s)</span
+				>
+			{/if}
+
 			{#if data.location}
 				<span
 					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
@@ -93,34 +104,36 @@
 			<p class="font-medium text-grey-700 dark:text-grey-100">{data.bio}</p>
 		</div>
 	{/if}
-	<section>
-		<header>
-			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+	{#if !data.currentUser}
+		<section>
+			<header>
+				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+				{#if invitedProject.length > 0}
+					<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
+						View and manage what projects {data.name} is apart of.
+					</p>
+				{/if}
+			</header>
+
 			{#if invitedProject.length > 0}
+				<div class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row">
+					{#each invitedProject as project}
+						<div class="relative">
+							<ProjectCard
+								project_name={project.project_name}
+								id={project.id}
+								description={project.description}
+								banner={project.banner}
+								invited_people={project.invited_people}
+							/>
+						</div>
+					{/each}
+				</div>
+			{:else}
 				<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-					View and manage what projects {data.name} is apart of.
+					It looks like you haven't invited {data.name} to any projects.
 				</p>
 			{/if}
-		</header>
-
-		{#if invitedProject.length > 0}
-			<div class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row">
-				{#each invitedProject as project}
-					<div class="relative">
-						<ProjectCard
-							project_name={project.project_name}
-							id={project.id}
-							description={project.description}
-							banner={project.banner}
-							invited_people={project.invited_people}
-						/>
-					</div>
-				{/each}
-			</div>
-		{:else}
-			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-				It looks like you haven't invited {data.name} to any projects.
-			</p>
-		{/if}
-	</section>
+		</section>
+	{/if}
 </div>

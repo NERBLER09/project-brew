@@ -1,4 +1,3 @@
-import { userData } from '$lib/stores/user';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -21,7 +20,7 @@ export const load = (async (event) => {
 	console.log(user);
 
 	if (user) {
-		return { ...user };
+		return { ...user, currentUser: user_id === session.user.id };
 	}
 
 	throw error(404, err?.message);
