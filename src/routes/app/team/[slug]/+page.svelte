@@ -69,7 +69,7 @@
 			</h1>
 
 			<span class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-				>Invited to x project(s)</span
+				>Invited to {invitedProject.length} project(s)</span
 			>
 			{#if data.location}
 				<span
@@ -93,29 +93,36 @@
 			<p class="font-medium text-grey-700 dark:text-grey-100">{data.bio}</p>
 		</div>
 	{/if}
-
 	<section>
 		<header>
 			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
-			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-				View and manage what projects {data.name} is apart of.
-			</p>
+			{#if invitedProject.length > 0}
+				<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
+					View and manage what projects {data.name} is apart of.
+				</p>
+			{/if}
 		</header>
 
-		<div
-			class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row lg:grid lg:place-items-center"
-		>
-			{#each invitedProject as project}
-				<div class="relative">
-					<ProjectCard
-						project_name={project.project_name}
-						id={project.id}
-						description={project.description}
-						banner={project.banner}
-						invited_people={project.invited_people}
-					/>
-				</div>
-			{/each}
-		</div>
+		{#if invitedProject.length > 0}
+			<div
+				class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row"
+			>
+				{#each invitedProject as project}
+					<div class="relative">
+						<ProjectCard
+							project_name={project.project_name}
+							id={project.id}
+							description={project.description}
+							banner={project.banner}
+							invited_people={project.invited_people}
+						/>
+					</div>
+				{/each}
+			</div>
+		{:else}
+			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
+				It looks like you haven't invited {data.name} to any projects.
+			</p>
+		{/if}
 	</section>
 </div>
