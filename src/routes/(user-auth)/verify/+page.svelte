@@ -2,14 +2,14 @@
 	import { signUpEmail } from '$lib/stores/user';
 </script>
 
-<section class="mx-6 grid place-content-center text-center h-screen">
+<section class="mx-6 grid h-screen place-content-center text-center">
 	<header>
-		<h1 class="text-xl md:text-2xl font-semibold text-grey-900">
+		<h1 class="text-xl font-semibold text-grey-900 md:text-2xl">
 			Please verify your email address
 		</h1>
 	</header>
 	<div class="flex w-full items-center justify-center">
-		<p class="text-grey-700 px-6 md:w-72">
+		<p class="min-w-72 px-6 text-grey-700 lg:w-1/2">
 			An verification has been sent to {$signUpEmail}. Please verify your email address
 		</p>
 	</div>
