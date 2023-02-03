@@ -17,7 +17,9 @@
 	style="background-image: url({data.banner});"
 >
 	<a href="/app/team" class="absolute top-6 left-6">
-		<Back className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+		<Back
+			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
+		/>
 		<span class="sr-only">Back</span>
 	</a>
 	<div class=" flex items-center gap-lg">
@@ -29,19 +31,35 @@
 			/>
 		{:else}
 			<User
-				className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-[6.25rem] md:w-[6.25rem]"
+				className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-[6.25rem] md:w-[6.25rem] {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
 		{/if}
 
 		<div class="flex flex-col items-start gap-sm">
-			<h1 class="text-lg font-semibold text-grey-700 dark:text-grey-100 md:text-xl">{data.name}</h1>
+			<h1
+				class="text-lg font-semibold {data.banner
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} md:text-xl"
+			>
+				{data.name}
+			</h1>
 
-			<span class="font-medium text-grey-700 dark:text-grey-100">Invited to x project(s)</span>
+			<span class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+				>Invited to x project(s)</span
+			>
 			{#if data.location}
-				<span class="font-medium text-grey-700 dark:text-grey-100">{data.location}</span>
+				<span
+					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+					>{data.location}</span
+				>
 			{/if}
 			{#if data.role}
-				<span class="font-medium text-grey-700 dark:text-grey-100">{data.role}</span>
+				<span
+					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+					>{data.role}</span
+				>
 			{/if}
 		</div>
 	</div>
