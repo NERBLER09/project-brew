@@ -1,20 +1,41 @@
 <script lang="ts">
-	import { supabase } from "$lib/supabase";
-	import { onMount } from "svelte";
+	import User from '$lib/assets/User.svelte';
 
-    export let id: string | undefined
+	import { supabase } from '$lib/supabase';
+	import { onMount } from 'svelte';
 
-    let name: string
-    let avatar_url: string
+	export let id: string | undefined;
 
-    onMount(async() => {
-        const {data: member, error} = await supabase.from("profiles").select().eq('id', id).limit(1).single();
-        if(member) {
-            name = member.name
-        } 
-    })
+	let name: string;
+	let avatar_url: string;
+
+	onMount(async () => {
+		const { data: member, error } = await supabase
+			.from('profiles')
+			.select()
+			.eq('id', id)
+			.limit(1)
+			.single();
+		if (member) {
+			name = member.name;
+			avatar_url = member.avatar_url;
+		}
+	});
 </script>
 
-<a href="/app/team/{id}">
-    <p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-</a>
+{#if !name}
+	<p class="font-bold text-grey-700 dark:text-grey-100">Loading team member details...</p>
+{:else}
+	<a href="/app/team/{id}" class="flex items-start gap-md">
+		{#if avatar_url}
+			<img
+				src={avatar_url}
+				alt="User profile"
+				class="aspect-square h-12 w-12 rounded-full object-cover"
+			/>
+		{:else}
+			<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
+		{/if}
+		<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+	</a>
+{/if}
