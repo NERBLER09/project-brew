@@ -1,9 +1,31 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import User from '$lib/assets/User.svelte';
+	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import { supabase } from '$lib/supabase';
+	import type { Projects } from '$lib/types/projects';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	let invitedProject: Projects[] = [];
+
+	onMount(async () => {
+		const { data: user } = await supabase.auth.getUser();
+		const userId = user.user?.id;
+
+		const { data: projects, error } = await supabase
+			.from('projects')
+			.select()
+			.eq('user_id', userId);
+
+		if (projects) {
+			invitedProject = projects;
+			invitedProject = invitedProject.filter((item) => item.invited_people?.includes(data.id));
+		} else {
+			console.error(error);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -65,8 +87,35 @@
 	</div>
 </header>
 
-{#if data.bio}
-	<div class="mt-lg md:px-[7.5rem] lg:w-1/2">
-		<p class="font-medium text-grey-700 dark:text-grey-100">{data.bio}</p>
-	</div>
-{/if}
+<div class="md:px-[7.5rem]">
+	{#if data.bio}
+		<div class="mt-lg lg:w-1/2">
+			<p class="font-medium text-grey-700 dark:text-grey-100">{data.bio}</p>
+		</div>
+	{/if}
+
+	<section>
+		<header>
+			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
+				View and manage what projects {data.name} is apart of.
+			</p>
+		</header>
+
+		<div
+			class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row lg:grid lg:place-items-center"
+		>
+			{#each invitedProject as project}
+				<div class="relative">
+					<ProjectCard
+						project_name={project.project_name}
+						id={project.id}
+						description={project.description}
+						banner={project.banner}
+						invited_people={project.invited_people}
+					/>
+				</div>
+			{/each}
+		</div>
+	</section>
+</div>
