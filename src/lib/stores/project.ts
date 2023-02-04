@@ -7,3 +7,5 @@ export type SortOption = "a-z" | "z-a"
 export const projectSort: Writable<SortOption> = writable("a-z")
 
 export const recentlyEdited: Writable<Projects[]> = writable([])
+
+export const tasksCompletedThisSession = writable(0)

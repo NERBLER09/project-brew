@@ -8,6 +8,7 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
+	import { tasksCompletedThisSession } from '$lib/stores/project';
 
 	export let name: string;
 	export let id: any;
@@ -31,6 +32,8 @@
 		const index = tasks.indexOf(found);
 		if (index < 0) return; // Prevents error if index is below 0
 		tasks[index].status = status;
+
+		if (tasks[index].status === 'done') $tasksCompletedThisSession++;
 	};
 
 	onMount(async () => {
