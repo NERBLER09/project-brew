@@ -31,7 +31,8 @@ export const load = (async (event) => {
 			banner: project?.banner,
 			tags: JSON.parse(project?.tags) || [],
 			lists: lists || [],
-			project
+			project,
+			invited_people: project.invited_people || []
 		};
 	}
 

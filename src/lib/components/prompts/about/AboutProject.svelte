@@ -5,6 +5,7 @@
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import Description from '$lib/components/text/Description.svelte';
@@ -178,7 +179,7 @@
 
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
-			<p class="mt-md font-medium text-grey-700 dark:text-grey-200">Team management coming soon.</p>
+			<InvitedTeamMembers invited_people={$currentProject.invited_people} />
 		{:else}
 			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
 			<textarea
