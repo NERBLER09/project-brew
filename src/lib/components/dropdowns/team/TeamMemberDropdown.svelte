@@ -15,16 +15,16 @@
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View Profile</span>
 	</a>
-	<div class="dropdown--item">
+	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<OpenShare className="dropdown--icon" />
 		<span class="dropdown--label">Share</span>
-	</div>
-	<div class="dropdown--item">
+	</button>
+	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Mail className="dropdown--icon" />
 		<span class="dropdown--label">Email</span>
-	</div>
-	<div class="dropdown--item">
+	</button>
+	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<UserRemove className="dropdown--icon" />
 		<span class="dropdown--label">Remove</span>
-	</div>
+	</button>
 </div>
