@@ -1,12 +1,23 @@
 <script lang="ts">
+	import Filter from '$lib/assets/Filter.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
+	import { currentProject } from '$lib/stores/project';
 
 	export let invited_people: string[] | null | undefined;
 </script>
 
-<section>
+<section class="mt-md">
 	<header>
-		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+		<div class="flex items-center">
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+			<a href="/app/projects/{$currentProject.id}/about/team-management" class="ml-auto md:hidden">
+				<Filter
+					className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200"
+					parentBg="grey-100 dark:bg-grey-900"
+				/>
+				<span class="sr-only">Manage invited team members</span>
+			</a>
+		</div>
 		{#if invited_people?.length === 0}
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				It doesn't look like you have invited anyone from your team into this project.
