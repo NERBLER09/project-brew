@@ -4,6 +4,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
+	import YourActivity from '$lib/components/home/activity/YourActivity.svelte';
 	import ProjectStatistics from '$lib/components/home/project-statistics/ProjectStatistics.svelte';
 	import TeamActivity from '$lib/components/home/TeamActivity.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
@@ -71,6 +72,8 @@
 </header>
 
 <div class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-2 md:gap-xl lg:grid-cols-5">
+	<YourActivity />
+
 	<ProjectStatistics pinned_projects={data.pinned} />
 
 	<TeamActivity />
