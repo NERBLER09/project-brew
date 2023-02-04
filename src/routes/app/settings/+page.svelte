@@ -1,9 +1,12 @@
 <script>
-	import Nav from '$lib/components/settings/nav/Nav.svelte';
+	import { goto } from '$app/navigation';
+
+	import { settingsPage, showMobileSettingsNav } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		$showMobileSettingsNav = true;
+		goto('/app/settings/account');
+		$settingsPage = 'Settings';
+	});
 </script>
-
-<svelte:head>
-	<title>Project Brew - Settings</title>
-</svelte:head>
-
-<Nav />

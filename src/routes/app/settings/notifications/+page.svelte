@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		$settingsPage = 'Account';
+		$settingsPage = 'Notifications';
 	});
 </script>
 

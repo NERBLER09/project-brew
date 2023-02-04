@@ -45,7 +45,9 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 min-h-[13.5rem] w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
+	class="relative -top-6 -left-6 {data.banner
+		? 'min-h-[13.5rem] '
+		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: url({data.banner});"
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
@@ -106,7 +108,9 @@
 	{/each}
 
 	<div
-		class="mt-[2.625rem] min-w-[15.625rem] md:mt-[4.0625rem] md:min-w-[18.75rem] lg:min-w-[25rem]"
+		class="min-w-[15.625rem] md:min-w-[18.75rem] lg:min-w-[25rem] {data.lists.length === 0
+			? ''
+			: 'mt-[2.625rem]  md:mt-[4.0625rem]'}"
 	>
 		{#if createNewList}
 			<NewList bind:createNewList />
@@ -114,6 +118,7 @@
 			<button
 				class="button--primary flex w-full items-center justify-center gap-md"
 				on:click={() => (createNewList = true)}
+				draggable="false"
 			>
 				<PlusNew className="w-6 h-6 stroke-grey-200" />
 				New List
