@@ -158,7 +158,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="flex flex-wrap gap-lg">
+	<div class="flex flex-col gap-lg md:flex-row md:flex-wrap">
 		{#if data.all.length === 0}
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				To create a new project click on the plus button.

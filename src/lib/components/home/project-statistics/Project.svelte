@@ -55,6 +55,7 @@
 					stroke-dasharray="440"
 					stroke-linecap="round"
 					stroke-width="8"
+					transform="rotate(-90 64 64)"
 				/>
 			</svg>
 		</div>
