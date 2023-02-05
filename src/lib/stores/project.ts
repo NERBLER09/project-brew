@@ -1,4 +1,5 @@
 import type { Projects } from "$lib/types/projects";
+import { parseInt } from "lodash";
 import { writable, type Writable } from "svelte/store";
 
 export const currentProject: Writable<any> = writable()
@@ -8,4 +9,4 @@ export const projectSort: Writable<SortOption> = writable("a-z")
 
 export const recentlyEdited: Writable<Projects[]> = writable([])
 
-export const tasksCompletedThisSession = writable(0)
+export const tasksCompletedThisDay: Writable<number> = writable(0)

@@ -8,7 +8,7 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { tasksCompletedThisSession } from '$lib/stores/project';
+	import { tasksCompletedThisDay } from '$lib/stores/project';
 
 	export let name: string;
 	export let id: any;
@@ -33,7 +33,10 @@
 		if (index < 0) return; // Prevents error if index is below 0
 		tasks[index].status = status;
 
-		if (tasks[index].status === 'done') $tasksCompletedThisSession++;
+		if (tasks[index].status === 'done') {
+			$tasksCompletedThisDay++;
+			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
+		}
 	};
 
 	onMount(async () => {

@@ -1,5 +1,5 @@
 <script>
-	import { tasksCompletedThisSession } from '$lib/stores/project';
+	import { tasksCompletedThisDay } from '$lib/stores/project';
 </script>
 
 <section class="col-span-2 row-span-1 hidden md:block">
@@ -8,7 +8,7 @@
 	</header>
 	<div>
 		<p class="font-medium text-grey-700 dark:text-grey-200">
-			You've completed {$tasksCompletedThisSession} tasks today.
+			You've completed {$tasksCompletedThisDay} tasks today.
 		</p>
 	</div>
 </section>

@@ -3,11 +3,13 @@
 
 	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
+	import { tasksCompletedThisDay } from '$lib/stores/project';
 
 	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
 		$perferedTheme = localStorage.getItem('theme') ?? 'light';
 		switch ($perferedTheme) {
 			case 'light':
@@ -49,9 +51,9 @@
 	</aside>
 
 	<main
-		class="w-full h-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes('settings')
+		class="h-full w-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes('settings')
 			? ''
-			: 'md:p-8 p-6'}"
+			: 'p-6 md:p-8'}"
 	>
 		<slot />
 	</main>
