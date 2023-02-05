@@ -10,7 +10,7 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity'));
+		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity') || '[]');
 		addNewDay();
 		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
 		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
