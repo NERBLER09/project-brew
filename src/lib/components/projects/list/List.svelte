@@ -23,6 +23,7 @@
 
 	const handleFinalize = async (event) => {
 		tasks = event.detail.items;
+		if (tasks && id === tasks[0].id) return;
 
 		const { error } = await supabase
 			.from('tasks')
