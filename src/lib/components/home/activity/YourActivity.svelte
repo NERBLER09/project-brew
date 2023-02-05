@@ -15,31 +15,31 @@
 	<div class="h-[calc(100%-5.5625rem)]">
 		<div class="flex h-full flex-col-reverse justify-around text-end">
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">0</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">0</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">5</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">5</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">10</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">10</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">15</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">15</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">20</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">20</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">25</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">25</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 			<div class="flex items-center gap-md">
-				<span class="w-[2ch] text-sm font-bold text-grey-600">30</span>
+				<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">30</span>
 				<div class="h-1 w-full rounded-full bg-grey-400" />
 			</div>
 		</div>
