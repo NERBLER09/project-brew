@@ -11,7 +11,9 @@
 	import Description from '$lib/components/text/Description.svelte';
 
 	import { currentProject } from '$lib/stores/project';
+	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
+	import ManageInvited from './ManageInvited.svelte';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -230,3 +232,5 @@
 		</footer>
 	{/if}
 </dialog>
+
+<ManageInvited bind:shown={$showManageInvitedPrompt} />
