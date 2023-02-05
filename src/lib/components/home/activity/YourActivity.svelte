@@ -44,23 +44,39 @@
 			</div>
 		</div>
 
-		<div class="absolute bottom-2 left-[1.75rem] flex h-full w-[calc(100%-1.75rem)] justify-around">
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-			<div class="h-full w-1 rounded-full bg-accent-light" />
-		</div>
-
 		<div class="ml-auto flex w-[calc(100%-1.75rem)] items-center justify-between">
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 01</span></div>
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span></div>
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 03</span></div>
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 04</span></div>
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 05</span></div>
-			<div><span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 06</span></div>
-			<div><span class="text-sm font-bold text-grey-700 dark:text-grey-200">Today</span></div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 01</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-200">Jan 02</span>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2" />
+				<span class="text-sm font-bold text-grey-700 dark:text-grey-200">Today</span>
+			</div>
 		</div>
 	</div>
 </section>
