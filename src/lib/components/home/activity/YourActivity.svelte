@@ -58,7 +58,7 @@
 			{#each $weeklyActivity as { date, formattedDate, tasksCompleted }}
 				<div class="flex flex-col items-center">
 					<div
-						class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2"
+						class="absolute bottom-2 max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light"
 						style="height: {(tasksCompleted / 25) * 100}%"
 					/>
 					{#if date === currentDate}

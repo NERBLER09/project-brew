@@ -10,11 +10,12 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		$weeklyActivity = JSON.parse(localStorage.getItem("weeklyActivity") || "")
-		addNewDay()
-
+		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity'));
+		addNewDay();
 		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
-		$perferedTheme = localStorage.getItem('theme') ?? 'light';
+		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
+		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
+
 		switch ($perferedTheme) {
 			case 'light':
 				$useDarkMode = false;

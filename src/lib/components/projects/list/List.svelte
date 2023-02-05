@@ -9,6 +9,7 @@
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
 	import { tasksCompletedThisDay } from '$lib/stores/project';
+	import { weeklyActivity } from '$lib/api/activity';
 
 	export let name: string;
 	export let id: any;
@@ -35,6 +36,8 @@
 
 		if (tasks[index].status === 'done') {
 			$tasksCompletedThisDay++;
+			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
+			localStorage.setItem('weeklyActivity', JSON.stringify($weeklyActivity));
 			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
 		}
 	};

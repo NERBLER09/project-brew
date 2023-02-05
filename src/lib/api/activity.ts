@@ -1,3 +1,4 @@
+import { tasksCompletedThisDay } from '$lib/stores/project';
 import { get, writable, type Writable } from 'svelte/store';
 
 interface Activity {
@@ -9,7 +10,7 @@ export let weeklyActivity: Writable<Activity[]> = writable([]);
 
 export const addNewDay = () => {
 	if (!get(weeklyActivity).find((item) => item.date === getCurrentDate())) {
-		const tempDueDate = new Date(getCurrentDate());
+		const tempDueDate = new Date();
 		let formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
 		const date: Activity = {
@@ -21,6 +22,10 @@ export const addNewDay = () => {
 		weeklyActivity.set(weekActivity);
 
 		localStorage.setItem('weeklyActivity', JSON.stringify(weekActivity));
+	}
+	else {
+		tasksCompletedThisDay.set(0)
+		localStorage.setItem('tasksCompletedToday', JSON.stringify(get(tasksCompletedThisDay)));
 	}
 };
 
