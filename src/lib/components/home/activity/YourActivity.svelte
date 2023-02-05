@@ -1,46 +1,9 @@
 <script lang="ts">
+	import { weeklyActivity } from '$lib/api/activity';
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 	import { onMount } from 'svelte';
 
 	let currentDate: string;
-
-	const mockData = [
-		{
-			date: '1-1-2023',
-			formattedDate: 'Jan 01',
-			tasksCompleted: 8
-		},
-		{
-			date: '2-1-2023',
-			formattedDate: 'Jan 02',
-			tasksCompleted: 17
-		},
-		{
-			date: '3-1-2023',
-			formattedDate: 'Jan 03',
-			tasksCompleted: 10
-		},
-		{
-			date: '4-1-2023',
-			formattedDate: 'Jan 04',
-			tasksCompleted: 20
-		},
-		{
-			date: '5-1-2023',
-			formattedDate: 'Jan 05',
-			tasksCompleted: 10
-		},
-		{
-			date: '6-1-2023',
-			formattedDate: 'Jan 06',
-			tasksCompleted: 25
-		},
-		{
-			date: '5-2-2023',
-			formattedDate: 'Feb 05',
-			tasksCompleted: 5
-		}
-	];
 
 	onMount(() => {
 		const date = new Date();
@@ -92,7 +55,7 @@
 		</div>
 
 		<div class="ml-auto flex w-[calc(100%-1.75rem)] items-center justify-between">
-			{#each mockData as { date, formattedDate, tasksCompleted }}
+			{#each $weeklyActivity as { date, formattedDate, tasksCompleted }}
 				<div class="flex flex-col items-center">
 					<div
 						class="max-h-[calc(100%-1rem)] min-h-[0.5rem] w-1 rounded-full bg-accent-light absolute bottom-2"

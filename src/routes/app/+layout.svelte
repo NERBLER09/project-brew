@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { addNewDay, weeklyActivity } from '$lib/api/activity';
 
 	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
@@ -9,6 +10,9 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		$weeklyActivity = JSON.parse(localStorage.getItem("weeklyActivity") || "")
+		addNewDay()
+
 		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
 		$perferedTheme = localStorage.getItem('theme') ?? 'light';
 		switch ($perferedTheme) {
