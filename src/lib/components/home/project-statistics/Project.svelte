@@ -6,6 +6,8 @@
 	export let project_name: string | undefined;
 	export let id: number | undefined;
 
+	let strokeArray = 380;
+
 	let totalAmmountOfTasks = 0;
 	let completedTasks = 0;
 	let percentCompleted = 0;
@@ -51,8 +53,8 @@
 					cy="64"
 					r="60"
 					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
-					stroke-dashoffset={440 - (440 * percentCompleted) / 100}
-					stroke-dasharray="440"
+					stroke-dashoffset={strokeArray - (strokeArray * percentCompleted) / 100}
+					stroke-dasharray={strokeArray}
 					stroke-linecap="round"
 					stroke-width="8"
 					transform="rotate(-90 64 64)"
