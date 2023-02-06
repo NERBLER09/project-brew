@@ -31,7 +31,7 @@
 			.eq('id', event.detail.info.id);
 
 		const found = tasks.find((task) => task.id === event.detail.info.id);
-		const index = tasks.indexOf(found);
+		const index = tasks.indexOf(found!);
 		if (index < 0) return; // Prevents error if index is below 0
 		tasks[index].status = status;
 
@@ -81,7 +81,7 @@
 		on:finalize={handleFinalize}
 	>
 		{#each tasks as task (task.id)}
-			<Card {...task} />
+			<Card {...task} {tasks} />
 		{/each}
 	</div>
 </section>

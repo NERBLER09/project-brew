@@ -13,7 +13,7 @@
 	export let isPriority: boolean = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
-	export let tasks: any[];
+	export let tasks: any[] | undefined;
 
 	let showCardDropdown = false;
 	let formattedDate = '';
@@ -24,31 +24,37 @@
 		const tempDueDate = new Date(dueDate);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	});
+
+	console.log(tasks);
 </script>
 
 <div class="md:relative">
-	<section class="bg-grey-100 dark:bg-grey-800 p-6 w-full rounded-lg">
-		<header class="flex items-start mb-sm">
+	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
+		<header class="mb-sm flex items-start">
 			<div>
 				<div class="flex items-start gap-sm">
 					{#if status === 'done'}
 						<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
 					{/if}
-					<h3 class="text-md text-grey-700 dark:text-grey-200 font-semibold card__text--{status}">{name}</h3>
+					<h3 class="text-md font-semibold text-grey-700 dark:text-grey-200 card__text--{status}">
+						{name}
+					</h3>
 				</div>
 				{#if dueDate}
 					<div class="flex items-center md:hidden">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm text-grey-700 dark:text-grey-200 font-medium">{formattedDate}</span>
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{formattedDate}</span
+						>
 					</div>
 				{/if}
 			</div>
 
 			<div class="ml-auto flex items-center gap-md">
 				{#if dueDate}
-					<div class="md:flex items-center hidden">
+					<div class="hidden items-center md:flex">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm text-grey-700 dark:text-grey-200 font-medium">{formattedDate}</span>
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{formattedDate}</span
+						>
 					</div>
 				{/if}
 
@@ -59,14 +65,16 @@
 		</header>
 
 		<div class="mb-md">
-			<p class="text-sm font-medium text-grey-700 dark:text-grey-200 max-h-[10ch] empty:hidden">{description}</p>
+			<p class="max-h-[10ch] text-sm font-medium text-grey-700 empty:hidden dark:text-grey-200">
+				{description}
+			</p>
 		</div>
 
 		{#if tags}
-			<div class="flex items-center gap-md flex-wrap pt-sm empty:hidden mb-4">
+			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
-					<div class="bg-grey-200 py-1 px-2 w-fit rounded">
-						<span class="text-grey-700 text-sm font-medium">{tag}</span>
+					<div class="w-fit rounded bg-grey-200 py-1 px-2">
+						<span class="text-sm font-medium text-grey-700">{tag}</span>
 					</div>
 				{/each}
 			</div>
@@ -84,7 +92,7 @@
 
 <style>
 	.card__text--done {
-		@apply line-through text-[#059669];
+		@apply text-[#059669] line-through;
 	}
 	.card__text--todo {
 		@apply text-[#b91c1c];
