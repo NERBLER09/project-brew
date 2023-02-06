@@ -56,9 +56,8 @@
 					<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{formattedDate}</span>
 				{/if}
 				<span
-					class="absolute left-2 m-2 w-auto min-w-max origin-bottom scale-0 rounded-md bg-grey-200 p-2 text-sm text-grey-700 shadow-sm transition-all duration-200 ease-out group-hover:scale-100 dark:bg-grey-700 dark:text-grey-200"
-					style="bottom: calc({(tasksCompleted / 25) * 100}% + 1.25rem)"
-					>{tasksCompleted} tasks</span
+					class="absolute m-2 w-auto min-w-max origin-bottom scale-0 rounded-md bg-grey-200 p-2 text-sm text-grey-700 shadow-sm transition-all duration-200 ease-out group-hover:scale-100 dark:bg-grey-700 dark:text-grey-200"
+					style="bottom: calc({(tasksCompleted / 25) * 100}% + 0.5rem)">{tasksCompleted} tasks</span
 				>
 			</div>
 		{/each}

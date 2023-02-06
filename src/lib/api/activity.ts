@@ -10,6 +10,9 @@ export let weeklyActivity: Writable<Activity[]> = writable([]);
 
 export const addNewDay = () => {
 	if (!get(weeklyActivity).find((item) => item.date === getCurrentDate())) {
+		tasksCompletedThisDay.set(0)
+		localStorage.setItem('tasksCompletedToday', JSON.stringify(get(tasksCompletedThisDay)));
+
 		const tempDueDate = new Date();
 		let formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -22,10 +25,6 @@ export const addNewDay = () => {
 		weeklyActivity.set(weekActivity);
 
 		localStorage.setItem('weeklyActivity', JSON.stringify(weekActivity));
-	}
-	else {
-		tasksCompletedThisDay.set(0)
-		localStorage.setItem('tasksCompletedToday', JSON.stringify(get(tasksCompletedThisDay)));
 	}
 };
 
