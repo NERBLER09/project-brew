@@ -8,7 +8,7 @@
 </script>
 
 <nav
-	class="md:hidden flex gap-md bg-grey-100 dark:bg-grey-800 h-[6.25rem] p-6 items-center justify-evenly w-screen"
+	class="flex h-[6.25rem] w-screen items-center justify-evenly gap-md bg-grey-100 p-6 dark:bg-grey-800 md:hidden"
 >
 	<a href="/app/home" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>
@@ -18,7 +18,7 @@
 				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
+			class="w-[1rem] rounded-full border-2 border-accent-light bg-accent-light {$page.url.pathname.includes(
 				'home'
 			)
 				? 'block'
@@ -33,7 +33,7 @@
 				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
+			class="w-[1rem] rounded-full border-2 border-accent-light bg-accent-light {$page.url.pathname.includes(
 				'projects'
 			)
 				? 'block'
@@ -48,7 +48,7 @@
 				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
+			class="w-[1rem] rounded-full border-2 border-accent-light bg-accent-light {$page.url.pathname.includes(
 				'focus'
 			)
 				? 'block'
@@ -63,7 +63,7 @@
 				: 'fill-grey-700 dark:fill-grey-200'}"
 		/>
 		<div
-			class="w-[1rem] border-2 border-accent-light rounded-full bg-accent-light {$page.url.pathname.includes(
+			class="w-[1rem] rounded-full border-2 border-accent-light bg-accent-light {$page.url.pathname.includes(
 				'team'
 			)
 				? 'block'
