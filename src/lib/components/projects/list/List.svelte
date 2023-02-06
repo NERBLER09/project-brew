@@ -10,11 +10,12 @@
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
+	import type { Task } from '$lib/types/projects';
 
 	export let name: string;
 	export let id: any;
 	export let status: string;
-	let tasks: any[] = [];
+	let tasks: Task[] = [];
 
 	let showCreateTask = false;
 	const handleDnd = (e) => {
@@ -23,14 +24,14 @@
 
 	const handleFinalize = async (event) => {
 		tasks = event.detail.items;
-		if (tasks && id === tasks[0].id) return;
+		const found = tasks.find((task) => task.id === event.detail.info.id);
+		if (!tasks.includes(found)) return;
 
 		const { error } = await supabase
 			.from('tasks')
 			.update({ list: id, user_id: $userData.id, status })
 			.eq('id', event.detail.info.id);
 
-		const found = tasks.find((task) => task.id === event.detail.info.id);
 		const index = tasks.indexOf(found!);
 		if (index < 0) return; // Prevents error if index is below 0
 		tasks[index].status = status;
@@ -81,7 +82,16 @@
 		on:finalize={handleFinalize}
 	>
 		{#each tasks as task (task.id)}
-			<Card {...task} {tasks} />
+			<Card
+				name={task.name}
+				description={task.description}
+				dueDate={task.due_date}
+				isPriority={task.is_priority}
+				id={task.id}
+				status={task.status}
+				tags={task.tags}
+				{tasks}
+			/>
 		{/each}
 	</div>
 </section>

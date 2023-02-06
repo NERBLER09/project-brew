@@ -4,6 +4,7 @@
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
+	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
 
 	export let name: string;
@@ -13,7 +14,7 @@
 	export let isPriority: boolean = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
-	export let tasks: any[] | undefined;
+	export let tasks: Task[] | undefined;
 
 	let showCardDropdown = false;
 	let formattedDate = '';
@@ -24,8 +25,6 @@
 		const tempDueDate = new Date(dueDate);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	});
-
-	console.log(tasks);
 </script>
 
 <div class="md:relative">
