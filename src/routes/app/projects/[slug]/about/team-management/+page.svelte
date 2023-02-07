@@ -8,6 +8,8 @@
 	import type { User as Profile } from '$lib/types/projects';
 	import type { PageData } from './$types';
 	import UserAdd from '$lib/assets/User-Add.svelte';
+	import { supabase } from '$lib/supabase';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -17,7 +19,19 @@
 	const handleSearchByEmail = () => {
 		allUsers = data.users;
 		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
-		allUsers.splice(0, 5);
+		allUsers.splice(4);
+	};
+
+	const handleInviteNewUser = async (id: string) => {
+		const invitedUsers = [...$currentProject.invited_people, id];
+		const { error } = await supabase
+			.from('projects')
+			.update({ invited_people: invitedUsers })
+			.eq('id', $currentProject.id);
+		if (!error) {
+			invalidate('app:team-members');
+		}
+		console.log(error);
 	};
 
 	onMount(() => {
@@ -88,7 +102,8 @@
 								<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
 							</div>
 						</div>
-						<button class="ml-auto">
+
+						<button class="ml-auto" on:click={() => handleInviteNewUser(id)}>
 							<UserAdd className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 							<span class="sr-only">Add {email} to this project</span>
 						</button>
