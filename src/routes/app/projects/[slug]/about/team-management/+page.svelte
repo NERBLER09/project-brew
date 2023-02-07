@@ -29,6 +29,7 @@
 			.update({ invited_people: invitedUsers })
 			.eq('id', $currentProject.id);
 		if (!error) {
+			emailSearch = '';
 			invalidate('app:team-members');
 		}
 		console.log(error);
