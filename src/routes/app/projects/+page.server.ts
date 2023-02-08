@@ -15,12 +15,23 @@ export const load = (async (event) => {
 		.from('projects')
 		.select()
 		.eq('user_id', session.user.id);
-	if (data) {
-		const pinned = data.filter((value) => value.pinned);
-		return { all: data, pinned };
-	}
 
-	throw error(404, err.message);
+	const { data: invited, error: err2 } = await supabaseClient
+		.from("projects")
+		.select()
+		.contains("invited_people", [session.user.id]);
+
+	console.log(invited)
+
+	if (data && invited) {
+		const allProjects = [...data, ...invited]
+		const pinned = data.filter((value) => value.pinned);
+		return { all: allProjects, pinned };
+	}
+	if (err) {
+
+		throw error(404, err.message);
+	}
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
