@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 
 	import User from '$lib/assets/User.svelte';
+	import { currentProject } from '$lib/stores/project';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -29,6 +32,21 @@
 			avatar_url = member.avatar_url;
 		}
 	});
+
+	const removeUser = async () => {
+		let invitedUsers = $currentProject.invited_people;
+		const index = invitedUsers.indexOf(id);
+		invitedUsers = invitedUsers.splice(index, 1);
+		const { error } = await supabase
+			.from('projects')
+			.update({ invited_people: invitedUsers })
+			.eq('id', $currentProject.id);
+		if (!error) {
+			invalidate('app:project');
+		} else {
+			console.log(error);
+		}
+	};
 </script>
 
 <div class="flex w-full items-center md:relative">
@@ -51,6 +69,6 @@
 		<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 	</button>
 	{#if showTeamMemberDropdown}
-		<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} />
+		<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
 	{/if}
 </div>

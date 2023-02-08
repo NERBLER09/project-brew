@@ -9,6 +9,12 @@
 
 	export let visibility: boolean;
 	export let email: string;
+	export let removeUser = async () => {};
+
+	const handleRemoveUser = async () => {
+		await removeUser();
+		visibility = false;
+	};
 </script>
 
 <div class="dropdown--container md:top-10 md:right-0">
@@ -31,7 +37,7 @@
 		<Mail className="dropdown--icon" />
 		<span class="dropdown--label">Email</span>
 	</a>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+	<button class="dropdown--item" on:click={handleRemoveUser}>
 		<UserRemove className="dropdown--icon" />
 		<span class="dropdown--label">Remove</span>
 	</button>
