@@ -7,14 +7,12 @@
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 
 	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
+	import { userData } from '$lib/stores/user';
+	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
-	onMount(() => {
-		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity') || '[]');
-		addNewDay();
-		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
-		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
-		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
+	const handleTheme = () => {
+		$perferedTheme = localStorage.getItem('theme');
 
 		switch ($perferedTheme) {
 			case 'light':
@@ -43,6 +41,27 @@
 				localStorage.setItem('theme', 'light');
 			}
 		});
+	};
+
+	onMount(async () => {
+		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity') || '[]');
+		addNewDay();
+		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
+		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
+		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
+
+		handleTheme();
+
+		const { data: session } = await supabase.auth.getUser();
+		const { data: user, error: err } = await supabase
+			.from('profiles')
+			.select()
+			.eq('id', session?.user?.id)
+			.limit(1)
+			.single();
+		if (user) {
+			$userData = user;
+		}
 	});
 </script>
 
