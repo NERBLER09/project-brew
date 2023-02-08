@@ -51,6 +51,6 @@
 		<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 	</button>
 	{#if showTeamMemberDropdown}
-		<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} />
+		<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} />
 	{/if}
 </div>

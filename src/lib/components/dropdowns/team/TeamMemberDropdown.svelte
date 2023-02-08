@@ -8,6 +8,7 @@
 	import { userData } from '$lib/stores/user';
 
 	export let visibility: boolean;
+	export let email: string;
 </script>
 
 <div class="dropdown--container md:top-10 md:right-0">
@@ -19,10 +20,17 @@
 		<OpenShare className="dropdown--icon" />
 		<span class="dropdown--label">Share</span>
 	</button>
-	<button class="dropdown--item" on:click={() => (visibility = false)}>
+
+	<!-- Very dirty way in order to open an email writer -->
+	<a
+		href="mailto:{email}"
+		target="__blank"
+		class="dropdown--item"
+		on:click={() => (visibility = false)}
+	>
 		<Mail className="dropdown--icon" />
 		<span class="dropdown--label">Email</span>
-	</button>
+	</a>
 	<button class="dropdown--item" on:click={() => (visibility = false)}>
 		<UserRemove className="dropdown--icon" />
 		<span class="dropdown--label">Remove</span>

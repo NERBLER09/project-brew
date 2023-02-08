@@ -14,7 +14,7 @@
 			<a href="/app/projects/{$currentProject.id}/about/team-management" class="ml-auto md:hidden">
 				<Filter
 					className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200"
-					parentBg="grey-100 dark:bg-grey-900"
+					parentBg="grey-100 dark:stroke-grey-900"
 				/>
 				<span class="sr-only">Manage invited team members</span>
 			</a>
