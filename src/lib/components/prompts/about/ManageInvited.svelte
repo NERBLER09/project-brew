@@ -32,7 +32,6 @@
 		allUsers = unfilteredUsers;
 		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
 		allUsers.splice(4);
-		console.log('test');
 	};
 
 	const handleInviteNewUser = async (id: string) => {
@@ -98,6 +97,7 @@
 			placeholder="Search by name or email to invite people"
 			class="input--text m-0 w-full p-0"
 			on:keyup={handleSearchByEmail}
+			bind:value={emailSearch}
 		/>
 		<button>
 			<User className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto" />
@@ -110,7 +110,7 @@
 				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Search results</h2>
 			</header>
 			<div>
-				<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
+				<div class="mt-md flex w-full flex-col items-start gap-lg">
 					{#each allUsers as { avatar_url, name, email, id }}
 						<div class="flex w-full items-center md:relative">
 							<div class="flex items-start gap-md">
