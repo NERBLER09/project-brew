@@ -41,7 +41,10 @@
 			.from('projects')
 			.update({ invited_people: invitedUsers })
 			.eq('id', $currentProject.id);
+
 		if (!error) {
+			$currentProject.invited_people = $currentProject.invited_people.splice(index, 1);
+
 			invalidate('app:project');
 		} else {
 			console.log(error);
