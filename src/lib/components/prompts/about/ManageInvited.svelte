@@ -33,6 +33,7 @@
 	const handleSearchByEmail = () => {
 		allUsers = unfilteredUsers;
 		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
+		allUsers = allUsers.filter((item) => !$currentProject.invited_people.includes(item.id));
 		allUsers.splice(4);
 	};
 
@@ -64,8 +65,6 @@
 			console.error(err);
 		}
 	});
-
-	$: console.log(emailSearch === '');
 </script>
 
 <dialog

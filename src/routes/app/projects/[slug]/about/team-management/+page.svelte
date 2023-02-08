@@ -19,6 +19,7 @@
 	const handleSearchByEmail = () => {
 		allUsers = data.users;
 		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
+		allUsers = allUsers.filter((item) => !$currentProject.invited_people.includes(item.id));
 		allUsers.splice(4);
 	};
 
