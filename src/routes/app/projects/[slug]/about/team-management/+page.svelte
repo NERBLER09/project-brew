@@ -28,9 +28,10 @@
 			.from('projects')
 			.update({ invited_people: invitedUsers })
 			.eq('id', $currentProject.id);
+
 		if (!error) {
 			emailSearch = '';
-			invalidate('app:team-members');
+			invalidate('app:project');
 		}
 		console.log(error);
 	};
@@ -126,6 +127,10 @@
 			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
 				{#each $currentProject.invited_people as id}
 					<TeamMember {id} />
+				{:else}
+					<p class="text-grey-700 dark:text-grey-200 font-medium">
+						No one has been invited to this project.
+					</p>
 				{/each}
 			</div>
 		</div>

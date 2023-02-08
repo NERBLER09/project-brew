@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import User from '$lib/assets/User.svelte';
@@ -42,6 +44,7 @@
 			.eq('id', $currentProject.id);
 		if (!error) {
 			emailSearch = '';
+			invalidate('app:project');
 		}
 		console.log(error);
 	};
@@ -151,6 +154,10 @@
 				<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
 					{#each $currentProject.invited_people as id}
 						<TeamMember {id} />
+					{:else}
+						<p class="text-grey-700 dark:text-grey-200 font-medium">
+							It looks like that a user with that email doesn't exists.
+						</p>
 					{/each}
 				</div>
 			</div>

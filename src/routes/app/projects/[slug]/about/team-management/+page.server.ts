@@ -8,8 +8,6 @@ export const load = (async (event) => {
     throw redirect(303, '/');
   }
 
-  event.depends('app:team-members');
-
   const { data: users, error: err } = await supabaseClient
     .from('profiles')
     .select()
