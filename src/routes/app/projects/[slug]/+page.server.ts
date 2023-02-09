@@ -17,12 +17,13 @@ export const load = (async (event) => {
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
 		.select()
-		.eq('user_id', session.user.id)
 		.eq('id', projectId)
 		.limit(1)
 		.single();
+
+	console.log(project?.invited_people?.includes(session.user.id))
+
 	const { data: lists } = await supabaseClient.from('lists').select().eq('project', projectId);
-	if (project?.user_id !== session.user.id) throw redirect(301, '/app/projects/not-invited');
 	if (project) {
 		return {
 			name: project?.project_name,

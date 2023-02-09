@@ -21,8 +21,6 @@ export const load = (async (event) => {
 		.select()
 		.contains("invited_people", [session.user.id]);
 
-	console.log(invited)
-
 	if (data && invited) {
 		const allProjects = [...data, ...invited]
 		const pinned = data.filter((value) => value.pinned);
