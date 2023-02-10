@@ -26,8 +26,6 @@ export const addNewDay = async () => {
 		const weekActivity = [...get(weeklyActivity), date];
 		weeklyActivity.set(weekActivity);
 
-		localStorage.setItem('weeklyActivity', JSON.stringify(weekActivity));
-
 		await supabase.from("profiles").update({ "your_activity": weekActivity }).eq("id", get(userData).id)
 	}
 };
