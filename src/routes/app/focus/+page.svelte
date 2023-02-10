@@ -1,8 +1,18 @@
 <script lang="ts">
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
+	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 
 	let strokeArray = 360;
+	let minutes = 25;
+	let seconds = 10;
+
+	let minuteInputElement: HTMLInputElement;
+	let secondsInputElement: HTMLInputElement;
+
+	$: percent = (minutes / 120) * 100;
 </script>
 
 <svelte:head>
@@ -31,7 +41,7 @@
 					cy="125"
 					r="115"
 					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
-					stroke-dashoffset={strokeArray - (strokeArray * 50) / 100}
+					stroke-dashoffset={strokeArray - (strokeArray * percent) / 100}
 					stroke-dasharray={strokeArray}
 					stroke-linecap="round"
 					stroke-width="15"
@@ -40,6 +50,38 @@
 			</svg>
 		</div>
 		<!-- Add content here -->
+		<div class="flex items-center gap-md">
+			<div class="relative z-40 flex flex-col items-center justify-center">
+				<button class="button--text m-0 p-0" on:click={() => (minutes += 5)}>
+					<Up className="h-8 w-8 stroke-accent-light" />
+				</button>
+				<span
+					class=" {minutes >= 100
+						? 'w-[3ch]'
+						: 'w-[2ch]'} text-end text-lg font-semibold text-grey-700 dark:text-grey-200"
+					>{minutes}</span
+				>
+				<button class="button--text m-0 p-0" on:click={() => (minutes -= 5)}>
+					<Down className="h-8 w-8 stroke-accent-light" />
+				</button>
+			</div>
+			<span class="text-center text-md font-semibold text-grey-700 dark:text-grey-200">:</span>
+			<div class="relative z-40 flex flex-col items-center justify-center">
+				<button class="button--text m-0 p-0" on:click={() => (seconds += 5)}>
+					<Up className="h-8 w-8 stroke-accent-light" />
+				</button>
+
+				<span
+					class=" {minutes >= 100
+						? 'w-[3ch]'
+						: 'w-[2ch]'} text-end text-lg font-semibold text-grey-700 dark:text-grey-200"
+					>{seconds}</span
+				>
+				<button class="button--text m-0 p-0" on:click={() => (seconds -= 5)}>
+					<Down className="h-8 w-8 stroke-accent-light" />
+				</button>
+			</div>
+		</div>
 	</div>
 
 	<button class="button--secondary mt-lg flex w-full items-center gap-md px-3">
