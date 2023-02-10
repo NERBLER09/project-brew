@@ -51,7 +51,7 @@
 				<circle
 					cx="64"
 					cy="64"
-					r="60"
+					r="100%"
 					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
 					stroke-dashoffset={strokeArray - (strokeArray * percentCompleted) / 100}
 					stroke-dasharray={strokeArray}
