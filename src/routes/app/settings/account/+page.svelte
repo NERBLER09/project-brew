@@ -40,6 +40,7 @@
 				id="location-input"
 				name="location"
 				placeholder="Enter where you are"
+				value={data.location}
 			/>
 		</div>
 		<div>

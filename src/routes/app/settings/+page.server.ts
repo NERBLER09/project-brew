@@ -12,8 +12,9 @@ export const actions = {
 
     const data = await request.formData()
     const name = data.get("name") as string
+    const location = data.get("location") as string
 
-    const { error: err } = await supabaseClient.from("profiles").update({ name }).eq("id", session.user.id)
+    const { error: err } = await supabaseClient.from("profiles").update({ name, location }).eq("id", session.user.id)
     if (err) {
       throw error(403, err.message)
     }
