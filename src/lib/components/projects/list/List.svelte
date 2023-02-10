@@ -39,7 +39,12 @@
 		if (tasks[index].status === 'done') {
 			$tasksCompletedThisDay++;
 			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
-			localStorage.setItem('weeklyActivity', JSON.stringify($weeklyActivity));
+
+			await supabase
+				.from('profiles')
+				.update({ your_activity: $weeklyActivity })
+				.eq('id', $userData.id);
+
 			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
 		}
 	};
