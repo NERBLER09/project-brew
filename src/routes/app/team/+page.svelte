@@ -18,7 +18,7 @@
 			on:click={() => (showInvitePrompt = true)}
 		>
 			<UserAdd className="h-8 w-8 stroke-grey-200" />
-			<span>New project</span>
+			<span>Invite</span>
 		</button>
 	</div>
 	<p class="pt-md font-medium text-grey-700 dark:text-grey-200 md:pt-sm">
