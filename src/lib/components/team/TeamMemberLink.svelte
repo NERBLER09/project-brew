@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 
 	import User from '$lib/assets/User.svelte';
+	import { userData } from '$lib/stores/user';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -28,6 +31,33 @@
 			avatar_url = member.avatar_url;
 		}
 	});
+
+	const removeUser = async () => {
+		let { data: users } = await supabase
+			.from('profiles')
+			.select('*')
+			.eq('id', $userData.id)
+			.limit(1)
+			.single();
+
+		if (!users?.team_members) return;
+
+		let currentUsers = users.team_members;
+		const index = currentUsers.indexOf(id!)!;
+		currentUsers.splice(index, 1)!;
+
+		const { error } = await supabase
+			.from('profiles')
+			.update({ team_members: currentUsers })
+			.eq('id', $userData.id);
+
+		if (!error) {
+			$userData.team_members = currentUsers;
+			invalidate('app:team-members');
+		} else {
+			console.error(error);
+		}
+	};
 </script>
 
 {#if !name}
@@ -53,7 +83,7 @@
 			<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 		</button>
 		{#if showTeamMemberDropdown}
-			<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} />
+			<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
 		{/if}
 	</div>
 {/if}
