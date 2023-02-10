@@ -1,4 +1,6 @@
 import { tasksCompletedThisDay } from '$lib/stores/project';
+import { userData } from '$lib/stores/user';
+import { supabase } from '$lib/supabase';
 import { get, writable, type Writable } from 'svelte/store';
 
 interface Activity {
@@ -8,7 +10,7 @@ interface Activity {
 }
 export let weeklyActivity: Writable<Activity[]> = writable([]);
 
-export const addNewDay = () => {
+export const addNewDay = async () => {
 	if (!get(weeklyActivity).find((item) => item.date === getCurrentDate())) {
 		tasksCompletedThisDay.set(0)
 		localStorage.setItem('tasksCompletedToday', JSON.stringify(get(tasksCompletedThisDay)));
@@ -25,6 +27,8 @@ export const addNewDay = () => {
 		weeklyActivity.set(weekActivity);
 
 		localStorage.setItem('weeklyActivity', JSON.stringify(weekActivity));
+
+		await supabase.from("profiles").update({ "your_activity": weekActivity }).eq("id", get(userData).id)
 	}
 };
 

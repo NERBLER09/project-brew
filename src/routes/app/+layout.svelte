@@ -44,14 +44,6 @@
 	};
 
 	onMount(async () => {
-		$weeklyActivity = JSON.parse(localStorage.getItem('weeklyActivity') || '[]');
-		addNewDay();
-		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
-		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
-		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
-
-		handleTheme();
-
 		const { data: session } = await supabase.auth.getUser();
 		const { data: user, error: err } = await supabase
 			.from('profiles')
@@ -62,6 +54,21 @@
 		if (user) {
 			$userData = user;
 		}
+
+		const { data, error } = await supabase
+			.from('profiles')
+			.select()
+			.eq('id', user?.id)
+			.limit(1)
+			.single();
+
+		$weeklyActivity = data?.your_activity ?? [];
+		addNewDay();
+		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
+		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
+		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
+
+		handleTheme();
 	});
 </script>
 

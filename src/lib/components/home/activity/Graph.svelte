@@ -8,7 +8,7 @@
 		const date = new Date();
 
 		let day = date.getDate();
-		let month = date.getMonth() + 1;
+		let month = .getMonth() + 1;
 		let year = date.getFullYear();
 
 		currentDate = `${day}-${month}-${year}`;

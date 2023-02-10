@@ -44,6 +44,7 @@ export interface Database {
           name: string
           role: string | null
           team_members: string[] | null
+          your_activity: Json[] | null
         }
         Insert: {
           avatar_url?: string | null
@@ -56,6 +57,7 @@ export interface Database {
           name: string
           role?: string | null
           team_members?: string[] | null
+          your_activity?: Json[] | null
         }
         Update: {
           avatar_url?: string | null
@@ -68,6 +70,7 @@ export interface Database {
           name?: string
           role?: string | null
           team_members?: string[] | null
+          your_activity?: Json[] | null
         }
       }
       projects: {
@@ -151,6 +154,9 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
       [_ in never]: never
     }
   }
