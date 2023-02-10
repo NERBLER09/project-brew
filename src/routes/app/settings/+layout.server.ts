@@ -8,6 +8,8 @@ export const load = (async (event) => {
     throw redirect(303, "/")
   }
 
+  event.depends("app:user-info")
+
   const { data: user, error: err } = await supabaseClient.from('profiles').select().eq('id', session.user.id).limit(1).single();
   if (user) {
     return {

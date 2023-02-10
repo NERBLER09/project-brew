@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import Check from '$lib/assets/Check.svelte';
 	import { settingsPage } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	onMount(() => {
 		$settingsPage = 'Account';
@@ -15,7 +19,7 @@
 
 <section>
 	<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
-	<form on:submit|preventDefault={() => {}} class="flex flex-col gap-sm">
+	<form method="POST" action="/app/settings?/account" class="flex flex-col gap-sm" use:enhance>
 		<div>
 			<label for="name-input" class="input--label">Name</label>
 			<input
@@ -24,6 +28,8 @@
 				id="name-input"
 				name="name"
 				placeholder="What should people call you"
+				required
+				value={data.name}
 			/>
 		</div>
 		<div>
