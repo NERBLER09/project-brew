@@ -14,8 +14,23 @@ export const actions = {
     const name = data.get("name") as string
     const location = data.get("location") as string
     const bio = data.get("bio") as string
+    const file = data.get("profile") as File;
 
-    const { error: err } = await supabaseClient.from("profiles").update({ name, location, bio }).eq("id", session.user.id)
+    let avatar_url = ""
+
+    if (file.size !== 0) {
+      const { error: coverErr } = await supabaseClient
+        .storage
+        .from("project-covers")
+        .upload(`${session.user.id}/avatar.png`, file, {
+          cacheControl: '3600',
+          upsert: false
+        })
+      const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/avatar.png`)
+      avatar_url = url.publicUrl
+    }
+
+    const { error: err } = await supabaseClient.from("profiles").update({ name, location, bio, avatar_url }).eq("id", session.user.id)
     if (err) {
       throw error(403, err.message)
     }
