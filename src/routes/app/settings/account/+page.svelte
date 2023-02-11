@@ -6,11 +6,25 @@
 	import type { PageData } from './$types';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import User from '$lib/assets/User.svelte';
 
 	export let data: PageData;
 
 	let profilePictureElement: HTMLInputElement;
-	let pfpFileURL = data.avatar_url;
+	let newProfilePicture: FileList | null;
+	let pfpFileURL = data.avatar_url ?? '';
+
+	const getFileURL = (file: any) => {
+		if (!file) return;
+		pfpFileURL = URL.createObjectURL(file);
+	};
+
+	const removeProfilePicture = () => {
+		pfpFileURL = '';
+		newProfilePicture = null;
+	};
+
+	$: if (newProfilePicture) getFileURL(newProfilePicture[0]);
 
 	onMount(() => {
 		$settingsPage = 'Account';
@@ -70,11 +84,21 @@
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Profile Picture</h2>
 			</header>
 			<div class="mt-sm flex items-center gap-lg">
-				<input type="file" class="hidden" bind:this={profilePictureElement} />
+				<input
+					type="file"
+					class="hidden"
+					bind:this={profilePictureElement}
+					bind:files={newProfilePicture}
+					name="profile"
+				/>
 
-				<img src={pfpFileURL} alt="user profile" class="h-20 w-20 rounded-full" />
+				{#if pfpFileURL !== ''}
+					<img src={pfpFileURL} alt="user profile" class="h-20 w-20 rounded-full" />
+				{:else}
+					<User className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-16 md:w-16" />
+				{/if}
 
-				<div class="flex flex-col gap-sm md:flex-row md:gap-md">
+				<div class="flex h-fit flex-col gap-sm md:flex-row md:gap-md">
 					<button
 						class="button--primary flex w-full items-center justify-center gap-md"
 						type="button"
@@ -83,13 +107,20 @@
 						<Edit className="stroke-grey-200 w-6 h-6" />
 						Change
 					</button>
-					<button
-						class="button--secondary flex w-full items-center justify-center gap-md"
-						type="button"
-					>
-						<Trash className="stroke-grey-200 w-6 h-6" />
-						Remove
-					</button>
+					{#if pfpFileURL}
+						<button
+							class="button--secondary flex w-full items-center justify-center gap-md"
+							type="button"
+							on:click={removeProfilePicture}
+						>
+							<Trash className="stroke-grey-200 w-6 h-6" />
+							Remove
+						</button>
+					{:else if data.avatar_url}
+						<button class="button--secondary" on:click={() => (pfpFileURL = data.avatar_url ?? '')}
+							>Reset</button
+						>
+					{/if}
 				</div>
 			</div>
 		</section>
