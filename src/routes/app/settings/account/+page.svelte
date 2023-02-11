@@ -4,8 +4,13 @@
 	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
+	import Edit from '$lib/assets/Edit.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 
 	export let data: PageData;
+
+	let profilePictureElement: HTMLInputElement;
+	let pfpFileURL = data.avatar_url;
 
 	onMount(() => {
 		$settingsPage = 'Account';
@@ -17,8 +22,14 @@
 	will be publicly visible.
 </p>
 
+<svelte:head>
+	<title>Account Settings - Project Brew</title>
+</svelte:head>
+
 <section>
-	<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
+	<header>
+		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
+	</header>
 	<form method="POST" action="/app/settings?/account" class="flex flex-col gap-sm" use:enhance>
 		<div>
 			<label for="name-input" class="input--label">Name</label>
@@ -53,6 +64,36 @@
 				value={data.bio}
 			/>
 		</div>
+
+		<section class="mt-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Profile Picture</h2>
+			</header>
+			<div class="mt-sm flex items-center gap-lg">
+				<input type="file" class="hidden" bind:this={profilePictureElement} />
+
+				<img src={pfpFileURL} alt="user profile" class="h-20 w-20 rounded-full" />
+
+				<div class="flex flex-col gap-sm md:flex-row md:gap-md">
+					<button
+						class="button--primary flex w-full items-center justify-center gap-md"
+						type="button"
+						on:click={() => profilePictureElement.click()}
+					>
+						<Edit className="stroke-grey-200 w-6 h-6" />
+						Change
+					</button>
+					<button
+						class="button--secondary flex w-full items-center justify-center gap-md"
+						type="button"
+					>
+						<Trash className="stroke-grey-200 w-6 h-6" />
+						Remove
+					</button>
+				</div>
+			</div>
+		</section>
+
 		<button class="button--circle fixed bottom-32 right-8 z-50 md:hidden">
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save info</span>
