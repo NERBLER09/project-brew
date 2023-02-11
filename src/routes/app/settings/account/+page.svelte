@@ -92,6 +92,9 @@
 					name="profile"
 				/>
 
+				<input type="text" bind:value={data.avatar_url} class="hidden" name="avatar_url" />
+				<input type="text" bind:value={pfpFileURL} class="hidden" name="avatar_preview" />
+
 				{#if pfpFileURL !== ''}
 					<img src={pfpFileURL} alt="user profile" class="h-20 w-20 rounded-full" />
 				{:else}
@@ -113,7 +116,7 @@
 							type="button"
 							on:click={removeProfilePicture}
 						>
-							<Trash className="stroke-grey-200 w-6 h-6" />
+							<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 							Remove
 						</button>
 					{:else if data.avatar_url}

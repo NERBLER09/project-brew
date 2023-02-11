@@ -15,19 +15,24 @@ export const actions = {
     const location = data.get("location") as string
     const bio = data.get("bio") as string
     const file = data.get("profile") as File;
-
-    let avatar_url = ""
+    let avatar_url = data.get("avatar_url") as string;
+    let avatar_preview = data.get("avatar_preview") as string
 
     if (file.size !== 0) {
       const { error: coverErr } = await supabaseClient
         .storage
-        .from("project-covers")
+        .from("avatars")
         .upload(`${session.user.id}/avatar.png`, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: true
         })
-      const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/avatar.png`)
+
+      const { data: url } = supabaseClient.storage.from("avatars").getPublicUrl(`${session.user.id}/avatar.png`)
       avatar_url = url.publicUrl
+    }
+    else if (file.size === 0 && avatar_url !== avatar_preview) {
+      await supabaseClient.storage.from("avatars").remove([`${session.user.id}/avatar.png`])
+      avatar_url = ""
     }
 
     const { error: err } = await supabaseClient.from("profiles").update({ name, location, bio, avatar_url }).eq("id", session.user.id)
