@@ -36,7 +36,7 @@
 						>{data.email}</span
 					>
 				</div>
-				<button class="ml-auto" on:click={showMobileNav} on:blur={showMobileNav}>
+				<button class="ml-auto" on:click={showMobileNav}>
 					<Menu className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 					<span class="sr-only">Show nav menu</span>
 				</button>
