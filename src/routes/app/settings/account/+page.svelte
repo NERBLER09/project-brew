@@ -50,6 +50,7 @@
 				id="bio-input"
 				name="bio"
 				placeholder="Write something about yourself"
+				value={data.bio}
 			/>
 		</div>
 		<button class="button--circle fixed bottom-32 right-8 z-50 md:hidden">
