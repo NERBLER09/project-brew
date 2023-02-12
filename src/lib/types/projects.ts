@@ -43,3 +43,17 @@ export interface Task {
   tags: string[] | null
   user_id: string
 }
+
+export interface NotficationSettings {
+  push: {
+    dueTask: boolean,
+    invited: boolean,
+    timerUp: boolean,
+    assigned: boolean
+  },
+  email: {
+    dueTask: boolean,
+    invited: boolean,
+    assigned: boolean
+  }
+}
