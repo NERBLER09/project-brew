@@ -26,6 +26,22 @@
 
 	$: if (newProfilePicture) getFileURL(newProfilePicture[0]);
 
+	let bannerInputElement: HTMLInputElement;
+	let newBanner: FileList | null;
+	let bannerURL = data.banner ?? '';
+
+	const getBannerPreview = (file: any) => {
+		if (!file) return;
+		bannerURL = URL.createObjectURL(file);
+	};
+
+	const removeBanner = () => {
+		bannerURL = '';
+		newBanner = null;
+	};
+
+	$: if(newBanner) getBannerPreview(newBanner[0])
+
 	onMount(() => {
 		$settingsPage = 'Account';
 	});
@@ -120,8 +136,55 @@
 							Remove
 						</button>
 					{:else if data.avatar_url}
-						<button class="button--secondary" on:click={() => (pfpFileURL = data.avatar_url ?? '')}
-							>Reset</button
+						<button
+							class="button--secondary"
+							on:click={() => (pfpFileURL = data.avatar_url ?? '')}
+							type="button">
+							Reset
+						</button>
+					{/if}
+				</div>
+			</div>
+		</section>
+
+		<section class="mt-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Banner</h2>
+			</header>
+
+			<div>
+				<img src={bannerURL} alt="" class="object-cover max-w-xl w-3/4" />
+				<input
+					type="file"
+					name="banner"
+					class="hidden"
+					bind:this={bannerInputElement}
+					bind:files={newBanner}
+				/>
+
+				<div class="flex gap-md mt-md max-w-xl w-3/4">
+					<button
+						class="button--primary flex w-full items-center justify-center gap-md"
+						type="button"
+						on:click={() => bannerInputElement.click()}
+					>
+						<Edit className="stroke-grey-200 w-6 h-6" />
+						Change
+					</button>
+					{#if bannerURL}
+						<button
+							class="button--secondary flex w-full items-center justify-center gap-md"
+							type="button"
+							on:click={removeBanner}
+						>
+							<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
+							Remove
+						</button>
+					{:else if data.banner}
+						<button
+							class="button--secondary"
+							on:click={() => (bannerURL = data.banner ?? '')}
+							type="button">Reset</button
 						>
 					{/if}
 				</div>
