@@ -113,7 +113,11 @@
 				<input type="text" bind:value={pfpFileURL} class="hidden" name="avatar_preview" />
 
 				{#if pfpFileURL !== ''}
-					<img src={pfpFileURL} alt="user profile" class="aspect-square h-20 w-20 rounded-full" />
+					<img
+						src={pfpFileURL}
+						alt="user profile"
+						class="aspect-square h-20 w-20 rounded-full object-cover"
+					/>
 				{:else}
 					<User className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-16 md:w-16" />
 				{/if}
@@ -168,6 +172,9 @@
 					bind:files={newBanner}
 					accept="image/png, image/jpeg"
 				/>
+
+				<input type="text" bind:value={data.banner} class="hidden" name="banner_url" />
+				<input type="text" bind:value={bannerURL} class="hidden" name="banner_preview" />
 
 				<div class="mx-auto mt-md flex gap-md md:w-3/4 md:max-w-xl">
 					<button
