@@ -40,7 +40,7 @@
 		newBanner = null;
 	};
 
-	$: if(newBanner) getBannerPreview(newBanner[0])
+	$: if (newBanner) getBannerPreview(newBanner[0]);
 
 	onMount(() => {
 		$settingsPage = 'Account';
@@ -106,13 +106,14 @@
 					bind:this={profilePictureElement}
 					bind:files={newProfilePicture}
 					name="profile"
+					accept="image/png, image/jpeg"
 				/>
 
 				<input type="text" bind:value={data.avatar_url} class="hidden" name="avatar_url" />
 				<input type="text" bind:value={pfpFileURL} class="hidden" name="avatar_preview" />
 
 				{#if pfpFileURL !== ''}
-					<img src={pfpFileURL} alt="user profile" class="h-20 w-20 rounded-full" />
+					<img src={pfpFileURL} alt="user profile" class="aspect-square h-20 w-20 rounded-full" />
 				{:else}
 					<User className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-16 md:w-16" />
 				{/if}
@@ -139,7 +140,8 @@
 						<button
 							class="button--secondary"
 							on:click={() => (pfpFileURL = data.avatar_url ?? '')}
-							type="button">
+							type="button"
+						>
 							Reset
 						</button>
 					{/if}
@@ -152,19 +154,24 @@
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Banner</h2>
 			</header>
 
-			<div>
-				<img src={bannerURL} alt="" class="object-cover max-w-xl w-3/4" />
+			<div class="mt-sm">
+				{#if bannerURL}
+					<img src={bannerURL} alt="" class="h-[12.5rem] w-full rounded object-cover" />
+				{:else}
+					<p>Select a file to preview it.</p>
+				{/if}
 				<input
 					type="file"
 					name="banner"
 					class="hidden"
 					bind:this={bannerInputElement}
 					bind:files={newBanner}
+					accept="image/png, image/jpeg"
 				/>
 
-				<div class="flex gap-md mt-md max-w-xl w-3/4">
+				<div class="mx-auto mt-md flex gap-md md:w-3/4 md:max-w-xl">
 					<button
-						class="button--primary flex w-full items-center justify-center gap-md"
+						class="button--primary flex w-full items-center justify-center gap-md md:w-1/2"
 						type="button"
 						on:click={() => bannerInputElement.click()}
 					>
@@ -173,7 +180,7 @@
 					</button>
 					{#if bannerURL}
 						<button
-							class="button--secondary flex w-full items-center justify-center gap-md"
+							class="button--secondary flex w-full items-center justify-center gap-md md:w-1/2"
 							type="button"
 							on:click={removeBanner}
 						>
@@ -182,7 +189,7 @@
 						</button>
 					{:else if data.banner}
 						<button
-							class="button--secondary"
+							class="button--secondary md:w-1/2"
 							on:click={() => (bannerURL = data.banner ?? '')}
 							type="button">Reset</button
 						>
