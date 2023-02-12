@@ -4,10 +4,24 @@
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 
 	let strokeArray = 720;
 	let minutes = 25;
 	let seconds = 10;
+
+	let blockedURLS: string[] = [];
+	let blockURL = '';
+	const addBlockedURL = () => {
+		blockedURLS = [blockURL, ...blockedURLS];
+		blockURL = '';
+	};
+
+	const removeURL = (url: string) => {
+		const index = blockedURLS.indexOf(url);
+		blockedURLS.splice(index, 1);
+		blockedURLS = blockedURLS;
+	};
 
 	$: percent = ((minutes + seconds / 100) / 120) * 100;
 	$: if (minutes < 0) minutes = 0;
@@ -99,21 +113,40 @@
 
 <section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
 	<header>
-		<div class="input--text mb-sm flex w-full items-center">
-			<input
-				type="text"
-				placeholder="Search by email to invite people"
-				class="input--text m-0 w-full p-0"
-			/>
-			<button>
-				<PlusNew
-					className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+		<form on:submit|preventDefault={addBlockedURL}>
+			<div class="input--text mb-sm flex w-full items-center">
+				<input
+					type="text"
+					placeholder="Enter a url you would like to block"
+					class="input--text m-0 w-full p-0"
+					bind:value={blockURL}
 				/>
-			</button>
-		</div>
+				<button>
+					<PlusNew
+						className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+					/>
+				</button>
+			</div>
+		</form>
 
 		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Blocked urls</h2>
 	</header>
+
+	<div>
+		{#each blockedURLS as url}
+			<div class="flex items-center">
+				<p class="font-medium text-grey-700 dark:text-grey-200">{url}</p>
+				<button class="button--text m-0 p-0 ml-auto" on:click={() => removeURL(url)}>
+					<span class="sr-only">Remove {url} from blocked url list</span>
+					<Trash className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+				</button>
+			</div>
+		{:else}
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				You have added any urls to this focus' block list.
+			</p>
+		{/each}
+	</div>
 </section>
 <div class="flex w-full items-center justify-center">
 	<button class="button--primary mt-lg text-center">Start</button>
