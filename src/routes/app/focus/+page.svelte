@@ -149,5 +149,5 @@
 	</div>
 </section>
 <div class="flex w-full items-center justify-center">
-	<button class="button--primary mt-lg text-center">Start</button>
+	<a href="/app/focus/running" class="button--primary mt-lg text-center">Start</a>
 </div>
