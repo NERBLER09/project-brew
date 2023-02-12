@@ -5,6 +5,7 @@
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import { focusMinutes } from '$lib/stores/focus';
 
 	let strokeArray = 720;
 	let minutes = 25;
@@ -29,6 +30,8 @@
 
 	$: if (seconds < 0) seconds = 0;
 	else if (seconds > 55) seconds = 55;
+
+	$: $focusMinutes = minutes;
 </script>
 
 <svelte:head>
@@ -136,7 +139,7 @@
 		{#each blockedURLS as url}
 			<div class="flex items-center">
 				<p class="font-medium text-grey-700 dark:text-grey-200">{url}</p>
-				<button class="button--text m-0 p-0 ml-auto" on:click={() => removeURL(url)}>
+				<button class="button--text m-0 ml-auto p-0" on:click={() => removeURL(url)}>
 					<span class="sr-only">Remove {url} from blocked url list</span>
 					<Trash className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 				</button>

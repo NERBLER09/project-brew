@@ -1,12 +1,40 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Pause from '$lib/assets/Pause.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import { focusMinutes } from '$lib/stores/focus';
+	import { onMount } from 'svelte';
 
 	let strokeArray = 720;
-	let minutes = 25;
-	let seconds = 10;
+	let minutes = 0;
+	let seconds = 0;
+	let duration = 0;
 
-	$: percent = ((minutes + seconds / 100) / 120) * 100;
+	let countdown: NodeJS.Timer | null;
+
+	$: percent = ((minutes + seconds / 100) / $focusMinutes) * 100;
+
+	const handleCountdown = () => {
+		countdown = setInterval(() => {
+			duration--;
+			minutes = Math.floor(duration / 60);
+			seconds = duration % 60;
+
+			if (duration <= 0) {
+				clearInterval(countdown!);
+			}
+		}, 1000);
+	};
+
+	const clearCountdown = () => {
+		clearInterval(countdown!);
+		countdown = null;
+	};
+
+	onMount(() => {
+		duration = $focusMinutes * 60;
+		handleCountdown();
+	});
 </script>
 
 <svelte:head>
@@ -45,28 +73,43 @@
 		</div>
 		<!-- Add content here -->
 		<div class="flex items-center gap-md">
-			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200">25</span>
+			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200"
+				>{minutes}</span
+			>
 			<span class="text-center text-md font-semibold text-grey-700 dark:text-grey-200">:</span>
-			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200">00</span>
+			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200"
+				>{seconds}</span
+			>
 		</div>
 	</div>
 	<div>
-		<button class="button--circle">
-			<Pause className="h-6 w-6 stroke-grey-200" />
-			<span class="sr-only">Pause focus timer</span>
-		</button>
-
-		<button class="button--secondary bg-none m-md p-md rounded-full">
+		{#if countdown}
+			<button class="button--circle" on:click={clearCountdown}>
+				<Pause className="h-6 w-6 stroke-grey-200" />
+				<span class="sr-only">Pause focus timer</span>
+			</button>
+		{:else}
+			<button class="button--circle" on:click={handleCountdown}>
+				<PlusNew className="h-6 w-6 stroke-grey-200" />
+				<span class="sr-only">Resume focus timer</span>
+			</button>
+		{/if}
+		<button class="button--secondary m-md rounded-full bg-none p-md">
 			<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-200" />
 			<span class="sr-only">Stop focus timer</span>
 		</button>
 	</div>
-	<p class="text-md text-grey-700 dark:text-grey-200 font-semibold">Focusing on [Project]</p>
+	<p class="text-md font-semibold text-grey-700 dark:text-grey-200">Focusing on [Project]</p>
 </section>
 
 <section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
-    <header>
-        <h2 class="text-md text-grey-700 dark:text-grey-200 font-semibold">Here is what you need to get done:</h2>
-        <p class=" text-grey-700 dark:text-grey-200 font-medium">Any checked off tasks will be automatically moved and marked as done.</p>
-    </header>
+	<header>
+		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
+			Here is what you need to get done:
+		</h2>
+		<p class=" font-medium text-grey-700 dark:text-grey-200">
+			Any checked off tasks will be automatically moved and marked as done.
+		</p>
+	</header>
 </section>
+
