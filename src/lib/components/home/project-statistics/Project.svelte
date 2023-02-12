@@ -8,7 +8,7 @@
 
 	let strokeArray = 380;
 
-	let totalAmmountOfTasks = 0;
+	let totalAmountOfTasks = 0;
 	let completedTasks = 0;
 	let percentCompleted = 0;
 
@@ -21,9 +21,9 @@
 			.eq('user_id', userId)
 			.eq('project', id);
 
-		totalAmmountOfTasks = data?.length!;
+		totalAmountOfTasks = data?.length!;
 		completedTasks = data?.filter((item) => item.status === 'done').length!;
-		percentCompleted = Math.round((completedTasks / totalAmmountOfTasks) * 100) || 0;
+		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
 	});
 </script>
 

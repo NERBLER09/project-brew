@@ -5,12 +5,9 @@
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 
-	let strokeArray = 360;
+	let strokeArray = 720;
 	let minutes = 25;
 	let seconds = 10;
-
-	let minuteInputElement: HTMLInputElement;
-	let secondsInputElement: HTMLInputElement;
 
 	$: percent = (minutes / 120) * 100;
 </script>
@@ -45,7 +42,7 @@
 					stroke-dasharray={strokeArray}
 					stroke-linecap="round"
 					stroke-width="15"
-					transform="rotate(90 125 125)"
+					transform="rotate(-90 125 125)"
 				/>
 			</svg>
 		</div>
@@ -72,7 +69,7 @@
 				</button>
 
 				<span
-					class=" {minutes >= 100
+					class=" {seconds >= 100
 						? 'w-[3ch]'
 						: 'w-[2ch]'} text-end text-lg font-semibold text-grey-700 dark:text-grey-200"
 					>{seconds}</span
