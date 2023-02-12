@@ -9,7 +9,7 @@
 
 	let strokeArray = 720;
 	let minutes = 25;
-	let seconds = 10;
+	let seconds = 0;
 
 	let blockedURLS: string[] = [];
 	let blockURL = '';
@@ -78,7 +78,7 @@
 					class=" {minutes >= 100
 						? 'w-[3ch]'
 						: 'w-[2ch]'} text-end text-lg font-semibold text-grey-700 dark:text-grey-200"
-					>{minutes}</span
+					>{minutes < 10 ? '0' : ''}{minutes}</span
 				>
 				<button class="button--text m-0 p-0" on:click={() => (minutes -= 5)}>
 					<Down className="h-8 w-8 stroke-accent-light" />
@@ -94,7 +94,7 @@
 					class=" {seconds >= 100
 						? 'w-[3ch]'
 						: 'w-[2ch]'} text-end text-lg font-semibold text-grey-700 dark:text-grey-200"
-					>{seconds}</span
+					>{seconds < 10 ? '0' : ''}{seconds}</span
 				>
 				<button class="button--text m-0 p-0" on:click={() => (seconds -= 5)}>
 					<Down className="h-8 w-8 stroke-accent-light" />

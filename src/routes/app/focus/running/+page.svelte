@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Pause from '$lib/assets/Pause.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
@@ -29,6 +31,11 @@
 	const clearCountdown = () => {
 		clearInterval(countdown!);
 		countdown = null;
+	};
+
+	const stopTimer = () => {
+		clearCountdown();
+		goto('/app/focus');
 	};
 
 	onMount(() => {
@@ -73,12 +80,12 @@
 		</div>
 		<!-- Add content here -->
 		<div class="flex items-center gap-md">
-			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200"
-				>{minutes}</span
+			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200">
+				{minutes < 10 ? '0' : ''}{minutes}</span
 			>
 			<span class="text-center text-md font-semibold text-grey-700 dark:text-grey-200">:</span>
 			<span class="text-center text-lg font-semibold text-grey-700 dark:text-grey-200"
-				>{seconds}</span
+				>{seconds < 10 ? '0' : ''}{seconds}</span
 			>
 		</div>
 	</div>
@@ -94,7 +101,7 @@
 				<span class="sr-only">Resume focus timer</span>
 			</button>
 		{/if}
-		<button class="button--secondary m-md rounded-full bg-none p-md">
+		<button class="button--secondary m-md rounded-full bg-none p-md" on:click={stopTimer}>
 			<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-200" />
 			<span class="sr-only">Stop focus timer</span>
 		</button>
