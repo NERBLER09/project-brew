@@ -9,7 +9,12 @@
 	let minutes = 25;
 	let seconds = 10;
 
-	$: percent = (minutes / 120) * 100;
+	$: percent = ((minutes + seconds / 100) / 120) * 100;
+	$: if (minutes < 0) minutes = 0;
+	else if (minutes > 120) minutes = 120;
+
+	$: if (seconds < 0) seconds = 0;
+	else if (seconds > 55) seconds = 55;
 </script>
 
 <svelte:head>
