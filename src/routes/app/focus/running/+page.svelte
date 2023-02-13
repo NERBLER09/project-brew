@@ -4,7 +4,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Pause from '$lib/assets/Pause.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
-	import { focusMinutes } from '$lib/stores/focus';
+	import { focusMinutes, focusProject } from '$lib/stores/focus';
 	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
 
@@ -109,7 +109,11 @@
 			<span class="sr-only">Stop focus timer</span>
 		</button>
 	</div>
-	<p class="text-md font-semibold text-grey-700 dark:text-grey-200">Focusing on [Project]</p>
+	{#if $focusProject}
+		<p class="text-md font-semibold text-grey-700 dark:text-grey-200">
+			Focusing on {$focusProject?.project_name}
+		</p>
+	{/if}
 </section>
 
 <section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">

@@ -3,9 +3,10 @@
 
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
+	import Edit from '$lib/assets/Edit.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { focusMinutes } from '$lib/stores/focus';
+	import { focusMinutes, focusProject } from '$lib/stores/focus';
 
 	let strokeArray = 720;
 	let minutes = 25;
@@ -102,11 +103,18 @@
 			</div>
 		</div>
 	</div>
-
-	<button class="button--secondary mt-lg flex w-full items-center gap-md px-3">
-		Select a project to focus on
-		<Left className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
-	</button>
+	<a
+		href="/app/focus/focus-project"
+		class="button--secondary mt-lg flex w-full items-center gap-md px-3"
+	>
+		{#if $focusProject}
+			Focusing on {$focusProject.project_name}
+			<Edit className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+		{:else}
+			Select a project to focus on
+			<Left className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+		{/if}
+	</a>
 
 	<div class="mt-md w-full">
 		<label for="notify" class="input--label">Notify me when I am done</label>
