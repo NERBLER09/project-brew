@@ -18,29 +18,41 @@
 	let emailAssigned = data.notifcations_settings.email.assigned;
 	let emailDueTask = data.notifcations_settings.email.dueTask;
 
+	let notificationsEnabled = Notification.permission === 'granted';
+
 	onMount(() => {
 		$settingsPage = 'Notifications';
 	});
 </script>
 
 <form method="POST" action="/app/settings?/notifications" use:enhance>
-	<section>
-		<header>
-			<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
-				Push Notifications
-			</h2>
-			<p class="font-medium text-grey-700 dark:text-grey-200">
-				Control what you get a push notification from.
-			</p>
-		</header>
-		<div class="mt-md flex flex-col gap-md">
-			<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
-			<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
-			<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
-			<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
-		</div>
-	</section>
-
+	{#if notificationsEnabled}
+		<section>
+			<header>
+				<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
+					Push Notifications
+				</h2>
+				<p class="font-medium text-grey-700 dark:text-grey-200">
+					Control what you get a push notification from.
+				</p>
+			</header>
+			<div class="mt-md flex flex-col gap-md">
+				<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
+				<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
+				<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
+				<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
+			</div>
+		</section>
+	{:else}
+		<p class="font-medium text-grey-700 dark:text-grey-200">
+			In order to recive push notifications you are going to have to enable them for this page
+			<button
+				class="button--primary mt-sm"
+				on:click={() => Notification.requestPermission().then(() => (notificationsEnabled = true))}
+				type="button">Enable</button
+			>
+		</p>
+	{/if}
 	<section class="mt-md">
 		<header>
 			<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
