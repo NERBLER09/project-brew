@@ -6,6 +6,7 @@
 	import Edit from '$lib/assets/Edit.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import FocusProjectPrompt from '$lib/components/prompts/focus/FocusProjectPrompt.svelte';
 	import { focusMinutes, focusProject } from '$lib/stores/focus';
 
 	let strokeArray = 720;
@@ -33,6 +34,8 @@
 	else if (seconds > 55) seconds = 55;
 
 	$: $focusMinutes = minutes;
+
+	let showFocusProjectPrompt = false;
 </script>
 
 <svelte:head>
@@ -105,7 +108,7 @@
 	</div>
 	<a
 		href="/app/focus/focus-project"
-		class="button--secondary mt-lg flex w-full items-center gap-md px-3"
+		class="button--secondary mt-lg flex w-full items-center gap-md px-3 md:hidden"
 	>
 		{#if $focusProject}
 			Focusing on {$focusProject.project_name}
@@ -115,6 +118,19 @@
 			<Left className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
 		{/if}
 	</a>
+
+	<button
+		class="button--secondary mt-lg hidden w-full items-center gap-md px-3 md:flex"
+		on:click={() => (showFocusProjectPrompt = true)}
+	>
+		{#if $focusProject}
+			Focusing on {$focusProject.project_name}
+			<Edit className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+		{:else}
+			Select a project to focus on
+			<Left className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+		{/if}
+	</button>
 
 	<div class="mt-md w-full">
 		<label for="notify" class="input--label">Notify me when I am done</label>
@@ -162,3 +178,4 @@
 <div class="flex w-full items-center justify-center">
 	<a href="/app/focus/running" class="button--primary mt-lg text-center">Start</a>
 </div>
+<FocusProjectPrompt bind:shown={showFocusProjectPrompt} />
