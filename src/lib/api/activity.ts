@@ -27,6 +27,8 @@ export const addNewDay = async () => {
 		weeklyActivity.set(weekActivity);
 
 		await supabase.from("profiles").update({ "your_activity": weekActivity }).eq("id", get(userData).id)
+
+		localStorage.setItem("focusTime", "0")
 	}
 };
 

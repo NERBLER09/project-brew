@@ -23,12 +23,13 @@
 			seconds = duration % 60;
 
 			if (duration <= 0) {
-				clearInterval(countdown!);
+				clearCountdown();
 			}
 		}, 1000);
 	};
 
 	const clearCountdown = () => {
+		localStorage.setItem('focusTime', minutes);
 		clearInterval(countdown!);
 		countdown = null;
 	};
@@ -119,4 +120,3 @@
 		</p>
 	</header>
 </section>
-

@@ -12,6 +12,7 @@
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { recentlyEdited } from '$lib/stores/project';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -23,6 +24,12 @@
 	const handleShowEditPinsPrompt = () => {
 		showEditPinPrompt = true;
 	};
+
+	let totalFocusTime = 0;
+
+	onMount(() => {
+		totalFocusTime = parseInt(localStorage.getItem('focusTime') || '0');
+	});
 </script>
 
 <svelte:head>
@@ -147,9 +154,20 @@
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
 		</header>
 		<div>
-			<p class="font-medium text-grey-700 dark:text-grey-200">
-				Your focus time will display here after you complete a focus session
-			</p>
+			{#if totalFocusTime === 0}
+				<p class="font-medium text-grey-700 dark:text-grey-200">
+					Your focus time will display here after you complete a focus session
+				</p>
+			{:else}
+				<div class="mt-sm flex flex-col text-center">
+					<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span>
+					<span class="mt-md mb-sm text-md font-medium text-grey-700 dark:text-grey-200"
+						><span class="font-semibold">{totalFocusTime}</span> minutes</span
+					>
+					<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span>
+					<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span>
+				</div>
+			{/if}
 		</div>
 	</section>
 </div>
