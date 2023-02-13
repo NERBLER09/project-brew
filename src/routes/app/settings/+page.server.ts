@@ -1,5 +1,6 @@
 import { getSupabase } from "@supabase/auth-helpers-sveltekit";
 import { error, type Actions } from "@sveltejs/kit";
+import type { NotficationSettings } from "$lib/types/projects"
 
 export const actions = {
   account: async (event) => {
@@ -61,5 +62,46 @@ export const actions = {
     if (err) {
       throw error(403, err.message)
     }
+  },
+  notifications: async (event) => {
+    const { request } = event;
+    const { session, supabaseClient } = await getSupabase(event);
+    if (!session) {
+      // the user is not signed in
+      throw error(403, { message: 'Unauthorized' });
+    }
+
+    const data = await request.formData()
+    let pushInvited = data.get("project-invite") as string;
+    let pushAssigned = data.get("new-task") as string;
+    let pushDueTask = data.get("due-tasks") as string;
+    let pushFocusTimerUp = data.get("focus-timer-up") as string;
+
+    let emailInvited = data.get("email-project-invite") as string;
+    let emailAssigned = data.get("email-new-task") as string;
+    let emailDueTask = data.get("email-due-tasks") as string;
+
+    console.log(pushInvited)
+
+    const notifications: NotficationSettings = {
+      push: {
+        invited: pushInvited === "on",
+        assigned: pushAssigned === "on",
+        dueTask: pushDueTask === "on",
+        timerUp: pushFocusTimerUp === "on"
+      },
+      email: {
+        invited: emailInvited === "on",
+        assigned: emailAssigned === "on",
+        dueTask: emailDueTask === "on"
+      }
+    }
+
+    const { error: err } = await supabaseClient.from("profiles").update({ notifcations_settings: notifications }).eq("id", session.user.id)
+
+    if (err) {
+      throw error(403, err.message)
+    }
   }
+
 } satisfies Actions

@@ -1,7 +1,10 @@
 <script lang="ts">
+	import Check from '$lib/assets/Check.svelte';
 	import Switch from '$lib/components/form/Switch.svelte';
+
 	import { settingsPage } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
+	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,33 +23,45 @@
 	});
 </script>
 
-<section>
-	<header>
-		<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">Push Notifications</h2>
-		<p class="font-medium text-grey-700 dark:text-grey-200">
-			Control what you get a push notification from.
-		</p>
-	</header>
-	<div class="mt-md flex flex-col gap-md">
-		<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
-		<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
-		<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
-		<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
-	</div>
-</section>
+<form method="POST" action="/app/settings?/notifications" use:enhance>
+	<section>
+		<header>
+			<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
+				Push Notifications
+			</h2>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				Control what you get a push notification from.
+			</p>
+		</header>
+		<div class="mt-md flex flex-col gap-md">
+			<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
+			<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
+			<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
+			<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
+		</div>
+	</section>
 
-<section class="mt-md">
-	<header>
-		<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
-			Email Notifications
-		</h2>
-		<p class="font-medium text-grey-700 dark:text-grey-200">
-			Control what you relative an email from.
-		</p>
-	</header>
-	<div class="mt-md flex flex-col gap-md">
-		<Switch id="email-project-invite" text="Invited to a project" bind:checked={emailInvited} />
-		<Switch id="email-new-task" text="Assigned a new task" bind:checked={emailAssigned} />
-		<Switch id="email-due-tasks" text="Due Tasks" bind:checked={emailDueTask} />
-	</div>
-</section>
+	<section class="mt-md">
+		<header>
+			<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
+				Email Notifications
+			</h2>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				Control what you relative an email from.
+			</p>
+		</header>
+		<div class="mt-md flex flex-col gap-md">
+			<Switch id="email-project-invite" text="Invited to a project" bind:checked={emailInvited} />
+			<Switch id="email-new-task" text="Assigned a new task" bind:checked={emailAssigned} />
+			<Switch id="email-due-tasks" text="Due Tasks" bind:checked={emailDueTask} />
+		</div>
+	</section>
+
+	<button class="button--circle fixed bottom-32 right-8 z-50 md:hidden">
+		<Check className="h-8 w-8 stroke-grey-200" />
+		<span class="sr-only">Save info</span>
+	</button>
+	<button class="button--primary absolute right-0 -top-36 z-50 hidden md:block">
+		<span>Save changes</span>
+	</button>
+</form>
