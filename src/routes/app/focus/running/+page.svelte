@@ -5,6 +5,7 @@
 	import Pause from '$lib/assets/Pause.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { focusMinutes } from '$lib/stores/focus';
+	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
 
 	let strokeArray = 720;
@@ -29,7 +30,8 @@
 	};
 
 	const clearCountdown = () => {
-		localStorage.setItem('focusTime', minutes);
+		const currentMinutes = parseInt(localStorage.getItem('focusTime') || '0');
+		localStorage.setItem('focusTime', (minutes + currentMinutes).toString());
 		clearInterval(countdown!);
 		countdown = null;
 	};
