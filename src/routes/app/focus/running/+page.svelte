@@ -5,6 +5,7 @@
 	import Pause from '$lib/assets/Pause.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { focusMinutes, focusProject } from '$lib/stores/focus';
+	import { showMobileNav } from '$lib/stores/ui';
 	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
 
@@ -40,6 +41,8 @@
 		clearCountdown();
 		goto('/app/focus');
 	};
+
+	$: $showMobileNav = countdown ? false : true;
 
 	onMount(() => {
 		duration = $focusMinutes * 60;
