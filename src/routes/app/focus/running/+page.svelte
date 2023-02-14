@@ -71,6 +71,18 @@
 		}
 	};
 
+	const handleMarkTaskAsDone = async (id: number, task: Task, index: number) => {
+		const { error } = await supabase
+			.from('tasks')
+			.update({ status: 'done', list: doneListId })
+			.eq('id', id)
+			.eq('project', $focusProject?.id);
+
+		console.log(index);
+
+		uncompletedTasks = [...uncompletedTasks.splice(index, 1)];
+	};
+
 	onMount(async () => {
 		duration = $focusMinutes * 60;
 		handleCountdown();
@@ -159,12 +171,14 @@
 	</header>
 
 	<div class="mt-md flex flex-col gap-md">
-		{#each uncompletedTasks as task}
+		{#each uncompletedTasks as task, index}
 			<div>
-				<label for="{task.id}-item" class="input--label">{task.name}</label><input
+				<label for="{task.id}-item" class="input--label">{task.name}</label>
+				<input
 					type="checkbox"
 					class="input--checkbox"
 					id="{task.id}-item"
+					on:change={() => handleMarkTaskAsDone(task.id, task, index)}
 				/>
 			</div>
 		{/each}
