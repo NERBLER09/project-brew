@@ -2,24 +2,16 @@
 	import { deserialize } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import Check from '$lib/assets/Check.svelte';
-	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 
 	import Image from '$lib/assets/Image.svelte';
-	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
+	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
+	import type { User } from '$lib/types/projects';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
 
-	let addNewTag = false;
 	let tags: string[] = [];
-	let tagName = '';
-
-	const handleCreateNewTag = () => {
-		tags = [...tags, tagName];
-		tagName = '';
-		addNewTag = false;
-	};
 
 	let files: any = '';
 	let fileURL: string;
@@ -33,6 +25,7 @@
 
 	let name = '';
 	let description = '';
+	let invitedMembers: User[];
 
 	export let form: ActionData;
 	const handleSubmit = async (event) => {
@@ -62,27 +55,27 @@
 </svelte:head>
 
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
-	<p class="font-medium text-grey-700 dark:text-grey-200 pt-sm pb-md">
+	<p class="pt-sm pb-md font-medium text-grey-700 dark:text-grey-200">
 		Chose what projects are displayed on top.
 	</p>
 
 	<form method="POST" on:submit|preventDefault={handleSubmit}>
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Basic Details</h2>
+				<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Basic Details</h2>
 			</header>
 			<div>
 				<input
 					name="name"
 					type="text"
-					class="input--text w-full mb-4"
+					class="input--text mb-4 w-full"
 					placeholder="Enter a project name"
 					bind:value={name}
 					required
 				/>
 				<textarea
 					name="description"
-					class="input--text resize-none h-36 w-full"
+					class="input--text h-36 w-full resize-none"
 					placeholder="Enter a brief description"
 					bind:value={description}
 				/>
@@ -91,49 +84,39 @@
 
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Tags</h2>
+				<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Tags</h2>
 			</header>
 
-			<div class="flex flex-wrap gap-md mb-md">
+			<div class="mb-md flex flex-wrap gap-md">
 				<NewTagsInput bind:newTags={tags} />
 			</div>
 		</section>
+		<InviteTeamMember bind:invitedMembers />
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Invite team members</h2>
-			</header>
-			<div>
-				<button type="button">
-					<PlusNew className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-					<span class="sr-only">Add new team member</span>
-				</button>
-			</div>
-		</section>
-		<section>
-			<header>
-				<h2 class="font-bold text-grey-700 dark:text-grey-200 text-md">Cover image</h2>
+				<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
 			</header>
 			<div class="max-w-xl">
 				<label
-					class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-grey-800 border-dashed rounded-md appearance-none cursor-pointer hover:border-grey-600 focus:outline-none"
+					class="flex h-32 w-full cursor-pointer appearance-none justify-center rounded-md border-2 border-dashed border-grey-800 bg-grey-100 px-4 transition hover:border-grey-600 focus:outline-none dark:bg-grey-800"
 				>
-					<span class="flex flex-col justify-center items-center space-x-2">
-						<Image className="h-8 w-8 stroke-grey-700" />
-						<span class="font-medium text-grey-700">Select a cover image</span>
+					<span class="flex flex-col items-center justify-center space-x-2">
+						<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+						<span class="font-medium text-grey-700 dark:text-grey-200">Select a cover image</span>
 					</span>
 					<input type="file" name="cover-image" class="hidden" accept=".png, .jpg" bind:files />
 				</label>
 			</div>
 
 			{#if fileURL}
-				<h3 class="text-md text-grey-700 font-semibold mt-md dark:text-grey-200">Cover Preview</h3>
-				<img src={fileURL} alt="cover" class="rounded-md object-cover bg-center max-h-52" />
+				<h3 class="mt-md text-md font-semibold text-grey-700 dark:text-grey-200">Cover Preview</h3>
+				<img src={fileURL} alt="cover" class="max-h-52 rounded-md bg-center object-cover" />
 				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
 					>Clear cover</button
 				>
 			{/if}
 		</section>
-		<button class="button--circle bottom-8 right-8 absolute" type="submit">
+		<button class="button--circle absolute bottom-8 right-8" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Create project</span>
 		</button>
