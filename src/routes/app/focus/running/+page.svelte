@@ -6,6 +6,8 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { focusMinutes, focusProject } from '$lib/stores/focus';
 	import { showMobileNav } from '$lib/stores/ui';
+	import { supabase } from '$lib/supabase';
+	import type { Task } from '$lib/types/projects';
 	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
 
@@ -44,9 +46,36 @@
 
 	$: $showMobileNav = countdown ? false : true;
 
-	onMount(() => {
+	let uncompletedTasks: Task[] = [];
+	let doneListId: number;
+
+	const getUncompletedTasks = async () => {
+		const { data: tasks } = await supabase
+			.from('tasks')
+			.select('*')
+			.eq('project', $focusProject?.id)
+			.neq('status', 'done');
+
+		const { data: list } = await supabase
+			.from('lists')
+			.select('id')
+			.eq('project', $focusProject?.id)
+			.eq('status', 'done')
+			.limit(1)
+			.single();
+		if (tasks) {
+			uncompletedTasks = tasks;
+		}
+		if (list) {
+			doneListId = list.id;
+		}
+	};
+
+	onMount(async () => {
 		duration = $focusMinutes * 60;
 		handleCountdown();
+
+		await getUncompletedTasks();
 	});
 </script>
 
@@ -124,8 +153,20 @@
 		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
 			Here is what you need to get done:
 		</h2>
-		<p class=" font-medium text-grey-700 dark:text-grey-200">
+		<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
 			Any checked off tasks will be automatically moved and marked as done.
 		</p>
 	</header>
+
+	<div class="mt-md flex flex-col gap-md">
+		{#each uncompletedTasks as task}
+			<div>
+				<label for="{task.id}-item" class="input--label">{task.name}</label><input
+					type="checkbox"
+					class="input--checkbox"
+					id="{task.id}-item"
+				/>
+			</div>
+		{/each}
+	</div>
 </section>
