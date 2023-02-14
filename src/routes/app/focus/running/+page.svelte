@@ -5,6 +5,9 @@
 	import Pause from '$lib/assets/Pause.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { focusMinutes, focusProject } from '$lib/stores/focus';
+	import { tasksCompletedThisDay } from '$lib/stores/project';
+	import { weeklyActivity } from '$lib/api/activity';
+
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
@@ -71,7 +74,7 @@
 		}
 	};
 
-	const handleMarkTaskAsDone = async (id: number, task: Task, index: number) => {
+	const handleMarkTaskAsDone = async (id: number, index: number) => {
 		const { error } = await supabase
 			.from('tasks')
 			.update({ status: 'done', list: doneListId })
@@ -79,8 +82,13 @@
 			.eq('project', $focusProject?.id);
 
 		console.log(index);
+		if (!error) {
+			$tasksCompletedThisDay++;
+			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
+			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay.toString());
 
-		uncompletedTasks = [...uncompletedTasks.splice(index, 1)];
+			uncompletedTasks = [...uncompletedTasks.splice(index, 1)];
+		}
 	};
 
 	onMount(async () => {
@@ -178,7 +186,7 @@
 					type="checkbox"
 					class="input--checkbox"
 					id="{task.id}-item"
-					on:change={() => handleMarkTaskAsDone(task.id, task, index)}
+					on:change={() => handleMarkTaskAsDone(task.id, index)}
 				/>
 			</div>
 		{/each}
