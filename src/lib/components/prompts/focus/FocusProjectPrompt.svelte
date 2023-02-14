@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 	import { focusProject } from '$lib/stores/focus';
 	import { supabase } from '$lib/supabase';
 	import type { Projects } from '$lib/types/projects';
@@ -87,4 +88,14 @@
 			</button>
 		{/each}
 	</div>
+
+	{#if $focusProject}
+		<button
+			class="button--primary mx-auto mt-md flex items-center gap-lg"
+			on:click={() => ($focusProject = null)}
+		>
+			<Trash className="stroke-grey-200 w-8 h-8" />
+			Clear focus project
+		</button>
+	{/if}
 </dialog>
