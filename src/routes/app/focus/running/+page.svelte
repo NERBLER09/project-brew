@@ -32,7 +32,7 @@
 
 	const clearCountdown = () => {
 		const currentMinutes = parseInt(localStorage.getItem('focusTime') || '0');
-		localStorage.setItem('focusTime', (minutes + currentMinutes).toString());
+		localStorage.setItem('focusTime', ($focusMinutes - minutes + currentMinutes).toString());
 		clearInterval(countdown!);
 		countdown = null;
 	};
