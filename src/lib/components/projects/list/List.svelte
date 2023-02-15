@@ -96,6 +96,7 @@
 				status={task.status}
 				tags={task.tags}
 				{tasks}
+				assinged={task.assigned}
 			/>
 		{/each}
 	</div>

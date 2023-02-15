@@ -6,6 +6,7 @@
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
+	import Assinged from './Assinged.svelte';
 
 	export let name: string;
 	export let tags: any[] = [];
@@ -14,6 +15,7 @@
 	export let isPriority: boolean = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
+	export let assinged: string[] | null;
 	export let tasks: Task[] | undefined;
 
 	let showCardDropdown = false;
@@ -27,7 +29,7 @@
 	});
 </script>
 
-<div class="md:relative">
+<div>
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-sm flex items-start">
 			<div>
@@ -79,9 +81,18 @@
 			</div>
 		{/if}
 
-		{#if isPriority}
-			<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
-		{/if}
+		<div class="flex items-center">
+			{#if assinged}
+				<div class="relative mt-md flex items-center">
+					{#each assinged as id}
+						<Assinged {id} />
+					{/each}
+				</div>
+			{/if}
+			{#if isPriority}
+				<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
+			{/if}
+		</div>
 	</section>
 
 	{#if showCardDropdown}
