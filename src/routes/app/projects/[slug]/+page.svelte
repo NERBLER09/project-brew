@@ -15,9 +15,10 @@
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import NewList from '$lib/components/form/forms/NewList.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { supabase } from '$lib/supabase';
 	import type { User } from '$lib/types/projects';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -52,6 +53,31 @@
 		}
 
 		$invitedTeamMembers = await getInvitedTeamMembers();
+	});
+
+	const projectsRealtime = supabase
+		.channel('project-detail-updates')
+		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'projects' }, () =>
+			invalidate('app:project')
+		)
+		.subscribe();
+
+	const listsRealtime = supabase
+		.channel('list-updates')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'lists' }, () =>
+			invalidate('app:project')
+		)
+		.subscribe();
+
+	const cardsRealtime = supabase
+		.channel('list-updates')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () =>
+			invalidate('app:project')
+		)
+		.subscribe();
+
+	onDestroy(() => {
+		supabase.removeAllChannels();
 	});
 </script>
 
