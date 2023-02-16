@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import { page } from '$app/stores';
 	import { addNewDay, weeklyActivity } from '$lib/api/activity';
 
@@ -9,7 +11,7 @@
 	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	const handleTheme = () => {
 		$perferedTheme = localStorage.getItem('theme');
@@ -62,6 +64,16 @@
 		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
 
 		handleTheme();
+	});
+
+	const notificationChannel = supabase
+		.channel('notifications')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'notifications' }, () =>
+			invalidate('app:data')
+		);
+
+	onDestroy(() => {
+		supabase.removeAllChannels();
 	});
 </script>
 
