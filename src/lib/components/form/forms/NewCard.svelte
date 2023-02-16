@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, invitedTeamMembers } from '$lib/stores/project';
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
@@ -46,6 +46,8 @@
 			invalidate('app:project');
 		}
 	};
+
+	console.log($invitedTeamMembers !== []);
 </script>
 
 <form method="POST" on:submit|preventDefault={handleCreateNewTask}>
@@ -99,8 +101,9 @@
 			<NewTagsInput bind:newTags={newTaskTags} />
 		</div>
 	</section>
-
-	<AssingPerson bind:assingedUserIds={newTaskAssignedPeople} />
+	{#if $invitedTeamMembers?.length !== 0}
+		<AssingPerson bind:assingedUserIds={newTaskAssignedPeople} />
+	{/if}
 
 	<button
 		class="button--primary mt-md flex w-full items-center justify-center gap-md"
