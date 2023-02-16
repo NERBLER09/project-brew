@@ -65,4 +65,5 @@ export interface Notification {
   sentBy: User | null
   target_user: string
   type: string
+  title: string | null
 }

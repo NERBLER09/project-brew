@@ -42,6 +42,7 @@ export interface Database {
           sentBy: User | null
           target_user: string
           type: "invite" | "assigned" | "dueTask"
+          title: string | null
         }
         Insert: {
           id?: string
@@ -50,6 +51,7 @@ export interface Database {
           sentBy?: User | null
           target_user: string
           type: "invite" | "assigned" | "dueTask"
+          title?: string | null
         }
         Update: {
           id?: string
@@ -58,6 +60,7 @@ export interface Database {
           sentBy?: User | null
           target_user?: string
           type: "invite" | "assigned" | "dueTask"
+          title?: string | null
         }
       }
       profiles: {
