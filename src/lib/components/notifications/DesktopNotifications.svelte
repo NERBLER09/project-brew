@@ -1,8 +1,18 @@
 <script lang="ts">
 	import Notification from './Notification.svelte';
 	import type { Notification as NotificationItem } from '$lib/types/projects';
+	import { invalidate } from '$app/navigation';
+	import { supabase } from '$lib/supabase';
+	import { userData } from '$lib/stores/user';
 
 	export let notifications: NotificationItem[];
+
+	const handleClearNotifications = async () => {
+		const { error } = await supabase.from('notifications').delete().eq('target_user', $userData.id);
+		if (!error) {
+			invalidate('app:data');
+		}
+	};
 </script>
 
 <div
@@ -12,16 +22,24 @@
 		<h3 class="text-md font-semibold text-grey-800 dark:text-grey-200">Notifications</h3>
 	</header>
 	{#if notifications.length > 0}
-		<p class="font-medium text-grey-700 dark:text-grey-200">
-			You have {notifications.length} new notification{notifications.length > 1 ? 's' : ''}
-		</p>
+		<div class="flex items-center">
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				You have {notifications.length} new notification{notifications.length > 1 ? 's' : ''}
+			</p>
+
+			<button
+				class="ml-auto font-medium text-grey-700 dark:text-grey-200"
+				on:click={handleClearNotifications}>Clear All</button
+			>
+		</div>
 	{/if}
 	<div class="mt-md flex flex-col gap-md">
 		{#each notifications as notification}
 			<Notification {...notification} />
 		{:else}
 			<div class="flex h-[calc(100%-69px)] flex-col items-center justify-center">
-				<span class="text-md font-bold text-grey-700 dark:text-grey-200">You are all caught up</span
+				<span class="text-md font-semibold text-grey-700 dark:text-grey-200"
+					>You are all caught up</span
 				>
 				<span class="font-medium text-grey-700 dark:text-grey-200"
 					>You have no new notifications</span
