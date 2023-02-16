@@ -24,7 +24,7 @@
 	});
 </script>
 
-<div class="-m-md">
+<div class="-m-md first:ml-0">
 	{#if avatar_url}
 		<img
 			src={avatar_url}
