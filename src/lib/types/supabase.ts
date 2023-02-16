@@ -1,4 +1,4 @@
-import type { NotficationSettings } from "./projects"
+import type { User } from "./projects"
 
 export type Json =
   | string
@@ -34,6 +34,32 @@ export interface Database {
           user_id?: string
         }
       }
+      notifications: {
+        Row: {
+          id: string
+          message: string
+          sent: string | null
+          sentBy: User | null
+          target_user: string
+          type: "invite" | "assigned" | "dueTask"
+        }
+        Insert: {
+          id?: string
+          message: string
+          sent?: string | null
+          sentBy?: User | null
+          target_user: string
+          type: "invite" | "assigned" | "dueTask"
+        }
+        Update: {
+          id?: string
+          message?: string
+          sent?: string | null
+          sentBy?: User | null
+          target_user?: string
+          type: "invite" | "assigned" | "dueTask"
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -44,7 +70,7 @@ export interface Database {
           invited_projects: number[] | null
           location: string | null
           name: string
-          notifcations_settings: NotficationSettings
+          notifcations_settings: Json
           role: string | null
           team_members: string[] | null
           your_activity: Json[] | null
@@ -58,7 +84,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name: string
-          notifcations_settings?: NotficationSettings
+          notifcations_settings?: Json
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null
@@ -72,7 +98,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name?: string
-          notifcations_settings?: NotficationSettings
+          notifcations_settings?: Json
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null

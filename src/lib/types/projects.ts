@@ -57,3 +57,12 @@ export interface NotficationSettings {
     assigned: boolean
   }
 }
+
+export interface Notification {
+  id: string
+  message: string
+  sent: string | null
+  sentBy: User | null
+  target_user: string
+  type: string
+}
