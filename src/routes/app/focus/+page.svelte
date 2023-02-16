@@ -7,23 +7,25 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import FocusProjectPrompt from '$lib/components/prompts/focus/FocusProjectPrompt.svelte';
-	import { focusMinutes, focusProject } from '$lib/stores/focus';
+	import { focusMinutes, focusOptions, focusProject } from '$lib/stores/focus';
 
 	let strokeArray = 720;
-	let minutes = 25;
-	let seconds = 0;
+	let minutes = $focusOptions.minutes;
+	let seconds = $focusOptions.seconds;
 
-	let blockedURLS: string[] = [];
+	let blockedURLS: string[] = $focusOptions.blockedURLS;
 	let blockURL = '';
 	const addBlockedURL = () => {
 		blockedURLS = [blockURL, ...blockedURLS];
 		blockURL = '';
+		$focusOptions.blockedURLS = blockedURLS;
 	};
 
 	const removeURL = (url: string) => {
 		const index = blockedURLS.indexOf(url);
 		blockedURLS.splice(index, 1);
 		blockedURLS = blockedURLS;
+		$focusOptions.blockedURLS = blockedURLS;
 	};
 
 	$: percent = ((minutes + seconds / 100) / 120) * 100;
@@ -34,6 +36,8 @@
 	else if (seconds > 55) seconds = 55;
 
 	$: $focusMinutes = minutes;
+	$: $focusOptions.minutes = minutes;
+	$: $focusOptions.seconds = seconds;
 
 	let showFocusProjectPrompt = false;
 </script>
