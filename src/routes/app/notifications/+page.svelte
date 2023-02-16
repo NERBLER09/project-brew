@@ -7,13 +7,15 @@
 </script>
 
 <MobileSubPageLayout previousPage="/app/home" pageName="Notifications">
-	{#if data.notfications.length > 0}
+	{#if data.notifications.length > 0}
 		<p class="font-medium text-grey-700 dark:text-grey-200">
-			You have {data.notfications.length} new notification{data.notfications.length > 1 ? 's' : ''}
+			You have {data.notifications.length} new notification{data.notifications.length > 1
+				? 's'
+				: ''}
 		</p>
 	{/if}
 	<div class="mt-md flex flex-col gap-md">
-		{#each data.notfications as notification}
+		{#each data.notifications as notification}
 			<Notification {...notification} />
 		{:else}
 			<div class="flex h-[calc(100%-69px)] flex-col items-center justify-center">
