@@ -57,7 +57,12 @@
 			<PlusNew className="h-5 w-5" />
 			New Project
 		</button>
-		<Bell className="stroke-grey-700 dark:stroke-grey-200 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
+
+		<a href="/app/notifications" class="md:hidden">
+			<Bell className="stroke-grey-700 dark:stroke-grey-200 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
+			<span class="sr-only">View current notifications</span>
+		</a>
+
 		<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
 			{#if data.avatar_url}
 				<img
