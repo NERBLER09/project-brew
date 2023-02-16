@@ -58,6 +58,10 @@ export const actions: Actions = {
 		const status = data.get("list-status")
 		const project = data.get('project');
 
+		const assignedString = data.get("assigned") as string;
+		let assigned = assignedString.split(",") || null
+		assigned = assigned[0] === "" ? [] : assigned
+
 		const formTags = data.get('tags') as string
 		let tags = formTags?.split(',') || null
 		tags = tags[0] === '' ? [] : tags;
@@ -75,7 +79,8 @@ export const actions: Actions = {
 				is_priority: isPriority,
 				user_id: session.user.id,
 				status,
-				tags
+				tags,
+				assigned
 			})
 			.select();
 

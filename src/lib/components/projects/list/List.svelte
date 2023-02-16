@@ -52,6 +52,8 @@
 	onMount(async () => {
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
 		tasks = data || [];
+
+		console.table(tasks);
 	});
 </script>
 

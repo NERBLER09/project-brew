@@ -4,6 +4,8 @@
 	import { invalidate } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
+	import AssingPerson from '$lib/components/projects/list/new/AssignPerson.svelte';
+	import type { User } from '$lib/types/projects';
 
 	export let showCreateTask = false;
 	export let listId: string;
@@ -15,8 +17,10 @@
 	let newTaskDueDate = new Date();
 	let newTaskPriority = false;
 	let newTaskTags: string[] = [];
+	let newTaskAssignedPeople: string[] = [];
 
 	const handleCreateNewTask = async (event) => {
+		console.log(newTaskAssignedPeople);
 		showCreateTask = false;
 
 		const form = new FormData(this);
@@ -28,6 +32,7 @@
 		form.append('list-id', listId);
 		form.append('list-status', listStatus);
 		form.append('project', $currentProject.id);
+		form.append('assigned', newTaskAssignedPeople.toString());
 
 		const response = await fetch('/app/projects/{project_id}?/newTask', {
 			method: 'POST',
@@ -45,7 +50,7 @@
 
 <form method="POST" on:submit|preventDefault={handleCreateNewTask}>
 	<button
-		class="button--secondary w-full flex items-center gap-md justify-center"
+		class="button--secondary flex w-full items-center justify-center gap-md"
 		type="button"
 		on:click={() => (showCreateTask = false)}
 	>
@@ -55,7 +60,7 @@
 
 	<input
 		type="text"
-		class="input--text w-full mt-md"
+		class="input--text mt-md w-full"
 		name="name"
 		required
 		placeholder="Enter the name of the new task"
@@ -64,7 +69,7 @@
 	<textarea
 		name="description"
 		id="description-input"
-		class="input--text  resize-none h-36 w-full mt-sm"
+		class="input--text  mt-sm h-36 w-full resize-none"
 		placeholder="Enter a short description"
 		bind:value={newTaskDescription}
 	/>
@@ -88,15 +93,17 @@
 	/>
 
 	<section>
-		<h4 class="text-grey-700 font-bold">Tags</h4>
+		<h4 class="font-bold text-grey-700">Tags</h4>
 
-		<div class="flex flex-wrap gap-md mb-md">
+		<div class="mb-md flex flex-wrap gap-md">
 			<NewTagsInput bind:newTags={newTaskTags} />
 		</div>
 	</section>
 
+	<AssingPerson bind:assingedUserIds={newTaskAssignedPeople} />
+
 	<button
-		class="button--primary w-full flex items-center gap-md justify-center mt-md"
+		class="button--primary mt-md flex w-full items-center justify-center gap-md"
 		type="submit"
 	>
 		<plusnew classname="w-6 h-6 stroke-grey-100" />

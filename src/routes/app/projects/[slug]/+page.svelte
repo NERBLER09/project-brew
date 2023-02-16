@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentProject, recentlyEdited } from '$lib/stores/project';
+	import { currentProject, invitedTeamMembers, recentlyEdited } from '$lib/stores/project';
 	import { dndzone } from 'svelte-dnd-action';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
@@ -16,6 +16,8 @@
 	import NewList from '$lib/components/form/forms/NewList.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import { onMount } from 'svelte';
+	import { supabase } from '$lib/supabase';
+	import type { User } from '$lib/types/projects';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -28,7 +30,18 @@
 		data.lists = event.detail.items;
 	};
 
-	onMount(() => {
+	const getInvitedTeamMembers = async (): Promise<User[]> => {
+		let invitedUserData: User[] = [];
+		for (const item of data.invited_people) {
+			const { data } = await supabase.from('profiles').select().eq('id', item).limit(1).single();
+			if (data) {
+				invitedUserData = [data, ...invitedUserData];
+			}
+		}
+		return invitedUserData;
+	};
+
+	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
 			$recentlyEdited = [data.project, ...$recentlyEdited];
@@ -37,6 +50,8 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
+
+		$invitedTeamMembers = await getInvitedTeamMembers();
 	});
 </script>
 
