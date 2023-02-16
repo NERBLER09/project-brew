@@ -74,7 +74,7 @@
 				<span class="sr-only">View current notifications</span>
 			</button>
 			{#if showNotificationsDropdown}
-				<DesktopNotifications />
+				<DesktopNotifications notifications={data.notifications} />
 			{/if}
 		</div>
 		<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
