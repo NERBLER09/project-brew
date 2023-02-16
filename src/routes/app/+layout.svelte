@@ -55,14 +55,7 @@
 			$userData = user;
 		}
 
-		const { data, error } = await supabase
-			.from('profiles')
-			.select()
-			.eq('id', user?.id)
-			.limit(1)
-			.single();
-
-		$weeklyActivity = data?.your_activity ?? [];
+		$weeklyActivity = user?.your_activity ?? [];
 		addNewDay();
 		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
 		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
