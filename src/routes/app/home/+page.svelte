@@ -7,6 +7,7 @@
 	import YourActivity from '$lib/components/home/activity/YourActivity.svelte';
 	import ProjectStatistics from '$lib/components/home/project-statistics/ProjectStatistics.svelte';
 	import TeamActivity from '$lib/components/home/TeamActivity.svelte';
+	import DesktopNotifications from '$lib/components/notifications/DesktopNotifications.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
@@ -18,6 +19,7 @@
 	export let data: PageData;
 
 	let showUserDropdown = false;
+	let showNotificationsDropdown = false;
 
 	let showEditPinPrompt = false;
 
@@ -63,6 +65,18 @@
 			<span class="sr-only">View current notifications</span>
 		</a>
 
+		<div class="relative hidden md:inline">
+			<button
+				on:click={() => (showNotificationsDropdown = !showNotificationsDropdown)}
+				on:blur={() => (showNotificationsDropdown = false)}
+			>
+				<Bell className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8 md:w-[2rem] md:h-[2rem]" />
+				<span class="sr-only">View current notifications</span>
+			</button>
+			{#if showNotificationsDropdown}
+				<DesktopNotifications />
+			{/if}
+		</div>
 		<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
 			{#if data.avatar_url}
 				<img
