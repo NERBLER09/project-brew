@@ -57,6 +57,8 @@ export const actions: Actions = {
 		const list = data.get('list-id');
 		const status = data.get("list-status")
 		const project = data.get('project');
+		const project_name = data.get("project_name")
+		const user = data.get("user_object")
 
 		const assignedString = data.get("assigned") as string;
 		let assigned = assignedString.split(",") || null
@@ -67,6 +69,19 @@ export const actions: Actions = {
 		tags = tags[0] === '' ? [] : tags;
 
 		dueDate = !dueDate ? dueDate : null;
+
+		if (assigned) {
+			for (const id of assigned) {
+				const { error } = await supabaseClient.from("notifications").insert({
+					message: `Has assigned you to ${name} in ${project_name}`,
+					target_user: id,
+					sentBy: user
+				})
+
+				console.log(error)
+			}
+		}
+
 
 		const { data: task, error: err } = await supabaseClient
 			.from('tasks')

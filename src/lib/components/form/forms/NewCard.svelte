@@ -6,6 +6,7 @@
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import AssingPerson from '$lib/components/projects/list/new/AssignPerson.svelte';
 	import type { User } from '$lib/types/projects';
+	import { userData } from '$lib/stores/user';
 
 	export let showCreateTask = false;
 	export let listId: string;
@@ -33,6 +34,8 @@
 		form.append('list-status', listStatus);
 		form.append('project', $currentProject.id);
 		form.append('assigned', newTaskAssignedPeople.toString());
+		form.append('project_name', $currentProject.name);
+		form.append('user_object', $userData);
 
 		const response = await fetch('/app/projects/{project_id}?/newTask', {
 			method: 'POST',
