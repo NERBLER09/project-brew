@@ -48,6 +48,11 @@ export const actions: Actions = {
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
 
+		const inivtedString = data.get("invited") as string;
+		let invited = inivtedString.split(",") || null
+		invited = invited[0] === "" ? [] : invited
+
+
 		tags = tags[0] === '' ? [] : tags;
 
 		let coverURL = null;
@@ -65,7 +70,7 @@ export const actions: Actions = {
 			const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/${ccName}.png`)
 			coverURL = url.publicUrl
 		}
-		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL })
+		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL, invited_people: invited })
 		console.error(err)
 
 		if (!err) {

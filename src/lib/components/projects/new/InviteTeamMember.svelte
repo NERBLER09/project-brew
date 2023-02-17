@@ -3,7 +3,6 @@
 
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
-	import { invitedTeamMembers } from '$lib/stores/user';
 
 	import type { User as Profile } from '$lib/types/projects';
 
@@ -35,17 +34,13 @@
 		<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Invite team members</h2>
 	</header>
 	<div class="my-md flex items-center">
-		<div class="flex items-center">
+		<div class="flex items-center gap-md">
 			{#each invitedUsers as { avatar_url }}
 				{#if avatar_url}
-					<img
-						src={avatar_url}
-						alt=""
-						class="-ml-lg aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
-					/>
+					<img src={avatar_url} alt="" class="aspect-square h-10 w-10 rounded-full object-cover" />
 				{:else}
 					<User
-						className="bg-grey-200 dark:bg-grey-700 rounded-full w-10 h-10 stroke-grey-700 dark:stroke-grey-200 -ml-lg first:ml-0"
+						className="bg-grey-200 dark:bg-grey-700 rounded-full w-10 h-10 stroke-grey-700 dark:stroke-grey-200"
 					/>
 				{/if}
 			{/each}

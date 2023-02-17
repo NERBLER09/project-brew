@@ -8,7 +8,6 @@
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
 	import { invitedTeamMembers } from '$lib/stores/user';
-	import type { User } from '$lib/types/projects';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
 
@@ -26,7 +25,7 @@
 
 	let name = '';
 	let description = '';
-	let invitedMembers: User[];
+	let invitedMembers: string[];
 
 	export let form: ActionData;
 	const handleSubmit = async (event) => {
@@ -35,6 +34,7 @@
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
+		data.append('invited', invitedMembers.toString());
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data
@@ -93,7 +93,7 @@
 			</div>
 		</section>
 
-		<InviteTeamMember allTeamMembers={$invitedTeamMembers} />
+		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
 
 		<section>
 			<header>
