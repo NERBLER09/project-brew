@@ -43,14 +43,12 @@
 	</header>
 	{#if filteredNotifications.length > 0}
 		<div class="flex items-center">
-			<p class="font-medium text-grey-700 dark:text-grey-200">
-				You have {filteredNotifications.length} new notification{filteredNotifications.length > 1
-					? 's'
-					: ''}
+			<p class="text-sm font-medium text-grey-700 dark:text-grey-200">
+				{filteredNotifications.length} new notification{filteredNotifications.length > 1 ? 's' : ''}
 			</p>
 
 			<button
-				class="ml-auto font-medium text-grey-700 dark:text-grey-200"
+				class="ml-auto text-sm font-medium text-grey-700 dark:text-grey-200"
 				on:click={handleClearNotifications}>Clear All</button
 			>
 		</div>
