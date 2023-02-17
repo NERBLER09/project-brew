@@ -4,8 +4,28 @@
 	import { invalidate } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
 	import { userData } from '$lib/stores/user';
+	import { onMount } from 'svelte';
 
 	export let notifications: NotificationItem[];
+
+	let filteredNotifications = notifications;
+	onMount(() => {
+		const dueTaskNotifications = filteredNotifications.filter((item) => {
+			if (item.type === 'dueTask') return !$userData.notifcations_settings.push.dueTask;
+		});
+		const assignedNotifications = filteredNotifications.filter((item) => {
+			if (item.type === 'assigned') return !$userData.notifcations_settings.push.assigned;
+		});
+		const invitedNotifications = filteredNotifications.filter((item) => {
+			if (item.type === 'invite') return !$userData.notifcations_settings.push.invited;
+		});
+
+		filteredNotifications = [
+			...dueTaskNotifications,
+			...assignedNotifications,
+			...invitedNotifications
+		];
+	});
 
 	const handleClearNotifications = async () => {
 		const { error } = await supabase.from('notifications').delete().eq('target_user', $userData.id);
@@ -21,10 +41,12 @@
 	<header class="mb-sm">
 		<h3 class="text-md font-semibold text-grey-800 dark:text-grey-200">Notifications</h3>
 	</header>
-	{#if notifications.length > 0}
+	{#if filteredNotifications.length > 0}
 		<div class="flex items-center">
 			<p class="font-medium text-grey-700 dark:text-grey-200">
-				You have {notifications.length} new notification{notifications.length > 1 ? 's' : ''}
+				You have {filteredNotifications.length} new notification{filteredNotifications.length > 1
+					? 's'
+					: ''}
 			</p>
 
 			<button
@@ -34,7 +56,7 @@
 		</div>
 	{/if}
 	<div class="mt-md flex flex-col gap-md">
-		{#each notifications as notification}
+		{#each filteredNotifications as notification}
 			<Notification {...notification} />
 		{:else}
 			<div class="flex h-[calc(100%-69px)] flex-col items-center justify-center">
