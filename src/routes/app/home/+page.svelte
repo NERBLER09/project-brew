@@ -99,7 +99,7 @@
 
 	<ProjectStatistics pinned_projects={data.pinned} />
 
-	<TeamActivity />
+	<!-- <TeamActivity /> -->
 
 	<div class="col-span-2">
 		<section>
