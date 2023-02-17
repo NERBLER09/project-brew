@@ -9,9 +9,11 @@
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 
 	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
-	import { userData } from '$lib/stores/user';
+	import { invitedTeamMembers, userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
+	import type { User } from '$lib/types/projects';
 	import { onDestroy, onMount } from 'svelte';
+	import { dataset_dev } from 'svelte/internal';
 
 	const handleTheme = () => {
 		$perferedTheme = localStorage.getItem('theme');
@@ -45,6 +47,17 @@
 		});
 	};
 
+	const getInvitedTeamMembers = async (team_members: string[]): Promise<User[]> => {
+		let invitedUserData: User[] = [];
+		for (const item of team_members) {
+			const { data } = await supabase.from('profiles').select().eq('id', item).limit(1).single();
+			if (data) {
+				invitedUserData = [data, ...invitedUserData];
+			}
+		}
+		return invitedUserData;
+	};
+
 	onMount(async () => {
 		const { data: session } = await supabase.auth.getUser();
 		const { data: user, error: err } = await supabase
@@ -64,6 +77,10 @@
 		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
 
 		handleTheme();
+
+		if (user?.team_members) {
+			$invitedTeamMembers = await getInvitedTeamMembers(user?.team_members);
+		}
 	});
 
 	const notificationChannel = supabase

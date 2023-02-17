@@ -9,6 +9,8 @@ const userSession = writable()
 const userData: Writable<User> = writable()
 const userId = writable()
 
+export const invitedTeamMembers = writable<User[]>()
+
 export {
   signUpEmail,
   userSession,
