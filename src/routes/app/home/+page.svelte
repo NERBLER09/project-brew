@@ -66,10 +66,7 @@
 		</a>
 
 		<div class="relative hidden md:inline">
-			<button
-				on:click={() => (showNotificationsDropdown = !showNotificationsDropdown)}
-				on:blur={() => (showNotificationsDropdown = false)}
-			>
+			<button on:click={() => (showNotificationsDropdown = !showNotificationsDropdown)}>
 				<Bell className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8 md:w-[2rem] md:h-[2rem]" />
 				<span class="sr-only">View current notifications</span>
 			</button>
