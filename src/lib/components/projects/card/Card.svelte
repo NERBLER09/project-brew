@@ -4,6 +4,9 @@
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
+	import { currentProject } from '$lib/stores/project';
+	import { userData } from '$lib/stores/user';
+	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
 	import Assinged from './Assinged.svelte';
@@ -21,11 +24,35 @@
 	let showCardDropdown = false;
 	let formattedDate = '';
 
+	const checkIfTaskIsDueToday = async () => {
+		if (!dueDate) return;
+		const date = new Date(dueDate);
+		const today = new Date();
+
+		const taskDueToday =
+			date.getDate() === today.getDate() &&
+			date.getMonth() === today.getMonth() &&
+			date.getFullYear() === today.getFullYear();
+
+		if (taskDueToday) {
+			const { error } = await supabase.from('notifications').insert({
+				title: $currentProject.name,
+				message: `${name} in ${$currentProject.name} is due today`,
+				target_user: $userData.id,
+				type: 'dueTask'
+			});
+
+			console.log(error);
+		}
+	};
+
 	onMount(() => {
 		if (!dueDate) return '';
 
 		const tempDueDate = new Date(dueDate);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+		checkIfTaskIsDueToday();
 	});
 </script>
 
