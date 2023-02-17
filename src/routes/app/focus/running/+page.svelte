@@ -13,6 +13,7 @@
 	import type { Task } from '$lib/types/projects';
 	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
+	import { userData } from '$lib/stores/user';
 
 	let strokeArray = 720;
 	let minutes = 0;
@@ -31,6 +32,12 @@
 
 			if (duration <= 0) {
 				clearCountdown();
+				if (
+					Notification.permission === 'granted' &&
+					$userData?.notifcations_settings.push.timerUp
+				) {
+					new Notification('Your focus timer is up');
+				}
 			}
 		}, 1000);
 	};
@@ -95,7 +102,9 @@
 		duration = $focusMinutes * 60;
 		handleCountdown();
 
-		await getUncompletedTasks();
+		if ($focusProject) {
+			await getUncompletedTasks();
+		}
 	});
 </script>
 

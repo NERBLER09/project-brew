@@ -1,4 +1,4 @@
-import type { User } from "./projects"
+import type { User, NotficationSettings } from "./projects"
 
 export type Json =
   | string
@@ -73,7 +73,7 @@ export interface Database {
           invited_projects: number[] | null
           location: string | null
           name: string
-          notifcations_settings: Json
+          notifcations_settings: NotficationSettings
           role: string | null
           team_members: string[] | null
           your_activity: Json[] | null
@@ -87,7 +87,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name: string
-          notifcations_settings?: Json
+          notifcations_settings?: NotficationSettings
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null
@@ -101,7 +101,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name?: string
-          notifcations_settings?: Json
+          notifcations_settings?: NotficationSettings
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null

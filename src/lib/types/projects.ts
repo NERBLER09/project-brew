@@ -9,6 +9,7 @@ export interface User {
   name: string
   team_members: string[] | null
   role: string | null
+  notifcations_settings: NotficationSettings
 }
 
 export interface List {
