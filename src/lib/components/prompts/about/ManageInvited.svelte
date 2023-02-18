@@ -75,7 +75,9 @@
 		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!$currentProject.banner
 			? 'w-fit'
 			: 'h-[12.5rem]'}"
-		style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%), url({$currentProject.banner});"
+		style="background-image: {$currentProject.banner
+			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
+			: ''} url({$currentProject.banner});"
 	>
 		<button class="flex items-center gap-md" on:click={() => ($showManageInvitedPrompt = false)}>
 			<Back

@@ -11,7 +11,9 @@
 </script>
 
 <header
-	style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 35.95%, rgba(0, 0, 0, 0.6) 100%), url({data.banner}) ;"
+	style="background-image: {data.banner
+		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 35.95%, rgba(0, 0, 0, 0.6) 100%),'
+		: ''} url({data.banner}) ;"
 	class="relative flex h-[15.625rem] items-end rounded-b-3xl bg-cover bg-center bg-no-repeat object-cover px-6 md:px-8"
 >
 	<div class="absolute -bottom-12 flex w-[calc(100%-48px)] items-start gap-md md:-bottom-8">
