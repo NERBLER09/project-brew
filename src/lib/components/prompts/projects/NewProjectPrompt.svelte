@@ -7,7 +7,7 @@
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { invitedTeamMembers } from '$lib/stores/user';
+	import { invitedTeamMembers, userData } from '$lib/stores/user';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -47,6 +47,7 @@
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
+		data.append('user', JSON.stringify($userData));
 
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',

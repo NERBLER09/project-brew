@@ -11,13 +11,13 @@
 	let filteredNotifications = notifications;
 	onMount(() => {
 		const dueTaskNotifications = filteredNotifications.filter((item) => {
-			if (item.type === 'dueTask') return !$userData.notifcations_settings.push.dueTask;
+			if (item.type === 'dueTask') return $userData.notifcations_settings.push.dueTask;
 		});
 		const assignedNotifications = filteredNotifications.filter((item) => {
-			if (item.type === 'assigned') return !$userData.notifcations_settings.push.assigned;
+			if (item.type === 'assigned') return $userData.notifcations_settings.push.assigned;
 		});
 		const invitedNotifications = filteredNotifications.filter((item) => {
-			if (item.type === 'invite') return !$userData.notifcations_settings.push.invited;
+			if (item.type === 'invite') return $userData.notifcations_settings.push.invited;
 		});
 
 		filteredNotifications = [
@@ -25,6 +25,10 @@
 			...assignedNotifications,
 			...invitedNotifications
 		];
+
+		filteredNotifications = filteredNotifications.sort((item) => {
+			return new Date().getTime() - new Date(item.sent!).getTime();
+		});
 	});
 
 	const handleClearNotifications = async () => {

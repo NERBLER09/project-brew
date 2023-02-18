@@ -14,13 +14,13 @@
 
 	onMount(() => {
 		const dueTaskNotifications = data.notifications.filter((item) => {
-			if (item.type === 'dueTask') return !$userData.notifcations_settings.push.dueTask;
+			if (item.type === 'dueTask') return $userData.notifcations_settings.push.dueTask;
 		});
 		const assignedNotifications = data.notifications.filter((item) => {
-			if (item.type === 'assigned') return !$userData.notifcations_settings.push.assigned;
+			if (item.type === 'assigned') return $userData.notifcations_settings.push.assigned;
 		});
 		const invitedNotifications = data.notifications.filter((item) => {
-			if (item.type === 'invite') return !$userData.notifcations_settings.push.invited;
+			if (item.type === 'invite') return $userData.notifcations_settings.push.invited;
 		});
 
 		notifications = [...dueTaskNotifications, ...assignedNotifications, ...invitedNotifications];

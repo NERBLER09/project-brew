@@ -7,7 +7,7 @@
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { invitedTeamMembers } from '$lib/stores/user';
+	import { invitedTeamMembers, userData } from '$lib/stores/user';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
 
@@ -35,6 +35,8 @@
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
+		data.append('user', JSON.stringify($userData));
+
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data

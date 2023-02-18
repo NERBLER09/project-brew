@@ -21,8 +21,6 @@ export const load = (async (event) => {
 		.limit(1)
 		.single();
 
-	console.log(project?.invited_people?.includes(session.user.id))
-
 	const { data: lists } = await supabaseClient.from('lists').select().eq('project', projectId);
 	if (project) {
 		return {

@@ -1,7 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { camelCase } from 'lodash';
+import { camelCase, constant } from 'lodash';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -42,16 +42,16 @@ export const actions: Actions = {
 		}
 
 		const data = await request.formData();
-		const description = data.get('description');
+		const description = data.get('description') as string;
 		const project_name = data.get('name') as string;
 		const formTags = data.get('tags') as string;
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
+		const user = data.get("user") as string
 
 		const inivtedString = data.get("invited") as string;
 		let invited = inivtedString.split(",") || null
 		invited = invited[0] === "" ? [] : invited
-
 
 		tags = tags[0] === '' ? [] : tags;
 
@@ -70,6 +70,20 @@ export const actions: Actions = {
 			const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/${ccName}.png`)
 			coverURL = url.publicUrl
 		}
+
+		if (invited) {
+			for (const id of invited) {
+				const { error } = await supabaseClient.from("notifications").insert({
+					message: `Has invited you to ${project_name}`,
+					target_user: id,
+					sentBy: JSON.parse(user),
+					type: "invite"
+				})
+
+				console.log(error)
+			}
+		}
+
 		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL, invited_people: invited })
 		console.error(err)
 
