@@ -24,6 +24,9 @@
 		});
 
 		notifications = [...dueTaskNotifications, ...assignedNotifications, ...invitedNotifications];
+		notifications = notifications.sort((item) => {
+			return new Date().getTime() - new Date(item.sent!).getTime();
+		});
 	});
 
 	const handleClearNotifications = async () => {
