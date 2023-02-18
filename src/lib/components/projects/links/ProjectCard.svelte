@@ -11,7 +11,7 @@
 	<section
 		href="/app/projects/{id}"
 		class="min-w-72 relative flex aspect-[3/2] h-48 w-full flex-col justify-end rounded-lg bg-grey-100 bg-cover bg-center bg-origin-border object-cover p-4 dark:bg-grey-800 md:h-full md:max-h-48 md:w-full md:max-w-[18rem]"
-		style="background-image: url({banner});"
+		style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 107.5%), url({banner});"
 	>
 		<header>
 			<span

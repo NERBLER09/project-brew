@@ -34,10 +34,10 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:w-full md:rounded-xl md:p-md {!data.banner
+	class="relative -top-6 -left-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:h-[17.1875rem] md:w-full md:rounded-xl md:p-md lg:h-[18.75rem] {!data.banner
 		? 'bg-grey-100 dark:bg-grey-800'
 		: 'bg-grey-100'}"
-	style="background-image: url({data.banner});"
+	style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 55.28%, rgba(0, 0, 0, 0.6) 100%), url({data.banner});"
 >
 	<a href="/app/team" class="absolute top-6 left-6">
 		<Back

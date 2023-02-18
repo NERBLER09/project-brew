@@ -50,7 +50,7 @@
 	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!$currentProject.banner
 		? 'static w-fit'
 		: 'h-[12.5rem]'}"
-	style="background-image: url({$currentProject.banner});"
+	style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%), url({$currentProject.banner});"
 >
 	<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}/about">
 		<Back
