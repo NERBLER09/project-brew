@@ -211,7 +211,11 @@
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save info</span>
 		</button>
-		<button class="button--primary absolute right-0 -top-36 z-50 hidden md:block">
+		<button
+			class="button--primary z-50 hidden md:block {!data.banner
+				? 'mt-md mx-auto'
+				: 'absolute right-0 -top-36'}"
+		>
 			<span>Save changes</span>
 		</button>
 	</form>

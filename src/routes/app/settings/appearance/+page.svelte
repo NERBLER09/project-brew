@@ -6,6 +6,9 @@
 	import System from '$lib/assets/Theme/System.svelte';
 	import { perferedTheme, settingsPage, useDarkMode, type Theme } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let selectedTheme: Theme = $perferedTheme;
 
@@ -101,7 +104,9 @@
 			<span class="sr-only">Save changes</span>
 		</button>
 		<button
-			class="button--primary absolute right-0 -top-36 z-50 hidden md:block"
+			class="button--primary z-50 hidden md:block {!data.banner
+				? 'mt-md mx-auto'
+				: 'absolute right-0 -top-36'}"
 			on:click={handleUpdateTheme}
 		>
 			<span>Save changes</span>

@@ -14,14 +14,22 @@
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 35.95%, rgba(0, 0, 0, 0.6) 100%),'
 		: ''} url({data.banner}) ;"
-	class="relative flex h-[15.625rem] items-end rounded-b-3xl bg-cover bg-center bg-no-repeat object-cover px-6 md:px-8"
+	class="{!data.banner
+		? 'h-fit static my-6 md:my-8'
+		: 'h-[15.625rem] relative '} flex items-end rounded-b-3xl bg-cover bg-center bg-no-repeat object-cover px-6 md:px-8"
 >
-	<div class="absolute -bottom-12 flex w-[calc(100%-48px)] items-start gap-md md:-bottom-8">
+	<div
+		class="{!data.banner
+			? 'static w-full gap-lg'
+			: 'absolute -bottom-12 w-[calc(100%-48px)]'} flex items-start gap-md md:-bottom-8"
+	>
 		{#if data.avatar_url}
 			<img
 				src={data.avatar_url}
 				alt="User profile"
-				class="relative -top-2 aspect-square h-[6.25rem] w-[6.25rem] rounded-full object-cover"
+				class="{!data.banner
+					? 'static'
+					: ' relative -top-2'} aspect-square h-[6.25rem] w-[6.25rem] rounded-full object-cover"
 			/>
 		{:else}
 			<User className="w-[6.25rem] h-[6.25rem] stroke-grey-700 dark:stroke-grey-200" />

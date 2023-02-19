@@ -12,20 +12,32 @@
 
 <div class="hidden md:inline">
 	<!-- Only show the desktop nav in all pages -->
-	<aside class="relative top-8 left-8 hidden w-[calc(100vw-48px)] md:block md:w-[calc(100%-64px)]">
-		<Nav />
+	<aside
+		class="{!data.banner
+			? ''
+			: 'top-8'} relative left-8 hidden w-[calc(100vw-48px)] md:block md:w-[calc(100%-64px)]"
+	>
+		<Nav isBanner={data.banner ?? ''} />
 	</aside>
 
-	<div class="relative top-14 left-6 w-[calc(100vw-48px)] md:left-8 md:w-[calc(100%-64px)]">
+	<div
+		class="{!data.banner
+			? ''
+			: 'top-14'} relative left-6 w-[calc(100vw-48px)] md:left-8 md:w-[calc(100%-64px)]"
+	>
 		<slot />
 	</div>
 </div>
 
 <div class="block md:hidden">
 	{#if $showMobileSettingsNav}
-		<Nav />
+		<Nav isBanner={data.banner ?? ''} />
 	{:else}
-		<div class="relative top-14 left-6 w-[calc(100vw-48px)] md:left-8 md:w-[calc(100%-64px)]">
+		<div
+			class="relative {!data.banner
+				? ''
+				: 'top-14'} left-6 w-[calc(100vw-48px)] md:left-8 md:w-[calc(100%-64px)]"
+		>
 			<slot />
 		</div>
 	{/if}
