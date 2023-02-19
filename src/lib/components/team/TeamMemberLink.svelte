@@ -72,6 +72,14 @@
 			}
 		}
 	}
+
+	let memberDropdownContainer: HTMLElement;
+
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!memberDropdownContainer.contains(event.target)) {
+			showTeamMemberDropdown = false;
+		}
+	};
 </script>
 
 {#if !name}
@@ -102,11 +110,15 @@
 				<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
 			</div>
 		</a>
-		<button on:click={() => (showTeamMemberDropdown = !showTeamMemberDropdown)} class="ml-auto">
-			<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-		</button>
-		{#if showTeamMemberDropdown}
-			<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
-		{/if}
+
+		<div bind:this={memberDropdownContainer}>
+			<button on:click={() => (showTeamMemberDropdown = !showTeamMemberDropdown)} class="ml-auto">
+				<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+			</button>
+
+			{#if showTeamMemberDropdown}
+				<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
+			{/if}
+		</div>
 	</div>
 {/if}
