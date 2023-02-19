@@ -162,7 +162,9 @@
 				{#if bannerURL}
 					<img src={bannerURL} alt="" class="h-[12.5rem] w-full rounded object-cover" />
 				{:else}
-					<p>Select a file to preview it.</p>
+					<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
+						Select a file to preview it.
+					</p>
 				{/if}
 				<input
 					type="file"
