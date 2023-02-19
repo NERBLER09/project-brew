@@ -5,7 +5,6 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import AssingPerson from '$lib/components/projects/list/new/AssignPerson.svelte';
-	import type { User } from '$lib/types/projects';
 	import { userData } from '$lib/stores/user';
 
 	export let showCreateTask = false;

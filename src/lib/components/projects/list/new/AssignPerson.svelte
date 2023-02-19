@@ -4,6 +4,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import User from '$lib/assets/User.svelte';
 	import { invitedTeamMembers } from '$lib/stores/project';
+	import { userData } from '$lib/stores/user';
 
 	import type { User as Profile } from '$lib/types/projects';
 
@@ -13,9 +14,12 @@
 
 	let query = '';
 	let filteredList = $invitedTeamMembers ?? [];
+	filteredList = [...($invitedTeamMembers ?? []), $userData];
+
 	const handleSearch = () => {
 		filteredList = $invitedTeamMembers ?? [];
-		console.log(filteredList);
+		filteredList = [...($invitedTeamMembers ?? []), $userData];
+
 		filteredList = filteredList.filter((item) => item.email.includes(query));
 		filteredList = filteredList.filter((item) => !assingedUserIds.includes(item.id));
 		filteredList = filteredList.splice(4);

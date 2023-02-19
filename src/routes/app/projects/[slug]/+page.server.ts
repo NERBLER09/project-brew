@@ -70,6 +70,8 @@ export const actions: Actions = {
 
 		if (assigned) {
 			for (const id of assigned) {
+				if (id === session.user.id) continue
+
 				const { error } = await supabaseClient.from("notifications").insert({
 					message: `Has assigned you to ${name} in ${project_name}`,
 					target_user: id,
