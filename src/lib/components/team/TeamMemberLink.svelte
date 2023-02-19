@@ -4,7 +4,7 @@
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 
 	import User from '$lib/assets/User.svelte';
-	import { userData } from '$lib/stores/user';
+	import { currentUsers, userData } from '$lib/stores/user';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -15,6 +15,7 @@
 	let name: string;
 	let avatar_url: string | null;
 	let email: string;
+	let status: "online" | "offline" = "offline"
 
 	let showTeamMemberDropdown = false;
 
@@ -58,6 +59,19 @@
 			console.error(error);
 		}
 	};
+
+	$: if($currentUsers) {
+		for(const item of $currentUsers.users) { 
+			if(item.id === id) {
+				status = "online"
+				break
+			}
+			else {
+				status = "offline"
+				break
+			}
+		}
+	}
 </script>
 
 {#if !name}
@@ -75,7 +89,16 @@
 				<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
 			{/if}
 			<div class="flex flex-col items-start justify-start gap-sm">
+			<div class="flex items-center">
 				<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+				<p class="font-medium text-sm text-grey-700 dark:text-grey-100 ml-auto">
+					{#if status === "offline"}
+						Offline	
+					{:else}
+						Online
+					{/if}
+				</p>
+			</div>
 				<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
 			</div>
 		</a>

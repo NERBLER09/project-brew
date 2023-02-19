@@ -11,6 +11,8 @@ const userId = writable()
 
 export const invitedTeamMembers = writable<User[]>()
 
+export let currentUsers: Writable<any> = writable()
+
 export {
   signUpEmail,
   userSession,

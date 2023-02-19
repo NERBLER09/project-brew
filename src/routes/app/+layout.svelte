@@ -1,19 +1,16 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-
 	import { page } from '$app/stores';
+	import { tasksCompletedThisDay } from '$lib/stores/project';
+	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
+	import { currentUsers, invitedTeamMembers, userData } from '$lib/stores/user';
+	import { supabase } from '$lib/supabase';
+	import type { User } from '$lib/types/projects';
+	import { onDestroy, onMount } from 'svelte';
 	import { addNewDay, weeklyActivity } from '$lib/api/activity';
 
 	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
-	import { tasksCompletedThisDay } from '$lib/stores/project';
-
-	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
-	import { invitedTeamMembers, userData } from '$lib/stores/user';
-	import { supabase } from '$lib/supabase';
-	import type { User } from '$lib/types/projects';
-	import { onDestroy, onMount } from 'svelte';
-	import { dataset_dev } from 'svelte/internal';
 
 	const handleTheme = () => {
 		$perferedTheme = localStorage.getItem('theme');
@@ -81,6 +78,24 @@
 		if (user?.team_members) {
 			$invitedTeamMembers = await getInvitedTeamMembers(user?.team_members);
 		}
+
+		const userChannel = supabase.channel('online', {
+			config: {
+				presence: {
+					key: 'users'
+				}
+			}
+		});
+
+		userChannel.on('presence', { event: 'sync' }, () => {
+			$currentUsers = userChannel.presenceState()
+		});
+
+		userChannel.subscribe(async (status) => {
+			if (status === 'SUBSCRIBED') {
+				const status = await userChannel.track({ id: user?.id });
+			}
+		});
 	});
 
 	const notificationChannel = supabase
@@ -96,7 +111,7 @@
 
 <div class="flex h-screen flex-col-reverse md:flex-row" class:dark={$useDarkMode}>
 	<aside>
-		<!-- Each automaticly hide based on screen size in tailwind -->
+		<!-- Each automatically hide based on screen size in tailwind -->
 		<DesktopSidebar />
 		{#if $showMobileNav}
 			<MobileNavbar />
