@@ -1,8 +1,11 @@
-<script>
+<script lang="ts">
 	import { handleGoogleAuth } from '$lib/api/auth';
 	import { enhance } from '$app/forms';
 
 	import Google from '$lib/assets/Logo/Google.svelte';
+	import type { ActionData } from './$types';
+
+	export let form: ActionData;
 </script>
 
 <svelte:head>
@@ -31,6 +34,11 @@
 			name="password"
 			required
 		/>
+
+		{#if form?.fail}
+			<p class="my-sm font-medium text-red-600">{form?.message}</p>
+		{/if}
+
 		<button class="button--primary" type="submit">Log in</button>
 		<span>or</span>
 		<button

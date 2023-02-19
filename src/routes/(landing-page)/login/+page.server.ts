@@ -11,7 +11,7 @@ export const actions = {
 
     const { error: err } = await supabaseClient.auth.signInWithPassword({ email, password })
     if (err) {
-      throw fail(403, { message: err.message, fail: true })
+      return fail(403, { message: err.message, fail: true })
     }
     else {
       throw redirect(303, "/app/home")
