@@ -54,9 +54,18 @@
 
 		checkIfTaskIsDueToday();
 	});
+
+	let cardDropdownElement: HTMLElement
+	const handleClickOutside = (event: Event) => {
+		if(!cardDropdownElement.contains(event.target)) {
+			showCardDropdown = false
+		}
+	}
 </script>
 
-<div>
+<svelte:window on:click={handleClickOutside}/>
+
+<div class="relative">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-sm flex items-start">
 			<div>
@@ -86,9 +95,16 @@
 					</div>
 				{/if}
 
-				<button on:click={() => (showCardDropdown = !showCardDropdown)}>
-					<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-				</button>
+				<div bind:this={cardDropdownElement}>
+					<button on:click={() => (showCardDropdown = !showCardDropdown)}>
+						<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+					</button>
+
+					{#if showCardDropdown}
+						<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
+					{/if}
+				</div>
+
 			</div>
 		</header>
 
@@ -122,9 +138,6 @@
 		</div>
 	</section>
 
-	{#if showCardDropdown}
-		<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
-	{/if}
 </div>
 
 <style>
