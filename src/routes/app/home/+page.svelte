@@ -29,6 +29,14 @@
 
 	let totalFocusTime = 0;
 
+	let userDropdownContainer: HTMLElement;
+
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!userDropdownContainer.contains(event.target)) {
+			showUserDropdown = false;
+		}
+	};
+
 	onMount(() => {
 		totalFocusTime = parseInt(localStorage.getItem('focusTime') || '0');
 	});
@@ -37,6 +45,8 @@
 <svelte:head>
 	<title>Project Brew - Home</title>
 </svelte:head>
+
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <header class="flex items-start">
 	<!-- Mobile welcome text -->
@@ -74,7 +84,11 @@
 				<DesktopNotifications notifications={data.notifications} />
 			{/if}
 		</div>
-		<button class="relative" on:click={() => (showUserDropdown = !showUserDropdown)}>
+		<button
+			class="relative"
+			on:click={() => (showUserDropdown = !showUserDropdown)}
+			bind:this={userDropdownContainer}
+		>
 			{#if data.avatar_url}
 				<img
 					src={data.avatar_url}
