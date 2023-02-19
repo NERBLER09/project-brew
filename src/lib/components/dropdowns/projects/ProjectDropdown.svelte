@@ -24,10 +24,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-	class="md:top-16 md:right-xl md:left-auto dropdown--container"
-	on:click={() => (visibility = false)}
->
+<div class="dropdown--container md:top-16 md:right-xl md:left-auto">
 	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Filter className="dropdown--icon" parentBg="grey-100" />
 		<span class="dropdown--label">Filter</span>
@@ -36,7 +33,10 @@
 		<CircleInfo className="dropdown--icon" />
 		<span class="dropdown--label">View Info</span>
 	</a>
-	<button class="dropdown--item hidden md:flex items-center" on:click={() => ($showAboutProjectPrompt = true)}>
+	<button
+		class="dropdown--item hidden items-center md:flex"
+		on:click={() => ($showAboutProjectPrompt = true)}
+	>
 		<CircleInfo className="dropdown--icon" />
 		<span class="dropdown--label">View Info</span>
 	</button>

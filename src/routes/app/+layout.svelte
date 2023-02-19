@@ -93,7 +93,7 @@
 
 		userChannel.subscribe(async (status) => {
 			if (status === 'SUBSCRIBED') {
-				const status = await userChannel.track({ id: user?.id });
+				await userChannel.track({ id: user?.id });
 			}
 		});
 	});
