@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
+	import toast from 'svelte-french-toast';
 
 	export let data: PageData;
 
@@ -25,7 +26,19 @@
 	});
 </script>
 
-<form method="POST" action="/app/settings?/notifications" use:enhance>
+<form
+	method="POST"
+	action="/app/settings?/notifications"
+	use:enhance={() => {
+		return async ({ result }) => {
+			if (result.type === 'error') {
+				toast.error(result?.data.message);
+			} else if (result.type === 'success') {
+				toast.success('Updated account settings');
+			}
+		};
+	}}
+>
 	{#if notificationsEnabled}
 		<section>
 			<header>
@@ -75,7 +88,7 @@
 	</button>
 	<button
 		class="button--primary z-50 hidden md:block {!data.banner
-			? 'mt-md mx-auto'
+			? 'mx-auto mt-md'
 			: 'absolute right-0 -top-36'}"
 	>
 		<span>Save changes</span>

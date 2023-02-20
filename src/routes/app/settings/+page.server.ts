@@ -108,7 +108,7 @@ export const actions = {
 			.eq('id', session.user.id);
 
 		if (err) {
-			throw error(403, err.message);
+			throw fail(403, { message: err.message });
 		}
 	}
 } satisfies Actions;

@@ -6,6 +6,7 @@
 	import System from '$lib/assets/Theme/System.svelte';
 	import { perferedTheme, settingsPage, useDarkMode, type Theme } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -31,6 +32,7 @@
 		}
 
 		localStorage.setItem('theme', selectedTheme);
+		toast.success('Update theme preference.');
 	};
 
 	onMount(() => {
@@ -105,7 +107,7 @@
 		</button>
 		<button
 			class="button--primary z-50 hidden md:block {!data.banner
-				? 'mt-md mx-auto'
+				? 'mx-auto mt-md'
 				: 'absolute right-0 -top-36'}"
 			on:click={handleUpdateTheme}
 		>
