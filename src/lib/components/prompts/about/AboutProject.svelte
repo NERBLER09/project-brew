@@ -87,9 +87,10 @@
 			$currentProject = data[0];
 			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
+			invalidate('app:project');
+		} else {
+			toast.error(`Failed to update project details: ${error.message}`);
 		}
-
-		invalidate('app:project');
 	};
 
 	const handleRemoveCover = () => {

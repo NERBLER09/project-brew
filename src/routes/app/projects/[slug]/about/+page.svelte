@@ -45,7 +45,6 @@
 				cacheControl: '3600',
 				upsert: false
 			});
-		console.log(coverErr);
 
 		const { data: url } = supabase.storage
 			.from('project-covers')
@@ -74,12 +73,12 @@
 			.eq('id', $currentProject.id)
 			.select();
 
-		console.error(error);
-
 		if (data) {
 			$currentProject = data[0];
 			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
+		} else {
+			toast.error(`Failed to update project details: ${error.message}`);
 		}
 	};
 
