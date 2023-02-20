@@ -7,13 +7,21 @@
 	import User from '$lib/assets/User.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
+	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
+	import { camelCase } from 'lodash';
 	import toast from 'svelte-french-toast';
 
 	export let visibility = false;
 	export let projectId: number;
 
 	const handleProjectDelete = async () => {
+		if ($currentProject.banner) {
+			await supabase.storage
+				.from('project-covers')
+				.remove([`${$userData.id}/${camelCase($currentProject.name)}`]);
+		}
+
 		await supabase.from('tasks').delete().eq('project', projectId);
 		await supabase.from('lists').delete().eq('project', projectId);
 		const { error } = await supabase.from('projects').delete().eq('id', projectId);
@@ -44,10 +52,13 @@
 		<CircleInfo className="dropdown--icon" />
 		<span class="dropdown--label">View Info</span>
 	</button>
-	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
+	<a
+		class="dropdown--item md:hidden"
+		href="/app/projects/{$currentProject.id}/about/team-management"
+	>
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View invited members</span>
-	</button> -->
+	</a>
 	<button class="dropdown--item" on:click={handleProjectDelete}>
 		<Trash className="dropdown--icon" />
 		<span class="dropdown--label">Delete</span>
