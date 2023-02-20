@@ -1,34 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { userData } from '$lib/stores/user';
-
-	import { supabase } from '$lib/supabase';
-
-	let name = '';
-	let error = '';
-
-	const handleSetUserData = async () => {
-		const {
-			data: { user }
-		} = await supabase.auth.getUser();
-		const id = user?.id;
-		const email = user?.email;
-
-		const { data, error: errorMsg } = await supabase
-			.from('profiles')
-			.insert({
-				id,
-				email,
-				name
-			})
-			.select();
-
-		if (error) error = errorMsg?.message!;
-		else {
-			userData.set(data);
-			goto('/app/home');
-		}
-	};
+	import toast from 'svelte-french-toast';
 </script>
 
 <svelte:head>
@@ -36,23 +9,30 @@
 </svelte:head>
 
 <section
-	class="text-center mx-6 h-screen md:w-screen flex items-center justify-center flex-col gap-md"
+	class="mx-6 flex h-screen flex-col items-center justify-center gap-md text-center md:w-screen"
 >
 	<header>
 		<h1 class="text-xl font-semibold text-grey-800 sm:text-2xl">Welcome to Project Brew!</h1>
 	</header>
 	<div class="flex flex-col items-center gap-md">
-		<p class="text-grey-700 md:w-1/2 px-6">
+		<p class="px-6 text-grey-700 md:w-1/2">
 			Please take a few moments to setup your account details. You can always change and set these
 			in your account settings.
 		</p>
-		<form on:submit|preventDefault={handleSetUserData}>
-			<input
-				type="text"
-				class="input--text mb-md"
-				placeholder="Enter your name"
-				bind:value={name}
-			/>
+		<form
+			method="POST"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type === 'failure') {
+						toast.error(result?.data.message);
+					} else if (result.type === 'success') {
+						toast.success('Welcome to Project Brew');
+						goto('/app/home');
+					}
+				};
+			}}
+		>
+			<input type="text" class="input--text mb-md" placeholder="Enter your name" name="name" />
 			<br />
 			<button class="button--primary">Set details</button>
 		</form>
