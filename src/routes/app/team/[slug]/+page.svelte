@@ -121,13 +121,7 @@
 				<div class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row">
 					{#each invitedProject as project}
 						<div class="relative">
-							<ProjectCard
-								project_name={project.project_name}
-								id={project.id}
-								description={project.description}
-								banner={project.banner}
-								invited_people={project.invited_people}
-							/>
+							<ProjectCard {...project} />
 						</div>
 					{/each}
 				</div>

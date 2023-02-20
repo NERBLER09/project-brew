@@ -142,13 +142,7 @@
 					</p>
 				{/if}
 				{#each data.pinned as project}
-					<ProjectCard
-						project_name={project.project_name}
-						id={project.id}
-						description={project.description}
-						banner={project.banner}
-						invited_people={project.invited_people}
-					/>
+					<ProjectCard {...project} />
 				{/each}
 			</div>
 		</section>
@@ -164,13 +158,7 @@
 
 		<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
 			{#each $recentlyEdited as project}
-				<ProjectCard
-					project_name={project.project_name}
-					id={project.id}
-					description={project.description}
-					banner={project.banner}
-					invited_people={project.invited_people}
-				/>
+				<ProjectCard {...project} />
 			{:else}
 				<p class="font-medium text-grey-700 dark:text-grey-200">
 					Projects you have recently viewed will show up here

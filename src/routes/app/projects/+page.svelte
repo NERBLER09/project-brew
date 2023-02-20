@@ -10,13 +10,14 @@
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
 	import { projectSort, type SortOption } from '$lib/stores/project';
 	import { showNewProjectPrompt, showProjectsSort } from '$lib/stores/ui';
+	import type { Projects } from '$lib/types/projects';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	let query = '';
-	let allProjects = data.all;
+	let allProjects: Projects[] = data.all;
 
 	const handleSearch = () => {
 		allProjects = data.all;
@@ -46,7 +47,7 @@
 		showEditPinPrompt = true;
 	};
 
-	const handleShowNewProjctPrompt = () => {
+	const handleShowNewProjectPrompt = () => {
 		$showNewProjectPrompt = true;
 	};
 
@@ -63,7 +64,7 @@
 	<h1 class="text-lg text-grey-800 dark:text-grey-200 md:text-2xl">Projects</h1>
 	<button
 		class="button--primary ml-auto hidden items-center gap-md md:flex"
-		on:click={handleShowNewProjctPrompt}
+		on:click={handleShowNewProjectPrompt}
 	>
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span>New project</span>
@@ -104,13 +105,7 @@
 			</p>
 		{/if}
 		{#each data.pinned as project}
-			<ProjectCard
-				project_name={project.project_name}
-				id={project.id}
-				description={project.description}
-				banner={project.banner}
-				invited_people={project.invited_people}
-			/>
+			<ProjectCard {...project} />
 		{/each}
 	</div>
 </section>
@@ -165,13 +160,7 @@
 			</p>
 		{/if}
 		{#each allProjects as project}
-			<ProjectCard
-				project_name={project.project_name}
-				id={project.id}
-				description={project.description}
-				banner={project.banner}
-				invited_people={project.invited_people}
-			/>
+			<ProjectCard {...project} />
 		{/each}
 	</div>
 </section>

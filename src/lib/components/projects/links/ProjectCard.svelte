@@ -1,10 +1,15 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import TagItem from '../tags/TagItem.svelte';
+
 	export let id: number;
 	export let project_name: string;
 	export let banner: string | null = '';
 	export let description: string | null = '';
 	export let invited_people: string[] | null = [];
 	export let tags: string[] = [];
+
+	$: tags = JSON.parse(tags.toString() || '[]');
 </script>
 
 <a href="/app/projects/{id}">
@@ -32,9 +37,7 @@
 
 			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
-					<div class="w-fit rounded bg-grey-200 py-1 px-2">
-						<span class="text-sm font-medium text-grey-700">{tag}</span>
-					</div>
+					<TagItem {tag} />
 				{/each}
 			</div>
 		</div>
