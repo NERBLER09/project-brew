@@ -4,11 +4,14 @@
 	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
+	import type { ActionData } from '../$types';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import User from '$lib/assets/User.svelte';
+	import toast from 'svelte-french-toast';
 
 	export let data: PageData;
+	export let form: ActionData;
 
 	let profilePictureElement: HTMLInputElement;
 	let newProfilePicture: FileList | null;
@@ -60,7 +63,21 @@
 	<header>
 		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
 	</header>
-	<form method="POST" action="/app/settings?/account" class="flex flex-col gap-sm" use:enhance>
+	<form
+		method="POST"
+		action="/app/settings?/account"
+		class="flex flex-col gap-sm"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if(result.type === "failure") {
+					toast.error(result?.data.message)
+				}
+				else if (result.type === "success") {
+					toast.success("Updated account settings")
+				}
+			};
+		}}
+	>
 		<div>
 			<label for="name-input" class="input--label">Name</label>
 			<input
@@ -213,7 +230,7 @@
 		</button>
 		<button
 			class="button--primary z-50 hidden md:block {!data.banner
-				? 'mt-md mx-auto'
+				? 'mx-auto mt-md'
 				: 'absolute right-0 -top-36'}"
 		>
 			<span>Save changes</span>
