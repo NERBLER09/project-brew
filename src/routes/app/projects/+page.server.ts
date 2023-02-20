@@ -1,7 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
+import { camelCase } from 'lodash';
 import type { PageServerLoad } from './$types';
-import { camelCase, constant } from 'lodash';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -9,7 +9,7 @@ export const load = (async (event) => {
 		throw redirect(303, '/');
 	}
 
-	event.depends("app:all-projects")
+	event.depends('app:all-projects');
 
 	const { data, error: err } = await supabaseClient
 		.from('projects')
@@ -17,17 +17,16 @@ export const load = (async (event) => {
 		.eq('user_id', session.user.id);
 
 	const { data: invited, error: err2 } = await supabaseClient
-		.from("projects")
+		.from('projects')
 		.select()
-		.contains("invited_people", [session.user.id]);
+		.contains('invited_people', [session.user.id]);
 
 	if (data && invited) {
-		const allProjects = [...data, ...invited]
+		const allProjects = [...data, ...invited];
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
 	if (err) {
-
 		throw error(404, err.message);
 	}
 }) satisfies PageServerLoad;
@@ -47,51 +46,62 @@ export const actions: Actions = {
 		const formTags = data.get('tags') as string;
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
-		const user = data.get("user") as string
+		const user = data.get('user') as string;
 
-		const inivtedString = data.get("invited") as string;
-		let invited = inivtedString.split(",") || null
-		invited = invited[0] === "" ? [] : invited
+		const invitedString = data.get('invited') as string;
+		let invited = invitedString.split(',') || null;
+		invited = invited[0] === '' ? [] : invited;
 
 		tags = tags[0] === '' ? [] : tags;
 
 		let coverURL = null;
 
 		if (cover && cover.size < 50000) {
-			const ccName = camelCase(project_name)
+			const ccName = camelCase(project_name);
 
-			const { error: coverErr } = await supabaseClient
-				.storage
-				.from("project-covers")
+			const { error: coverErr } = await supabaseClient.storage
+				.from('project-covers')
 				.upload(`${session.user.id}/${ccName}.png`, cover, {
 					cacheControl: '3600',
 					upsert: false
-				})
-			const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/${ccName}.png`)
-			coverURL = url.publicUrl
-		}
-		else if (cover.size > 50000) {
-			return fail(400, { message: "Cover is larger then 5mb" })
+				});
+
+			if (coverErr) {
+				return fail(400, { message: `Failed to upload cover: ${coverErr}` });
+			}
+
+			const { data: url } = supabaseClient.storage
+				.from('project-covers')
+				.getPublicUrl(`${session.user.id}/${ccName}.png`);
+			coverURL = url.publicUrl;
+		} else if (cover.size > 50000) {
+			return fail(400, { message: 'Cover is larger then 5mb' });
 		}
 
 		if (invited) {
 			for (const id of invited) {
-				const { error } = await supabaseClient.from("notifications").insert({
+				await supabaseClient.from('notifications').insert({
 					message: `Has invited you to ${project_name}`,
 					target_user: id,
 					sentBy: JSON.parse(user),
-					type: "invite"
-				})
-
-				console.log(error)
+					type: 'invite'
+				});
 			}
 		}
 
-		const { error: err } = await supabaseClient.from("projects").insert({ description, project_name, user_id: session.user.id, tags, banner: coverURL, invited_people: invited })
-		console.error(err)
+		const { error: err } = await supabaseClient.from('projects').insert({
+			description,
+			project_name,
+			user_id: session.user.id,
+			tags,
+			banner: coverURL,
+			invited_people: invited
+		});
 
 		if (!err) {
 			return { success: true };
+		} else {
+			return fail(400, { message: `Failed to create project: ${err.message}` });
 		}
 	}
 };

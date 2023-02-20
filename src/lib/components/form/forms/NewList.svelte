@@ -4,6 +4,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import toast from 'svelte-french-toast';
 
 	export let createNewList = false;
 	let newName = '';
@@ -25,13 +26,15 @@
 
 		if (result?.type === 'success') {
 			invalidate('app:project');
+		} else if (result.type === 'failure') {
+			toast.error(result?.data.message);
 		}
 	};
 </script>
 
 <form on:submit|preventDefault={handleCreateNewList}>
 	<button
-		class="button--secondary w-full flex items-center gap-md justify-center"
+		class="button--secondary flex w-full items-center justify-center gap-md"
 		on:click={() => (createNewList = false)}
 		type="button"
 	>
@@ -55,11 +58,11 @@
 			<option value="other">Other</option>
 		</select>
 
-		<span class="font-medium text-grey-700 dark:text-grey-200 text-sm"
+		<span class="text-sm font-medium text-grey-700 dark:text-grey-200"
 			>Selecting a special status can display tasks in a certain way relative to the status.</span
 		>
 	</div>
-	<button class="button--primary w-full flex items-center gap-md justify-center" type="submit">
+	<button class="button--primary flex w-full items-center justify-center gap-md" type="submit">
 		<PlusNew className="w-6 h-6 stroke-grey-200" />
 		Create list
 	</button>

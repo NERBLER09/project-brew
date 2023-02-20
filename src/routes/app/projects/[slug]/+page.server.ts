@@ -1,5 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -40,7 +40,7 @@ export const load = (async (event) => {
 
 export const actions: Actions = {
 	newTask: async (event) => {
-		const { request, params } = event;
+		const { request } = event;
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
@@ -53,35 +53,32 @@ export const actions: Actions = {
 		let dueDate = data.get('date');
 		const isPriority = data.get('priority');
 		const list = data.get('list-id');
-		const status = data.get("list-status")
+		const status = data.get('list-status');
 		const project = data.get('project');
-		const project_name = data.get("project_name")
-		const user = data.get("user_object")
+		const project_name = data.get('project_name');
+		const user = data.get('user_object');
 
-		const assignedString = data.get("assigned") as string;
-		let assigned = assignedString.split(",") || null
-		assigned = assigned[0] === "" ? [] : assigned
+		const assignedString = data.get('assigned') as string;
+		let assigned = assignedString.split(',') || null;
+		assigned = assigned[0] === '' ? [] : assigned;
 
-		const formTags = data.get('tags') as string
-		let tags = formTags?.split(',') || null
+		const formTags = data.get('tags') as string;
+		let tags = formTags?.split(',') || null;
 		tags = tags[0] === '' ? [] : tags;
 
 		dueDate = !dueDate ? dueDate : null;
 
 		if (assigned) {
 			for (const id of assigned) {
-				if (id === session.user.id) continue
+				if (id === session.user.id) continue;
 
-				const { error } = await supabaseClient.from("notifications").insert({
+				await supabaseClient.from('notifications').insert({
 					message: `Has assigned you to ${name} in ${project_name}`,
 					target_user: id,
 					sentBy: user
-				})
-
-				console.log(error)
+				});
 			}
 		}
-
 
 		const { data: task, error: err } = await supabaseClient
 			.from('tasks')
@@ -102,8 +99,10 @@ export const actions: Actions = {
 		if (task && !err) {
 			return {
 				data: task[0],
-				status: 'success',
+				status: 'success'
 			};
+		} else {
+			return fail(400, { message: `Failed to create new task: ${err.message}` });
 		}
 	},
 
@@ -117,7 +116,7 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 		const name = data.get('list-name');
-		const status = data.get("list-status")
+		const status = data.get('list-status');
 		const project = data.get('project-id') as string;
 		const userId = session.user.id;
 
@@ -135,6 +134,8 @@ export const actions: Actions = {
 			return {
 				status: 'success'
 			};
+		} else {
+			return fail(400, { message: `Failed to create new task: ${err.message}` });
 		}
 	}
 };

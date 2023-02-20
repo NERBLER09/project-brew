@@ -6,6 +6,7 @@
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import AssingPerson from '$lib/components/projects/list/new/AssignPerson.svelte';
 	import { userData } from '$lib/stores/user';
+	import toast from 'svelte-french-toast';
 
 	export let showCreateTask = false;
 	export let listId: string;
@@ -46,10 +47,10 @@
 		if (result?.type === 'success') {
 			tasks = [result.data?.data, ...tasks];
 			invalidate('app:project');
+		} else if (result.type === 'failure') {
+			toast.error(result?.data.message);
 		}
 	};
-
-	console.log($invitedTeamMembers !== []);
 </script>
 
 <form method="POST" on:submit|preventDefault={handleCreateNewTask}>
