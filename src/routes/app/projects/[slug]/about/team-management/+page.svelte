@@ -10,6 +10,7 @@
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import { supabase } from '$lib/supabase';
 	import { invalidate } from '$app/navigation';
+	import toast from 'svelte-french-toast';
 
 	export let data: PageData;
 
@@ -23,7 +24,7 @@
 		allUsers.splice(4);
 	};
 
-	const handleInviteNewUser = async (id: string) => {
+	const handleInviteNewUser = async (id: string, name: string) => {
 		const invitedUsers = [...$currentProject.invited_people, id];
 		const { error } = await supabase
 			.from('projects')
@@ -33,8 +34,10 @@
 		if (!error) {
 			emailSearch = '';
 			invalidate('app:project');
+			toast.success(`Invited ${name} to ${$currentProject.name}`);
+		} else {
+			toast.error(`Failed to invite ${name} to ${$currentProject.name}`);
 		}
-		console.log(error);
 	};
 
 	onMount(() => {
@@ -108,7 +111,7 @@
 							</div>
 						</div>
 
-						<button class="ml-auto" on:click={() => handleInviteNewUser(id)}>
+						<button class="ml-auto" on:click={() => handleInviteNewUser(id, name)}>
 							<UserAdd className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 							<span class="sr-only">Add {email} to this project</span>
 						</button>

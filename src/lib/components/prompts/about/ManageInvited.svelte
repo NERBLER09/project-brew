@@ -11,6 +11,7 @@
 	import { supabase } from '$lib/supabase';
 	import type { User as Profile } from '$lib/types/projects';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -37,7 +38,7 @@
 		allUsers.splice(4);
 	};
 
-	const handleInviteNewUser = async (id: string) => {
+	const handleInviteNewUser = async (id: string, name: string) => {
 		const invitedUsers = [...$currentProject.invited_people, id];
 		const { error } = await supabase
 			.from('projects')
@@ -46,8 +47,9 @@
 		if (!error) {
 			emailSearch = '';
 			invalidate('app:project');
+		} else {
+			toast.error(`Failed to invite ${name} to ${$currentProject.name}`);
 		}
-		console.log(error);
 	};
 
 	$: handleModalStatus(shown);
@@ -133,7 +135,7 @@
 								</div>
 							</div>
 
-							<button class="ml-auto" on:click={() => handleInviteNewUser(id)}>
+							<button class="ml-auto" on:click={() => handleInviteNewUser(id, name)}>
 								<UserAdd className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 								<span class="sr-only">Add {email} to this project</span>
 							</button>
