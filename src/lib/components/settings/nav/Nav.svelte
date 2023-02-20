@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Bell from '$lib/assets/Fill/Bell.svelte';
 	import CircleInfo from '$lib/assets/Fill/CircleInfo.svelte';
 	import Image from '$lib/assets/Fill/Image.svelte';
@@ -15,7 +16,8 @@
 >
 	<a
 		href="/app/settings/account"
-		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700
+			{$page.url.pathname === '/app/settings/account' ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 		on:click={() => ($showMobileSettingsNav = false)}
 	>
 		<User className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
@@ -23,7 +25,8 @@
 	</a>
 	<a
 		href="/app/settings/appearance"
-		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700
+		{$page.url.pathname === '/app/settings/appearance' ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 		on:click={() => ($showMobileSettingsNav = false)}
 	>
 		<Image className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
@@ -31,7 +34,8 @@
 	</a>
 	<a
 		href="/app/settings/notifications"
-		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700
+		{$page.url.pathname === '/app/settings/notifications' ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 		on:click={() => ($showMobileSettingsNav = false)}
 	>
 		<Bell className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
@@ -39,7 +43,8 @@
 	</a>
 	<a
 		href="/app/settings/about"
-		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700"
+		class="flex items-center gap-md rounded-md py-sm px-md font-bold text-grey-700 active:bg-grey-200 dark:text-grey-200 dark:active:bg-grey-700
+		{$page.url.pathname === '/app/settings/about' ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 		on:click={() => ($showMobileSettingsNav = false)}
 	>
 		<CircleInfo className="w-8 h-8 fill-grey-800 dark:fill-grey-200 md:hidden" />
