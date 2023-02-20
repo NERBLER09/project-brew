@@ -13,6 +13,7 @@
 	import { supabase } from '$lib/supabase';
 	import { camelCase } from 'lodash';
 	import { onDestroy, onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	let inEditMode = false;
 	let newProjectName = $currentProject.name;
@@ -54,7 +55,13 @@
 	};
 
 	const handleUpdateProject = async () => {
-		let updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
+		let updatedCoverURL = '';
+		if (newCoverFile[0].size > 5000000) {
+			toast.error("Cover can't be over 5mb in size.");
+			return;
+		} else {
+			updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
+		}
 		inEditMode = false;
 		const { data, error } = await supabase
 			.from('projects')
@@ -71,7 +78,7 @@
 
 		if (data) {
 			$currentProject = data[0];
-			$currentProject.tags = JSON.parse(data[0]?.tags) || [];
+			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
 		}
 	};

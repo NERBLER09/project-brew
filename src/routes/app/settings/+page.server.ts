@@ -23,9 +23,6 @@ export const actions = {
 		let banner_url = data.get('banner_url') as string;
 		const banner_preview = data.get('banner_preview') as string;
 
-		console.log(`Banner size: ${banner.size}`);
-		console.log(`Profile size: ${profile.size}`);
-
 		if (profile.size !== 0 && profile.size < 500000) {
 			await supabaseClient.storage
 				.from('avatars')
@@ -58,7 +55,7 @@ export const actions = {
 		} else if (banner.size === 0 && banner_url !== banner_preview) {
 			await supabaseClient.storage.from('avatars').remove([`${session.user.id}/cover.png`]);
 			banner_url = '';
-		} else if (banner.size > 5000000 && banner.size > 0) {
+		} else if (banner.size > 5000000 && banner.size > 0 && banner_url !== banner_preview) {
 			return fail(400, { message: 'Banner is larger then 5mb.', fail: true });
 		}
 

@@ -13,6 +13,8 @@
 	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
+	import { camelCase } from 'lodash';
+	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 
 	export let shown = false;
@@ -53,7 +55,6 @@
 				cacheControl: '3600',
 				upsert: false
 			});
-		console.log(coverErr);
 
 		const { data: url } = supabase.storage
 			.from('project-covers')
@@ -63,7 +64,13 @@
 	};
 
 	const handleUpdateProject = async () => {
-		let updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
+		let updatedCoverURL = '';
+		if (newCoverFile[0].size > 5000000) {
+			toast.error("Cover can't be over 5mb in size.");
+			return;
+		} else {
+			updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
+		}
 		inEditMode = false;
 		const { data, error } = await supabase
 			.from('projects')
@@ -76,11 +83,9 @@
 			.eq('id', $currentProject.id)
 			.select();
 
-		console.error(error);
-
 		if (data) {
 			$currentProject = data[0];
-			$currentProject.tags = JSON.parse(data[0]?.tags) || [];
+			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
 		}
 
