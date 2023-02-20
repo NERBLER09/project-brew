@@ -1,5 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { camelCase, constant } from 'lodash';
 
@@ -57,7 +57,7 @@ export const actions: Actions = {
 
 		let coverURL = null;
 
-		if (cover) {
+		if (cover && cover.size < 50000) {
 			const ccName = camelCase(project_name)
 
 			const { error: coverErr } = await supabaseClient
@@ -69,6 +69,9 @@ export const actions: Actions = {
 				})
 			const { data: url } = supabaseClient.storage.from("project-covers").getPublicUrl(`${session.user.id}/${ccName}.png`)
 			coverURL = url.publicUrl
+		}
+		else if (cover.size > 50000) {
+			return fail(400, { message: "Cover is larger then 5mb" })
 		}
 
 		if (invited) {

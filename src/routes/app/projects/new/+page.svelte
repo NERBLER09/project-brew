@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import toast from "svelte-french-toast"
 	import Check from '$lib/assets/Check.svelte';
 
 	import Image from '$lib/assets/Image.svelte';
@@ -44,6 +45,9 @@
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
 			goto('/app/projects');
+		}
+		else {
+			toast.error(`Failed to create project: ${result?.data.message}`)	
 		}
 	};
 
