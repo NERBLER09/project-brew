@@ -8,6 +8,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
+	import toast from 'svelte-french-toast';
 
 	export let visibility = false;
 	export let projectId: number;
@@ -18,7 +19,10 @@
 		const { error } = await supabase.from('projects').delete().eq('id', projectId);
 
 		if (!error) {
+			toast.success('Successfully deleted project');
 			goto('/app/projects');
+		} else {
+			toast.error(`Failed to deleted project: ${error.message}`);
 		}
 	};
 </script>
