@@ -13,8 +13,9 @@ export const actions = {
 
 		const data = await event.request.formData();
 		const name = data.get('name') as string;
+		const bio = data.get('bio') as string;
 
-		const { error: err } = await supabaseClient.from('profiles').insert({ id, name, email });
+		const { error: err } = await supabaseClient.from('profiles').insert({ id, name, email, bio });
 		if (err) {
 			return fail(400, { message: err.message });
 		} else {
