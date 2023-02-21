@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
-	darkMode: "class",
+	darkMode: 'class',
 	theme: {
 		extend: {
 			spacing: {
@@ -30,16 +30,16 @@ module.exports = {
 					800: '#343A40',
 					900: '#212529'
 				}
-			},
-			fontSize: {
-				"sm": ["0.875rem", "1.125rem"],
-				"base": ["1rem", "1.375rem"],
-				"md": ["1.25rem", "2rem"],
-				"lg": ["1.75rem", "2.8125rem"],
-				"xl": ["2.5rem", "4rem"],
-				"2xl": ["3rem", "5rem"]
 			}
 		},
-		plugins: [require("@tailwindcss/forms")]
-	}
-}
+		fontSize: {
+			sm: ['0.875rem', '1.125rem'],
+			base: ['1rem', '1.375rem'],
+			md: ['1.25rem', '2rem'],
+			lg: ['1.75rem', '2.8125rem'],
+			xl: ['2.5rem', '4rem'],
+			'2xl': ['3rem', '5rem']
+		}
+	},
+	plugins: [require('@tailwindcss/forms')]
+};
