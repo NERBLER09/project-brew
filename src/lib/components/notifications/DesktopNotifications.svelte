@@ -34,6 +34,7 @@
 	const handleClearNotifications = async () => {
 		const { error } = await supabase.from('notifications').delete().eq('target_user', $userData.id);
 		if (!error) {
+			notifications = [];
 			invalidate('app:data');
 		}
 	};
