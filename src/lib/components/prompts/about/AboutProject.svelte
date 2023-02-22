@@ -69,7 +69,7 @@
 			toast.error("Cover can't be over 5mb in size.");
 			return;
 		} else {
-			updatedCoverURL = newCoverURL || (await uploadNewCover(newCoverFile));
+			updatedCoverURL = await uploadNewCover(newCoverFile);
 		}
 		inEditMode = false;
 		const { data, error } = await supabase
