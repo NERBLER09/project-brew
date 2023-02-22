@@ -65,7 +65,7 @@
 
 	const handleUpdateProject = async () => {
 		let updatedCoverURL = '';
-		if (newCoverFile[0].size > 5000000) {
+		if (newCoverFile && newCoverFile[0].size > 5000000) {
 			toast.error("Cover can't be over 5mb in size.");
 			return;
 		} else {
