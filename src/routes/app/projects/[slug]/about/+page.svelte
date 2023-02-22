@@ -114,7 +114,7 @@
 			: 'h-[12.5rem]'}"
 		style="background-image: {$currentProject.banner
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
-			: ''}, url({!inEditMode ? $currentProject.banner : newCoverURL});"
+			: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
 		{#if !inEditMode}
 			<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
