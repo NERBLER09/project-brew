@@ -33,26 +33,36 @@
 			}}
 			class="w-full md:px-20"
 		>
-			<div class="mb-md">
-				<input
-					type="text"
-					class="input--text mb-md w-full"
-					placeholder="Enter your name"
-					name="name"
-				/>
-				<textarea
-					class="input--text h-36 w-full resize-none"
-					id="bio-input"
-					name="bio"
-					placeholder="Write something about yourself"
-				/>
+			<div class="mb-md w-full">
+				<div class="flex items-center">
+					<label for="name-input" class="input--label mb-sm inline-block">Name</label>
+					<input
+						type="text"
+						class="input--text w-full"
+						id="name-input"
+						name="name"
+						placeholder="What should people call you"
+						required
+					/>
+				</div>
+				<div class="w-full">
+					<label for="bio-input" class="input--label mb-sm inline-block w-full text-start"
+						>Bio</label
+					>
+					<textarea
+						class="input--text h-36 w-full resize-none"
+						id="bio-input"
+						name="bio"
+						placeholder="Write something about yourself"
+					/>
+				</div>
 			</div>
 
 			<button class="button--primary w-full">Finish Setup</button>
 
 			<p class="mt-sm text-sm text-grey-700">
 				Note: What you have inputted will be publicly visible, so make sure you haven't inputted
-				anything that you don't want to be public.
+				anything private.
 			</p>
 		</form>
 	</div>
