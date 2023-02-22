@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import User from '$lib/assets/User.svelte';
 	import toast from 'svelte-french-toast';
 
 	let bannerInputElement: HTMLInputElement;
@@ -16,13 +17,26 @@
 
 	const removeBanner = () => {
 		bannerURL = '';
-		newBanner = undefined;
 		bannerInputElement.value = '';
 	};
 
 	$: if (newBanner) getBannerPreview(newBanner[0]);
 
-	$: console.log(newBanner);
+	let profilePictureElement: HTMLInputElement;
+	let newProfilePicture: FileList | null;
+	let pfpFileURL = '';
+
+	const getFileURL = (file: any) => {
+		if (!file) return;
+		pfpFileURL = URL.createObjectURL(file);
+	};
+
+	const removeProfilePicture = () => {
+		pfpFileURL = '';
+		profilePictureElement.value = '';
+	};
+
+	$: if (newProfilePicture) getFileURL(newProfilePicture[0]);
 </script>
 
 <svelte:head>
@@ -127,6 +141,50 @@
 									on:click={removeBanner}
 								>
 									<Trash className="stroke-grey-700 w-6 h-6" />
+									Remove
+								</button>
+							{/if}
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<h3 class="my-md text-start font-bold text-grey-700">Profile Picture</h3>
+					<input
+						type="file"
+						class="hidden"
+						bind:this={profilePictureElement}
+						bind:files={newProfilePicture}
+						name="profile"
+						accept="image/png, image/jpeg"
+					/>
+					<div class="flex items-center gap-lg">
+						{#if pfpFileURL !== ''}
+							<img
+								src={pfpFileURL}
+								alt="user profile"
+								class="aspect-square h-20 w-20 rounded-full object-cover"
+							/>
+						{:else}
+							<User className="w-20 h-20 stroke-grey-700 md:h-16 md:w-16" />
+						{/if}
+
+						<div class="flex h-fit w-full flex-col gap-sm md:gap-md">
+							<button
+								class="button--primary flex w-full items-center justify-center gap-md"
+								type="button"
+								on:click={() => profilePictureElement.click()}
+							>
+								<Edit className="stroke-grey-200 w-6 h-6" />
+								Select
+							</button>
+							{#if pfpFileURL}
+								<button
+									class="button--secondary flex w-full items-center justify-center gap-md"
+									type="button"
+									on:click={removeProfilePicture}
+								>
+									<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 									Remove
 								</button>
 							{/if}
