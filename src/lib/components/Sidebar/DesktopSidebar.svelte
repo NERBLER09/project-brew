@@ -18,26 +18,27 @@
 </script>
 
 <section
-	class="hidden md:flex flex-col h-screen w-[16.625rem] bg-grey-100 dark:bg-grey-800 px-md py-[1rem]"
+	class="hidden h-screen w-[16.625rem] flex-col bg-grey-100 px-md py-[1rem] dark:bg-grey-800 md:flex"
 >
-	<header class="flex items-center gap-md ml-md">
-		<div class="w-xl h-xl bg-grey-300 rounded-lg" />
+	<header class="ml-md flex items-center gap-md">
+		<div class="h-xl w-xl rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800 dark:text-grey-200">Project Brew</span>
 	</header>
 	<div
-		class="h-[2px] border-solid border border-grey-600 mt-lg w-11/12 rounded-full mx-auto drop-shadow-md"
+		class="mx-auto mt-lg h-[2px] w-11/12 rounded-full border border-solid border-grey-600 drop-shadow-md"
 	/>
-	<form on:submit|preventDefault={handleSearch}>
+	<!-- TODO: Implement app wide search -->
+	<!-- <form on:submit|preventDefault={handleSearch}>
 		<div class="input--search my-lg p-md">
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input type="text" placeholder="Search" class="bg-grey-200 border-none w-full p-0" />
 		</div>
 	</form>
-
-	<nav class="flex flex-col gap-lg">
+ -->
+	<nav class="mt-lg flex flex-col gap-lg">
 		<a
 			href="/app/home"
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700 {$page.url.pathname.includes(
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'home'
 			)
 				? 'bg-grey-200 dark:bg-grey-700'
@@ -48,7 +49,7 @@
 		</a>
 		<a
 			href="/app/projects"
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700 {$page.url.pathname.includes(
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'projects'
 			)
 				? 'bg-grey-200 dark:bg-grey-700'
@@ -60,7 +61,7 @@
 
 		<a
 			href="/app/focus"
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700 {$page.url.pathname.includes(
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'focus'
 			)
 				? 'bg-grey-200 dark:bg-grey-700'
@@ -72,7 +73,7 @@
 
 		<a
 			href="/app/team"
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700 {$page.url.pathname.includes(
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'team'
 			)
 				? 'bg-grey-200 dark:bg-grey-700'
@@ -85,7 +86,7 @@
 	<div class="mt-auto flex flex-col gap-lg">
 		<a
 			href="/app/settings"
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700 {$page.url.pathname.includes(
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'settings'
 			)
 				? 'bg-grey-200 dark:bg-grey-700'
@@ -96,14 +97,14 @@
 		</a>
 
 		<button
-			class="button--text items-start text-grey-700 dark:text-grey-200 hover:no-underline flex gap-md p-md w-full rounded hover:bg-gradient-to-r hover:from-grey-200 dark:hover:from-grey-600 hover:text-grey-700"
+			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600"
 			on:click={signOut}
 		>
 			<LogOut className="stroke-grey-700 dark:stroke-grey-200 h-6 w-6" />
 			Log out
 		</button>
 		<div
-			class="h-[2px] border-solid border border-grey-600 w-11/12 rounded-full mx-auto drop-shadow-md"
+			class="mx-auto h-[2px] w-11/12 rounded-full border border-solid border-grey-600 drop-shadow-md"
 		/>
 		<div class="ml-md">
 			<Switch id="dark-mode" text="Dark Mode" bind:checked={$useDarkMode} />
