@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
-	import { goto } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
 	import { invitedTeamMembers, userData } from '$lib/stores/user';
-	import toast from "svelte-french-toast"
+	import toast from 'svelte-french-toast';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -56,10 +56,10 @@
 
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
-			goto('/app/projects');
-		}
-		else {
-			toast.error(`Failed to create project: ${result?.data.message}`)	
+			invalidate('app:all-projects');
+			shown = false;
+		} else {
+			toast.error(`Failed to create project: ${result?.data.message}`);
 		}
 	};
 

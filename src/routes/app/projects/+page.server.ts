@@ -56,25 +56,25 @@ export const actions: Actions = {
 
 		let coverURL = null;
 
-		if (cover && cover.size < 50000) {
+		if (cover && cover.size < 5000000) {
 			const ccName = camelCase(project_name);
 
 			const { error: coverErr } = await supabaseClient.storage
 				.from('project-covers')
 				.upload(`${session.user.id}/${ccName}.png`, cover, {
 					cacheControl: '3600',
-					upsert: false
+					upsert: true
 				});
 
 			if (coverErr) {
-				return fail(400, { message: `Failed to upload cover: ${coverErr}` });
+				return fail(400, { message: `Failed to upload cover: ${coverErr.message}` });
 			}
 
 			const { data: url } = supabaseClient.storage
 				.from('project-covers')
 				.getPublicUrl(`${session.user.id}/${ccName}.png`);
 			coverURL = url.publicUrl;
-		} else if (cover.size > 50000) {
+		} else if (cover.size > 5000000) {
 			return fail(400, { message: 'Cover is larger then 5mb' });
 		}
 
