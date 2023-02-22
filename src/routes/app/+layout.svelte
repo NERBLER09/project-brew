@@ -11,6 +11,9 @@
 
 	import DesktopSidebar from '$lib/components/Sidebar/DesktopSidebar.svelte';
 	import MobileNavbar from '$lib/components/Sidebar/MobileNavbar.svelte';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 
 	const handleTheme = () => {
 		$perferedTheme = localStorage.getItem('theme');
@@ -56,18 +59,9 @@
 	};
 
 	onMount(async () => {
-		const { data: session } = await supabase.auth.getUser();
-		const { data: user, error: err } = await supabase
-			.from('profiles')
-			.select()
-			.eq('id', session?.user?.id)
-			.limit(1)
-			.single();
-		if (user) {
-			$userData = user;
-		}
+		if (data.user) $userData = data.user;
 
-		$weeklyActivity = user?.your_activity ?? [];
+		$weeklyActivity = data.your_activity ?? [];
 		addNewDay();
 		$tasksCompletedThisDay = parseInt(localStorage.getItem('tasksCompletedToday') || '0');
 		$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted = $tasksCompletedThisDay;
@@ -75,8 +69,8 @@
 
 		handleTheme();
 
-		if (user?.team_members) {
-			$invitedTeamMembers = await getInvitedTeamMembers(user?.team_members);
+		if (data?.team_members) {
+			$invitedTeamMembers = await getInvitedTeamMembers(data?.team_members);
 		}
 
 		const userChannel = supabase.channel('online', {
@@ -88,12 +82,12 @@
 		});
 
 		userChannel.on('presence', { event: 'sync' }, () => {
-			$currentUsers = userChannel.presenceState()
+			$currentUsers = userChannel.presenceState();
 		});
 
 		userChannel.subscribe(async (status) => {
 			if (status === 'SUBSCRIBED') {
-				await userChannel.track({ id: user?.id });
+				await userChannel.track({ id: data?.id });
 			}
 		});
 	});
