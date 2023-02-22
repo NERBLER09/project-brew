@@ -87,7 +87,6 @@
 			showProjectDropdown = false;
 		}
 	};
-
 </script>
 
 <svelte:head>
@@ -136,7 +135,7 @@
 				/>
 				<span class="sr-only">View project info</span>
 			</button>
-			<div bind:this={projectDropdownContainer}>
+			<div bind:this={projectDropdownContainer} class="z-40">
 				<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
 					<MoreHorizontal
 						className="w-8 h-8 {data.banner

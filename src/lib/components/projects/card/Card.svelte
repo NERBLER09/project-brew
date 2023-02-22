@@ -65,7 +65,7 @@
 
 <svelte:window on:click={handleClickOutside}/>
 
-<div class="relative">
+<div class="md:relative">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-sm flex items-start">
 			<div>

@@ -12,7 +12,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="dropdown--container md:top-16 md:right-xl md:left-auto">
+<div class="dropdown--container fixed top-[calc(100vh-198px)] md:top-16 md:right-xl md:left-auto">
 	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
 		<Filter className="dropdown--icon" parentBg="grey-100" />
 		<span class="dropdown--label">Filter</span>
