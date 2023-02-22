@@ -15,7 +15,7 @@
 	let name: string;
 	let avatar_url: string | null;
 	let email: string;
-	let status: "online" | "offline" = "offline"
+	let status: 'online' | 'offline' = 'offline';
 
 	let showTeamMemberDropdown = false;
 
@@ -60,15 +60,14 @@
 		}
 	};
 
-	$: if($currentUsers) {
-		for(const item of $currentUsers.users) { 
-			if(item.id === id) {
-				status = "online"
-				break
-			}
-			else {
-				status = "offline"
-				break
+	$: if ($currentUsers) {
+		for (const item of $currentUsers.users) {
+			if (item.id === id) {
+				status = 'online';
+				break;
+			} else {
+				status = 'offline';
+				break;
 			}
 		}
 	}
@@ -85,8 +84,8 @@
 {#if !name}
 	<p class="font-bold text-grey-700 dark:text-grey-100">Loading team member details...</p>
 {:else}
-	<div class="flex w-full items-center md:relative">
-		<a href="/app/team/{id}" class="flex items-start gap-md">
+	<div class="flex w-full items-center overflow-hidden md:relative">
+		<a href="/app/team/{id}" class="flex w-full items-start gap-md">
 			{#if avatar_url}
 				<img
 					src={avatar_url}
@@ -96,18 +95,20 @@
 			{:else}
 				<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
 			{/if}
-			<div class="flex flex-col items-start justify-start gap-sm">
-			<div class="flex items-center">
-				<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-				<p class="font-medium text-sm text-grey-700 dark:text-grey-100 ml-auto">
-					{#if status === "offline"}
-						Offline	
-					{:else}
-						Online
-					{/if}
+			<div class="mr-md flex w-full flex-col items-start justify-start gap-sm">
+				<div class="flex w-full max-w-[90%] items-center md:max-w-full">
+					<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
+					<p class="ml-auto text-sm font-medium text-grey-700 dark:text-grey-100">
+						{#if status === 'offline'}
+							Offline
+						{:else}
+							Online
+						{/if}
+					</p>
+				</div>
+				<p class="max-w-[90%] break-words font-bold text-grey-700 dark:text-grey-100 md:max-w-full">
+					{email}
 				</p>
-			</div>
-				<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
 			</div>
 		</a>
 

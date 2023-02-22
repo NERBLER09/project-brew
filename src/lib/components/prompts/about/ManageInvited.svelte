@@ -154,7 +154,7 @@
 				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 			</header>
 			<div>
-				<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
+				<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
 					{#each $currentProject.invited_people as id}
 						<TeamMember {id} />
 					{:else}

@@ -31,7 +31,7 @@
 	</a>
 </header>
 
-<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2 lg:grid-cols-4">
+<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2 xl:grid-cols-4">
 	{#each data.members as id}
 		<TeamMemberLink {id} />
 	{:else}

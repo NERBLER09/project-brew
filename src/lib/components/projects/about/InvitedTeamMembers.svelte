@@ -33,7 +33,7 @@
 		{/if}
 	</header>
 
-	<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
+	<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
 		{#each invited_people as id}
 			<TeamMember {id} />
 		{/each}

@@ -60,10 +60,10 @@
 	};
 </script>
 
-<svelte:window on:click={handleAutoCloseDropdown}></svelte:window>
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <div class="flex w-full items-center md:relative">
-	<a href="/app/team/{id}" class="flex items-start gap-md">
+	<a href="/app/team/{id}" class="flex w-full items-start gap-md">
 		{#if avatar_url}
 			<img
 				src={avatar_url}
