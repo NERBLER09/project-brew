@@ -48,12 +48,12 @@ export const actions: Actions = {
 		}
 
 		const data = await request.formData();
-		const name = data.get('name');
-		const description = data.get('description');
-		let dueDate = data.get('date');
+		const name = data.get('name') as string;
+		const description = data.get('description') as string;
+		let dueDate: string | null = data.get('date') as string;
 		const isPriority = data.get('priority');
 		const list = data.get('list-id');
-		const status = data.get('list-status');
+		const status = data.get('list-status') as string;
 		const project = data.get('project');
 		const project_name = data.get('project_name');
 		const user = data.get('user_object');
@@ -66,7 +66,9 @@ export const actions: Actions = {
 		let tags = formTags?.split(',') || null;
 		tags = tags[0] === '' ? [] : tags;
 
-		dueDate = !dueDate ? dueDate : null;
+		console.log(dueDate);
+		dueDate = dueDate ? dueDate : null;
+		console.log(dueDate);
 
 		if (assigned) {
 			for (const id of assigned) {

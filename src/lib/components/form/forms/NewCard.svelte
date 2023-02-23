@@ -15,7 +15,7 @@
 
 	let newTaskName = '';
 	let newTaskDescription = '';
-	let newTaskDueDate = new Date();
+	let newTaskDueDate: string | Date = '';
 	let newTaskPriority = false;
 	let newTaskTags: string[] = [];
 	let newTaskAssignedPeople: string[] = [];
