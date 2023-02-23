@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
+	import Building from '$lib/assets/Building.svelte';
+	import Community from '$lib/assets/Community.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
@@ -47,12 +49,18 @@
 		/>
 		<span class="sr-only">Back</span>
 	</a>
-	<a href="/app/settings/account" class="absolute top-6 right-6">
-		<Settings
-			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
-		/>
-		<span class="sr-only">Account settings</span>
-	</a>
+
+	{#if data.currentUser}
+		<a href="/app/settings/account" class="absolute top-6 right-6">
+			<Settings
+				className="w-8 h-8 {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+			<span class="sr-only">Account settings</span>
+		</a>
+	{/if}
+
 	<div class=" flex items-center gap-lg">
 		{#if data.avatar_url}
 			<img
@@ -85,16 +93,30 @@
 			{/if}
 
 			{#if data.location}
-				<span
-					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-					>{data.location}</span
-				>
+				<div class="flex items-center gap-md">
+					<Community
+						className="h-8 w-8 {data.banner
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'}"
+					/>
+					<span
+						class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+						>{data.location}</span
+					>
+				</div>
 			{/if}
 			{#if data.role}
-				<span
-					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-					>{data.role}</span
-				>
+				<div class="flex items-center gap-md">
+					<Building
+						className="h-8 w-8 {data.banner
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'}"
+					/>
+					<span
+						class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
+						>{data.role}</span
+					>
+				</div>
 			{/if}
 		</div>
 	</div>
