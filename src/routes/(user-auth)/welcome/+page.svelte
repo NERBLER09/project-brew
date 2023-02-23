@@ -43,17 +43,16 @@
 	<title>Project Brew - Welcome</title>
 </svelte:head>
 
-<main
-	class="flex flex-col items-center justify-center gap-md overflow-y-auto p-6 text-center md:w-screen md:p-8"
->
+<section class="p-6 text-center">
 	<header>
-		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Welcome to Project Brew!</h1>
+		<h1 class="text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
 	</header>
-	<div class="flex w-full max-w-xl flex-col items-center gap-md md:w-2/3">
+	<div class="mx-auto flex w-full max-w-xl flex-col items-center gap-md md:w-2/3">
 		<p class="text-grey-700 md:px-6">
 			Please take a few moments to setup your account details. You can always change and set these
 			in your account settings.
 		</p>
+		<div class="mx-auto h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700" />
 		<form
 			method="POST"
 			use:enhance={() => {
@@ -62,7 +61,7 @@
 						toast.error(result?.data.message);
 					} else if (result.type === 'success') {
 						toast.success('Welcome to Project Brew!');
-						// goto('/app/home');
+						goto('/app/home');
 					}
 				};
 			}}
@@ -98,6 +97,9 @@
 				</div>
 			</section>
 
+			<div
+				class="mx-auto my-sm h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
+			/>
 			<section class="mb-md">
 				<header>
 					<h2 class="w-full text-start text-md font-semibold text-grey-700">Profile Appearance</h2>
@@ -193,12 +195,18 @@
 				</div>
 			</section>
 
+			<div
+				class="mx-auto my-0 mb-md h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
+			/>
 			<button class="button--primary w-full">Finish Setup</button>
 
+			<div
+				class="mx-auto my-sm h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
+			/>
 			<p class="mt-sm text-sm text-grey-700">
 				Note: What you have inputted will be publicly visible, so make sure you haven't inputted
 				anything private.
 			</p>
 		</form>
 	</div>
-</main>
+</section>

@@ -1,25 +1,25 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
-	if (!session) {
-		throw redirect(303, '/');
-	}
+	// if (!session) {
+	// 	throw redirect(303, '/');
+	// }
 
-	const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
+	// const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
 
-	if (profile) {
-		throw redirect(303, '/app/home');
-	}
+	// if (profile) {
+	// 	throw redirect(303, '/app/home');
+	// }
 }) satisfies PageServerLoad;
 
 export const actions = {
 	default: async (event) => {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
-			throw redirect(303, '/');
+			return fail(303, { message: 'User is not logged in' });
 		}
 
 		const id = session?.user.id;
