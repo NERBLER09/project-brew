@@ -1,25 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import User from '$lib/assets/User.svelte';
-
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
-	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const handleInviteNewUser = async (id: string) => {
-		const teamMembers = [id, ...($userData.team_members || [])];
+		const teamMembers = [id, ...(data.team_members || [])];
 		const { error } = await supabase
 			.from('profiles')
 			.update({ team_members: teamMembers })
-			.eq('id', $userData.id);
+			.eq('id', data.id);
 		if (!error) {
 			goto('/app/team');
 		}
-		console.error(error);
 	};
 </script>
 

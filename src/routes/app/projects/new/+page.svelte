@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import toast from "svelte-french-toast"
+	import toast from 'svelte-french-toast';
 	import Check from '$lib/assets/Check.svelte';
 
 	import Image from '$lib/assets/Image.svelte';
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { invitedTeamMembers, userData } from '$lib/stores/user';
+	import { invitedTeamMembers } from '$lib/stores/user';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
+	import type { PageData } from './$types';
+
+	export let user: PageData;
 
 	let tags: string[] = [];
 
@@ -36,7 +39,7 @@
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
-		data.append('user', JSON.stringify($userData));
+		data.append('user', JSON.stringify(user.user));
 
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
@@ -45,9 +48,8 @@
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
 			goto('/app/projects');
-		}
-		else {
-			toast.error(`Failed to create project: ${result?.data.message}`)	
+		} else {
+			toast.error(`Failed to create project: ${result?.data.message}`);
 		}
 	};
 

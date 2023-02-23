@@ -14,6 +14,9 @@
 	import { parseInt } from 'lodash';
 	import { onMount } from 'svelte';
 	import { userData } from '$lib/stores/user';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let strokeArray = 720;
 	let minutes = 0;
@@ -32,10 +35,7 @@
 
 			if (duration <= 0) {
 				clearCountdown();
-				if (
-					Notification.permission === 'granted' &&
-					$userData?.notifcations_settings.push.timerUp
-				) {
+				if (Notification.permission === 'granted' && data.notifcations_settings.push.timerUp) {
 					new Notification('Your focus timer is up');
 				}
 			}

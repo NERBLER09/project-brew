@@ -13,14 +13,14 @@
 	let notifications = data.notifications;
 
 	onMount(() => {
-		const dueTaskNotifications = data.notifications.filter((item) => {
-			if (item.type === 'dueTask') return $userData.notifcations_settings.push.dueTask;
+		const dueTaskNotifications = data?.notifications.filter((item) => {
+			if (item.type === 'dueTask') return data.notifcations_settings.push.dueTask;
 		});
-		const assignedNotifications = data.notifications.filter((item) => {
-			if (item.type === 'assigned') return $userData.notifcations_settings.push.assigned;
+		const assignedNotifications = data?.notifications.filter((item) => {
+			if (item.type === 'assigned') return data.notifcations_settings.push.assigned;
 		});
-		const invitedNotifications = data.notifications.filter((item) => {
-			if (item.type === 'invite') return $userData.notifcations_settings.push.invited;
+		const invitedNotifications = data?.notifications.filter((item) => {
+			if (item.type === 'invite') return data.notifcations_settings.push.invited;
 		});
 
 		notifications = [...dueTaskNotifications, ...assignedNotifications, ...invitedNotifications];
@@ -30,7 +30,7 @@
 	});
 
 	const handleClearNotifications = async () => {
-		const { error } = await supabase.from('notifications').delete().eq('target_user', $userData.id);
+		const { error } = await supabase.from('notifications').delete().eq('target_user', data.id);
 		if (!error) {
 			invalidate('app:data');
 		}
