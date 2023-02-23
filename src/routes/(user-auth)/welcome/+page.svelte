@@ -43,13 +43,13 @@
 	<title>Project Brew - Welcome</title>
 </svelte:head>
 
-<section
-	class="mx-6 flex h-screen flex-col items-center justify-center gap-md text-center md:w-screen"
+<main
+	class="flex flex-col items-center justify-center gap-md overflow-y-auto p-6 text-center md:w-screen md:p-8"
 >
 	<header>
 		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Welcome to Project Brew!</h1>
 	</header>
-	<div class="flex w-full flex-col items-center gap-md md:w-1/2">
+	<div class="flex w-full max-w-xl flex-col items-center gap-md md:w-2/3">
 		<p class="text-grey-700 md:px-6">
 			Please take a few moments to setup your account details. You can always change and set these
 			in your account settings.
@@ -201,4 +201,4 @@
 			</p>
 		</form>
 	</div>
-</section>
+</main>
