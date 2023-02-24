@@ -9,14 +9,15 @@
 	export let banner: string | null = '';
 	export let invited_people: string[] | null = [];
 	export let description: string | null = '';
-	export let tags: string[] = [];
+	export let tags: string = '';
+	let formattedTags: string[] = [];
 
 	let invitedPeople = $invitedTeamMembers ?? [];
 	invitedPeople = invitedPeople.filter((item) => invited_people?.includes(item.id));
 
-	try {
-		tags = JSON.parse(tags.toString() || '[]');
-	} catch {}
+	onMount(() => {
+		formattedTags = JSON.parse(tags);
+	});
 </script>
 
 <a href="/app/projects/{id}">
@@ -43,7 +44,7 @@
 			</p>
 
 			<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
-				{#each tags as tag}
+				{#each formattedTags as tag}
 					<TagItem {tag} sm={true} />
 				{/each}
 			</div>
