@@ -14,7 +14,9 @@
 	let invitedPeople = $invitedTeamMembers ?? [];
 	invitedPeople = invitedPeople.filter((item) => invited_people?.includes(item.id));
 
-	$: tags = JSON.parse(tags.toString() || '[]');
+	try {
+		tags = JSON.parse(tags.toString() || '[]');
+	} catch {}
 </script>
 
 <a href="/app/projects/{id}">
@@ -35,18 +37,18 @@
 			<p
 				class="{banner
 					? 'text-grey-200'
-					: 'text-grey-700 dark:text-grey-200'} h-[4ch] overflow-hidden text-ellipsis text-sm font-medium empty:hidden"
+					: 'text-grey-700 dark:text-grey-200'} h-fit max-h-[4ch] overflow-hidden text-ellipsis text-sm font-medium empty:hidden"
 			>
 				{description}
 			</p>
 
-			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
+			<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
 				{#each tags as tag}
-					<TagItem {tag} />
+					<TagItem {tag} sm={true} />
 				{/each}
 			</div>
 
-			<div class="mt-sm flex items-center">
+			<div class="mt-md flex items-center empty:hidden">
 				{#each invitedPeople as { avatar_url }}
 					{#if avatar_url}
 						<img
