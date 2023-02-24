@@ -142,7 +142,7 @@
 	</div>
 </section>
 
-<section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
+<!-- <section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
 	<header>
 		<form on:submit|preventDefault={addBlockedURL}>
 			<div class="input--text mb-sm flex w-full items-center">
@@ -178,7 +178,8 @@
 			</p>
 		{/each}
 	</div>
-</section>
+</section> -->
+
 <div class="flex w-full items-center justify-center">
 	<a href="/app/focus/running" class="button--primary mt-lg text-center">Start</a>
 </div>

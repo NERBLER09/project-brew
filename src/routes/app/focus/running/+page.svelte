@@ -177,27 +177,29 @@
 	{/if}
 </section>
 
-<section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
-	<header>
-		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
-			Here is what you need to get done:
-		</h2>
-		<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-			Any checked off tasks will be automatically moved and marked as done.
-		</p>
-	</header>
+{#if $focusProject}
+	<section class="mx-auto mt-md md:w-3/4 md:max-w-[21.875rem]">
+		<header>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
+				Here is what you need to get done:
+			</h2>
+			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
+				Any checked off tasks will be automatically moved and marked as done.
+			</p>
+		</header>
 
-	<div class="mt-md flex flex-col gap-md">
-		{#each uncompletedTasks as task, index}
-			<div>
-				<label for="{task.id}-item" class="input--label">{task.name}</label>
-				<input
-					type="checkbox"
-					class="input--checkbox"
-					id="{task.id}-item"
-					on:change={() => handleMarkTaskAsDone(task.id, index)}
-				/>
-			</div>
-		{/each}
-	</div>
-</section>
+		<div class="mt-md flex flex-col gap-md">
+			{#each uncompletedTasks as task, index}
+				<div>
+					<label for="{task.id}-item" class="input--label">{task.name}</label>
+					<input
+						type="checkbox"
+						class="input--checkbox"
+						id="{task.id}-item"
+						on:change={() => handleMarkTaskAsDone(task.id, index)}
+					/>
+				</div>
+			{/each}
+		</div>
+	</section>
+{/if}
