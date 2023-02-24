@@ -45,7 +45,7 @@
 		if (!error) {
 			$currentProject.invited_people = $currentProject.invited_people.splice(index, 1);
 
-			invalidate('app:project');
+			invalidate('project:invited');
 		} else {
 			console.log(error);
 		}

@@ -158,34 +158,36 @@
 		<Description banner={data.banner} description={data.description} />
 	</div>
 
-	<div
-		class="static right-6 bottom-8 z-40 mt-sm ml-auto flex w-full items-center justify-end md:absolute"
-	>
-		{#each $invitedTeamMembers as { avatar_url }}
-			{#if avatar_url}
-				<img
-					src={avatar_url}
-					alt="User profile"
-					class="-ml-md aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
-				/>
-			{:else}
-				<User
-					className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full  -ml-md first:ml-0"
-				/>
+	{#if $invitedTeamMembers}
+		<div
+			class="static right-6 bottom-8 z-40 mt-sm ml-auto flex w-full items-center justify-end md:absolute"
+		>
+			{#each $invitedTeamMembers as { avatar_url }}
+				{#if avatar_url}
+					<img
+						src={avatar_url}
+						alt="User profile"
+						class="-ml-md aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
+					/>
+				{:else}
+					<User
+						className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full  -ml-md first:ml-0"
+					/>
+				{/if}
+			{/each}
+			{#if $invitedTeamMembers}
+				<!-- Mobile -->
+				<a href="/app/projects/{data.id}/about/team-management" class="ml-md md:hidden">
+					<PlusNew
+						className="h-10 w-10 {data.banner
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'}"
+					/>
+					<span class="sr-only">Invite new team members</span>
+				</a>
 			{/if}
-		{/each}
-		{#if $invitedTeamMembers}
-			<!-- Mobile -->
-			<a href="/app/projects/{data.id}/about/team-management" class="ml-md md:hidden">
-				<PlusNew
-					className="h-10 w-10 {data.banner
-						? 'stroke-grey-200'
-						: 'stroke-grey-700 dark:stroke-grey-200'}"
-				/>
-				<span class="sr-only">Invite new team members</span>
-			</a>
-		{/if}
-	</div>
+		</div>
+	{/if}
 </header>
 
 <section

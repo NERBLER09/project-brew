@@ -33,7 +33,7 @@
 
 		if (!error) {
 			emailSearch = '';
-			invalidate('app:project');
+			invalidate('project:invited');
 			toast.success(`Invited ${name} to ${$currentProject.name}`);
 		} else {
 			toast.error(`Failed to invite ${name} to ${$currentProject.name}`);
@@ -133,7 +133,7 @@
 		</header>
 		<div>
 			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-				{#each $currentProject.invited_people as id}
+				{#each data.invited_people as id}
 					<TeamMember {id} />
 				{:else}
 					<p class="text-grey-700 dark:text-grey-200 font-medium">
