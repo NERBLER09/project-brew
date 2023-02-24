@@ -94,7 +94,8 @@
 			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
 			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay.toString());
 
-			uncompletedTasks = [...uncompletedTasks.splice(index, 1)];
+			uncompletedTasks.splice(index, 1);
+			uncompletedTasks = [...uncompletedTasks];
 		}
 	};
 
