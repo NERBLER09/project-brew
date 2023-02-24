@@ -73,7 +73,9 @@
 	</a>
 </header>
 
-<div class="input--text flex w-full items-center">
+<div
+	class="input--text relative flex w-full items-center {!$currentProject.banner ? '-top-8' : ''} "
+>
 	<input
 		type="text"
 		placeholder="Search by email to invite people"
@@ -87,7 +89,7 @@
 </div>
 
 {#if emailSearch}
-	<section class="mt-md">
+	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
 		<header>
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Search results</h2>
 		</header>
@@ -125,7 +127,7 @@
 		</div>
 	</section>
 {:else}
-	<section class="mt-md">
+	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
 		<header>
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 		</header>

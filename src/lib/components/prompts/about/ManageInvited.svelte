@@ -97,7 +97,9 @@
 		</button>
 	</header>
 
-	<div class="input--text flex w-full items-center">
+	<div
+		class="input--text items-centerrelative flex w-full {!$currentProject.banner ? '-top-8' : ''}"
+	>
 		<input
 			type="text"
 			placeholder="Search by name or email to invite people"

@@ -146,7 +146,7 @@
 			</h1>
 		{/if}
 
-		<div class="ml-auto mb-auto flex items-center gap-md">
+		<div class="relative ml-auto mb-auto flex items-center gap-md ">
 			{#if inEditMode}
 				<button on:click={() => (inEditMode = false)}>
 					<Trash
@@ -178,7 +178,7 @@
 		</div>
 	</header>
 
-	<div>
+	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
 		<div class="mb-lg flex flex-wrap gap-md">
 			{#if inEditMode}
 				<NewTagsInput bind:newTags={newProjectTags} />

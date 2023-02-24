@@ -161,7 +161,7 @@
 			</button>
 		{/if}
 	</header>
-	<div>
+	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
 		<div class="mb-lg flex flex-wrap gap-md">
 			{#if inEditMode}
 				<NewTagsInput bind:newTags={newProjectTags} />
