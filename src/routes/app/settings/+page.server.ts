@@ -15,6 +15,7 @@ export const actions = {
 		const name = data.get('name') as string;
 		const location = data.get('location') as string;
 		const bio = data.get('bio') as string;
+		const role = data.get('role') as string;
 		const profile = data.get('profile') as File;
 		let avatar_url = data.get('avatar_url') as string;
 		const avatar_preview = data.get('avatar_preview') as string;
@@ -61,7 +62,7 @@ export const actions = {
 
 		const { error: err } = await supabaseClient
 			.from('profiles')
-			.update({ name, location, bio, avatar_url, banner: banner_url })
+			.update({ name, location, bio, avatar_url, banner: banner_url, role })
 			.eq('id', session.user.id);
 
 		if (err) {

@@ -69,20 +69,19 @@
 		class="flex flex-col gap-sm"
 		use:enhance={() => {
 			return async ({ result }) => {
-				if(result.type === "failure") {
-					toast.error(result?.data.message)
-				}
-				else if (result.type === "success") {
-					toast.success("Updated account settings")
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Updated account settings');
 				}
 			};
 		}}
 	>
-		<div>
+		<div class="flex max-w-sm items-center">
 			<label for="name-input" class="input--label">Name</label>
 			<input
 				type="text"
-				class="input--text"
+				class="input--text w-full"
 				id="name-input"
 				name="name"
 				placeholder="What should people call you"
@@ -90,15 +89,26 @@
 				value={data.name}
 			/>
 		</div>
-		<div>
+		<div class="flex max-w-sm items-center">
 			<label for="location-input" class="input--label">Location</label>
 			<input
 				type="text"
-				class="input--text"
+				class="input--text w-full"
 				id="location-input"
 				name="location"
 				placeholder="Enter where you are"
 				value={data.location}
+			/>
+		</div>
+		<div class="flex max-w-sm items-center">
+			<label for="location-input" class="input--label">Job/Role</label>
+			<input
+				type="text"
+				class="input--text w-full"
+				id="location-input"
+				name="role"
+				placeholder="Enter what you work as and who you work for"
+				value={data.role}
 			/>
 		</div>
 		<div>
