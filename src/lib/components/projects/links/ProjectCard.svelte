@@ -1,13 +1,18 @@
 <script lang="ts">
+	import User from '$lib/assets/User.svelte';
+	import { invitedTeamMembers } from '$lib/stores/user';
 	import { onMount } from 'svelte';
 	import TagItem from '../tags/TagItem.svelte';
 
 	export let id: number;
 	export let project_name: string;
 	export let banner: string | null = '';
-	export let description: string | null = '';
 	export let invited_people: string[] | null = [];
+	export let description: string | null = '';
 	export let tags: string[] = [];
+
+	let invitedPeople = $invitedTeamMembers ?? [];
+	invitedPeople = invitedPeople.filter((item) => invited_people?.includes(item.id));
 
 	$: tags = JSON.parse(tags.toString() || '[]');
 </script>
@@ -38,6 +43,22 @@
 			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
 					<TagItem {tag} />
+				{/each}
+			</div>
+
+			<div class="mt-sm flex items-center">
+				{#each invitedPeople as { avatar_url }}
+					{#if avatar_url}
+						<img
+							src={avatar_url}
+							alt="User profile"
+							class="-ml-md aspect-square h-6 w-6 rounded-full object-cover first:ml-0"
+						/>
+					{:else}
+						<User
+							className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full  -ml-md first:ml-0"
+						/>
+					{/if}
 				{/each}
 			</div>
 		</div>
