@@ -19,9 +19,9 @@
 <svelte:window on:resize={() => checkForOverflow(descriptionElement)} />
 <div>
 	<p
-		class="font-medium min-h-fit {expandContents
+		class="min-h-fit font-medium {expandContents
 			? 'h-fit'
-			: 'max-h-[6ch]'} text-ellipsis overflow-hidden {banner
+			: 'max-h-[4.125rem]'} overflow-hidden text-ellipsis {banner
 			? 'text-grey-200'
 			: 'text-grey-700 dark:text-grey-200'} text-sm sm:text-base"
 		bind:this={descriptionElement}
@@ -32,7 +32,7 @@
 		<button
 			class="font-medium {banner
 				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} text-sm mt-sm"
+				: 'text-grey-700 dark:text-grey-200'} mt-sm text-sm"
 			on:click={() => (expandContents = !expandContents)}
 		>
 			{#if expandContents}
@@ -43,4 +43,3 @@
 		</button>
 	{/if}
 </div>
-
