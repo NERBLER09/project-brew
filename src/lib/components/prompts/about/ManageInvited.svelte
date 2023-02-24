@@ -45,6 +45,7 @@
 			.update({ invited_people: invitedUsers })
 			.eq('id', $currentProject.id);
 		if (!error) {
+			$currentProject.invited_people = [...invitedUsers];
 			emailSearch = '';
 			invalidate('app:project');
 		} else {
