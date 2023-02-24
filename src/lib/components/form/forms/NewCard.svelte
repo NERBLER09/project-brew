@@ -7,6 +7,9 @@
 	import AssingPerson from '$lib/components/projects/list/new/AssignPerson.svelte';
 	import { userData } from '$lib/stores/user';
 	import toast from 'svelte-french-toast';
+	import { disableDrag } from '$lib/stores/ui';
+	import { onDestroy, onMount } from 'svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 
 	export let showCreateTask = false;
 	export let listId: string;
@@ -51,6 +54,14 @@
 			toast.error(result?.data.message);
 		}
 	};
+
+	onMount(() => {
+		$disableDrag = true;
+	});
+
+	onDestroy(() => {
+		$disableDrag = false;
+	});
 </script>
 
 <form method="POST" on:submit|preventDefault={handleCreateNewTask}>
@@ -59,7 +70,7 @@
 		type="button"
 		on:click={() => (showCreateTask = false)}
 	>
-		<CloseMultiply className="w-6 h-6 stroke-grey-700" />
+		<CloseMultiply className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
 		Cancel
 	</button>
 
@@ -112,7 +123,7 @@
 		class="button--primary mt-md flex w-full items-center justify-center gap-md"
 		type="submit"
 	>
-		<plusnew classname="w-6 h-6 stroke-grey-100" />
+		<PlusNew className="w-6 h-6 stroke-grey-100" />
 		Create
 	</button>
 </form>

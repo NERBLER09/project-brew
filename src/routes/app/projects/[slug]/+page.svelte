@@ -12,7 +12,7 @@
 	import Description from '$lib/components/text/Description.svelte';
 
 	import type { PageData } from './$types';
-	import { showAboutProjectPrompt } from '$lib/stores/ui';
+	import { disableDrag, showAboutProjectPrompt } from '$lib/stores/ui';
 	import NewList from '$lib/components/form/forms/NewList.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -194,7 +194,7 @@
 	class="relative {!data.banner
 		? '-top-8'
 		: ''} flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
-	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300 }}
+	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}
 >

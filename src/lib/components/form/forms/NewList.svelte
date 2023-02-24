@@ -4,6 +4,8 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import { disableDrag } from '$lib/stores/ui';
+	import { onDestroy, onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
 	export let createNewList = false;
@@ -30,6 +32,14 @@
 			toast.error(result?.data.message);
 		}
 	};
+
+	onMount(() => {
+		$disableDrag = true;
+	});
+
+	onDestroy(() => {
+		$disableDrag = false;
+	});
 </script>
 
 <form
@@ -41,7 +51,7 @@
 		on:click={() => (createNewList = false)}
 		type="button"
 	>
-		<CloseMultiply className="w-6 h-6 stroke-grey-700" />
+		<CloseMultiply className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
 		Cancel
 	</button>
 

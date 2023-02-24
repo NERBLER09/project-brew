@@ -11,6 +11,7 @@
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
+	import { disableDrag } from '$lib/stores/ui';
 
 	export let name: string;
 	export let id: any;
@@ -82,7 +83,7 @@
 
 	<div
 		class="mt-md flex min-h-[200px] flex-col gap-md"
-		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300 }}
+		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300, dragDisabled: $disableDrag }}
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
 	>
