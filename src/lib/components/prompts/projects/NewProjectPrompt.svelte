@@ -153,7 +153,7 @@
 				<button class="button--secondary" on:click={() => (shown = false)} type="button"
 					>Cancel</button
 				>
-				<button class="button--primary" type="submit">Update</button>
+				<button class="button--primary" type="submit">Create</button>
 			</footer>
 		</section>
 	</form>

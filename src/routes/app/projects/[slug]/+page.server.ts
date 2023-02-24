@@ -35,7 +35,9 @@ export const load = (async (event) => {
 		};
 	}
 
-	throw error(404, errProject?.message);
+	if (errProject) {
+		throw redirect(303, '/app/projects/not-invited');
+	}
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
