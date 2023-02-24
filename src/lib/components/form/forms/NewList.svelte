@@ -32,7 +32,10 @@
 	};
 </script>
 
-<form on:submit|preventDefault={handleCreateNewList}>
+<form
+	on:submit|preventDefault={handleCreateNewList}
+	class="max-w-[15.625rem] md:max-w-[18.75rem] lg:max-w-[25rem]"
+>
 	<button
 		class="button--secondary flex w-full items-center justify-center gap-md"
 		on:click={() => (createNewList = false)}
