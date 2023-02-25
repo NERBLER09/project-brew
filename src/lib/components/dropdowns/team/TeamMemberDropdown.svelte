@@ -17,7 +17,7 @@
 	};
 </script>
 
-<div class="dropdown--container md:top-10 md:right-0">
+<div class="dropdown--container fixed top-[calc(100vh-16rem)]  md:top-10 md:right-0">
 	<a href="/app/team/{$userData.id}" class="dropdown--item">
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View Profile</span>
