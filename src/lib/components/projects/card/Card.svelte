@@ -29,6 +29,8 @@
 		const date = new Date(dueDate);
 		const today = new Date();
 
+		date.setDate(date.getDate() + 1);
+
 		const taskDueToday =
 			date.getDate() === today.getDate() &&
 			date.getMonth() === today.getMonth() &&
@@ -41,8 +43,6 @@
 				target_user: $userData.id,
 				type: 'dueTask'
 			});
-
-			console.log(error);
 		}
 	};
 
@@ -50,6 +50,7 @@
 		if (!dueDate) return '';
 
 		const tempDueDate = new Date(dueDate);
+		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
 		checkIfTaskIsDueToday();
