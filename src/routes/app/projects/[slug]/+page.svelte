@@ -42,6 +42,9 @@
 		return invitedUserData;
 	};
 
+	let headerElement: HTMLElement;
+	let headerHeight: number = 0;
+
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
@@ -53,6 +56,8 @@
 		}
 
 		$invitedTeamMembers = await getInvitedTeamMembers();
+
+		headerHeight = headerElement.offsetHeight;
 	});
 
 	const projectsRealtime = supabase
@@ -102,6 +107,7 @@
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.banner});"
+	bind:this={headerElement}
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
 		<a class="flex items-center gap-md" href="/app/projects">
@@ -193,7 +199,7 @@
 <section
 	class="relative {!data.banner
 		? '-top-8'
-		: ''} flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
+		: ''} flex max-h-[calc(100%-260px)] flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:max-h-[calc(100%-230px)] md:gap-2xl"
 	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}
