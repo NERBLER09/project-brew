@@ -55,15 +55,15 @@
 		checkIfTaskIsDueToday();
 	});
 
-	let cardDropdownElement: HTMLElement
+	let cardDropdownElement: HTMLElement;
 	const handleClickOutside = (event: Event) => {
-		if(!cardDropdownElement.contains(event.target)) {
-			showCardDropdown = false
+		if (!cardDropdownElement.contains(event.target)) {
+			showCardDropdown = false;
 		}
-	}
+	};
 </script>
 
-<svelte:window on:click={handleClickOutside}/>
+<svelte:window on:click={handleClickOutside} />
 
 <div class="md:relative">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
@@ -101,10 +101,14 @@
 					</button>
 
 					{#if showCardDropdown}
-						<CardDropdown bind:visibility={showCardDropdown} {id} bind:priority={isPriority} bind:tasks />
+						<CardDropdown
+							bind:visibility={showCardDropdown}
+							{id}
+							bind:priority={isPriority}
+							bind:tasks
+						/>
 					{/if}
 				</div>
-
 			</div>
 		</header>
 
@@ -137,14 +141,10 @@
 			{/if}
 		</div>
 	</section>
-
 </div>
 
 <style>
 	.card__text--done {
 		@apply text-[#059669] line-through;
-	}
-	.card__text--todo {
-		@apply text-[#b91c1c];
 	}
 </style>
