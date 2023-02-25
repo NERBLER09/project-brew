@@ -68,34 +68,29 @@
 
 <div class="md:relative">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
-		<header class="mb-sm flex items-start">
+		<header class="mb-sm flex h-fit items-start">
 			<div>
 				<div class="flex items-start gap-sm">
 					{#if status === 'done'}
 						<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
 					{/if}
-					<h3 class="text-md font-semibold text-grey-700 dark:text-grey-200 card__text--{status}">
+					<h3
+						class="font-semibold text-grey-700 dark:text-grey-200 card__text--{status} h-fit lg:text-md"
+					>
 						{name}
 					</h3>
 				</div>
 				{#if dueDate}
-					<div class="flex items-center md:hidden">
+					<div class="flex items-center md:gap-sm">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{formattedDate}</span
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							>{formattedDate}</span
 						>
 					</div>
 				{/if}
 			</div>
 
-			<div class="ml-auto flex items-center gap-md">
-				{#if dueDate}
-					<div class="hidden items-center md:flex">
-						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{formattedDate}</span
-						>
-					</div>
-				{/if}
-
+			<div class="ml-auto flex h-8 w-8 items-center gap-md">
 				<div bind:this={cardDropdownElement}>
 					<button on:click={() => (showCardDropdown = !showCardDropdown)}>
 						<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
