@@ -57,16 +57,16 @@
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({$currentProject.banner});"
 >
-	<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}/about">
+	<a class="flex w-full items-center gap-md" href="/app/projects/{$currentProject.id}/about">
 		<Back
 			className="w-8 h-8 aspect-square {$currentProject.banner
 				? 'stroke-grey-200'
 				: 'stroke-grey-700 dark:stroke-grey-200'}"
 		/>
 		<h1
-			class="w-fit text-lg {$currentProject.banner
-				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} truncate"
+			class="truncate text-lg {$currentProject.banner
+				? 'max-w-[calc(100%-80px)] text-grey-200'
+				: 'text-grey-700 dark:text-grey-200'} w-fit "
 		>
 			Manage invited members
 		</h1>

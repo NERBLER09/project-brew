@@ -117,23 +117,30 @@
 			: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
 		{#if !inEditMode}
-			<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}">
+			<a
+				class="flex items-center gap-md {!$currentProject.banner
+					? 'max-w-[calc(100%-80px)]'
+					: 'w-full'}"
+				href="/app/projects/{$currentProject.id}"
+			>
 				<Back
 					className="w-8 h-8 aspect-square {$currentProject.banner
 						? 'stroke-grey-200'
 						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
 				<h1
-					class="w-fit text-lg {$currentProject.banner
-						? 'text-grey-200'
-						: 'text-grey-700 dark:text-grey-200'} truncate"
+					class="text-lg {newCoverURL
+						? 'max-w-[calc(100%-80px)] text-grey-200'
+						: 'w-full text-grey-700 dark:text-grey-200'} truncate"
 				>
 					{$currentProject?.name}
 				</h1>
 			</a>
 		{:else}
 			<h1
-				class="w-fit text-lg {newCoverURL ? 'text-grey-200' : 'text-grey-700'} truncate"
+				class="text-lg {newCoverURL
+					? 'max-w-[calc(100%-80px)] text-grey-200'
+					: 'w-fit text-grey-700'} truncate"
 				contenteditable="true"
 				bind:textContent={newProjectName}
 			>

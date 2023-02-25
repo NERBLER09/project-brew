@@ -110,14 +110,14 @@
 	bind:this={headerElement}
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
-		<a class="flex items-center gap-md" href="/app/projects">
+		<a class="flex w-[calc(100%-100px)] items-center gap-md" href="/app/projects">
 			<Back
-				className="w-8 h-8 aspect-square {data.banner
+				className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square {data.banner
 					? 'stroke-grey-200'
 					: 'stroke-grey-700 dark:stroke-grey-200'} md:h-10 md:w-10"
 			/>
 			<h1
-				class="w-fit text-lg {data.banner
+				class="w-full text-lg {data.banner
 					? 'text-grey-200'
 					: 'text-grey-700 dark:text-grey-200'} truncate md:text-xl md:font-semibold"
 			>
