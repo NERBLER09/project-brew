@@ -13,8 +13,11 @@
 	export let tasks: any[];
 
 	const handleTaskDelete = async () => {
-		tasks = tasks.filter((item) => item.id !== id);
-		const { error } = await supabase.from('tasks').delete().eq('id', id);
+		const index = tasks.findIndex((item) => item.id === id);
+		tasks.splice(index, 1);
+		tasks = tasks;
+		console.log(tasks);
+		// const { error } = await supabase.from('tasks').delete().eq('id', id);
 	};
 
 	const handleChangePriority = async () => {

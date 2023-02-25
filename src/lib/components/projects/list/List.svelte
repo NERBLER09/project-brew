@@ -96,7 +96,7 @@
 				id={task.id}
 				status={task.status}
 				tags={task.tags}
-				{tasks}
+				bind:tasks
 				assinged={task.assigned}
 			/>
 		{/each}
