@@ -12,11 +12,15 @@
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
+	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 
 	export let name: string;
 	export let id: any;
 	export let status: string;
 	let tasks: Task[] = [];
+
+	let showListDropdown = false;
+	let listDropdownElement: HTMLElement;
 
 	let showCreateTask = false;
 	const handleDnd = (e) => {
@@ -54,9 +58,17 @@
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
 		tasks = data || [];
 	});
+
+	const handleClickOutside = (event: Event) => {
+		if (!listDropdownElement.contains(event.target)) {
+			showListDropdown = false;
+		}
+	};
 </script>
 
-<section class="w-[15.625rem] md:w-[18.75rem] lg:w-[25rem]">
+<svelte:window on:click={handleClickOutside} />
+
+<section class="w-[15.625rem] md:relative md:w-[18.75rem] lg:w-[25rem]">
 	<header class="flex w-[15.625rem] items-center md:w-[18.75rem] lg:w-[25rem]">
 		<div class="mb-md flex items-center gap-md md:mb-lg">
 			<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100 md:text-lg">{name}</h2>
@@ -64,9 +76,15 @@
 				{tasks.length}
 			</p>
 		</div>
-		<button class="ml-auto">
-			<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
-		</button>
+		<div bind:this={listDropdownElement} class="ml-auto">
+			<button on:click={() => (showListDropdown = !showListDropdown)}>
+				<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
+
+				{#if showListDropdown}
+					<ListDropdown bind:visibility={showListDropdown} listId={id} />
+				{/if}
+			</button>
+		</div>
 	</header>
 
 	{#if showCreateTask}

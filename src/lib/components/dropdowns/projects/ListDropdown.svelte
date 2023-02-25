@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-
+	import { invalidate } from '$app/navigation';
 	import Trash from '$lib/assets/Trash.svelte';
+	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let visibility = false;
 	export let listId: number;
@@ -11,13 +12,22 @@
 		await supabase.from('tasks').delete().eq('list', listId);
 		const { error } = await supabase.from('lists').delete().eq('id', listId);
 
-		console.log(error)
+		if (!error) {
+			invalidate('app:project');
+		}
 	};
+
+	onMount(() => {
+		$showMobileNav = false;
+	});
+	onDestroy(() => {
+		$showMobileNav = true;
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="md:right-6 md:top-[3.5rem] dropdown--container absolute md:border-grey-700 md:border-2 z-50"
+	class="dropdown--container fixed bottom-0 z-50 md:absolute md:right-0 md:top-10 md:border-2 md:border-grey-700"
 	on:click={() => (visibility = false)}
 >
 	<button class="dropdown--item" on:click={handleListDelete}>
