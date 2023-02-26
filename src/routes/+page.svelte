@@ -4,6 +4,10 @@
 	import ProjectsPage from '$lib/assets/Landing-Page/ProjectsPage.png';
 	import TeamPage from '$lib/assets/Landing-Page/TeamPage.png';
 	import FocusPage from '$lib/assets/Landing-Page/FocusPage.png';
+	import Lock from '$lib/assets/Landing-Page/Lock.svelte';
+	import Github from '$lib/assets/Landing-Page/Github.svelte';
+	import CreditCard from '$lib/assets/Landing-Page/CreditCard.svelte';
+	import Community from '$lib/assets/Community.svelte';
 </script>
 
 <svelte:head>
@@ -76,6 +80,62 @@
 					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full rounded shadow-sm shadow-grey-900"
 				/>
 			</section>
+		</section>
+
+		<section class="mt-md">
+			<header>
+				<h2 class="text-center text-lg font-semibold text-grey-800">Still not sure</h2>
+			</header>
+
+			<div class="flex-center mt-md flex flex-col flex-wrap gap-md md:flex-row md:justify-center">
+				<section class="text-center md:w-[18.75rem]">
+					<header>
+						<Lock className="h-14 w-14 stroke-grey-700 mx-auto" />
+						<h3 class="text-md font-semibold text-grey-700">Secure</h3>
+					</header>
+					<div class="mt-sm">
+						<p class="font-medium text-grey-700">
+							Have piece of mind that no personal information is sold to third parties and is
+							entirely manageable by you. Read our privacy policy, it wont even take you 5 minutes
+						</p>
+					</div>
+				</section>
+				<section class="text-center md:w-[18.75rem]">
+					<header>
+						<Github className="h-14 w-14 fill-grey-700 mx-auto" />
+						<h3 class="text-md font-semibold text-grey-700">Open source</h3>
+					</header>
+					<div class="mt-sm">
+						<p class="font-medium text-grey-700">
+							Have complete access to the projects source code. Contribute ideas, code, and submit
+							bug reports.
+						</p>
+					</div>
+				</section>
+				<section class="text-center md:w-[18.75rem]">
+					<header>
+						<CreditCard className="h-14 w-14 stroke-grey-700 mx-auto" />
+						<h3 class="text-md font-semibold text-grey-700">Secure</h3>
+					</header>
+					<div class="mt-sm">
+						<p class="font-medium text-grey-700">
+							Manage how many projects with how many team members you want without paying a cent.
+						</p>
+					</div>
+				</section>
+				<section class="text-center md:w-[18.75rem]">
+					<header>
+						<Community className="h-14 w-14 stroke-grey-700 mx-auto" />
+						<h3 class="text-md font-semibold text-grey-700">Community supported</h3>
+					</header>
+					<div class="mt-sm">
+						<p class="font-medium text-grey-700">
+							Funding is provided by the community through donations. No corporate funding has nor
+							will be taken
+						</p>
+					</div>
+				</section>
+			</div>
 		</section>
 	</main>
 </div>
