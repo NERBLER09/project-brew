@@ -9,19 +9,23 @@
 	<title>Project Brew</title>
 </svelte:head>
 
-<header class="h-20 bg-grey-100 py-lg flex items-center px-lg">
+<header class="flex h-20 items-center bg-grey-100 py-lg px-lg">
 	<div class="flex items-center gap-md">
-		<div class="w-12 h-12 bg-grey-300 rounded-lg" />
+		<div class="h-12 w-12 rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
-	<nav class="hidden items-center ml-auto gap-md md:flex">
+	<nav class="ml-auto hidden items-center gap-md md:flex">
 		<a href="/" class="font-bold text-grey-700">About</a>
-		<a href="/" class="font-bold text-grey-700 mr-md">Github</a>
+		<a
+			href="https://github.com/nerbler09/project-brew"
+			target="__blank"
+			class="mr-md font-bold text-grey-700">Github</a
+		>
 		<a class="button--secondary" href="sign-up">Sign up</a>
 		<a class="button--primary" href="/login">Log in</a>
 	</nav>
 
-	<div class="block md:hidden items-center ml-auto">
+	<div class="ml-auto block items-center md:hidden">
 		<button
 			on:click={() => (showMobileNav = !showMobileNav)}
 			class="absolute right-lg top-6 z-50"
@@ -36,22 +40,26 @@
 			{/if}
 		</button>
 		<nav
-			class="items-start justify-end ml-auto gap-md flex flex-col fixed top-0 right-0 bg-grey-100 h-screen w-7/12 p-6 
+			class="fixed top-0 right-0 ml-auto flex h-screen w-7/12 flex-col items-start justify-end gap-md bg-grey-100 p-6 
 			{showMobileNav ? 'translate-x-0' : 'translate-x-full'} transition-all duration-300 ease-out"
 		>
 			<a href="/" class="font-bold text-grey-700">About</a>
-			<a href="/" class="font-bold text-grey-700 mb-auto">Github</a>
+			<a
+				href="https://github.com/nerbler09/project-brew"
+				target="__blank"
+				class="mb-auto font-bold text-grey-700">Github</a
+			>
 			<a class="button--secondary w-full text-center" href="sign-up">Sign up</a>
 			<a class="button--primary w-full text-center" href="/login">Log in</a>
 		</nav>
 	</div>
 </header>
 
-<section class="text-center mb-md px-lg">
+<section class="mb-md px-lg text-center">
 	<header class="mt-md md:mt-lg">
 		<h1 class="text-lg font-semibold text-grey-800 sm:text-2xl">Do project management right</h1>
 	</header>
-	<div class="flex flex-col gap-[10px] items-center text-grey-700 md:w-1/2 md:mx-auto">
+	<div class="flex flex-col items-center gap-[10px] text-grey-700 md:mx-auto md:w-1/2">
 		<p class="font-medium">
 			With Project Brew it is incredibly easy to get started managing projects with your team or by
 			yourself.
