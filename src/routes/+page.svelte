@@ -48,7 +48,7 @@
 				<img
 					src={ProjectsPage}
 					alt="the main projects page"
-					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full rounded shadow-sm shadow-grey-900"
+					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm  shadow-grey-900"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -63,7 +63,7 @@
 				<img
 					src={TeamPage}
 					alt="the main projects page"
-					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full rounded shadow-sm shadow-grey-900"
+					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -77,7 +77,7 @@
 				<img
 					src={FocusPage}
 					alt="the main projects page"
-					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full rounded shadow-sm shadow-grey-900"
+					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm  shadow-grey-900"
 				/>
 			</section>
 		</section>
