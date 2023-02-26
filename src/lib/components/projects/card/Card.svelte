@@ -70,9 +70,9 @@
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-sm flex h-fit items-start">
 			<div>
-				<div class="flex items-start gap-sm">
+				<div class="flex items-center gap-sm">
 					{#if status === 'done'}
-						<Check className="h-8 w-8 stroke-[#059669] hidden md:block" />
+						<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
 					{/if}
 					<h3
 						class="font-semibold text-grey-700 dark:text-grey-200 card__text--{status} h-fit lg:text-md"
