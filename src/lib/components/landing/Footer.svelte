@@ -9,9 +9,19 @@
 		<p class="mt-md font-medium text-grey-700">Created by Finnegan Beaudin</p>
 	</div>
 	<nav class="mt-lg flex flex-col gap-md text-center md:text-start">
-		<a href="#" class="font-bold text-grey-700">Report an issue</a>
+		<a
+			href="https://github.com/NERBLER09/project-brew/issues/new"
+			rel="noreferrer"
+			target="_blank"
+			class="font-bold text-grey-700">Report an issue</a
+		>
 		<a href="#" class="font-bold text-grey-700">Credits </a>
-		<a href="#" class="font-bold text-grey-700">Source code</a>
+		<a
+			href="https://github.com/NERBLER09/project-brew"
+			target="_blank"
+			rel="noreferrer"
+			class="font-bold text-grey-700">Source code</a
+		>
 		<a href="#" class="font-bold text-grey-700"> Privacy policy </a>
 	</nav>
 </footer>
