@@ -116,7 +116,7 @@
 				<section class="text-center md:w-[18.75rem]">
 					<header>
 						<CreditCard className="h-14 w-14 stroke-grey-700 mx-auto" />
-						<h3 class="text-md font-semibold text-grey-700">Secure</h3>
+						<h3 class="text-md font-semibold text-grey-700">Free forever</h3>
 					</header>
 					<div class="mt-sm">
 						<p class="font-medium text-grey-700">
