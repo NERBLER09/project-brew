@@ -5,7 +5,7 @@
 	let showMobileNav = false;
 </script>
 
-<header class="flex h-20 items-center bg-grey-100 py-lg px-lg">
+<header class="relative flex h-20 items-center bg-grey-100 px-lg md:px-28 lg:px-52">
 	<div class="flex items-center gap-md">
 		<div class="h-12 w-12 rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
