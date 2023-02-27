@@ -1,10 +1,11 @@
 <script>
 	import Back from '$lib/assets/Arrow/Back.svelte';
+	import Logo from '$lib/assets/Logo/Logo.svelte';
 </script>
 
-<header class="p-lg z-50 absolute">
-	<a class="hidden md:flex items-center gap-md" href="/">
-		<div class="w-12 h-12 bg-grey-300 rounded-lg" />
+<header class="absolute z-50 p-lg">
+	<a class="hidden items-center gap-md md:flex" href="/">
+		<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</a>
 

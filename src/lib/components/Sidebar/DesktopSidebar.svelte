@@ -6,6 +6,7 @@
 	import Dashboard from '$lib/assets/Dashboard.svelte';
 
 	import Home from '$lib/assets/Home.svelte';
+	import Logo from '$lib/assets/Logo/Logo.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
@@ -21,7 +22,7 @@
 	class="hidden h-screen w-[16.625rem] flex-col bg-grey-100 px-md py-[1rem] dark:bg-grey-800 md:flex"
 >
 	<header class="ml-md flex items-center gap-md">
-		<div class="h-xl w-xl rounded-lg bg-grey-300" />
+		<Logo className="h-xl w-xl rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800 dark:text-grey-200">Project Brew</span>
 	</header>
 	<div

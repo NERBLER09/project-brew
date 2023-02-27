@@ -1,5 +1,6 @@
 <script>
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import Logo from '$lib/assets/Logo/Logo.svelte';
 	import Menu from '$lib/assets/Menu.svelte';
 
 	let showMobileNav = false;
@@ -7,7 +8,7 @@
 
 <header class="relative flex h-20 items-center bg-grey-100 px-lg md:px-28 lg:px-52">
 	<div class="flex items-center gap-md">
-		<div class="h-12 w-12 rounded-lg bg-grey-300" />
+		<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
 	<nav class="ml-auto hidden items-center gap-md md:flex">
