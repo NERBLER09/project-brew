@@ -8,6 +8,7 @@
 	import Github from '$lib/assets/Landing-Page/Github.svelte';
 	import CreditCard from '$lib/assets/Landing-Page/CreditCard.svelte';
 	import Community from '$lib/assets/Community.svelte';
+	import Footer from '$lib/components/landing/Footer.svelte';
 </script>
 
 <svelte:head>
@@ -24,7 +25,7 @@
 				<p class="my-md text-lg font-semibold text-grey-800">
 					Start managing project easily, today for free
 				</p>
-				<button class="button--primary">Get started (its free)</button>
+				<a href="/sign-up" class="button--primary">Get started (its free)</a>
 			</div>
 
 			<img src={Computer} alt="computer on a project's page" class="mt-md aspect-[77/47]" />
@@ -138,4 +139,5 @@
 			</div>
 		</section>
 	</main>
+	<Footer />
 </div>
