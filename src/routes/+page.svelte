@@ -13,6 +13,10 @@
 
 <svelte:head>
 	<title>Project Brew</title>
+	<meta
+		name="description"
+		content="Project Brew is an free and open source project and team manager to start managing projects with everything you need."
+	/>
 </svelte:head>
 
 <div class="h-screen overflow-y-auto overflow-x-hidden">

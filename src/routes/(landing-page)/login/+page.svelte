@@ -10,6 +10,7 @@
 
 <svelte:head>
 	<title>Project Brew - Log In</title>
+	<meta name="description" content="Welcome back to Project Brew." />
 </svelte:head>
 
 <section

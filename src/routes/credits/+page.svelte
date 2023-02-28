@@ -2,6 +2,10 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 </script>
 
+<svelte:head>
+	<title>Project Brew - Credits</title>
+</svelte:head>
+
 <header class="relative z-50 p-lg">
 	<a class="hidden items-center gap-md md:flex" href="/">
 		<div class="h-12 w-12 rounded-lg bg-grey-300" />
