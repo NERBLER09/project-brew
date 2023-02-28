@@ -27,6 +27,6 @@
 			rel="noreferrer"
 			class="font-bold text-grey-700">Source code</a
 		>
-		<a href="#" class="font-bold text-grey-700"> Privacy policy </a>
+		<a href="/privacy-policy" class="font-bold text-grey-700"> Privacy policy </a>
 	</nav>
 </footer>

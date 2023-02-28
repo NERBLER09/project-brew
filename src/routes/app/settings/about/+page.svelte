@@ -22,7 +22,8 @@
 			rel="noreferrer"
 			class="font-medium text-grey-700 dark:text-grey-200">Submit an issue</a
 		>
-		<a href="#" class="font-medium text-grey-700 dark:text-grey-200">Privacy Policy</a>
+		<a href="/privacy-policy" class="font-medium text-grey-700 dark:text-grey-200">Privacy Policy</a
+		>
 	</div>
 </section>
 <section class="mb-md">
