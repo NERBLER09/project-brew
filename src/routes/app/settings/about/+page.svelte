@@ -1,4 +1,5 @@
 <script>
+	import { env } from '$env/dynamic/public';
 	import { settingsPage } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
 
@@ -12,7 +13,7 @@
 		<div class="mb-sm h-20 w-20 rounded-xl bg-grey-300" />
 		<div>
 			<h2 class="text-lg font-semibold text-grey-900 dark:text-grey-100">Project Brew</h2>
-			<!-- TODO: Show app version -->
+			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">Version {env.PUBLIC_VERSION}</p>
 		</div>
 	</header>
 	<div class="flex flex-col gap-sm">
