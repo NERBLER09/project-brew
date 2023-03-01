@@ -13,7 +13,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
-	import { camelCase } from 'lodash';
+	import camelCase from 'lodash';
 	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 
@@ -64,11 +64,11 @@
 	};
 
 	const handleUpdateProject = async () => {
-		let updatedCoverURL = '';
+		let updatedCoverURL = $currentProject.banner;
 		if (newCoverFile && newCoverFile[0].size > 5000000) {
 			toast.error("Cover can't be over 5mb in size.");
 			return;
-		} else {
+		} else if (newCoverFile && newCoverFile[0].size < 5000000) {
 			updatedCoverURL = await uploadNewCover(newCoverFile);
 		}
 		inEditMode = false;

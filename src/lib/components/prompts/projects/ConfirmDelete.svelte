@@ -2,7 +2,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
-	import { camelCase } from 'lodash';
+	import camelCase from 'lodash';
 	import toast from 'svelte-french-toast';
 
 	import { goto } from '$app/navigation';

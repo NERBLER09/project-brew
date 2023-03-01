@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import { camelCase } from 'lodash';
+import camelCase from 'lodash';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
