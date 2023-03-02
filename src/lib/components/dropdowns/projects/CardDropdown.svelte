@@ -31,7 +31,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="dropdown--container absolute z-50 md:right-6 md:top-[3.5rem] md:border-2 md:border-grey-700"
+	class="dropdown--container fixed z-50 md:absolute md:right-6 md:top-[3.5rem] md:border-2 md:border-grey-700"
 	on:click={() => (visibility = false)}
 >
 	<!-- <button class="dropdown--item" on:click={() => (visibility = false)}>
