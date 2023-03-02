@@ -72,7 +72,7 @@
 			.update({
 				project_name: newProjectName,
 				description: newProjectDescription,
-				tags: newProjectTags,
+				tags: JSON.stringify(newProjectTags).replace('\\', ''),
 				banner: updatedCoverURL
 			})
 			.eq('id', $currentProject.id)
@@ -80,7 +80,7 @@
 
 		if (data) {
 			$currentProject = data[0];
-			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
+			$currentProject.tags = JSON.parse(data[0]?.tags ?? '[]');
 			$currentProject.name = data[0]?.project_name;
 			invalidate('app:project');
 			toast.success('Updated project details');
