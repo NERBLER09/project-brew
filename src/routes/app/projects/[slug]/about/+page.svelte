@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
@@ -41,16 +42,20 @@
 
 		const { error: coverErr } = await supabase.storage
 			.from('project-covers')
-			.update(`${user.user?.id}/${ccName}.png`, cover, {
+			.upload(`${user.user?.id}/${ccName}.png`, cover, {
 				cacheControl: '3600',
-				upsert: false
+				upsert: true
 			});
 
-		const { data: url } = supabase.storage
-			.from('project-covers')
-			.getPublicUrl(`${user.user?.id}/${ccName}.png`);
+		if (!coverErr) {
+			const { data: url } = supabase.storage
+				.from('project-covers')
+				.getPublicUrl(`${user.user?.id}/${ccName}.png`);
 
-		return url.publicUrl;
+			return url.publicUrl;
+		} else {
+			toast.error('Failed to upload project banner. Try again');
+		}
 	};
 
 	const handleUpdateProject = async () => {
@@ -77,6 +82,8 @@
 			$currentProject = data[0];
 			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
+			invalidate('app:project');
+			toast.success('Updated project details');
 		} else {
 			toast.error(`Failed to update project details: ${error.message}`);
 		}

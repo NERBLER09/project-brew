@@ -13,7 +13,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
-	import camelCase from 'lodash';
+	import lodash from 'lodash';
 	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 
@@ -46,21 +46,26 @@
 		if (!coverList) return '';
 		let cover = coverList[0];
 
-		const ccName = camelCase(newProjectName);
+		const ccName = lodash.camelCase(newProjectName);
 		const { data: user } = await supabase.auth.getUser();
 
 		const { error: coverErr } = await supabase.storage
 			.from('project-covers')
-			.update(`${user.user?.id}/${ccName}.png`, cover, {
+			.upload(`${user.user?.id}/${ccName}.png`, cover, {
 				cacheControl: '3600',
-				upsert: false
+				upsert: true
 			});
+		console.error(coverErr);
 
-		const { data: url } = supabase.storage
-			.from('project-covers')
-			.getPublicUrl(`${user.user?.id}/${ccName}.png`);
+		if (!coverErr) {
+			const { data: url } = supabase.storage
+				.from('project-covers')
+				.getPublicUrl(`${user.user?.id}/${ccName}.png`);
 
-		return url.publicUrl;
+			return url.publicUrl;
+		} else {
+			toast.error('Failed to upload project banner. Try again');
+		}
 	};
 
 	const handleUpdateProject = async () => {
@@ -88,6 +93,7 @@
 			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
 			$currentProject.name = data[0]?.project_name;
 			invalidate('app:project');
+			toast.success('Updated project details');
 		} else {
 			toast.error(`Failed to update project details: ${error.message}`);
 		}
