@@ -72,6 +72,7 @@
 <dialog
 	bind:this={dialog}
 	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+	on:close={() => (shown = false)}
 >
 	<header class="mb-md flex items-center">
 		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-200">Create a new project</h2>

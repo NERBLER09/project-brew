@@ -123,6 +123,7 @@
 <dialog
 	bind:this={dialog}
 	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+	on:close={() => (shown = false)}
 >
 	<header
 		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!newCoverURL
