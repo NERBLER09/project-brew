@@ -89,17 +89,22 @@ export const actions: Actions = {
 			}
 		}
 
-		const { error: err } = await supabaseClient.from('projects').insert({
-			description,
-			project_name,
-			user_id: session.user.id,
-			tags,
-			banner: coverURL,
-			invited_people: invited
-		});
+		const { data: project, error: err } = await supabaseClient
+			.from('projects')
+			.insert({
+				description,
+				project_name,
+				user_id: session.user.id,
+				tags,
+				banner: coverURL,
+				invited_people: invited
+			})
+			.select()
+			.limit(1)
+			.single();
 
 		if (!err) {
-			return { success: true };
+			return { success: true, id: project.id };
 		} else {
 			return fail(400, { message: `Failed to create project: ${err.message}` });
 		}

@@ -56,8 +56,9 @@
 
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
-			invalidate('app:all-projects');
 			shown = false;
+			toast.success('Created new project');
+			goto(`/app/projects/${result?.data.id}`);
 		} else {
 			toast.error(`Failed to create project: ${result?.data.message}`);
 		}
