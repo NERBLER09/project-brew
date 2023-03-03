@@ -21,6 +21,7 @@ export const load = (async (event) => {
 		.eq('id', session.user.id)
 		.limit(1)
 		.single();
+	console.log(notifications);
 	if (user) {
 		return {
 			notifications,

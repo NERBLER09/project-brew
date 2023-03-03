@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
@@ -41,16 +42,20 @@
 
 		const { error: coverErr } = await supabase.storage
 			.from('project-covers')
-			.update(`${user.user?.id}/${ccName}.png`, cover, {
+			.upload(`${user.user?.id}/${ccName}.png`, cover, {
 				cacheControl: '3600',
-				upsert: false
+				upsert: true
 			});
 
-		const { data: url } = supabase.storage
-			.from('project-covers')
-			.getPublicUrl(`${user.user?.id}/${ccName}.png`);
+		if (!coverErr) {
+			const { data: url } = supabase.storage
+				.from('project-covers')
+				.getPublicUrl(`${user.user?.id}/${ccName}.png`);
 
-		return url.publicUrl;
+			return url.publicUrl;
+		} else {
+			toast.error('Failed to upload project banner. Try again');
+		}
 	};
 
 	const handleUpdateProject = async () => {
@@ -67,7 +72,7 @@
 			.update({
 				project_name: newProjectName,
 				description: newProjectDescription,
-				tags: newProjectTags,
+				tags: JSON.stringify(newProjectTags).replace('\\', ''),
 				banner: updatedCoverURL
 			})
 			.eq('id', $currentProject.id)
@@ -75,8 +80,10 @@
 
 		if (data) {
 			$currentProject = data[0];
-			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
+			$currentProject.tags = JSON.parse(data[0]?.tags ?? '[]');
 			$currentProject.name = data[0]?.project_name;
+			invalidate('app:project');
+			toast.success('Updated project details');
 		} else {
 			toast.error(`Failed to update project details: ${error.message}`);
 		}
@@ -110,9 +117,9 @@
 <section>
 	<header
 		class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!newCoverURL
-			? 'static w-fit'
+			? 'static w-[calc(100%+48px)]'
 			: 'h-[12.5rem]'}"
-		style="background-image: {$currentProject.banner
+		style="background-image: {newCoverURL
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
@@ -140,7 +147,7 @@
 			<h1
 				class="text-lg {newCoverURL
 					? 'max-w-[calc(100%-80px)] text-grey-200'
-					: 'w-fit text-grey-700'} truncate"
+					: 'w-fit text-grey-700 dark:text-grey-200'} truncate"
 				contenteditable="true"
 				bind:textContent={newProjectName}
 			>
@@ -207,7 +214,7 @@
 					class="button--secondary flex w-full items-center justify-center gap-md"
 					on:click={() => coverInputElement.click()}
 				>
-					<Image className="stroke-grey-700 w-6 h-6" />
+					<Image className="stroke-grey-700 w-6 h-6 dark:stroke-grey-200" />
 					Set a project cover
 				</button>
 			{:else if newCoverURL}

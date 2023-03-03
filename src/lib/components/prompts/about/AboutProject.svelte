@@ -13,7 +13,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
-	import camelCase from 'lodash';
+	import lodash from 'lodash';
 	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 
@@ -46,21 +46,25 @@
 		if (!coverList) return '';
 		let cover = coverList[0];
 
-		const ccName = camelCase(newProjectName);
+		const ccName = lodash.camelCase(newProjectName);
 		const { data: user } = await supabase.auth.getUser();
 
 		const { error: coverErr } = await supabase.storage
 			.from('project-covers')
-			.update(`${user.user?.id}/${ccName}.png`, cover, {
+			.upload(`${user.user?.id}/${ccName}.png`, cover, {
 				cacheControl: '3600',
-				upsert: false
+				upsert: true
 			});
 
-		const { data: url } = supabase.storage
-			.from('project-covers')
-			.getPublicUrl(`${user.user?.id}/${ccName}.png`);
+		if (!coverErr) {
+			const { data: url } = supabase.storage
+				.from('project-covers')
+				.getPublicUrl(`${user.user?.id}/${ccName}.png`);
 
-		return url.publicUrl;
+			return url.publicUrl;
+		} else {
+			toast.error('Failed to upload project banner. Try again');
+		}
 	};
 
 	const handleUpdateProject = async () => {
@@ -77,7 +81,7 @@
 			.update({
 				project_name: newProjectName,
 				description: newProjectDescription,
-				tags: newProjectTags,
+				tags: JSON.stringify(newProjectTags).replace('\\', ''),
 				banner: updatedCoverURL
 			})
 			.eq('id', $currentProject.id)
@@ -85,9 +89,11 @@
 
 		if (data) {
 			$currentProject = data[0];
-			$currentProject.tags = JSON.stringify(data[0]?.tags) || [];
+			$currentProject.tags = JSON.parse(data[0]?.tags ?? '[]');
 			$currentProject.name = data[0]?.project_name;
+			console.log(data[0].tags);
 			invalidate('app:project');
+			toast.success('Updated project details');
 		} else {
 			toast.error(`Failed to update project details: ${error.message}`);
 		}
@@ -117,12 +123,13 @@
 <dialog
 	bind:this={dialog}
 	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+	on:close={() => (shown = false)}
 >
 	<header
 		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!newCoverURL
-			? 'w-fit'
+			? 'w-[calc(100%+64px)]'
 			: 'h-[12.5rem]'}"
-		style="background-image: {$currentProject.banner
+		style="background-image: {newCoverURL
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>

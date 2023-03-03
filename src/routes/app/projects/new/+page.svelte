@@ -8,7 +8,7 @@
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { invitedTeamMembers } from '$lib/stores/user';
+	import { currentUsers, invitedTeamMembers } from '$lib/stores/user';
 	import type { ActionResult } from '@sveltejs/kit';
 	import type { ActionData } from '../$types';
 	import type { PageData } from './$types';
@@ -31,7 +31,6 @@
 	let description = '';
 	let invitedMembers: string[];
 
-	export let form: ActionData;
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
 		data.append('cover-url', files[0] ?? '');
@@ -39,7 +38,7 @@
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
-		data.append('user', JSON.stringify(user.user));
+		data.append('user', JSON.stringify($currentUsers));
 
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
@@ -47,7 +46,8 @@
 		});
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
-			goto('/app/projects');
+			toast.success('Created new project');
+			goto(`/app/projects/${result?.data.id}`);
 		} else {
 			toast.error(`Failed to create project: ${result?.data.message}`);
 		}

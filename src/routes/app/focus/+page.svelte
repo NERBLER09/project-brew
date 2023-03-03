@@ -52,7 +52,7 @@
 
 <section class="mx-auto mt-md flex flex-col items-center md:w-3/4 md:max-w-[21.875rem]">
 	<div
-		class="relative flex aspect-square h-[15.625rem] w-[15.625rem] items-center justify-center gap-sm rounded-full"
+		class="relative flex aspect-square min-h-[15.625rem] min-w-[15.625rem] items-center justify-center gap-sm rounded-full"
 	>
 		<div class="absolute">
 			<svg class="h-[15.625rem] w-[15.625rem]">

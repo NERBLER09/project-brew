@@ -44,6 +44,7 @@
 
 	let headerElement: HTMLElement;
 	let headerHeight: number = 0;
+	let onMobile = false;
 
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
@@ -58,8 +59,8 @@
 		$invitedTeamMembers = await getInvitedTeamMembers();
 
 		headerHeight = headerElement.offsetHeight;
+		console.log(headerHeight + 32);
 	});
-
 	const projectsRealtime = supabase
 		.channel('project-detail-updates')
 		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'projects' }, () =>
@@ -199,7 +200,8 @@
 <section
 	class="relative {!data.banner
 		? '-top-8'
-		: ''} flex max-h-[calc(100%-260px)] flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:max-h-[calc(100%-230px)] md:gap-2xl"
+		: ''} flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
+	style="max-height: calc(100% - {headerHeight - 24}px);"
 	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}

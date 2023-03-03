@@ -109,7 +109,7 @@
 	/>
 
 	<section>
-		<h4 class="font-bold text-grey-700">Tags</h4>
+		<h4 class="font-bold text-grey-700 dark:text-grey-200">Tags</h4>
 
 		<div class="mb-md flex flex-wrap gap-md">
 			<NewTagsInput bind:newTags={newTaskTags} />
