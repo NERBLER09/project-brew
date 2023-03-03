@@ -10,6 +10,8 @@
 
 	let filteredNotifications = notifications;
 	onMount(() => {
+		invalidate('app:data');
+		filteredNotifications = notifications;
 		const dueTaskNotifications = filteredNotifications.filter((item) => {
 			if (item.type === 'dueTask') return $userData.notifcations_settings.push.dueTask;
 		});
@@ -35,7 +37,7 @@
 		const { error } = await supabase.from('notifications').delete().eq('target_user', $userData.id);
 		if (!error) {
 			invalidate('app:data');
-			notifications = [];
+			filteredNotifications = [];
 		}
 	};
 </script>

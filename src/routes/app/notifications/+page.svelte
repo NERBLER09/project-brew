@@ -29,7 +29,11 @@
 		});
 	};
 
-	onMount(handleSortNotifications);
+	onMount(async () => {
+		await invalidate('app:data');
+		notifications = data.notifications;
+		handleSortNotifications();
+	});
 
 	const handleClearNotifications = async () => {
 		const { error } = await supabase.from('notifications').delete().eq('target_user', data.id);
