@@ -12,7 +12,7 @@
 
 	let notifications = data.notifications;
 
-	onMount(() => {
+	const handleSortNotifications = () => {
 		const dueTaskNotifications = data?.notifications.filter((item) => {
 			if (item.type === 'dueTask') return data.notifcations_settings.push.dueTask;
 		});
@@ -27,12 +27,15 @@
 		notifications = notifications.sort((item) => {
 			return new Date().getTime() - new Date(item.sent!).getTime();
 		});
-	});
+	};
+
+	onMount(handleSortNotifications);
 
 	const handleClearNotifications = async () => {
 		const { error } = await supabase.from('notifications').delete().eq('target_user', data.id);
 		if (!error) {
 			invalidate('app:data');
+			notifications = [];
 		}
 	};
 </script>
