@@ -127,9 +127,9 @@
 >
 	<header
 		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!newCoverURL
-			? 'w-fit'
+			? 'w-[calc(100%+64px)]'
 			: 'h-[12.5rem]'}"
-		style="background-image: {$currentProject.banner
+		style="background-image: {newCoverURL
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
 	>
