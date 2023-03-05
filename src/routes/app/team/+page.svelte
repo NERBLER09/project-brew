@@ -3,6 +3,7 @@
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import JoinCreateTeam from '$lib/components/dropdowns/team/JoinCreateTeam.svelte';
 	import InviteMember from '$lib/components/prompts/team/InviteMember.svelte';
+	import NewTeam from '$lib/components/prompts/team/NewTeam.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
@@ -60,4 +61,4 @@
 	</div>
 </header>
 
-<InviteMember bind:shown={showInvitePrompt} />
+<NewTeam bind:shown={showInvitePrompt} />

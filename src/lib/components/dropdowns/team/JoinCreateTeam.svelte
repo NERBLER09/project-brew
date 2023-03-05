@@ -7,10 +7,10 @@
 <div class="dropdown--container">
 	<span class="dropdown--item">
 		<Edit className="dropdown--icon" />
-		<span class="dropdown--label">Create team</span>
+		<span class="dropdown--label">Join Team</span>
 	</span>
-	<span class="dropdown--item">
+	<a class="dropdown--item" href="/app/team/create">
 		<UserAdd className="dropdown--icon" />
 		<span class="dropdown--label">Create team</span>
-	</span>
+	</a>
 </div>
