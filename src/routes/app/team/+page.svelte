@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import JoinCreateTeam from '$lib/components/dropdowns/team/JoinCreateTeam.svelte';
 	import InviteMember from '$lib/components/prompts/team/InviteMember.svelte';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let showInvitePrompt = false;
 
@@ -13,6 +17,12 @@
 			showAddTeamDropdown = false;
 		}
 	};
+
+	onMount(() => {
+		if (data.members.length === 0 || !data.members) {
+			goto('/app/team/empty');
+		}
+	});
 </script>
 
 <svelte:window on:click={handleAutoCloseDropdown} />
