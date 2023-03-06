@@ -29,7 +29,7 @@ export const load = (async (event) => {
 			user
 		};
 	} else if (!user) {
-		goto('/welcome');
+		throw redirect(303, '/welcome');
 	}
 
 	throw error(404, err?.message);
