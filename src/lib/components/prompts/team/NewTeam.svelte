@@ -22,6 +22,7 @@
 
 	let files: any = '';
 	let fileURL: string;
+	let fileInput: HTMLInputElement;
 
 	const getFileURL = (file: any) => {
 		if (!file) return;
@@ -31,6 +32,7 @@
 	const resetImages = () => {
 		fileURL = '';
 		files = null;
+		fileInput.value = '';
 	};
 
 	$: if (files) getFileURL(files[0]);
@@ -89,7 +91,14 @@
 						<span class="font-medium text-grey-700 dark:text-grey-200">or</span>
 						<span class="font-medium text-grey-700 dark:text-grey-200">select a cover image</span>
 					</span>
-					<input type="file" name="cover" class="hidden" accept=".png, .jpg" bind:files />
+					<input
+						type="file"
+						name="cover"
+						class="hidden"
+						accept=".png, .jpg"
+						bind:files
+						bind:this={fileInput}
+					/>
 				</label>
 			</div>
 

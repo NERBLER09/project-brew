@@ -11,10 +11,31 @@ export const actions = {
 		const form = await event.request.formData();
 		const name = form.get('name') as string;
 		const description = form.get('description') as string;
+		const cover = form.get('cover') as File;
+		let cover_url = '';
+
+		if (cover && cover.size < 5000000) {
+			// TODO: Upload file
+			const { error: bannerErr } = await supabaseClient.storage
+				.from('teams')
+				.upload(`${session.user.id}/${name}.png`, cover, {
+					cacheControl: '3600',
+					upsert: true
+				});
+			if (bannerErr) {
+				return fail(400, { message: `Failed to upload banner: ${bannerErr}` });
+			}
+
+			const { data: url } = supabaseClient.storage
+				.from('teams')
+				.getPublicUrl(`${session.user.id}/${name}.png`);
+			cover_url = url.publicUrl;
+		} else if (cover && cover.size > 5000000)
+			return fail(400, { message: 'Cover file to large. Must be under 5mb in size.' });
 
 		const { data: team, error: createErr } = await supabaseClient
 			.from('teams')
-			.insert({ name, description })
+			.insert({ name, description, banner: cover_url })
 			.select()
 			.limit(1)
 			.single();

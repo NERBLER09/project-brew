@@ -4,10 +4,10 @@
 	import Check from '$lib/assets/Check.svelte';
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
-	import { goto } from '$app/navigation';
 
 	let files: any = '';
 	let fileURL: string;
+	let fileInput: HTMLInputElement;
 
 	const getFileURL = (file: any) => {
 		if (!file) return;
@@ -17,6 +17,7 @@
 	const resetImages = () => {
 		fileURL = '';
 		files = null;
+		fileInput.value = '';
 	};
 
 	$: if (files) getFileURL(files[0]);
@@ -63,7 +64,14 @@
 						<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
 						<span class="font-medium text-grey-700 dark:text-grey-200">Select a cover image</span>
 					</span>
-					<input type="file" name="cover" class="hidden" accept=".png, .jpg" bind:files />
+					<input
+						type="file"
+						name="cover"
+						class="hidden"
+						accept=".png, .jpg"
+						bind:files
+						bind:this={fileInput}
+					/>
 				</label>
 			</div>
 
