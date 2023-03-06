@@ -1,6 +1,8 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Image from '$lib/assets/Image.svelte';
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -47,7 +49,20 @@
 		</button>
 	</header>
 
-	<form method="POST">
+	<form
+		method="POST"
+		action="/app/team/create?/new"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Created new project');
+					// TODO: Route to team setup page after creating a team
+				}
+			};
+		}}
+	>
 		<input
 			type="text"
 			class="input--text mb-md w-full"

@@ -3,6 +3,8 @@
 	import Image from '$lib/assets/Image.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
+	import { goto } from '$app/navigation';
 
 	let files: any = '';
 	let fileURL: string;
@@ -23,7 +25,20 @@
 <MobileSubPageLayout pageName="New Team" previousPage="/app/team">
 	<p class="pt-sm pb-md font-medium text-grey-700 dark:text-grey-200">Create a new team</p>
 
-	<form method="POST" use:enhance>
+	<form
+		method="POST"
+		action="?/new"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Created new project');
+					// TODO: Route to team setup page after creating a team
+				}
+			};
+		}}
+	>
 		<input
 			type="text"
 			class="input--text mb-md w-full"
