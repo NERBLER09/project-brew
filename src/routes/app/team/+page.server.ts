@@ -10,7 +10,11 @@ export const load = (async (event) => {
 
 	event.depends('app:team-members');
 
-	const { data: teams, error: err } = await supabaseClient.from('teams').select();
+	const { data: teams, error: err } = await supabaseClient
+		.from('teams')
+		.select('*, team_members!inner(user_id)')
+		.eq('team_members.user_id', session.user.id);
+
 	if (!err) {
 		return {
 			teams

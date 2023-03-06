@@ -21,7 +21,7 @@
 	};
 
 	onMount(() => {
-		if (data.members.length === 0 || !data.members) {
+		if (data.teams.length === 0 || !data.teams) {
 			goto('/app/team/empty');
 		}
 	});
