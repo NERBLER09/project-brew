@@ -4,6 +4,7 @@
 	import JoinCreateTeam from '$lib/components/dropdowns/team/JoinCreateTeam.svelte';
 	import InviteMember from '$lib/components/prompts/team/InviteMember.svelte';
 	import NewTeam from '$lib/components/prompts/team/NewTeam.svelte';
+	import TeamCard from '$lib/components/team/TeamCard.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
@@ -25,6 +26,10 @@
 		}
 	});
 </script>
+
+<svelte:head>
+	<title>Project Brew - Teams</title>
+</svelte:head>
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
@@ -60,5 +65,11 @@
 		{/if}
 	</div>
 </header>
+
+<div class="mt-md flex flex-col gap-lg lg:grid lg:grid-cols-2 xl:grid-cols-3">
+	{#each data.teams as team}
+		<TeamCard {...team} />
+	{/each}
+</div>
 
 <NewTeam bind:shown={showInvitePrompt} />
