@@ -36,14 +36,14 @@
 			</h1>
 		</a>
 		<div class="ml-auto flex items-center gap-md">
-			<div>
+			<a href="/app/team/{data.team.id}/about">
 				<CircleInfo
 					className="w-8 h-8 {data.team.banner
 						? 'stroke-grey-200'
 						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
 				<span class="sr-only">View project info</span>
-			</div>
+			</a>
 			<div>
 				<button>
 					<MoreHorizontal

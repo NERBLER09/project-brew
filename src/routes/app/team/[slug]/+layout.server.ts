@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad, PageServerLoad } from './$types';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -28,4 +28,4 @@ export const load = (async (event) => {
 	}
 
 	throw error(400, err.message);
-}) satisfies PageServerLoad;
+}) satisfies LayoutServerLoad;
