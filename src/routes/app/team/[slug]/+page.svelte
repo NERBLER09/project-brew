@@ -1,157 +1,62 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import Building from '$lib/assets/Building.svelte';
-	import Community from '$lib/assets/Community.svelte';
-	import Settings from '$lib/assets/Settings.svelte';
-	import User from '$lib/assets/User.svelte';
-	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
-	import { supabase } from '$lib/supabase';
-	import type { Projects } from '$lib/types/projects';
-	import { onMount } from 'svelte';
+	import CircleInfo from '$lib/assets/Circle-Info.svelte';
+	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import Description from '$lib/components/text/Description.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let invitedProject: Projects[] = [];
-
-	onMount(async () => {
-		const { data: user } = await supabase.auth.getUser();
-		const userId = user.user?.id;
-
-		const { data: projects, error } = await supabase
-			.from('projects')
-			.select()
-			.eq('user_id', userId);
-
-		if (projects) {
-			invitedProject = projects;
-			invitedProject = invitedProject.filter((item) => item.invited_people?.includes(data.id));
-		} else {
-			console.error(error);
-		}
-	});
 </script>
 
 <svelte:head>
-	<title>Member - {data.name}</title>
+	<title>{data.team.name} - Team</title>
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:h-[17.1875rem] md:w-full md:rounded-xl md:p-md lg:h-[18.75rem] {!data.banner
-		? 'bg-grey-100 dark:bg-grey-800'
-		: 'bg-grey-100'}"
-	style="background-image: {data.banner
-		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 55.28%, rgba(0, 0, 0, 0.6) 100%),'
-		: ''} url({data.banner});"
+	class="relative -top-6 -left-6 max-h-[18.75rem] {data.banner
+		? 'h-fit'
+		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
+	style="background-image: {data.team.banner
+		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
+		: ''} url({data.team.banner});"
 >
-	<a href="/app/team" class="absolute top-6 left-6">
-		<Back
-			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
-		/>
-		<span class="sr-only">Back</span>
-	</a>
-
-	{#if data.currentUser}
-		<a href="/app/settings/account" class="absolute top-6 right-6">
-			<Settings
-				className="w-8 h-8 {data.banner
+	<div class="mb-md flex items-center md:mb-sm md:items-start">
+		<a class="flex w-[calc(100%-100px)] items-center gap-md" href="/app/team">
+			<Back
+				className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square {data.team.banner
 					? 'stroke-grey-200'
-					: 'stroke-grey-700 dark:stroke-grey-200'}"
+					: 'stroke-grey-700 dark:stroke-grey-200'} md:h-10 md:w-10"
 			/>
-			<span class="sr-only">Account settings</span>
-		</a>
-	{/if}
-
-	<div class=" flex items-center gap-lg">
-		{#if data.avatar_url}
-			<img
-				src={data.avatar_url}
-				alt="User profile"
-				class="aspect-square h-20 w-20 rounded-full object-cover md:h-[6.25rem] md:w-[6.25rem]"
-			/>
-		{:else}
-			<User
-				className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-[6.25rem] md:w-[6.25rem] {data.banner
-					? 'stroke-grey-200'
-					: 'stroke-grey-700 dark:stroke-grey-200'}"
-			/>
-		{/if}
-
-		<div class="flex flex-col items-start gap-sm">
 			<h1
-				class="text-lg font-semibold {data.banner
+				class="w-full text-lg {data.team.banner
 					? 'text-grey-200'
-					: 'text-grey-700 dark:text-grey-200'} md:text-xl"
+					: 'text-grey-700 dark:text-grey-200'} truncate md:text-xl md:font-semibold"
 			>
-				{data.name}
+				{data.team.name}
 			</h1>
-
-			{#if !data.currentUser}
-				<span
-					class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-					>Invited to {invitedProject.length} project(s)</span
-				>
-			{/if}
-
-			{#if data.location}
-				<div class="flex items-center gap-md">
-					<Community
-						className="h-8 w-8 {data.banner
+		</a>
+		<div class="ml-auto flex items-center gap-md">
+			<div>
+				<CircleInfo
+					className="w-8 h-8 {data.team.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
+				<span class="sr-only">View project info</span>
+			</div>
+			<div>
+				<button>
+					<MoreHorizontal
+						className="w-8 h-8 {data.team.banner
 							? 'stroke-grey-200'
 							: 'stroke-grey-700 dark:stroke-grey-200'}"
 					/>
-					<span
-						class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-						>{data.location}</span
-					>
-				</div>
-			{/if}
-			{#if data.role}
-				<div class="flex items-center gap-md">
-					<Building
-						className="h-8 w-8 {data.banner
-							? 'stroke-grey-200'
-							: 'stroke-grey-700 dark:stroke-grey-200'}"
-					/>
-					<span
-						class="font-medium {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-						>{data.role}</span
-					>
-				</div>
-			{/if}
+				</button>
+			</div>
 		</div>
 	</div>
+
+	<div class="md:w-2/3 lg:w-1/2">
+		<Description banner={data.team.banner} description={data.team.description} />
+	</div>
 </header>
-
-<div class="md:px-[7.5rem]">
-	{#if data.bio}
-		<div class="mt-lg lg:w-1/2">
-			<p class="font-medium text-grey-700 dark:text-grey-100">{data.bio}</p>
-		</div>
-	{/if}
-	{#if !data.currentUser}
-		<section>
-			<header>
-				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
-				{#if invitedProject.length > 0}
-					<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-						View and manage what projects {data.name} is apart of.
-					</p>
-				{/if}
-			</header>
-
-			{#if invitedProject.length > 0}
-				<div class="mt-md flex grid-cols-2 flex-col flex-wrap gap-lg md:flex-row">
-					{#each invitedProject as project}
-						<div class="relative">
-							<ProjectCard {...project} />
-						</div>
-					{/each}
-				</div>
-			{:else}
-				<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">
-					It looks like you haven't invited {data.name} to any projects.
-				</p>
-			{/if}
-		</section>
-	{/if}
-</div>

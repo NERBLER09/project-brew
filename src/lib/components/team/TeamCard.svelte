@@ -5,7 +5,7 @@
 	export let description: string | null = '';
 </script>
 
-<a href="#" class="w-full">
+<a href="/app/team/{id}" class="w-full">
 	<section
 		class="relative flex aspect-[3/2] h-48 w-full flex-col justify-end rounded-lg bg-grey-100 bg-cover bg-center bg-origin-border object-cover p-4 dark:bg-grey-800"
 		style="background-image: {banner === ''

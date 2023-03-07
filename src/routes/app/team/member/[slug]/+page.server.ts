@@ -8,24 +8,20 @@ export const load = (async (event) => {
 		throw redirect(303, '/');
 	}
 
-	const params = event.params;
-	const teamId = params.slug;
+	const user_id = event.params.slug;
 
-	event.depends('app:team');
-
-	const { data: team, error: err } = await supabaseClient
-		.from('teams')
+	const { data: user, error: err } = await supabaseClient
+		.from('profiles')
 		.select()
-		.eq('id', teamId)
+		.eq('id', user_id)
 		.limit(1)
 		.single();
-	if (!err) {
-		return {
-			team: {
-				...team
-			}
-		};
+
+	console.log(user);
+
+	if (user) {
+		return { ...user, currentUser: user_id === session.user.id };
 	}
 
-	throw error(400, err.message);
+	throw error(404, err?.message);
 }) satisfies PageServerLoad;
