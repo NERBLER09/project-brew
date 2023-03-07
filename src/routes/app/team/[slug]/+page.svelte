@@ -2,10 +2,16 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
 	import Description from '$lib/components/text/Description.svelte';
+	import { currentTeam } from '$lib/stores/team';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	$currentTeam = data.team;
+
+	let showAboutDialog = false;
 </script>
 
 <svelte:head>
@@ -36,7 +42,7 @@
 			</h1>
 		</a>
 		<div class="ml-auto flex items-center gap-md">
-			<a href="/app/team/{data.team.id}/about">
+			<a href="/app/team/{data.team.id}/about" class="md:hidden">
 				<CircleInfo
 					className="w-8 h-8 {data.team.banner
 						? 'stroke-grey-200'
@@ -44,6 +50,14 @@
 				/>
 				<span class="sr-only">View project info</span>
 			</a>
+			<button class="hidden md:inline" on:click={() => (showAboutDialog = true)}>
+				<CircleInfo
+					className="w-8 h-8 {data.team.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'}"
+				/>
+				<span class="sr-only">View project info</span>
+			</button>
 			<div>
 				<button>
 					<MoreHorizontal
@@ -60,3 +74,5 @@
 		<Description banner={data.team.banner} description={data.team.description} />
 	</div>
 </header>
+
+<AboutTeam bind:shown={showAboutDialog} />
