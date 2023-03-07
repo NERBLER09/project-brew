@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import JoinCreateTeam from '$lib/components/dropdowns/team/JoinCreateTeam.svelte';
-	import InviteMember from '$lib/components/prompts/team/InviteMember.svelte';
+	import JoinTeam from '$lib/components/prompts/team/JoinTeam.svelte';
 	import NewTeam from '$lib/components/prompts/team/NewTeam.svelte';
 	import TeamCard from '$lib/components/team/TeamCard.svelte';
 	import { onMount } from 'svelte';
@@ -11,6 +11,7 @@
 	export let data: PageData;
 
 	let showInvitePrompt = false;
+	let showJoinPrompt = false;
 
 	let mobileAddContainer: HTMLElement;
 	let showAddTeamDropdown = false;
@@ -37,7 +38,7 @@
 	<div class="flex items-center">
 		<h1 class="text-lg text-grey-800 dark:text-grey-100 md:text-2xl">Team</h1>
 		<div class="ml-auto hidden gap-md md:flex">
-			<button class="button--secondary">Join Team</button>
+			<button class="button--secondary" on:click={() => (showJoinPrompt = true)}>Join Team</button>
 			<button
 				class="button--primary hidden items-center gap-md md:flex"
 				on:click={() => (showInvitePrompt = true)}
@@ -54,7 +55,7 @@
 
 	<div bind:this={mobileAddContainer}>
 		<button
-			class="button--circle absolute bottom-32 right-8 z-50 md:hidden"
+			class="button--circle absolute bottom-32 right-8 z-10 md:hidden"
 			on:click={() => (showAddTeamDropdown = true)}
 		>
 			<UserAdd className="h-8 w-8 stroke-grey-200" />
@@ -73,3 +74,4 @@
 </div>
 
 <NewTeam bind:shown={showInvitePrompt} />
+<JoinTeam bind:shown={showJoinPrompt} />

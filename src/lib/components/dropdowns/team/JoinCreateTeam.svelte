@@ -4,11 +4,11 @@
 </script>
 
 <!-- Only shows on mobile -->
-<div class="dropdown--container">
-	<span class="dropdown--item">
+<div class="dropdown--container z-20">
+	<a class="dropdown--item" href="/app/team/join">
 		<Edit className="dropdown--icon" />
 		<span class="dropdown--label">Join Team</span>
-	</span>
+	</a>
 	<a class="dropdown--item" href="/app/team/create">
 		<UserAdd className="dropdown--icon" />
 		<span class="dropdown--label">Create team</span>
