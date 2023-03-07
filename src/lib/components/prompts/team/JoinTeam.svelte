@@ -33,6 +33,10 @@
 			<CloseMultiply className="stroke-grey-700 dark:stroke-grey-200 w-12 h-12" />
 		</button>
 	</header>
+	<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
+		Enter in the join code of the team you want to join. If don't have the invite code ask the team
+		owner for it.
+	</p>
 
 	<form method="POST">
 		<input
