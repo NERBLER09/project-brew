@@ -1,8 +1,11 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
 	import { currentTeam } from '$lib/stores/team';
+	import type { TeamMembers } from '$lib/types/projects';
 
 	export let shown = false;
+	export let teamMembers: TeamMembers[];
 	let dialog: HTMLDialogElement;
 
 	const handleModalStatus = (status: boolean) => {
@@ -25,9 +28,9 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!$currentTeam.banner
-			? 'w-[calc(100%+64px)]'
-			: 'h-[12.5rem]'}"
+		class=" -top-8 -left-8 flex items-end rounded-b-3xl bg-cover bg-center object-cover {!$currentTeam.banner
+			? 'w-full'
+			: 'relative h-[12.5rem] w-[calc(100%+64px)] p-6'}"
 		style="background-image: {$currentTeam.banner
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({$currentTeam.banner});"
@@ -35,11 +38,11 @@
 		<h1
 			class="w-fit text-lg {$currentTeam.banner
 				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} truncate"
+				: 'text-grey-700 dark:text-grey-200'} truncate font-semibold"
 		>
 			{$currentTeam?.name}
 		</h1>
-		<button on:click={() => (shown = false)} class="absolute top-6 right-6">
+		<button on:click={() => (shown = false)} class="absolute top-8 right-8">
 			<CloseMultiply
 				className="{$currentTeam.banner
 					? 'stroke-grey-200'
@@ -48,4 +51,15 @@
 			<span class="sr-only">Close</span>
 		</button>
 	</header>
+
+	<section class="mt-md">
+		<header>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+		</header>
+		<div class="mt-sm flex flex-col items-start gap-lg">
+			{#each teamMembers as { user_id, role }}
+				<TeamMember id={user_id} {role} />
+			{/each}
+		</div>
+	</section>
 </dialog>

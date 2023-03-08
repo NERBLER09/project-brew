@@ -41,9 +41,9 @@
 
 <section class="mt-md">
 	<header>
-		<h2 class="text-md font-medium text-grey-700 dark:text-grey-200">Invited team members</h2>
+		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 	</header>
-	<div class="flex flex-col items-start gap-md">
+	<div class="mt-sm flex flex-col items-start gap-lg">
 		{#each data.team.team_members as { user_id, role }}
 			<TeamMember id={user_id} {role} />
 		{/each}

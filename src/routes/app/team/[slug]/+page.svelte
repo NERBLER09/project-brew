@@ -75,4 +75,4 @@
 	</div>
 </header>
 
-<AboutTeam bind:shown={showAboutDialog} />
+<AboutTeam bind:shown={showAboutDialog} teamMembers={data.team.team_members} />
