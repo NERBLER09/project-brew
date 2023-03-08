@@ -1,8 +1,5 @@
 <script lang="ts">
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
-	import Image from '$lib/assets/Image.svelte';
-	import { enhance } from '$app/forms';
-	import toast from 'svelte-french-toast';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
