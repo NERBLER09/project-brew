@@ -6,6 +6,10 @@
 	import { goto } from '$app/navigation';
 </script>
 
+<svelte:head>
+	<title>Join Team - Project Brew</title>
+</svelte:head>
+
 <MobileSubPageLayout pageName="Join a Team" previousPage="/app/team">
 	<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
 		Enter in the join code of the team you want to join. If don't have the invite code ask the team

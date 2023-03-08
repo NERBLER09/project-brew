@@ -4,6 +4,7 @@
 	import Check from '$lib/assets/Check.svelte';
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import { goto } from '$app/navigation';
 
 	let files: any = '';
 	let fileURL: string;
@@ -23,6 +24,10 @@
 	$: if (files) getFileURL(files[0]);
 </script>
 
+<svelte:head>
+	<title>New Team - Project Brew</title>
+</svelte:head>
+
 <MobileSubPageLayout pageName="New Team" previousPage="/app/team">
 	<p class="pt-sm pb-md font-medium text-grey-700 dark:text-grey-200">Create a new team</p>
 
@@ -35,7 +40,7 @@
 					toast.error(result?.data.message);
 				} else if (result.type === 'success') {
 					toast.success('Created new project');
-					// TODO: Route to team setup page after creating a team
+					goto(`/app/team/${result.data.team_id}`);
 				}
 			};
 		}}

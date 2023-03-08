@@ -60,7 +60,7 @@
 					toast.error(result?.data.message);
 				} else if (result.type === 'success') {
 					toast.success('Created new project');
-					// TODO: Route to team setup page after creating a team
+					goto(`/app/team/${result.data.team_id}`);
 				}
 			};
 		}}
