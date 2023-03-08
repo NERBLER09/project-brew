@@ -4,8 +4,17 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { showMobileNav } from '$lib/stores/ui';
 	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
+	import { supabase } from '$lib/supabase';
 
 	export let data: PageData;
+
+	let description = data.team.description;
+
+	const handleUpdateDescription = async () => {
+		if (description === data.team.description) return;
+		const { error } = await supabase.from('teams').update({ description }).eq('id', data.team.id);
+		console.log(error);
+	};
 
 	onMount(() => {
 		$showMobileNav = false;
@@ -39,7 +48,14 @@
 	</a>
 </header>
 
-<p class="my-md font-medium text-grey-700 dark:text-grey-300">{data.team.description}</p>
+<p
+	class="my-md font-medium text-grey-700 dark:text-grey-300"
+	contenteditable="true"
+	bind:textContent={description}
+	on:blur={handleUpdateDescription}
+>
+	{data.team.description}
+</p>
 
 <section class="mt-md">
 	<header>
