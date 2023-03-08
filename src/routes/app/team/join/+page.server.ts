@@ -15,6 +15,7 @@ export const actions = {
 			.from('team_members')
 			.select()
 			.eq('team', code)
+			.eq('user_id', session.user.id)
 			.limit(1)
 			.single();
 
