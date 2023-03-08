@@ -29,7 +29,7 @@
 >
 	<header
 		class=" -top-8 -left-8 flex items-end rounded-b-3xl bg-cover bg-center object-cover {!$currentTeam.banner
-			? 'w-full'
+			? 'static w-full'
 			: 'relative h-[12.5rem] w-[calc(100%+64px)] p-6'}"
 		style="background-image: {$currentTeam.banner
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
@@ -52,14 +52,17 @@
 		</button>
 	</header>
 
-	<section class="mt-md">
-		<header>
-			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
-		</header>
-		<div class="mt-sm flex flex-col items-start gap-lg">
-			{#each teamMembers as { user_id, role }}
-				<TeamMember id={user_id} {role} />
-			{/each}
-		</div>
-	</section>
+	<div class={$currentTeam.banner ? 'relative -top-6' : ''}>
+		<p class="my-md font-medium text-grey-700 dark:text-grey-300">{$currentTeam.description}</p>
+		<section class="mt-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+			</header>
+			<div class="mt-sm flex flex-col items-start gap-lg">
+				{#each teamMembers as { user_id, role }}
+					<TeamMember id={user_id} {role} />
+				{/each}
+			</div>
+		</section>
+	</div>
 </dialog>

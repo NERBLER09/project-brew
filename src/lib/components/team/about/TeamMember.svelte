@@ -44,7 +44,7 @@
 	});
 </script>
 
-<div class="w-full">
+<div class="w-full overflow-hidden">
 	<div class="flex gap-lg">
 		<img
 			src={avatar}

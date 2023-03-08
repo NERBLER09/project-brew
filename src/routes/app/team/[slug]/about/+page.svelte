@@ -39,6 +39,8 @@
 	</a>
 </header>
 
+<p class="my-md font-medium text-grey-700 dark:text-grey-300">{data.team.description}</p>
+
 <section class="mt-md">
 	<header>
 		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
