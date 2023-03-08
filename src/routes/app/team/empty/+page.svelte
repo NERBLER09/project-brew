@@ -44,7 +44,7 @@
 			>
 			<button
 				on:click={() => (showNewTeamPrompt = true)}
-				class="button--primary items-center justify-center gap-md md:flex"
+				class="button--primary hidden items-center justify-center gap-md md:flex"
 			>
 				<UserAdd className="h-6 w-6 stroke-grey-200" />
 				New Team

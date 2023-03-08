@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
+	import { goto } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 
 	export let shown = false;
@@ -35,7 +38,20 @@
 		owner for it.
 	</p>
 
-	<form method="POST">
+	<form
+		method="POST"
+		action="/app/team/create?/join"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Joined team');
+					goto(`/app/team/${result?.data.team}`);
+				}
+			};
+		}}
+	>
 		<input
 			type="text"
 			class="input--text w-full"
