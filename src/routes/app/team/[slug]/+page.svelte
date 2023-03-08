@@ -2,7 +2,9 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import Settings from '$lib/assets/Settings.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
+	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentTeam } from '$lib/stores/team';
 	import type { PageData } from './$types';
@@ -75,4 +77,18 @@
 	</div>
 </header>
 
+<div class="md:grid md:grid-cols-2 lg:grid-cols-5">
+	<section class="col-span-1 md:col-start-2 lg:col-start-5">
+		<header class="my-sm flex items-center">
+			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
+			<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+		</header>
+
+		<div class="flex flex-col items-start gap-md">
+			{#each data.team.team_members as { user_id }}
+				<TeamMemberLink id={user_id} />
+			{/each}
+		</div>
+	</section>
+</div>
 <AboutTeam bind:shown={showAboutDialog} teamMembers={data.team.team_members} />
