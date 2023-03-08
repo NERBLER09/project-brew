@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { onDestroy, onMount } from 'svelte';
 	import { showMobileNav } from '$lib/stores/ui';
+	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
 
 	export let data: PageData;
 
@@ -16,8 +17,8 @@
 </script>
 
 <header
-	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 
-    {!data.team.banner ? 'static w-[calc(100%+48px)]' : 'h-[12.5rem]'}"
+	class=" -top-6 -left-6 flex  items-end rounded-b-3xl bg-cover bg-center object-cover  
+    {!data.team.banner ? 'static w-full' : 'relative h-[12.5rem] w-[calc(100%+48px)] p-6'}"
 	style="background-image: {data.team.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.team.banner});"
@@ -37,3 +38,14 @@
 		</h1>
 	</a>
 </header>
+
+<section class="mt-md">
+	<header>
+		<h2 class="text-md font-medium text-grey-700 dark:text-grey-200">Invited team members</h2>
+	</header>
+	<div class="flex flex-col items-start gap-md">
+		{#each data.team.team_members as { user_id, role }}
+			<TeamMember id={user_id} {role} />
+		{/each}
+	</div>
+</section>

@@ -19,10 +19,16 @@ export const load = (async (event) => {
 		.eq('id', teamId)
 		.limit(1)
 		.single();
+
+	const { data: team_members } = await supabaseClient
+		.from('team_members')
+		.select()
+		.eq('team', teamId);
 	if (!err) {
 		return {
 			team: {
-				...team
+				...team,
+				team_members: team_members ?? []
 			}
 		};
 	}
