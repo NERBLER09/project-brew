@@ -40,6 +40,21 @@
 	onDestroy(() => {
 		$disableDrag = false;
 	});
+
+	$: switch (newStatus) {
+		case 'todo':
+			newName = 'To-do';
+			break;
+		case 'doing':
+			newName = 'Doing';
+			break;
+		case 'done':
+			newName = 'Done';
+			break;
+		default:
+			newName = '';
+			break;
+	}
 </script>
 
 <form
@@ -60,6 +75,7 @@
 		class="input--text mt-md mb-sm w-full"
 		placeholder="Enter a list name"
 		bind:value={newName}
+		required
 	/>
 
 	<div class="mt-sm mb-md">
