@@ -5,6 +5,8 @@
 	import { showMobileNav } from '$lib/stores/ui';
 	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
 	import { supabase } from '$lib/supabase';
+	import { invalidate } from '$app/navigation';
+	import toast from 'svelte-french-toast';
 
 	export let data: PageData;
 
@@ -13,7 +15,11 @@
 	const handleUpdateDescription = async () => {
 		if (description === data.team.description) return;
 		const { error } = await supabase.from('teams').update({ description }).eq('id', data.team.id);
-		console.log(error);
+		if (!error) {
+			invalidate('app:team');
+		} else {
+			toast.error(`Failed to update team description: ${error.message}`);
+		}
 	};
 
 	onMount(() => {
