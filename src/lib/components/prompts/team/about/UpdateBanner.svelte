@@ -53,12 +53,25 @@
 			if (!error) {
 				invalidate('app:team');
 				$currentTeam.banner = url.publicUrl;
+				shown = false;
 			} else {
 				toast.error(`Failed to update team banner: ${error.message}`);
 			}
 		} else if (banner.size !== 0 && banner.size > 5000000) {
 			toast.error('The selected file must be under 5mb in size');
 		}
+	};
+
+	const handleRemoveBanner = async () => {
+		const { error: deleteErr } = await supabase.storage
+			.from('team')
+			.remove([`${$currentUsers.id}/${$currentTeam.name}`]);
+		if (deleteErr?.message) {
+			toast.error(`Failed to remove team banner! ${deleteErr.message}`);
+			return;
+		}
+		await supabase.from('teams').update({ banner: null }).eq('id', $currentTeam.id);
+		invalidate('app:team');
 	};
 </script>
 
@@ -92,7 +105,7 @@
 		<div class="mt-md flex flex-col gap-md md:flex-row">
 			<button
 				class="button--secondary flex w-full items-center justify-center gap-md"
-				on:click={() => (shown = false)}
+				on:click={handleRemoveBanner}
 				type="button"
 			>
 				<Trash className="w-6 h-6 dark:stroke-grey-200 stroke-grey-700" />

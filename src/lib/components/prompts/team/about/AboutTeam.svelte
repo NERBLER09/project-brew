@@ -80,23 +80,30 @@
 		>
 			{$currentTeam?.name}
 		</h1>
-		<button on:click={() => (shown = false)} class="absolute top-8 right-8">
-			<CloseMultiply
-				className="{$currentTeam.banner
-					? 'stroke-grey-200'
-					: 'stroke-grey-700 dark:stroke-grey-200'} w-12 h-12"
-			/>
-			<span class="sr-only">Close</span>
-		</button>
-
-		<button class="absolute top-8 left-8" on:click={() => (showUpdateBannerDialog = true)}>
-			<Edit
-				className="{$currentTeam.banner
-					? 'stroke-grey-200'
-					: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
-			/>
-			<span class="sr-only">Modify team banner</span>
-		</button>
+		<div class={$currentTeam.banner ? '' : 'ml-auto flex items-center'}>
+			<button
+				class="top-8 left-8 {$currentTeam.banner ? 'absolute' : 'static'}"
+				on:click={() => (showUpdateBannerDialog = true)}
+			>
+				<Edit
+					className="{$currentTeam.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
+				/>
+				<span class="sr-only">Modify team banner</span>
+			</button>
+			<button
+				on:click={() => (shown = false)}
+				class="{$currentTeam.banner ? 'absolute' : 'static'} top-8 right-8"
+			>
+				<CloseMultiply
+					className="{$currentTeam.banner
+						? 'stroke-grey-200'
+						: 'stroke-grey-700 dark:stroke-grey-200'} w-12 h-12"
+				/>
+				<span class="sr-only">Close</span>
+			</button>
+		</div>
 	</header>
 
 	<div class={$currentTeam.banner ? 'relative -top-6' : ''}>
