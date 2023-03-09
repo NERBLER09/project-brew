@@ -12,6 +12,7 @@
 	let dialog: HTMLDialogElement;
 
 	let description = $currentTeam.description;
+	let name = $currentTeam.name;
 
 	const handleUpdateDescription = async () => {
 		if (description === $currentTeam.description) return;
@@ -22,6 +23,17 @@
 		if (!error) {
 			invalidate('app:team');
 			$currentTeam.description = description;
+		} else {
+			toast.error(`Failed to update team description: ${error.message}`);
+		}
+	};
+
+	const handleUpdateName = async () => {
+		if (name === $currentTeam.name) return;
+		const { error } = await supabase.from('teams').update({ name }).eq('id', $currentTeam.id);
+		if (!error) {
+			invalidate('app:team');
+			$currentTeam.name = name;
 		} else {
 			toast.error(`Failed to update team description: ${error.message}`);
 		}
@@ -58,6 +70,9 @@
 			class="w-fit text-lg {$currentTeam.banner
 				? 'text-grey-200'
 				: 'text-grey-700 dark:text-grey-200'} truncate font-semibold"
+			contenteditable="true"
+			bind:textContent={name}
+			on:blur={handleUpdateName}
 		>
 			{$currentTeam?.name}
 		</h1>
