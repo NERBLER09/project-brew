@@ -11,6 +11,7 @@
 	export let data: PageData;
 
 	let description = data.team.description;
+	let name = data.team.name;
 
 	const handleUpdateDescription = async () => {
 		if (description === data.team.description) return;
@@ -19,6 +20,16 @@
 			invalidate('app:team');
 		} else {
 			toast.error(`Failed to update team description: ${error.message}`);
+		}
+	};
+
+	const handleUpdateName = async () => {
+		if (name === data.team.name) return;
+		const { error } = await supabase.from('teams').update({ name }).eq('id', data.team.id);
+		if (!error) {
+			invalidate('app:team');
+		} else {
+			toast.error(`Failed to update team name: ${error.message}`);
 		}
 	};
 
@@ -38,20 +49,25 @@
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.team.banner});"
 >
-	<a class="flex w-full items-center gap-md" href="/app/team/{data.team.id}">
-		<Back
-			className="min-w-[2rem] min-h-[2rem] h-8 w-8 aspect-square {data.team.banner
-				? 'stroke-grey-200'
-				: 'stroke-grey-700 dark:stroke-grey-200'}"
-		/>
+	<div class="flex w-full items-center gap-md">
+		<a href="/app/team/{data.team.id}">
+			<Back
+				className="min-w-[2rem] min-h-[2rem] h-8 w-8 aspect-square {data.team.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+		</a>
 		<h1
 			class="text-lg {data.team.banner
 				? 'max-w-[calc(100%-80px)] text-grey-200'
 				: 'w-full text-grey-700 dark:text-grey-200'} truncate"
+			contenteditable="true"
+			bind:textContent={name}
+			on:blur={handleUpdateName}
 		>
 			{data.team.name}
 		</h1>
-	</a>
+	</div>
 </header>
 
 <p

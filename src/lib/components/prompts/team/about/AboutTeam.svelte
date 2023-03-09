@@ -35,7 +35,7 @@
 			invalidate('app:team');
 			$currentTeam.name = name;
 		} else {
-			toast.error(`Failed to update team description: ${error.message}`);
+			toast.error(`Failed to update team name: ${error.message}`);
 		}
 	};
 
