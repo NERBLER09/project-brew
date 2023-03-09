@@ -60,6 +60,7 @@
 		class="input--text mt-md mb-sm w-full"
 		placeholder="Enter a list name"
 		bind:value={newName}
+		required
 	/>
 
 	<div class="mt-sm mb-md">
