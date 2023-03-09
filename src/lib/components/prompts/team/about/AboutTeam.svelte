@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import Edit from '$lib/assets/Edit.svelte';
 	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
 	import { currentTeam } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import type { TeamMembers } from '$lib/types/projects';
 	import toast from 'svelte-french-toast';
+	import UpdateBanner from './UpdateBanner.svelte';
 
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
 	let dialog: HTMLDialogElement;
+
+	let showUpdateBannerDialog = false;
 
 	let description = $currentTeam.description;
 	let name = $currentTeam.name;
@@ -84,6 +88,15 @@
 			/>
 			<span class="sr-only">Close</span>
 		</button>
+
+		<button class="absolute top-8 left-8" on:click={() => (showUpdateBannerDialog = true)}>
+			<Edit
+				className="{$currentTeam.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
+			/>
+			<span class="sr-only">Modify team banner</span>
+		</button>
 	</header>
 
 	<div class={$currentTeam.banner ? 'relative -top-6' : ''}>
@@ -107,3 +120,5 @@
 		</section>
 	</div>
 </dialog>
+
+<UpdateBanner bind:shown={showUpdateBannerDialog} />
