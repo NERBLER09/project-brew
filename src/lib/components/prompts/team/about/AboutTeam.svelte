@@ -8,6 +8,8 @@
 	import type { TeamMembers } from '$lib/types/projects';
 	import toast from 'svelte-french-toast';
 	import UpdateBanner from './UpdateBanner.svelte';
+	import { enhance } from '$app/forms';
+	import UserAdd from '$lib/assets/User-Add.svelte';
 
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
@@ -55,6 +57,8 @@
 	};
 
 	$: handleModalStatus(shown);
+
+	let emailSearch = '';
 </script>
 
 <dialog
@@ -119,6 +123,38 @@
 			<header>
 				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 			</header>
+			<form
+				action="/app/team/{$currentTeam.id}/about?/invite"
+				method="POST"
+				class="mb-md"
+				use:enhance={() => {
+					return async ({ result }) => {
+						if (result.type === 'success') {
+							toast.success(`Added ${emailSearch} to ${$currentTeam.name}`);
+							invalidate('app:team');
+						} else if (result.data.notFound) {
+							toast.error(`A user with the email: ${emailSearch} doesn't exist`);
+						} else if (result.data.invited) {
+							toast.error(`${emailSearch} has already been invited to this team.`);
+						} else if (result.type === 'failure') {
+							toast.error(`Failed to add user: ${result.data.message}`);
+						}
+					};
+				}}
+			>
+				<div class="input--text relative flex w-full items-center">
+					<input
+						type="email"
+						placeholder="Search by email to invite people"
+						class="input--text m-0 w-full p-0"
+						bind:value={emailSearch}
+						name="invite_email"
+					/>
+					<button>
+						<UserAdd className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+					</button>
+				</div>
+			</form>
 			<div class="mt-sm flex flex-col items-start gap-lg">
 				{#each teamMembers as { user_id, role }}
 					<TeamMember id={user_id} {role} />
