@@ -16,20 +16,7 @@
 	let avatar: string;
 	let roleFormatted: string;
 
-	onMount(async () => {
-		const { data: profile, error } = await supabase
-			.from('profiles')
-			.select()
-			.eq('id', id)
-			.limit(1)
-			.single();
-
-		if (profile) {
-			name = profile.name;
-			email = profile.email;
-			avatar = profile.avatar_url ?? '';
-		}
-
+	const formateRole = () => {
 		switch (role) {
 			case 'owner':
 				roleFormatted = 'Owner';
@@ -44,18 +31,39 @@
 				roleFormatted = 'Viewer';
 				break;
 		}
+	};
+
+	onMount(async () => {
+		const { data: profile, error } = await supabase
+			.from('profiles')
+			.select()
+			.eq('id', id)
+			.limit(1)
+			.single();
+
+		if (profile) {
+			name = profile.name;
+			email = profile.email;
+			avatar = profile.avatar_url ?? '';
+		}
+
+		formateRole();
 	});
 
 	let showChangeStatus = false;
 
 	const handleUpdateStatus = async (event) => {
-		const role = event.detail.role;
+		const newRole = event.detail.role;
 
-		const { data } = await supabase
+		await supabase
 			.from('team_members')
-			.update({ role })
+			.update({ role: newRole })
 			.eq('user_id', id)
 			.eq('team', $currentTeam.id);
+
+		showChangeStatus = false;
+		role = newRole;
+		formateRole();
 		invalidate('app:team');
 	};
 </script>
