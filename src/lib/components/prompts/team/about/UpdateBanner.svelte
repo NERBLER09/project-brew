@@ -30,10 +30,13 @@
 	const handleUpdateBanner = async () => {
 		const banner = newBannerFiles[0];
 
+		const { data: user } = await supabase.auth.getUser();
+		const userId = user.user?.id;
+
 		if (banner.size !== 0 && banner.size < 5000000) {
 			const { error: uploadErr } = await supabase.storage
 				.from('teams')
-				.upload(`${$currentUsers.id}/${$currentTeam.name}`, banner, {
+				.upload(`${userId}/${$currentTeam.name}`, banner, {
 					cacheControl: '3600',
 					upsert: true
 				});
@@ -44,12 +47,13 @@
 
 			const { data: url } = supabase.storage
 				.from('teams')
-				.getPublicUrl(`${$currentUsers.id}/${$currentTeam.name}`);
+				.getPublicUrl(`${userId}/${$currentTeam.name}`);
 
 			const { error } = await supabase
 				.from('teams')
 				.update({ banner: url.publicUrl })
 				.eq('id', $currentTeam.id);
+
 			if (!error) {
 				invalidate('app:team');
 				$currentTeam.banner = url.publicUrl;
@@ -71,6 +75,8 @@
 			return;
 		}
 		await supabase.from('teams').update({ banner: null }).eq('id', $currentTeam.id);
+		$currentTeam.banner = null;
+		shown = false;
 		invalidate('app:team');
 	};
 </script>
