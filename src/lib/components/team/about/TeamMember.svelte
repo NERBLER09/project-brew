@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
 	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
+	import { currentTeam } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -45,6 +47,17 @@
 	});
 
 	let showChangeStatus = false;
+
+	const handleUpdateStatus = async (event) => {
+		const role = event.detail.role;
+
+		const { data } = await supabase
+			.from('team_members')
+			.update({ role })
+			.eq('user_id', id)
+			.eq('team', $currentTeam.id);
+		invalidate('app:team');
+	};
 </script>
 
 <div class="w-full">
@@ -72,7 +85,7 @@
 					<span class="sr-only">Change team member status</span>
 				</button>
 				{#if showChangeStatus}
-					<ChangeStatus />
+					<ChangeStatus on:update={handleUpdateStatus} />
 				{/if}
 			</div>
 			<div class="ml-auto flex gap-md">
