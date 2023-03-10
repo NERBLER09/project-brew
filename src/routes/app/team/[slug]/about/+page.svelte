@@ -9,7 +9,8 @@
 	import toast from 'svelte-french-toast';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import { enhance } from '$app/forms';
-	import { result } from 'lodash';
+	import Image from '$lib/assets/Image.svelte';
+	import UpdateBanner from '$lib/components/prompts/team/about/UpdateBanner.svelte';
 
 	export let data: PageData;
 
@@ -45,6 +46,7 @@
 	});
 
 	let emailSearch = '';
+	let showUpdateBannerPrompt = false;
 </script>
 
 <svelte:head>
@@ -78,6 +80,14 @@
 		</h1>
 	</div>
 </header>
+
+<button
+	class="button--secondary flex w-full items-center justify-center gap-md"
+	on:click={() => (showUpdateBannerPrompt = true)}
+>
+	<Image className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+	Modify Banner
+</button>
 
 <p
 	class="my-md font-medium text-grey-700 dark:text-grey-300"
@@ -130,3 +140,5 @@
 		{/each}
 	</div>
 </section>
+
+<UpdateBanner bind:shown={showUpdateBannerPrompt} />

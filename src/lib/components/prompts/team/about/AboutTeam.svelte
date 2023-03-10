@@ -119,6 +119,9 @@
 		>
 			{$currentTeam.description}
 		</p>
+
+		<button class="button--secondary">Modify Banner</button>
+
 		<section class="mt-md">
 			<header>
 				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
