@@ -2,6 +2,7 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
+	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -42,9 +43,11 @@
 				break;
 		}
 	});
+
+	let showChangeStatus = false;
 </script>
 
-<div class="w-full overflow-hidden">
+<div class="w-full">
 	<div class="flex gap-lg">
 		<img
 			src={avatar}
@@ -57,15 +60,25 @@
 		</div>
 	</div>
 
-	<div class="mt-sm flex items-center">
-		<div class="flex items-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700">
-			<span class="font-bold text-grey-700 dark:text-grey-200">{roleFormatted}</span>
-			<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-300" />
-			<span class="sr-only">Change team member status</span>
+	{#if role !== 'owner'}
+		<div class="mt-sm flex items-center">
+			<div class="relative">
+				<button
+					on:click={() => (showChangeStatus = !showChangeStatus)}
+					class="flex items-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700"
+				>
+					<span class="font-bold text-grey-700 dark:text-grey-200">{roleFormatted}</span>
+					<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-300" />
+					<span class="sr-only">Change team member status</span>
+				</button>
+				{#if showChangeStatus}
+					<ChangeStatus />
+				{/if}
+			</div>
+			<div class="ml-auto flex gap-md">
+				<UserRemove className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+				<MoreHorizontal className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+			</div>
 		</div>
-		<div class="ml-auto flex gap-md">
-			<UserRemove className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
-			<MoreHorizontal className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
-		</div>
-	</div>
+	{/if}
 </div>
