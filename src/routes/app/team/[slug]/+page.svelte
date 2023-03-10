@@ -2,7 +2,9 @@
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
+	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
@@ -77,7 +79,21 @@
 	</div>
 </header>
 
-<div class="md:grid md:grid-cols-2 lg:grid-cols-5">
+<div class="md:grid md:grid-cols-2 md:gap-lg lg:grid-cols-5 lg:gap-2xl">
+	<section class="col-span-1 md:col-start-1 lg:col-start-4">
+		<header class="my-sm flex items-center">
+			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+			<button class="button--circle ml-auto">
+				<PlusNew className="h-6 w-6 stroke-grey-200" />
+			</button>
+		</header>
+
+		<div>
+			{#each data.team.projects as project}
+				<ProjectCard {...project}/>	
+			{/each}
+		</div>
+	</section>
 	<section class="col-span-1 md:col-start-2 lg:col-start-5">
 		<header class="my-sm flex items-center">
 			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>

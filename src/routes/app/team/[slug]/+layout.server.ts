@@ -24,11 +24,15 @@ export const load = (async (event) => {
 		.from('team_members')
 		.select()
 		.eq('team', teamId);
+
+	const { data: projects } = await supabaseClient.from('projects').select().eq('team', teamId);
+
 	if (!err) {
 		return {
 			team: {
 				...team,
-				team_members: team_members ?? []
+				team_members: team_members ?? [],
+				projects: projects ?? []
 			}
 		};
 	}
