@@ -31,7 +31,8 @@ export const load = (async (event) => {
 			tags: JSON.parse(project?.tags) || [],
 			lists: lists || [],
 			project,
-			invited_people: project.invited_people || []
+			invited_people: project.invited_people || [],
+			team: project.team
 		};
 	}
 
