@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
+	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
 	export let project: number;
 	export let name: string;
 	export let id: number;
+	export let incompleteTasks: Task[];
+	export let index: number;
 
 	let project_name: string;
 	let doneListId: number | null;
@@ -42,6 +44,10 @@
 
 		if (error) {
 			toast.error(`Failed to mark task as complete: ${error.message}`);
+		} else {
+			incompleteTasks.splice(index, 1);
+			incompleteTasks = [...incompleteTasks];
+			itemDone = false;
 		}
 	};
 

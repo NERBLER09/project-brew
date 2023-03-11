@@ -22,8 +22,8 @@
 </script>
 
 <div class="flex flex-col gap-md">
-	{#each incompleteTasks as { project, name, id }}
-		<TaskItem {project} {name} {id} />
+	{#each incompleteTasks as { project, name, id }, index}
+		<TaskItem {project} {name} {id} bind:incompleteTasks {index} />
 	{:else}
 		<p class="font-medium text-grey-700 dark:text-grey-300">
 			There is nothing that needs to get done for today!
