@@ -7,6 +7,7 @@
 	import { currentTeam } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	export let id: string;
 	export let role: 'owner' | 'admin' | 'editor' | 'viewer';
@@ -66,6 +67,21 @@
 		formateRole();
 		invalidate('app:team');
 	};
+
+	const handleRemoveUser = async () => {
+		const { error } = await supabase
+			.from('team_members')
+			.delete()
+			.eq('team', $currentTeam.id)
+			.eq('user_id', id);
+
+		if (error) {
+			toast.error(`Failed to remove ${name}`);
+		} else {
+			toast.success(`Removed ${name}`);
+			invalidate('app:team');
+		}
+	};
 </script>
 
 <div class="w-full">
@@ -97,7 +113,9 @@
 				{/if}
 			</div>
 			<div class="ml-auto flex gap-md">
-				<UserRemove className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+				<button on:click={handleRemoveUser}>
+					<UserRemove className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+				</button>
 				<MoreHorizontal className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
 			</div>
 		</div>
