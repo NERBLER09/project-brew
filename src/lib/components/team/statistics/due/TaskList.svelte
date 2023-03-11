@@ -11,11 +11,10 @@
 	onMount(async () => {
 		const { data: tasks, error } = await supabase
 			.from('tasks')
-			.select('*, project!inner(team)')
-			.eq('project.team', teamId)
+			.select('*, projects!inner(team)')
+			.eq('projects.team', teamId)
 			.neq('status', 'done');
 
-		console.log(tasks);
 		if (tasks) {
 			incompleteTasks = tasks;
 		}
