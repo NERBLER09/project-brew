@@ -6,6 +6,7 @@
 	import Settings from '$lib/assets/Settings.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
+	import TaskList from '$lib/components/team/statistics/due/TaskList.svelte';
 	import ProjectItem from '$lib/components/team/statistics/progress/ProjectItem.svelte';
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
@@ -99,6 +100,15 @@
 					<ProjectItem {...project} />
 				{/each}
 			</div>
+		</section>
+		<section>
+			<header>
+				<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
+					Tasks due today
+				</h3>
+			</header>
+
+			<TaskList />
 		</section>
 	</section>
 
