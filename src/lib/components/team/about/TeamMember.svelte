@@ -55,6 +55,7 @@
 
 	let changeStatusContainer: HTMLElement;
 	const handleAutoCloseDropdown = (event: Event) => {
+		if (!changeStatusContainer) return;
 		if (!changeStatusContainer.contains(event.target)) {
 			showChangeStatus = false;
 		}
