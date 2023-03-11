@@ -21,8 +21,17 @@ export const load = (async (event) => {
 		.select()
 		.contains('invited_people', [session.user.id]);
 
+	const { data: userTeams } = await supabaseClient
+		.from('team_members')
+		.select()
+		.eq('user_id', session.user.id)
+		.limit(1)
+		.single();
+
+	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
+
 	if (data && invited) {
-		const allProjects = [...data, ...invited];
+		const allProjects = [...data, ...invited, ...(team ?? [])];
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
