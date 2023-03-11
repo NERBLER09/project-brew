@@ -53,6 +53,13 @@
 
 	let showChangeStatus = false;
 
+	let changeStatusContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!changeStatusContainer.contains(event.target)) {
+			showChangeStatus = false;
+		}
+	};
+
 	const handleUpdateStatus = async (event) => {
 		const newRole = event.detail.role;
 
@@ -84,6 +91,8 @@
 	};
 </script>
 
+<svelte:window on:click={handleAutoCloseDropdown} />
+
 <div class="w-full">
 	<div class="flex gap-lg">
 		<img
@@ -99,7 +108,7 @@
 
 	{#if role !== 'owner'}
 		<div class="mt-sm flex items-center">
-			<div class="relative">
+			<div class="relative" bind:this={changeStatusContainer}>
 				<button
 					on:click={() => (showChangeStatus = !showChangeStatus)}
 					class="flex items-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700"
