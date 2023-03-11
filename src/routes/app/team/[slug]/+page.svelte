@@ -6,6 +6,7 @@
 	import Settings from '$lib/assets/Settings.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
+	import ProjectItem from '$lib/components/team/statistics/progress/ProjectItem.svelte';
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentTeam } from '$lib/stores/team';
@@ -80,6 +81,27 @@
 </header>
 
 <div class="md:grid md:grid-cols-2 md:gap-lg lg:grid-cols-5 lg:gap-2xl">
+	<section class="md:col-span-2 md:col-start-1 lg:col-span-3">
+		<header>
+			<h2 class="my-md text-lg font-semibold text-grey-900 dark:text-grey-100">
+				Here is what needs to get done
+			</h2>
+		</header>
+		<section>
+			<header>
+				<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
+					Progress for today
+				</h3>
+			</header>
+
+			<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
+				{#each data.team.projects as project}
+					<ProjectItem {...project} />
+				{/each}
+			</div>
+		</section>
+	</section>
+
 	<section class="col-span-1 md:col-start-1 lg:col-start-4">
 		<header class="my-sm flex items-center">
 			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
@@ -90,7 +112,7 @@
 
 		<div>
 			{#each data.team.projects as project}
-				<ProjectCard {...project}/>	
+				<ProjectCard {...project} />
 			{/each}
 		</div>
 	</section>
