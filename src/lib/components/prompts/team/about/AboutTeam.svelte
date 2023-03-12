@@ -3,7 +3,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import TeamMember from '$lib/components/team/about/TeamMember.svelte';
-	import { currentTeam } from '$lib/stores/team';
+	import { currentTeam, userRole } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import type { TeamMembers } from '$lib/types/projects';
 	import toast from 'svelte-french-toast';
@@ -14,6 +14,8 @@
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
 	let dialog: HTMLDialogElement;
+
+	const isViewer = $userRole === 'viewer';
 
 	let showUpdateBannerDialog = false;
 
@@ -74,28 +76,42 @@
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({$currentTeam.banner});"
 	>
-		<h1
-			class="w-fit text-lg {$currentTeam.banner
-				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} truncate font-semibold"
-			contenteditable="true"
-			bind:textContent={name}
-			on:blur={handleUpdateName}
-		>
-			{$currentTeam?.name}
-		</h1>
-		<div class={$currentTeam.banner ? '' : 'ml-auto flex items-center'}>
-			<button
-				class="top-8 left-8 {$currentTeam.banner ? 'absolute' : 'static'}"
-				on:click={() => (showUpdateBannerDialog = true)}
+		{#if !isViewer}
+			<h1
+				class="w-fit text-lg {$currentTeam.banner
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate font-semibold"
+				contenteditable
+				bind:textContent={name}
+				on:blur={handleUpdateName}
 			>
-				<Edit
-					className="{$currentTeam.banner
-						? 'stroke-grey-200'
-						: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
-				/>
-				<span class="sr-only">Modify team banner</span>
-			</button>
+				{$currentTeam?.name}
+			</h1>
+		{:else}
+			<h1
+				class="w-fit text-lg {$currentTeam.banner
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate font-semibold"
+			>
+				{$currentTeam?.name}
+			</h1>
+		{/if}
+
+		<div class={$currentTeam.banner ? '' : 'ml-auto flex items-center'}>
+			{#if !isViewer}
+				<button
+					class="top-8 left-8 {$currentTeam.banner ? 'absolute' : 'static'}"
+					on:click={() => (showUpdateBannerDialog = true)}
+				>
+					<Edit
+						className="{$currentTeam.banner
+							? 'stroke-grey-200'
+							: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
+					/>
+					<span class="sr-only">Modify team banner</span>
+				</button>
+			{/if}
+
 			<button
 				on:click={() => (shown = false)}
 				class="{$currentTeam.banner ? 'absolute' : 'static'} top-8 right-8"
@@ -111,14 +127,20 @@
 	</header>
 
 	<div class={$currentTeam.banner ? 'relative -top-6' : ''}>
-		<p
-			class="my-md font-medium text-grey-700 dark:text-grey-300"
-			contenteditable="true"
-			bind:textContent={description}
-			on:blur={handleUpdateDescription}
-		>
-			{$currentTeam.description}
-		</p>
+		{#if !isViewer}
+			<p
+				class="my-md font-medium text-grey-700 dark:text-grey-300"
+				contenteditable="true"
+				bind:textContent={description}
+				on:blur={handleUpdateDescription}
+			>
+				{$currentTeam.description}
+			</p>
+		{:else}
+			<p class="my-md font-medium text-grey-700 dark:text-grey-300">
+				{$currentTeam.description}
+			</p>
+		{/if}
 
 		<section class="mt-md">
 			<header>

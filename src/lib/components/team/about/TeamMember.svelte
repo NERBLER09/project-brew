@@ -83,17 +83,21 @@
 	};
 
 	const handleRemoveUser = async () => {
-		const { error } = await supabase
-			.from('team_members')
-			.delete()
-			.eq('team', $currentTeam.id)
-			.eq('user_id', id);
+		if ($userRole === 'owner' || $userRole === 'admin') {
+			const { error } = await supabase
+				.from('team_members')
+				.delete()
+				.eq('team', $currentTeam.id)
+				.eq('user_id', id);
 
-		if (error) {
-			toast.error(`Failed to remove ${name}`);
+			if (error) {
+				toast.error(`Failed to remove ${name}`);
+			} else {
+				toast.success(`Removed ${name}`);
+				invalidate('app:team');
+			}
 		} else {
-			toast.success(`Removed ${name}`);
-			invalidate('app:team');
+			toast.error('User is not the team owner or an admin.');
 		}
 	};
 </script>
