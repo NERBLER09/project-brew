@@ -42,6 +42,11 @@
 		}
 	};
 
+	const copyJoinCode = () => {
+		navigator.clipboard.writeText(data.team.id);
+		toast.success('Copied team join code');
+	};
+
 	onMount(() => {
 		$showMobileNav = false;
 	});
@@ -119,6 +124,15 @@
 	<p class="my-md font-medium text-grey-700 dark:text-grey-300">
 		{data.team.description}
 	</p>
+{/if}
+
+{#if data.role === 'owner'}
+	<span class="mt-md mb-sm font-medium text-grey-700 dark:text-grey-200"
+		>Team invite code:
+		<button class="button--text m-0 mb-md p-0 text-start font-medium" on:click={copyJoinCode}
+			>{data.team.id}</button
+		>
+	</span>
 {/if}
 
 <form

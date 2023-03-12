@@ -64,6 +64,11 @@
 	$: handleModalStatus(shown);
 
 	let emailSearch = '';
+
+	const copyJoinCode = () => {
+		navigator.clipboard.writeText($currentTeam.id);
+		toast.success('Copied team join code');
+	};
 </script>
 
 <dialog
@@ -143,6 +148,15 @@
 			<p class="my-md font-medium text-grey-700 dark:text-grey-300">
 				{$currentTeam.description}
 			</p>
+		{/if}
+
+		{#if $userRole === 'owner'}
+			<span class="mt-md mb-sm font-medium text-grey-700 dark:text-grey-200"
+				>Team invite code:
+				<button class="button--text m-0 mb-md p-0 text-start font-medium" on:click={copyJoinCode}
+					>{$currentTeam.id}</button
+				>
+			</span>
 		{/if}
 
 		<section class="mt-md">
