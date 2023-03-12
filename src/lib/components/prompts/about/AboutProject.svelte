@@ -6,6 +6,7 @@
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import TransferTeam from '$lib/components/dropdowns/projects/TransferTeam.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
@@ -45,7 +46,7 @@
 
 	let teamName = '';
 
-	onMount(async () => {
+	const getTeamName = async () => {
 		const { data: team } = await supabase
 			.from('teams')
 			.select()
@@ -55,6 +56,12 @@
 		if (team) {
 			teamName = team.name;
 		}
+	};
+
+	$: if ($currentProject.team) getTeamName();
+
+	onMount(async () => {
+		getTeamName();
 	});
 
 	const uploadNewCover = async (coverList: FileList | null) => {
@@ -133,6 +140,12 @@
 		newCoverURL = $currentProject.banner;
 		newCoverFile = null;
 	}
+
+	let showTransferTeamDropdown = false;
+	let transferDropdownContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!transferDropdownContainer.contains(event.target)) showTransferTeamDropdown = false;
+	};
 </script>
 
 <dialog
@@ -212,12 +225,21 @@
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
 			{#if $currentProject.team}
-				<div class="mt-md flex items-center gap-sm font-medium text-grey-700 dark:text-grey-200">
+				<div
+					class="relative mt-md flex items-center gap-sm overflow-visible font-medium text-grey-700 dark:text-grey-200 md:static"
+					bind:this={transferDropdownContainer}
+				>
 					<span>Part of</span>
-					<div class="button--text m-0 flex items-center gap-sm p-0">
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+					>
 						{teamName}
 						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-					</div>
+						{#if showTransferTeamDropdown}
+							<TransferTeam bind:visibility={showTransferTeamDropdown} />
+						{/if}
+					</button>
 				</div>
 			{/if}
 
