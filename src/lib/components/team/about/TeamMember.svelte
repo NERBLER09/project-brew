@@ -4,7 +4,7 @@
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
 	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
-	import { currentTeam } from '$lib/stores/team';
+	import { currentTeam, userRole } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
@@ -63,17 +63,23 @@
 
 	const handleUpdateStatus = async (event) => {
 		const newRole = event.detail.role;
-
-		await supabase
-			.from('team_members')
-			.update({ role: newRole })
-			.eq('user_id', id)
-			.eq('team', $currentTeam.id);
-
 		showChangeStatus = false;
-		role = newRole;
-		formateRole();
-		invalidate('app:team');
+
+		console.log($userRole);
+
+		if ($userRole === 'owner' || $userRole === 'admin') {
+			await supabase
+				.from('team_members')
+				.update({ role: newRole })
+				.eq('user_id', id)
+				.eq('team', $currentTeam.id);
+
+			role = newRole;
+			formateRole();
+			invalidate('app:team');
+		} else {
+			toast.error('User is not the team owner or an admin.');
+		}
 	};
 
 	const handleRemoveUser = async () => {

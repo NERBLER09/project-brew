@@ -25,6 +25,14 @@ export const load = (async (event) => {
 		.select()
 		.eq('team', teamId);
 
+	const { data: role } = await supabaseClient
+		.from('team_members')
+		.select('role')
+		.eq('user_id', session.user.id)
+		.eq('team', teamId)
+		.limit(1)
+		.single();
+
 	const { data: projects } = await supabaseClient.from('projects').select().eq('team', teamId);
 
 	if (!err) {
@@ -33,7 +41,8 @@ export const load = (async (event) => {
 				...team,
 				team_members: team_members ?? [],
 				projects: projects ?? []
-			}
+			},
+			role: role?.role
 		};
 	}
 

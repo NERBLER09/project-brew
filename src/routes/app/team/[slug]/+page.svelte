@@ -10,12 +10,13 @@
 	import ProjectItem from '$lib/components/team/statistics/progress/ProjectItem.svelte';
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
-	import { currentTeam } from '$lib/stores/team';
+	import { currentTeam, userRole } from '$lib/stores/team';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	$currentTeam = data.team;
+	$userRole = data.role;
 
 	let showAboutDialog = false;
 </script>
