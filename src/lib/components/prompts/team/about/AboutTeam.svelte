@@ -12,6 +12,7 @@
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from './ConfirmDelete.svelte';
+	import Switch from '$lib/components/form/Switch.svelte';
 
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
@@ -69,6 +70,36 @@
 		navigator.clipboard.writeText($currentTeam.id);
 		toast.success('Copied team join code');
 	};
+
+	const dashboardSettings: object = $currentTeam.dashboard_settings;
+	let showMembers = dashboardSettings?.members;
+	let showProjects = dashboardSettings?.projects;
+	let showProgress = dashboardSettings?.progress;
+	let showDueTasks = dashboardSettings?.dueTasks;
+
+	const handleUpdateDashboard = async (
+		showMembers: boolean,
+		showProjects: boolean,
+		showProgress: boolean,
+		showDueTasks: boolean
+	) => {
+		const settings = {
+			members: showMembers,
+			projects: showProjects,
+			progress: showProgress,
+			dueTasks: showDueTasks
+		};
+
+		const { error } = await supabase
+			.from('teams')
+			.update({ dashboard_settings: settings })
+			.eq('id', $currentTeam.id)
+			.select();
+
+		invalidate('app:team');
+	};
+
+	$: handleUpdateDashboard(showMembers, showProjects, showProgress, showDueTasks);
 </script>
 
 <dialog
@@ -203,6 +234,25 @@
 		</section>
 
 		{#if $userRole === 'owner'}
+			<section class="mt-md">
+				<header>
+					<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
+						Dashboard Customization
+					</h2>
+
+					<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
+						Change how the team dashboard appears for everyone.
+					</p>
+				</header>
+
+				<div class="flex flex-col gap-sm">
+					<Switch text="Show team members" id="team-members" bind:checked={showMembers} />
+					<Switch text="Show team projects" id="team-projects" bind:checked={showProjects} />
+					<Switch text="Show today's progress" id="todays-progress" bind:checked={showProgress} />
+					<Switch text="Show due tasks" id="due-tasks" bind:checked={showDueTasks} />
+				</div>
+			</section>
+
 			<section class="mt-md">
 				<header>
 					<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Danger Zone</h2>

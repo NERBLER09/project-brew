@@ -89,55 +89,65 @@
 				Here is what needs to get done
 			</h2>
 		</header>
-		<section>
-			<header>
-				<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
-					Progress for today
-				</h3>
-			</header>
+		{#if data.team.dashboard_settings?.progress}
+			<section>
+				<header>
+					<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
+						Progress for today
+					</h3>
+				</header>
 
-			<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
-				{#each data.team.projects as project}
-					<ProjectItem {...project} />
-				{/each}
-			</div>
-		</section>
-		<section>
-			<header>
-				<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
-					Tasks due today
-				</h3>
-			</header>
+				<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
+					{#each data.team.projects as project}
+						<ProjectItem {...project} />
+					{/each}
+				</div>
+			</section>
+		{/if}
 
-			<TaskList />
-		</section>
-	</section>
+		{#if data.team.dashboard_settings?.dueTasks}
+			<section>
+				<header>
+					<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
+						Tasks due today
+					</h3>
+				</header>
 
-	<section class="col-span-1 md:col-start-1 lg:col-start-4">
-		<header class="my-sm flex items-center">
-			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
-			<button class="button--circle ml-auto">
-				<PlusNew className="h-6 w-6 stroke-grey-200" />
-			</button>
-		</header>
+				<TaskList />
+			</section>
+		{/if}
 
-		<div>
-			{#each data.team.projects as project}
-				<ProjectCard {...project} />
-			{/each}
-		</div>
-	</section>
-	<section class="col-span-1 md:col-start-2 lg:col-start-5">
-		<header class="my-sm flex items-center">
-			<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
-			<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
-		</header>
+		{#if data.team.dashboard_settings.projects}
+			<section class="col-span-1 md:col-start-1 lg:col-start-4">
+				<header class="my-sm flex items-center">
+					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+					<button class="button--circle ml-auto">
+						<PlusNew className="h-6 w-6 stroke-grey-200" />
+					</button>
+				</header>
 
-		<div class="flex flex-col items-start gap-md">
-			{#each data.team.team_members as { user_id }}
-				<TeamMemberLink id={user_id} />
-			{/each}
-		</div>
+				<div>
+					{#each data.team.projects as project}
+						<ProjectCard {...project} />
+					{/each}
+				</div>
+			</section>
+		{/if}
+
+		{#if data.team.dashboard_settings.members}
+			<section class="col-span-1 md:col-start-2 lg:col-start-5">
+				<header class="my-sm flex items-center">
+					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
+					<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+				</header>
+
+				<div class="flex flex-col items-start gap-md">
+					{#each data.team.team_members as { user_id }}
+						<TeamMemberLink id={user_id} />
+					{/each}
+				</div>
+			</section>
+		{/if}
 	</section>
 </div>
 <AboutTeam bind:shown={showAboutDialog} teamMembers={data.team.team_members} />

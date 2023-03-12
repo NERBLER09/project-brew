@@ -23,7 +23,6 @@
 	let showConfirmDelete = false;
 
 	const dashboardSettings: object = data.team.dashboard_settings;
-	console.table(dashboardSettings);
 	let showMembers = dashboardSettings?.members;
 	let showProjects = dashboardSettings?.projects;
 	let showProgress = dashboardSettings?.progress;
@@ -78,7 +77,13 @@
 			dueTasks: showDueTasks
 		};
 
-		await supabase.from('teams').update({ dashboard_settings: settings }).eq('id', data.team.id);
+		const { error } = await supabase
+			.from('teams')
+			.update({ dashboard_settings: settings })
+			.eq('id', data.team.id)
+			.select();
+
+		invalidate('app:team');
 	};
 
 	$: handleUpdateDashboard(showMembers, showProjects, showProgress, showDueTasks);
