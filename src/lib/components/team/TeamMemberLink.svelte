@@ -81,10 +81,12 @@
 	};
 </script>
 
+<svelte:window on:click={handleAutoCloseDropdown} />
+
 {#if !name}
 	<p class="font-bold text-grey-700 dark:text-grey-100">Loading team member details...</p>
 {:else}
-	<div class="flex w-full items-center overflow-hidden md:relative">
+	<div class="flex w-full items-center overflow-visible md:relative">
 		<a href="/app/team/member/{id}" class="flex w-full items-start gap-md">
 			{#if avatar_url}
 				<img
