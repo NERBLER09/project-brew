@@ -10,8 +10,10 @@
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
 	import { currentUsers, invitedTeamMembers } from '$lib/stores/user';
 	import type { ActionResult } from '@sveltejs/kit';
-	import type { ActionData } from '../$types';
 	import type { PageData } from './$types';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+	import AddTeam from '$lib/components/projects/new/AddTeam.svelte';
+	import { supabase } from '$lib/supabase';
 
 	export let user: PageData;
 
@@ -30,6 +32,7 @@
 	let name = '';
 	let description = '';
 	let invitedMembers: string[];
+	let selectedTeam: string;
 
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
@@ -39,6 +42,7 @@
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
 		data.append('user', JSON.stringify($currentUsers));
+		data.append('team', selectedTeam);
 
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
@@ -57,7 +61,31 @@
 		fileURL = '';
 		files = null;
 	};
+
+	let showTransferTeamDropdown = false;
+	let transferDropdownContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!transferDropdownContainer.contains(event.target)) showTransferTeamDropdown = false;
+	};
+
+	let teamName = '';
+	const getTeamName = async (id: string) => {
+		if (!selectedTeam) return;
+		const { data: team, error } = await supabase
+			.from('teams')
+			.select()
+			.eq('id', id)
+			.limit(1)
+			.single();
+		if (team) {
+			teamName = team.name;
+		}
+	};
+
+	$: getTeamName(selectedTeam);
 </script>
+
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <svelte:head>
 	<title>New Project</title>
@@ -98,6 +126,43 @@
 
 			<div class="mb-md flex flex-wrap gap-md">
 				<NewTagsInput bind:newTags={tags} />
+			</div>
+		</section>
+
+		<section class="mt-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Team</h2>
+			</header>
+			<div
+				class="relative mt-md flex items-center gap-sm overflow-visible font-medium text-grey-700 dark:text-grey-200 md:static"
+				bind:this={transferDropdownContainer}
+			>
+				{#if selectedTeam}
+					<span>Added to</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+					>
+						{teamName}
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<AddTeam bind:visibility={showTransferTeamDropdown} bind:selectedTeam />
+						{/if}
+					</button>
+				{:else}
+					<span>Add this project to a</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+						type="button"
+					>
+						team
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<AddTeam bind:visibility={showTransferTeamDropdown} bind:selectedTeam />
+						{/if}
+					</button>
+				{/if}
 			</div>
 		</section>
 

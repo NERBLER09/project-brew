@@ -57,6 +57,7 @@ export const actions: Actions = {
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
 		const user = data.get('user') as string;
+		const team = data.get("team") as string;
 
 		const invitedString = data.get('invited') as string;
 		let invited = invitedString.split(',') || null;
@@ -107,7 +108,8 @@ export const actions: Actions = {
 				user_id: session.user.id,
 				tags,
 				banner: coverURL,
-				invited_people: invited
+				invited_people: invited,
+				team
 			})
 			.select()
 			.limit(1)

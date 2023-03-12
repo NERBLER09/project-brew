@@ -6,8 +6,9 @@
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { invitedTeamMembers, userData } from '$lib/stores/user';
+	import { currentUsers, invitedTeamMembers, userData } from '$lib/stores/user';
 	import toast from 'svelte-french-toast';
+	import { supabase } from '$lib/supabase';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -39,6 +40,7 @@
 	let description = '';
 	let invitedMembers: string[];
 	let tags: string[] = [];
+	let selectedTeam: string;
 
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
@@ -47,16 +49,15 @@
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
 		data.append('invited', invitedMembers.toString());
-		data.append('user', JSON.stringify($userData));
+		data.append('user', JSON.stringify($currentUsers));
+		data.append('team', selectedTeam);
 
 		const response = await fetch('/app/projects?/new', {
 			method: 'POST',
 			body: data
 		});
-
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
-			shown = false;
 			toast.success('Created new project');
 			goto(`/app/projects/${result?.data.id}`);
 		} else {
@@ -68,6 +69,23 @@
 		fileURL = '';
 		files = null;
 	};
+
+	let showTransferTeamDropdown = false;
+	let transferDropdownContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!transferDropdownContainer.contains(event.target)) showTransferTeamDropdown = false;
+	};
+
+	let teamName = '';
+	const getTeamName = async (id: string) => {
+		if (!selectedTeam) return;
+		const { data: team } = await supabase.from('teams').select().eq('id', id).limit(1).single();
+		if (team) {
+			teamName = team.name;
+		}
+	};
+
+	$: getTeamName(selectedTeam);
 </script>
 
 <dialog
