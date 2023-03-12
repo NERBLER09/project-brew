@@ -118,7 +118,16 @@
 			class="aspect-square h-12 w-12 rounded-full object-cover"
 		/>
 		<div class="flex flex-col gap-sm">
-			<span class="font-bold text-grey-700 dark:text-grey-200">{name}</span>
+			{#if role === 'owner'}
+				<div class="flex items-center gap-sm">
+					<span class="truncate font-bold text-grey-700 dark:text-grey-200">{name}</span>
+					<li
+						class="ml-md list-inside list-disc truncate font-bold text-grey-700 dark:text-grey-300"
+					>
+						Team Owner
+					</li>
+				</div>
+			{/if}
 			<span class="font-medium text-grey-700 dark:text-grey-300">{email}</span>
 		</div>
 	</div>
