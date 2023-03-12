@@ -49,10 +49,12 @@
 <div
 	class="absolute left-0 top-6 flex h-fit w-screen max-w-[calc(100vw-3rem)] flex-col gap-4 rounded-2xl bg-grey-100 px-6 py-lg text-start dark:bg-grey-800 md:w-96 md:p-md"
 >
-	<button class="dropdown--item" on:click={handleRemoveTeam}>
-		<Trash className="dropdown--icon" />
-		<span class="dropdown--label">Remove from this team</span>
-	</button>
+	{#if $currentProject.team}
+		<button class="dropdown--item" on:click={handleRemoveTeam}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Remove from this team</span>
+		</button>
+	{/if}
 
 	{#each teams as team}
 		<button on:click={() => handleUpdateTeam(team.id)} class="dropdown--item"
