@@ -1,10 +1,8 @@
 <script lang="ts">
 	import Mail from '$lib/assets/Mail.svelte';
-
-	import OpenShare from '$lib/assets/Open-Share.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
-
 	import User from '$lib/assets/User.svelte';
+
 	import { showMobileNav } from '$lib/stores/ui';
 	import { userData } from '$lib/stores/user';
 	import { onDestroy, onMount } from 'svelte';

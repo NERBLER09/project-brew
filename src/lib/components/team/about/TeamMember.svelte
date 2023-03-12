@@ -4,6 +4,7 @@
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
 	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
+	import TeamMemberDropdown from '$lib/components/dropdowns/team/TeamMemberDropdown.svelte';
 	import { currentTeam, userRole } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -52,20 +53,25 @@
 	});
 
 	let showChangeStatus = false;
+	let showTeamMemberDropdown = false;
 
 	let changeStatusContainer: HTMLElement;
+	let teamMemberDropdown: HTMLElement;
+
 	const handleAutoCloseDropdown = (event: Event) => {
 		if (!changeStatusContainer) return;
 		if (!changeStatusContainer.contains(event.target)) {
 			showChangeStatus = false;
+		}
+
+		if (!teamMemberDropdown.contains(event.target)) {
+			showTeamMemberDropdown = false;
 		}
 	};
 
 	const handleUpdateStatus = async (event) => {
 		const newRole = event.detail.role;
 		showChangeStatus = false;
-
-		console.log($userRole);
 
 		if ($userRole === 'owner' || $userRole === 'admin') {
 			await supabase
@@ -136,7 +142,18 @@
 				<button on:click={handleRemoveUser}>
 					<UserRemove className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
 				</button>
-				<MoreHorizontal className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+				<div bind:this={teamMemberDropdown}>
+					<button on:click={() => (showTeamMemberDropdown = !showTeamMemberDropdown)}>
+						<MoreHorizontal className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300" />
+					</button>
+					{#if showTeamMemberDropdown}
+						<TeamMemberDropdown
+							bind:visibility={showTeamMemberDropdown}
+							{email}
+							removeUser={handleRemoveUser}
+						/>
+					{/if}
+				</div>
 			</div>
 		</div>
 	{/if}

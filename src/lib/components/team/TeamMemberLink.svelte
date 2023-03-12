@@ -4,10 +4,12 @@
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 
 	import User from '$lib/assets/User.svelte';
+	import { currentTeam, userRole } from '$lib/stores/team';
 	import { currentUsers, userData } from '$lib/stores/user';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 	import TeamMemberDropdown from '../dropdowns/team/TeamMemberDropdown.svelte';
 
 	export let id: string | undefined;
@@ -33,33 +35,6 @@
 		}
 	});
 
-	const removeUser = async () => {
-		let { data: users } = await supabase
-			.from('profiles')
-			.select('*')
-			.eq('id', $userData.id)
-			.limit(1)
-			.single();
-
-		if (!users?.team_members) return;
-
-		let currentUsers = users.team_members;
-		const index = currentUsers.indexOf(id!)!;
-		currentUsers.splice(index, 1)!;
-
-		const { error } = await supabase
-			.from('profiles')
-			.update({ team_members: currentUsers })
-			.eq('id', $userData.id);
-
-		if (!error) {
-			$userData.team_members = currentUsers;
-			invalidate('app:team-members');
-		} else {
-			console.error(error);
-		}
-	};
-
 	$: if ($currentUsers) {
 		for (const item of $currentUsers.users) {
 			if (item.id === id) {
@@ -77,6 +52,30 @@
 	const handleAutoCloseDropdown = (event: Event) => {
 		if (!memberDropdownContainer.contains(event.target)) {
 			showTeamMemberDropdown = false;
+		}
+	};
+
+	const handleRemoveUser = async () => {
+		if (($currentUsers.id = id)) {
+			toast.error("Can't remove team owner.");
+			return;
+		}
+		if ($userRole === 'owner' || $userRole === 'admin') {
+			const { error } = await supabase
+				.from('team_members')
+				.delete()
+				.eq('team', $currentTeam.id)
+				.eq('user_id', id)
+				.neq('role', 'owner');
+
+			if (error) {
+				toast.error(`Failed to remove ${name}`);
+			} else {
+				toast.success(`Removed ${name}`);
+				invalidate('app:team');
+			}
+		} else {
+			toast.error('User is not the team owner or an admin.');
 		}
 	};
 </script>
@@ -120,7 +119,11 @@
 			</button>
 
 			{#if showTeamMemberDropdown}
-				<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
+				<TeamMemberDropdown
+					bind:visibility={showTeamMemberDropdown}
+					{email}
+					removeUser={handleRemoveUser}
+				/>
 			{/if}
 		</div>
 	</div>
