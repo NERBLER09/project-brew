@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import camelCase from 'lodash';
+import camelCase, { uniq } from 'lodash';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -31,7 +31,8 @@ export const load = (async (event) => {
 	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
 
 	if (data && invited) {
-		const allProjects = [...data, ...invited, ...(team ?? [])];
+		let allProjects = [...data, ...invited, ...(team ?? [])];
+		allProjects = uniq(allProjects)
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
