@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto, invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
@@ -11,6 +12,8 @@
 	import TeamMemberLink from '$lib/components/team/TeamMemberLink.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 	import { currentTeam, userRole } from '$lib/stores/team';
+	import { supabase } from '$lib/supabase';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -38,6 +41,39 @@
 			toast.error('User is not the team owner or an admin.');
 		}
 	};
+
+	supabase
+		.channel('task-updates')
+		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'tasks' }, () =>
+			invalidate('app:team')
+		)
+		.subscribe();
+
+	supabase
+		.channel('team-member')
+		.on(
+			'postgres_changes',
+			{
+				event: 'UPDATE',
+				schema: 'public',
+				table: 'team_members',
+				filter: `team=eq.${data.team.id}`
+			},
+			() => invalidate('app:team')
+		)
+		.subscribe();
+	supabase.channel('team-delete').on(
+		'postgres_changes',
+		{
+			event: 'DELETE',
+			schema: 'public',
+			table: 'teams',
+			filter: `id=.${data.team.id}`
+		},
+		() => goto('/app/team')
+	);
+
+	onDestroy(() => supabase.removeAllChannels());
 </script>
 
 <svelte:head>
