@@ -11,6 +11,7 @@
 	import { enhance } from '$app/forms';
 	import Image from '$lib/assets/Image.svelte';
 	import UpdateBanner from '$lib/components/prompts/team/about/UpdateBanner.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 
 	export let data: PageData;
 
@@ -151,7 +152,7 @@
 
 <section class="mt-md">
 	<header>
-		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Team members</h2>
 	</header>
 	<div class="mt-sm flex flex-col items-start gap-lg">
 		{#each data.team.team_members as { user_id, role }}
@@ -159,5 +160,18 @@
 		{/each}
 	</div>
 </section>
+
+{#if data.role === 'owner'}
+	<section class="mt-md">
+		<header>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Danger Zone</h2>
+		</header>
+
+		<button class="button--primary mt-md flex w-full items-center justify-center gap-md">
+			<Trash className="h-6 w-6 stroke-grey-200" />
+			Delete Team
+		</button>
+	</section>
+{/if}
 
 <UpdateBanner bind:shown={showUpdateBannerPrompt} />
