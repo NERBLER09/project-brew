@@ -13,14 +13,21 @@
 	import UpdateBanner from '$lib/components/prompts/team/about/UpdateBanner.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/team/about/ConfirmDelete.svelte';
+	import Switch from '$lib/components/form/Switch.svelte';
 
 	export let data: PageData;
 
 	let description = data.team.description;
 	let name = data.team.name;
 	const isViewer = data.role === 'viewer';
-
 	let showConfirmDelete = false;
+
+	const dashboardSettings: object = data.team.dashboard_settings;
+	console.table(dashboardSettings);
+	let showMembers = dashboardSettings?.members;
+	let showProjects = dashboardSettings?.projects;
+	let showProgress = dashboardSettings?.progress;
+	let showDueTasks = dashboardSettings?.dueTasks;
 
 	const handleUpdateDescription = async () => {
 		if (description === data.team.description) return;
@@ -57,6 +64,24 @@
 
 	let emailSearch = '';
 	let showUpdateBannerPrompt = false;
+
+	const handleUpdateDashboard = async (
+		showMembers: boolean,
+		showProjects: boolean,
+		showProgress: boolean,
+		showDueTasks: boolean
+	) => {
+		const settings = {
+			members: showMembers,
+			projects: showProjects,
+			progress: showProgress,
+			dueTasks: showDueTasks
+		};
+
+		await supabase.from('teams').update({ dashboard_settings: settings }).eq('id', data.team.id);
+	};
+
+	$: handleUpdateDashboard(showMembers, showProjects, showProgress, showDueTasks);
 </script>
 
 <svelte:head>
@@ -179,6 +204,25 @@
 </section>
 
 {#if data.role === 'owner'}
+	<section class="mt-md">
+		<header>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">
+				Dashboard Customization
+			</h2>
+
+			<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
+				Change how the team dashboard appears for everyone.
+			</p>
+		</header>
+
+		<div class="flex flex-col gap-sm">
+			<Switch text="Show team members" id="team-members" bind:checked={showMembers} />
+			<Switch text="Show team projects" id="team-projects" bind:checked={showProjects} />
+			<Switch text="Show today's progress" id="todays-progress" bind:checked={showProgress} />
+			<Switch text="Show due tasks" id="due-tasks" bind:checked={showDueTasks} />
+		</div>
+	</section>
+
 	<section class="mt-md">
 		<header>
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Danger Zone</h2>
