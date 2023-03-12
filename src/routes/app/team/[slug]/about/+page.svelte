@@ -12,12 +12,15 @@
 	import Image from '$lib/assets/Image.svelte';
 	import UpdateBanner from '$lib/components/prompts/team/about/UpdateBanner.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import ConfirmDelete from '$lib/components/prompts/team/about/ConfirmDelete.svelte';
 
 	export let data: PageData;
 
 	let description = data.team.description;
 	let name = data.team.name;
 	const isViewer = data.role === 'viewer';
+
+	let showConfirmDelete = false;
 
 	const handleUpdateDescription = async () => {
 		if (description === data.team.description) return;
@@ -167,10 +170,15 @@
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Danger Zone</h2>
 		</header>
 
-		<button class="button--primary mt-md flex w-full items-center justify-center gap-md">
+		<button
+			class="button--primary mt-md flex w-full items-center justify-center gap-md"
+			on:click={() => (showConfirmDelete = true)}
+		>
 			<Trash className="h-6 w-6 stroke-grey-200" />
 			Delete Team
 		</button>
+
+		<ConfirmDelete bind:shown={showConfirmDelete} />
 	</section>
 {/if}
 

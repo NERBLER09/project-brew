@@ -10,6 +10,8 @@
 	import UpdateBanner from './UpdateBanner.svelte';
 	import { enhance } from '$app/forms';
 	import UserAdd from '$lib/assets/User-Add.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
+	import ConfirmDelete from './ConfirmDelete.svelte';
 
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
@@ -18,6 +20,7 @@
 	const isViewer = $userRole === 'viewer';
 
 	let showUpdateBannerDialog = false;
+	let showConfirmDelete = false;
 
 	let description = $currentTeam.description;
 	let name = $currentTeam.name;
@@ -184,6 +187,24 @@
 				{/each}
 			</div>
 		</section>
+
+		{#if $userRole === 'owner'}
+			<section class="mt-md">
+				<header>
+					<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Danger Zone</h2>
+				</header>
+
+				<button
+					class="button--primary mt-md flex w-full items-center justify-center gap-md"
+					on:click={() => (showConfirmDelete = true)}
+				>
+					<Trash className="h-6 w-6 stroke-grey-200" />
+					Delete Team
+				</button>
+
+				<ConfirmDelete bind:shown={showConfirmDelete} />
+			</section>
+		{/if}
 	</div>
 </dialog>
 
