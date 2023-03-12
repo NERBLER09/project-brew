@@ -24,6 +24,7 @@
 		totalAmountOfTasks = data?.length!;
 		completedTasks = data?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
+		if (totalAmountOfTasks === 0 && completedTasks === 0) percentCompleted = 100;
 	});
 </script>
 
@@ -65,4 +66,3 @@
 		<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 	</div>
 </section>
-

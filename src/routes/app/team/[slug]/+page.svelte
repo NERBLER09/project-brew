@@ -155,6 +155,10 @@
 				<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
 					{#each data.team.projects as project}
 						<ProjectItem {...project} />
+					{:else}
+						<p class="font-medium text-grey-700 dark:text-grey-200">
+							Progress for each project added to this team will appear here.
+						</p>
 					{/each}
 				</div>
 			</section>
@@ -176,14 +180,15 @@
 			<section class="col-span-1 md:col-start-1 lg:col-start-4">
 				<header class="my-sm flex items-center">
 					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
-					<button class="button--circle ml-auto">
-						<PlusNew className="h-6 w-6 stroke-grey-200" />
-					</button>
 				</header>
 
 				<div>
 					{#each data.team.projects as project}
 						<ProjectCard {...project} />
+					{:else}
+						<p class="font-medium text-grey-700 dark:text-grey-200">
+							Projects added to this team will appear here.
+						</p>
 					{/each}
 				</div>
 			</section>
