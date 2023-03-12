@@ -5,6 +5,7 @@
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import { currentTeam } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import type { Projects } from '$lib/types/projects';
 	import { onMount } from 'svelte';
@@ -43,7 +44,10 @@
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 55.28%, rgba(0, 0, 0, 0.6) 100%),'
 		: ''} url({data.banner});"
 >
-	<a href="/app/team" class="absolute top-6 left-6">
+	<a
+		href={$currentTeam ? `/app/team/${$currentTeam.id}` : '/app/team'}
+		class="absolute top-6 left-6"
+	>
 		<Back
 			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
 		/>
