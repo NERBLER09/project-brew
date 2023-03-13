@@ -173,39 +173,39 @@
 				<TaskList />
 			</section>
 		{/if}
-
-		{#if data.team.dashboard_settings.projects}
-			<section class="my-mb col-span-1 my-md md:col-start-1 lg:col-start-4">
-				<header class="my-sm flex items-center">
-					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
-				</header>
-
-				<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
-					{#each data.team.projects as project}
-						<ProjectCard {...project} />
-					{:else}
-						<p class="font-medium text-grey-700 dark:text-grey-200">
-							Projects added to this team will appear here.
-						</p>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		{#if data.team.dashboard_settings.members}
-			<section class="col-span-1 md:col-start-2 lg:col-start-5">
-				<header class="my-sm flex items-center">
-					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
-					<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
-				</header>
-
-				<div class="flex flex-col items-start gap-md">
-					{#each data.team.team_members as { user_id }}
-						<TeamMemberLink id={user_id} />
-					{/each}
-				</div>
-			</section>
-		{/if}
 	</section>
+
+	{#if data.team.dashboard_settings.projects}
+		<section class="my-mb col-span-1 my-md md:col-start-1 lg:col-start-4">
+			<header class="my-sm flex items-center">
+				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
+			</header>
+
+			<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
+				{#each data.team.projects as project}
+					<ProjectCard {...project} />
+				{:else}
+					<p class="font-medium text-grey-700 dark:text-grey-200">
+						Projects added to this team will appear here.
+					</p>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
+	{#if data.team.dashboard_settings.members}
+		<section class="col-span-1 md:col-start-2 lg:col-start-5">
+			<header class="my-sm flex items-center">
+				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
+				<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+			</header>
+
+			<div class="flex flex-col items-start gap-md">
+				{#each data.team.team_members as { user_id }}
+					<TeamMemberLink id={user_id} />
+				{/each}
+			</div>
+		</section>
+	{/if}
 </div>
 <AboutTeam bind:shown={showAboutDialog} teamMembers={data.team.team_members} />
