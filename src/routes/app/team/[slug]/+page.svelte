@@ -23,25 +23,6 @@
 
 	let showAboutDialog = false;
 
-	const handleRemoveUser = async () => {
-		if ($userRole === 'owner' || $userRole === 'admin') {
-			const { error } = await supabase
-				.from('team_members')
-				.delete()
-				.eq('team', $currentTeam.id)
-				.eq('user_id', id);
-
-			if (error) {
-				toast.error(`Failed to remove ${name}`);
-			} else {
-				toast.success(`Removed ${name}`);
-				invalidate('app:team');
-			}
-		} else {
-			toast.error('User is not the team owner or an admin.');
-		}
-	};
-
 	supabase
 		.channel('task-updates')
 		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'tasks' }, () =>
@@ -81,11 +62,11 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 max-h-[18.75rem] {data.banner
-		? 'h-fit'
-		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
+	class="{!data.team.banner
+		? 'static w-full'
+		: 'relative -top-6 -left-6 h-[12.5rem] w-[calc(100%+48px)] p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8'} rounded-b-3xl bg-cover bg-center bg-origin-border object-cover "
 	style="background-image: {data.team.banner
-		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
+		? 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.team.banner});"
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
@@ -120,15 +101,6 @@
 				/>
 				<span class="sr-only">View project info</span>
 			</button>
-			<div>
-				<button>
-					<MoreHorizontal
-						className="w-8 h-8 {data.team.banner
-							? 'stroke-grey-200'
-							: 'stroke-grey-700 dark:stroke-grey-200'}"
-					/>
-				</button>
-			</div>
 		</div>
 	</div>
 
