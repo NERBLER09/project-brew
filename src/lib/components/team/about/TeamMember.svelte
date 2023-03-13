@@ -117,19 +117,20 @@
 			alt="{name} profile"
 			class="aspect-square h-12 w-12 rounded-full object-cover"
 		/>
-		<div class="flex flex-col gap-sm">
+		<div class="flex w-[calc(100%-4.875rem)] flex-col gap-sm">
 			<div class="flex items-center gap-sm">
 				<span class="truncate font-bold text-grey-700 dark:text-grey-200">{name}</span>
 
 				{#if role === 'owner'}
 					<li
-						class="ml-md list-inside list-disc truncate font-bold text-grey-700 dark:text-grey-300"
+						class="ml-md list-inside list-disc truncate text-sm font-medium text-grey-700 dark:text-grey-300 md:text-base"
 					>
-						Team Owner
+						<span class="sr-only md:not-sr-only">Team</span>
+						Owner
 					</li>
 				{/if}
 			</div>
-			<span class="font-medium text-grey-700 dark:text-grey-300">{email}</span>
+			<span class="truncate font-medium text-grey-700 dark:text-grey-300">{email}</span>
 		</div>
 	</div>
 
