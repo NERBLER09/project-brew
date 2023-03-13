@@ -56,7 +56,7 @@
 	};
 
 	const handleRemoveUser = async () => {
-		if (($currentUsers.id = id)) {
+		if ($currentUsers.id === id) {
 			toast.error("Can't remove team owner.");
 			return;
 		}
