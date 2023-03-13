@@ -1,4 +1,3 @@
-import { supabase } from '$lib/supabase';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { fail, type Actions } from '@sveltejs/kit';
 
@@ -38,14 +37,14 @@ export const actions = {
 			.from('team_members')
 			.insert({ role: 'viewer', team: slug, user_id: user.id });
 
-		const { data: currentUser } = await supabase
+		const { data: currentUser } = await supabaseClient
 			.from('profiles')
 			.select()
 			.eq('id', session?.user.id)
 			.limit(1)
 			.single();
 
-		await supabase.from('notifications').insert({
+		await supabaseClient.from('notifications').insert({
 			message: `Has invited you to a team`,
 			target_user: user.id,
 			type: 'invite',
