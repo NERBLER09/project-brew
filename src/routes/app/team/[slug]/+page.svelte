@@ -2,8 +2,6 @@
 	import { goto, invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
-	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
-	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
@@ -70,7 +68,7 @@
 		: ''} url({data.team.banner});"
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
-		<a class="flex w-[calc(100%-100px)] items-center gap-md" href="/app/team">
+		<a class="flex max-w-[calc(100%-3.25rem)] items-center gap-md" href="/app/team">
 			<Back
 				className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square {data.team.banner
 					? 'stroke-grey-200'
@@ -137,7 +135,7 @@
 		{#if data.team.dashboard_settings?.dueTasks}
 			<section class="mb-md">
 				<header>
-					<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
+					<h3 class="my-sm text-md font-semibold text-grey-800 dark:text-grey-200">
 						Tasks due today
 					</h3>
 				</header>
