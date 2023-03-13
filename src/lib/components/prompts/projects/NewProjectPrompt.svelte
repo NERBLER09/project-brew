@@ -9,6 +9,8 @@
 	import { currentUsers, invitedTeamMembers, userData } from '$lib/stores/user';
 	import toast from 'svelte-french-toast';
 	import { supabase } from '$lib/supabase';
+	import AddTeam from '$lib/components/projects/new/AddTeam.svelte';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -81,6 +83,7 @@
 		if (!selectedTeam) return;
 		const { data: team } = await supabase.from('teams').select().eq('id', id).limit(1).single();
 		if (team) {
+			showTransferTeamDropdown = false;
 			teamName = team.name;
 		}
 	};
@@ -135,6 +138,43 @@
 			</header>
 			<div class="mb-md flex flex-wrap gap-md">
 				<NewTagsInput bind:newTags={tags} />
+			</div>
+		</section>
+
+		<section class="my-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Team</h2>
+			</header>
+			<div
+				class="relative mt-md flex items-center gap-sm overflow-visible font-medium text-grey-700 dark:text-grey-200 md:static"
+				bind:this={transferDropdownContainer}
+			>
+				{#if selectedTeam}
+					<span>Added to</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+					>
+						{teamName}
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<AddTeam bind:visibility={showTransferTeamDropdown} bind:selectedTeam />
+						{/if}
+					</button>
+				{:else}
+					<span>Add this project to a</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+						type="button"
+					>
+						team
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<AddTeam bind:visibility={showTransferTeamDropdown} bind:selectedTeam />
+						{/if}
+					</button>
+				{/if}
 			</div>
 		</section>
 

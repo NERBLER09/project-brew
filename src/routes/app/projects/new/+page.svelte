@@ -129,7 +129,7 @@
 			</div>
 		</section>
 
-		<section class="mt-md">
+		<section class="my-md">
 			<header>
 				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Team</h2>
 			</header>
