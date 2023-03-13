@@ -145,11 +145,9 @@
 			</h2>
 		</header>
 		{#if data.team.dashboard_settings?.progress}
-			<section>
+			<section class="my-md">
 				<header>
-					<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
-						Progress for today
-					</h3>
+					<h3 class="text-md font-semibold text-grey-800 dark:text-grey-200">Progress for today</h3>
 				</header>
 
 				<div class="mt-md flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
@@ -165,7 +163,7 @@
 		{/if}
 
 		{#if data.team.dashboard_settings?.dueTasks}
-			<section>
+			<section class="mb-md">
 				<header>
 					<h3 class="my-md text-md font-semibold text-grey-800 dark:text-grey-200">
 						Tasks due today
@@ -177,12 +175,12 @@
 		{/if}
 
 		{#if data.team.dashboard_settings.projects}
-			<section class="col-span-1 md:col-start-1 lg:col-start-4">
+			<section class="my-mb col-span-1 my-md md:col-start-1 lg:col-start-4">
 				<header class="my-sm flex items-center">
 					<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
 				</header>
 
-				<div>
+				<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
 					{#each data.team.projects as project}
 						<ProjectCard {...project} />
 					{:else}

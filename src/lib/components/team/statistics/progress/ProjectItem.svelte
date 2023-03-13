@@ -28,10 +28,10 @@
 	});
 </script>
 
-<section class="flex min-w-[8rem] flex-col items-center text-center ">
+<section class="flex min-w-[8rem] flex-col items-center text-center">
 	<header>
 		<span
-			class="mb-md text-start text-md font-semibold text-grey-700 dark:text-grey-200 md:text-center"
+			class="text-start font-semibold text-grey-700 dark:text-grey-200 md:text-center md:text-md"
 		>
 			{project_name}
 		</span>
