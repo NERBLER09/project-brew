@@ -86,7 +86,7 @@
 	<p class="font-bold text-grey-700 dark:text-grey-100">Loading team member details...</p>
 {:else}
 	<div class="flex w-full items-center overflow-visible md:relative">
-		<a href="/app/team/member/{id}" class="flex w-full items-start gap-md">
+		<a href="/app/team/member/{id}" class="flex w-[calc(100%-2.625rem)] items-start gap-md">
 			{#if avatar_url}
 				<img
 					src={avatar_url}
@@ -96,20 +96,20 @@
 			{:else}
 				<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
 			{/if}
-			<div class="mr-md flex w-full flex-col items-start justify-start gap-sm">
-				<div class="flex w-full max-w-[90%] items-center md:max-w-full">
-					<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-					<p class="ml-auto text-sm font-medium text-grey-700 dark:text-grey-100">
+			<div class="mr-md flex w-[calc(100%-3.625rem)] flex-col items-start justify-start gap-sm">
+				<div class="flex w-full items-center">
+					<span class="font-bold text-grey-700 dark:text-grey-100">{name}</span>
+					<span class="ml-auto text-sm font-medium text-grey-700 dark:text-grey-100">
 						{#if status === 'offline'}
 							Offline
 						{:else}
 							Online
 						{/if}
-					</p>
+					</span>
 				</div>
-				<p class="max-w-[90%] break-words font-bold text-grey-700 dark:text-grey-100 md:max-w-full">
+				<span class="break-words font-bold text-grey-700 dark:text-grey-100 md:max-w-full">
 					{email}
-				</p>
+				</span>
 			</div>
 		</a>
 
