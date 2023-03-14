@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import camelCase, { uniq } from 'lodash';
+import lodash from 'lodash';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -32,7 +32,7 @@ export const load = (async (event) => {
 
 	if (data && invited) {
 		let allProjects = [...data, ...invited, ...(team ?? [])];
-		allProjects = uniq(allProjects)
+		allProjects = lodash.uniq(allProjects)
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
@@ -68,7 +68,7 @@ export const actions: Actions = {
 		let coverURL = null;
 
 		if (cover && cover.size < 5000000) {
-			const ccName = camelCase(project_name);
+			const ccName = lodash(project_name);
 
 			const { error: coverErr } = await supabaseClient.storage
 				.from('project-covers')
