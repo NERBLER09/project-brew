@@ -107,7 +107,7 @@
 						{/if}
 					</span>
 				</div>
-				<span class="break-words font-bold text-grey-700 dark:text-grey-100 md:max-w-full">
+				<span class="w-full truncate font-bold text-grey-700 dark:text-grey-100 md:max-w-full">
 					{email}
 				</span>
 			</div>
