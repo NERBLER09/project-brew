@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Check from '$lib/assets/Check.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { userData } from '$lib/stores/user';
@@ -27,7 +28,7 @@
 
 		if (!error) {
 			$currentProject.team = teamId;
-			toast.success('Transfered team');
+			toast.success('Transferred team');
 			visibility = false;
 		} else toast.error(`Failed to tranfer team: ${error.message}`);
 	};
@@ -57,8 +58,11 @@
 	{/if}
 
 	{#each teams as team}
-		<button on:click={() => handleUpdateTeam(team.id)} class="dropdown--item"
-			><span class="dropdown--label">Move to {team.name}</span></button
-		>
+		<button on:click={() => handleUpdateTeam(team.id)} class="dropdown--item">
+			{#if $currentProject.team === team.id}
+				<Check className="dropdown--icon" />
+			{/if}
+			<span class="dropdown--label">{team.name}</span>
+		</button>
 	{/each}
 </div>
