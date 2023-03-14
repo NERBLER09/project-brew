@@ -10,7 +10,7 @@
 <section class="mt-md">
 	<header>
 		<div class="flex items-center">
-			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited people</h2>
 			<a href="/app/projects/{$currentProject.id}/about/team-management" class="ml-auto md:hidden">
 				<Filter
 					className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200"

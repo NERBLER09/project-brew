@@ -1,44 +1,18 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import User from '$lib/assets/User.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { onDestroy, onMount } from 'svelte';
-	import type { User as Profile } from '$lib/types/projects';
 	import type { PageData } from './$types';
-	import UserAdd from '$lib/assets/User-Add.svelte';
-	import { supabase } from '$lib/supabase';
 	import { invalidate } from '$app/navigation';
 	import toast from 'svelte-french-toast';
+	import { enhance } from '$app/forms';
+	import UserAdd from '$lib/assets/User-Add.svelte';
 
 	export let data: PageData;
 
 	let emailSearch = '';
-	let allUsers: Profile[] = data.users;
-
-	const handleSearchByEmail = () => {
-		allUsers = data.users;
-		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
-		allUsers = allUsers.filter((item) => !$currentProject.invited_people.includes(item.id));
-		allUsers.splice(4);
-	};
-
-	const handleInviteNewUser = async (id: string, name: string) => {
-		const invitedUsers = [...$currentProject.invited_people, id];
-		const { error } = await supabase
-			.from('projects')
-			.update({ invited_people: invitedUsers })
-			.eq('id', $currentProject.id);
-
-		if (!error) {
-			emailSearch = '';
-			invalidate('project:invited');
-			toast.success(`Invited ${name} to ${$currentProject.name}`);
-		} else {
-			toast.error(`Failed to invite ${name} to ${$currentProject.name}`);
-		}
-	};
 
 	onMount(() => {
 		$showMobileNav = false;
@@ -48,6 +22,10 @@
 		$showMobileNav = true;
 	});
 </script>
+
+<svelte:head>
+	<title>Mange Invited People</title>
+</svelte:head>
 
 <header
 	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!$currentProject.banner
@@ -73,74 +51,54 @@
 	</a>
 </header>
 
-<div
-	class="input--text relative flex w-full items-center {!$currentProject.banner ? '-top-8' : ''} "
+<form
+	action="?/invite"
+	method="POST"
+	use:enhance={() => {
+		return async ({ result }) => {
+			if (result.type === 'success') {
+				toast.success(`Added ${emailSearch} to ${$currentProject.name}`);
+				$currentProject.invited_people = result.data.invited_people;
+				invalidate('project:invited');
+			} else if (result.data.notFound) {
+				toast.error(`A user with the email: ${emailSearch} doesn't exist`);
+			} else if (result.data.invited) {
+				toast.error(`${emailSearch} has already been invited to this team.`);
+			} else if (result.type === 'failure') {
+				toast.error(`Failed to add user: ${result.data.message}`);
+			}
+		};
+	}}
 >
-	<input
-		type="text"
-		placeholder="Search by email to invite people"
-		class="input--text m-0 w-full p-0"
-		bind:value={emailSearch}
-		on:keyup={handleSearchByEmail}
-	/>
-	<button>
-		<User className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto" />
-	</button>
-</div>
+	<div
+		class="input--text relative flex w-full items-center {!$currentProject.banner ? '-top-8' : ''} "
+	>
+		<input
+			type="text"
+			placeholder="Search by email to invite people"
+			class="input--text m-0 w-full p-0"
+			bind:value={emailSearch}
+			name="invite_email"
+		/>
+		<button>
+			<UserAdd className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto" />
+		</button>
+	</div>
+</form>
 
-{#if emailSearch}
-	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
-		<header>
-			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Search results</h2>
-		</header>
-		<div>
-			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-				{#each allUsers as { avatar_url, name, email, id }}
-					<div class="flex w-full items-center md:relative">
-						<div class="flex items-start gap-md">
-							{#if avatar_url}
-								<img
-									src={avatar_url}
-									alt="User profile"
-									class="aspect-square h-12 w-12 rounded-full object-cover"
-								/>
-							{:else}
-								<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
-							{/if}
-							<div class="flex flex-col items-start justify-start gap-sm">
-								<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-								<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
-							</div>
-						</div>
-
-						<button class="ml-auto" on:click={() => handleInviteNewUser(id, name)}>
-							<UserAdd className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
-							<span class="sr-only">Add {email} to this project</span>
-						</button>
-					</div>
-				{:else}
-					<p class="text-grey-700 dark:text-grey-200 font-medium">
-						It looks like that a user with that email doesn't exists.
-					</p>
-				{/each}
-			</div>
+<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
+	<header>
+		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+	</header>
+	<div>
+		<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
+			{#each data.invited_people as id}
+				<TeamMember {id} />
+			{:else}
+				<p class="text-grey-700 dark:text-grey-200 font-medium">
+					No one has been invited to this project.
+				</p>
+			{/each}
 		</div>
-	</section>
-{:else}
-	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
-		<header>
-			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
-		</header>
-		<div>
-			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-				{#each data.invited_people as id}
-					<TeamMember {id} />
-				{:else}
-					<p class="text-grey-700 dark:text-grey-200 font-medium">
-						No one has been invited to this project.
-					</p>
-				{/each}
-			</div>
-		</div>
-	</section>
-{/if}
+	</div>
+</section>

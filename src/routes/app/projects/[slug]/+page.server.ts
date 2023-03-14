@@ -22,6 +22,12 @@ export const load = (async (event) => {
 		.single();
 
 	const { data: lists } = await supabaseClient.from('lists').select().eq('project', projectId);
+
+	const { data: userTeams } = await supabaseClient
+		.from('teams')
+		.select('*, team_members!inner(user_id)')
+		.eq('team_members.user_id', session.user.id);
+
 	if (project) {
 		return {
 			name: project?.project_name,
@@ -31,7 +37,9 @@ export const load = (async (event) => {
 			tags: JSON.parse(project?.tags) || [],
 			lists: lists || [],
 			project,
-			invited_people: project.invited_people || []
+			invited_people: project.invited_people || [],
+			team: project.team,
+			userTeams
 		};
 	}
 

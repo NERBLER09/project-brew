@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import camelCase from 'lodash';
+import lodash from 'lodash';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -21,8 +21,18 @@ export const load = (async (event) => {
 		.select()
 		.contains('invited_people', [session.user.id]);
 
+	const { data: userTeams } = await supabaseClient
+		.from('team_members')
+		.select()
+		.eq('user_id', session.user.id)
+		.limit(1)
+		.single();
+
+	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
+
 	if (data && invited) {
-		const allProjects = [...data, ...invited];
+		let allProjects = [...data, ...invited, ...(team ?? [])];
+		allProjects = lodash.uniq(allProjects)
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
@@ -47,6 +57,7 @@ export const actions: Actions = {
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
 		const user = data.get('user') as string;
+		const team = data.get("team") as string;
 
 		const invitedString = data.get('invited') as string;
 		let invited = invitedString.split(',') || null;
@@ -57,7 +68,7 @@ export const actions: Actions = {
 		let coverURL = null;
 
 		if (cover && cover.size < 5000000) {
-			const ccName = camelCase(project_name);
+			const ccName = lodash(project_name);
 
 			const { error: coverErr } = await supabaseClient.storage
 				.from('project-covers')
@@ -97,7 +108,8 @@ export const actions: Actions = {
 				user_id: session.user.id,
 				tags,
 				banner: coverURL,
-				invited_people: invited
+				invited_people: invited,
+				team
 			})
 			.select()
 			.limit(1)

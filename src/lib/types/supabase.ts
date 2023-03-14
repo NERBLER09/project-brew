@@ -1,5 +1,3 @@
-import type { User, NotficationSettings } from "./projects"
-
 export type Json =
   | string
   | number
@@ -39,28 +37,28 @@ export interface Database {
           id: string
           message: string
           sent: string | null
-          sentBy: User | null
+          sentBy: Json | null
           target_user: string
-          type: "invite" | "assigned" | "dueTask"
           title: string | null
+          type: string
         }
         Insert: {
           id?: string
           message: string
           sent?: string | null
-          sentBy?: User | null
+          sentBy?: Json | null
           target_user: string
-          type: "invite" | "assigned" | "dueTask"
           title?: string | null
+          type?: string
         }
         Update: {
           id?: string
           message?: string
           sent?: string | null
-          sentBy?: User | null
+          sentBy?: Json | null
           target_user?: string
-          type: "invite" | "assigned" | "dueTask"
           title?: string | null
+          type?: string
         }
       }
       profiles: {
@@ -73,7 +71,7 @@ export interface Database {
           invited_projects: number[] | null
           location: string | null
           name: string
-          notifcations_settings: NotficationSettings
+          notifcations_settings: Json
           role: string | null
           team_members: string[] | null
           your_activity: Json[] | null
@@ -87,7 +85,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name: string
-          notifcations_settings?: NotficationSettings
+          notifcations_settings?: Json
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null
@@ -101,7 +99,7 @@ export interface Database {
           invited_projects?: number[] | null
           location?: string | null
           name?: string
-          notifcations_settings?: NotficationSettings
+          notifcations_settings?: Json
           role?: string | null
           team_members?: string[] | null
           your_activity?: Json[] | null
@@ -116,6 +114,7 @@ export interface Database {
           pinned: boolean
           project_name: string
           tags: string | null
+          team: string | null
           user_id: string
         }
         Insert: {
@@ -126,6 +125,7 @@ export interface Database {
           pinned?: boolean
           project_name?: string
           tags?: string | null
+          team?: string | null
           user_id: string
         }
         Update: {
@@ -136,6 +136,7 @@ export interface Database {
           pinned?: boolean
           project_name?: string
           tags?: string | null
+          team?: string | null
           user_id?: string
         }
       }
@@ -178,6 +179,49 @@ export interface Database {
           status?: string
           tags?: string[] | null
           user_id?: string
+        }
+      }
+      team_members: {
+        Row: {
+          id: string
+          role: string
+          team: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: string
+          team: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: string
+          team?: string
+          user_id?: string
+        }
+      }
+      teams: {
+        Row: {
+          banner: string | null
+          dashboard_settings: Json
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          banner?: string | null
+          dashboard_settings?: Json
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          banner?: string | null
+          dashboard_settings?: Json
+          description?: string | null
+          id?: string
+          name?: string
         }
       }
     }

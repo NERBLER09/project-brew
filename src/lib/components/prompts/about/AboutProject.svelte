@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import TransferTeam from '$lib/components/dropdowns/projects/TransferTeam.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
@@ -14,6 +16,7 @@
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import lodash from 'lodash';
+	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 
@@ -39,8 +42,27 @@
 	let newProjectTags: any[] = $currentProject?.tags;
 	let newCoverURL = $currentProject.banner;
 	let newCoverFile: FileList | null;
-
 	let coverInputElement: HTMLInputElement;
+
+	let teamName = '';
+
+	const getTeamName = async () => {
+		const { data: team } = await supabase
+			.from('teams')
+			.select()
+			.eq('id', $currentProject.team)
+			.limit(1)
+			.single();
+		if (team) {
+			teamName = team.name;
+		}
+	};
+
+	$: if ($currentProject.team) getTeamName();
+
+	onMount(async () => {
+		getTeamName();
+	});
 
 	const uploadNewCover = async (coverList: FileList | null) => {
 		if (!coverList) return '';
@@ -118,7 +140,15 @@
 		newCoverURL = $currentProject.banner;
 		newCoverFile = null;
 	}
+
+	let showTransferTeamDropdown = false;
+	let transferDropdownContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!transferDropdownContainer.contains(event.target)) showTransferTeamDropdown = false;
+	};
 </script>
+
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <dialog
 	bind:this={dialog}
@@ -196,6 +226,37 @@
 
 		{#if !inEditMode}
 			<Description banner="" description={$currentProject.description} />
+			<div
+				class="relative mt-md flex items-center gap-sm overflow-visible font-medium text-grey-700 dark:text-grey-200 md:static"
+				bind:this={transferDropdownContainer}
+			>
+				{#if $currentProject.team}
+					<span>Part of</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+					>
+						{teamName}
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<TransferTeam bind:visibility={showTransferTeamDropdown} />
+						{/if}
+					</button>
+				{:else}
+					<span>Transfer this project to a</span>
+					<button
+						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
+						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
+					>
+						team
+						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+						{#if showTransferTeamDropdown}
+							<TransferTeam bind:visibility={showTransferTeamDropdown} />
+						{/if}
+					</button>
+				{/if}
+			</div>
+
 			<InvitedTeamMembers invited_people={$currentProject.invited_people} />
 		{:else}
 			<label for="description-input" class="input--label mb-sm">Edit the project description</label>

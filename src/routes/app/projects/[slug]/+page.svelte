@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { currentProject, invitedTeamMembers, recentlyEdited } from '$lib/stores/project';
+	import {
+		currentProject,
+		invitedTeamMembers,
+		recentlyEdited,
+		userTeams
+	} from '$lib/stores/project';
 	import { dndzone } from 'svelte-dnd-action';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
@@ -23,6 +28,7 @@
 
 	export let data: PageData;
 	currentProject.set(data);
+	userTeams.set(data.userTeams ?? []);
 
 	let showProjectDropdown = false;
 	let createNewList = false;

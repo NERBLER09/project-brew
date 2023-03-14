@@ -10,7 +10,11 @@
 </script>
 
 <div class="dropdown--container z-50 md:top-[6.25rem] md:right-xl md:left-auto lg:top-24">
-	<a href="/app/team/{$userData.id}" class="dropdown--item" on:click={() => (visibility = false)}>
+	<a
+		href="/app/team/member/{$userData.id}"
+		class="dropdown--item"
+		on:click={() => (visibility = false)}
+	>
 		<User className="dropdown--icon" />
 		<span class="dropdown--label">View Profile</span>
 	</a>

@@ -1,25 +1,19 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
+	import { enhance } from '$app/forms';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import UserAdd from '$lib/assets/User-Add.svelte';
-	import User from '$lib/assets/User.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
 
 	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
-	import { supabase } from '$lib/supabase';
-	import type { User as Profile } from '$lib/types/projects';
-	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
+	import UserAdd from '$lib/assets/User-Add.svelte';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
 
 	let emailSearch = '';
-	let unfilteredUsers: Profile[] = [];
-	let allUsers: Profile[] = [];
-
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
 		if (status) {
@@ -31,43 +25,7 @@
 		}
 	};
 
-	const handleSearchByEmail = () => {
-		allUsers = unfilteredUsers;
-		allUsers = allUsers.filter((item) => item.email.includes(emailSearch));
-		allUsers = allUsers.filter((item) => !$currentProject.invited_people.includes(item.id));
-		allUsers.splice(4);
-	};
-
-	const handleInviteNewUser = async (id: string, name: string) => {
-		const invitedUsers = [...$currentProject.invited_people, id];
-		const { error } = await supabase
-			.from('projects')
-			.update({ invited_people: invitedUsers })
-			.eq('id', $currentProject.id);
-		if (!error) {
-			$currentProject.invited_people = [...invitedUsers];
-			emailSearch = '';
-			invalidate('app:project');
-		} else {
-			toast.error(`Failed to invite ${name} to ${$currentProject.name}`);
-		}
-	};
-
 	$: handleModalStatus(shown);
-
-	onMount(async () => {
-		const { data: session } = await supabase.auth.getUser();
-		const { data: users, error: err } = await supabase
-			.from('profiles')
-			.select()
-			.neq('id', session?.user?.id);
-		if (users) {
-			allUsers = users;
-			unfilteredUsers = allUsers;
-		} else {
-			console.error(err);
-		}
-	});
 </script>
 
 <dialog
@@ -99,75 +57,59 @@
 		</button>
 	</header>
 
-	<div
-		class="input--text items-centerrelative flex w-full {!$currentProject.banner ? '-top-8' : ''}"
+	<form
+		action="/app/projects/{$currentProject.id}/about/team-mangement?/invite"
+		method="POST"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'success') {
+					toast.success(`Added ${emailSearch} to ${$currentProject.name}`);
+					$currentProject.invited_people = result.data.invited_people;
+					invalidate('project:invited');
+				} else if (result.data.notFound) {
+					toast.error(`A user with the email: ${emailSearch} doesn't exist`);
+				} else if (result.data.invited) {
+					toast.error(`${emailSearch} has already been invited to this team.`);
+				} else if (result.type === 'failure') {
+					toast.error(`Failed to add user: ${result.data.message}`);
+				}
+			};
+		}}
 	>
-		<input
-			type="text"
-			placeholder="Search by name or email to invite people"
-			class="input--text m-0 w-full p-0"
-			on:keyup={handleSearchByEmail}
-			bind:value={emailSearch}
-		/>
-		<button>
-			<User className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto" />
-		</button>
-	</div>
+		<div
+			class="input--text relative flex w-full items-center {!$currentProject.banner
+				? '-top-8'
+				: ''} "
+		>
+			<input
+				type="text"
+				placeholder="Search by email to invite people"
+				class="input--text m-0 w-full p-0"
+				bind:value={emailSearch}
+				name="invite_email"
+			/>
+			<button>
+				<UserAdd
+					className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+				/>
+			</button>
+		</div>
+	</form>
 
-	{#if emailSearch}
-		<section class="mt-md">
-			<header>
-				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Search results</h2>
-			</header>
-			<div>
-				<div class="mt-md flex w-full flex-col items-start gap-lg">
-					{#each allUsers as { avatar_url, name, email, id }}
-						<div class="flex w-full items-center md:relative">
-							<div class="flex items-start gap-md">
-								{#if avatar_url}
-									<img
-										src={avatar_url}
-										alt="User profile"
-										class="aspect-square h-12 w-12 rounded-full object-cover"
-									/>
-								{:else}
-									<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
-								{/if}
-								<div class="flex flex-col items-start justify-start gap-sm">
-									<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-									<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
-								</div>
-							</div>
-
-							<button class="ml-auto" on:click={() => handleInviteNewUser(id, name)}>
-								<UserAdd className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
-								<span class="sr-only">Add {email} to this project</span>
-							</button>
-						</div>
-					{:else}
-						<p class="text-grey-700 dark:text-grey-200 font-medium">
-							It looks like that a user with that email doesn't exists.
-						</p>
-					{/each}
-				</div>
+	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
+		<header>
+			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
+		</header>
+		<div>
+			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
+				{#each $currentProject.invited_people as id}
+					<TeamMember {id} />
+				{:else}
+					<p class="text-grey-700 dark:text-grey-200 font-medium">
+						No one has been invited to this project.
+					</p>
+				{/each}
 			</div>
-		</section>
-	{:else}
-		<section class="mt-md">
-			<header>
-				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
-			</header>
-			<div>
-				<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
-					{#each $currentProject.invited_people as id}
-						<TeamMember {id} />
-					{:else}
-						<p class="text-grey-700 dark:text-grey-200 font-medium">
-							It looks like that a user with that email doesn't exists.
-						</p>
-					{/each}
-				</div>
-			</div>
-		</section>
-	{/if}
+		</div>
+	</section>
 </dialog>
