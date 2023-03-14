@@ -65,21 +65,25 @@
 			};
 		}}
 	>
+		<label for="name-input" class="input--label">What should this team be called</label>
 		<input
 			type="text"
-			class="input--text mb-md w-full"
+			class="input--text mb-md mt-md w-full"
 			placeholder="What should this team be called"
 			name="name"
+			id="name-input"
 		/>
+
+		<label for="name-input" class="input--label mb-md">What should this team be called</label>
 		<textarea
 			name="description"
-			class="input--text h-36 w-full resize-none"
+			class="input--text mt-md h-36 w-full resize-none"
 			placeholder="Enter a brief description"
 		/>
 
 		<section>
 			<header>
-				<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
+				<h2 class="font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
 			</header>
 			<div class="max-w-xl">
 				<label
