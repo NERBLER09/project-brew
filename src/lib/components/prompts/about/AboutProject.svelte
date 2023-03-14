@@ -148,6 +148,8 @@
 	};
 </script>
 
+<svelte:window on:click={handleAutoCloseDropdown} />
+
 <dialog
 	bind:this={dialog}
 	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
