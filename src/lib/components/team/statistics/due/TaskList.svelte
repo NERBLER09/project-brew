@@ -13,6 +13,7 @@
 			.from('tasks')
 			.select('*, projects!inner(team)')
 			.eq('projects.team', teamId)
+			.eq('due_date', new Date().toISOString())
 			.neq('status', 'done');
 
 		if (tasks) {
