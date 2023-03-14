@@ -1,24 +1,13 @@
 <script lang="ts">
 	import Check from '$lib/assets/Check.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { currentProject } from '$lib/stores/project';
-	import { userData } from '$lib/stores/user';
+	import { currentProject, userTeams } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
-	import type { Teams } from '$lib/types/projects';
-	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
 	export let visibility: boolean;
 
-	let teams: Teams[] = [];
-
-	onMount(async () => {
-		const { data } = await supabase
-			.from('teams')
-			.select('*, team_members!inner(user_id)')
-			.eq('team_members.user_id', $userData.id);
-		teams = data ?? [];
-	});
+	let teams = $userTeams;
 
 	const handleUpdateTeam = async (teamId: string) => {
 		const { error } = await supabase
