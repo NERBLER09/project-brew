@@ -166,41 +166,42 @@
 	</span>
 {/if}
 
-<form
-	action="?/invite"
-	method="POST"
-	use:enhance={() => {
-		return async ({ result }) => {
-			if (result.type === 'success') {
-				toast.success(`Added ${emailSearch} to ${data.team.name}`);
-				invalidate('app:team');
-			} else if (result.data.notFound) {
-				toast.error(`A user with the email: ${emailSearch} doesn't exist`);
-			} else if (result.data.invited) {
-				toast.error(`${emailSearch} has already been invited to this team.`);
-			} else if (result.type === 'failure') {
-				toast.error(`Failed to add user: ${result.data.message}`);
-			}
-		};
-	}}
->
-	<div class="input--text relative flex w-full items-center">
-		<input
-			type="email"
-			placeholder="Search by email to invite people"
-			class="input--text m-0 w-full p-0"
-			bind:value={emailSearch}
-			name="invite_email"
-		/>
-		<button>
-			<UserAdd className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
-		</button>
-	</div>
-</form>
-
 <section class="mt-md">
 	<header>
-		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Team members</h2>
+		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200" id="team">Team members</h2>
+
+		<form
+			action="?/invite"
+			method="POST"
+			class="my-md"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type === 'success') {
+						toast.success(`Added ${emailSearch} to ${data.team.name}`);
+						invalidate('app:team');
+					} else if (result.data.notFound) {
+						toast.error(`A user with the email: ${emailSearch} doesn't exist`);
+					} else if (result.data.invited) {
+						toast.error(`${emailSearch} has already been invited to this team.`);
+					} else if (result.type === 'failure') {
+						toast.error(`Failed to add user: ${result.data.message}`);
+					}
+				};
+			}}
+		>
+			<div class="input--text relative flex w-full items-center">
+				<input
+					type="email"
+					placeholder="Search by email to invite people"
+					class="input--text m-0 w-full p-0"
+					bind:value={emailSearch}
+					name="invite_email"
+				/>
+				<button>
+					<UserAdd className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6 ml-auto" />
+				</button>
+			</div>
+		</form>
 	</header>
 	<div class="mt-sm flex flex-col items-start gap-lg">
 		{#each data.team.team_members as { user_id, role }}

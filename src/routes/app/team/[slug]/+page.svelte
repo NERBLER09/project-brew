@@ -84,20 +84,20 @@
 		</a>
 		<div class="ml-auto flex items-center gap-md">
 			<a href="/app/team/{data.team.id}/about" class="md:hidden">
-				<CircleInfo
+				<Settings
 					className="w-8 h-8 {data.team.banner
 						? 'stroke-grey-200'
 						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
-				<span class="sr-only">View project info</span>
+				<span class="sr-only">View or manage team</span>
 			</a>
 			<button class="hidden md:inline" on:click={() => (showAboutDialog = true)}>
-				<CircleInfo
+				<Settings
 					className="w-8 h-8 {data.team.banner
 						? 'stroke-grey-200'
 						: 'stroke-grey-700 dark:stroke-grey-200'}"
 				/>
-				<span class="sr-only">View project info</span>
+				<span class="sr-only">View or manage team</span>
 			</button>
 		</div>
 	</div>
@@ -167,7 +167,13 @@
 		<section class="col-span-1 md:col-start-2 lg:col-start-5">
 			<header class="my-sm flex items-center">
 				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
-				<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+				<a href="/app/team/{data.team.id}/about#team" class="ml-auto md:hidden">
+					<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+				</a>
+
+				<button class="ml-auto hidden md:inline" on:click={() => (showAboutDialog = true)}>
+					<Settings className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+				</button>
 			</header>
 
 			<div class="flex flex-col items-start gap-md">
