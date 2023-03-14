@@ -110,8 +110,8 @@
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
-<div class="w-full">
-	<div class="flex gap-lg">
+<div class="w-full items-center md:flex">
+	<div class="flex w-full gap-lg">
 		<img
 			src={avatar}
 			alt="{name} profile"
@@ -135,11 +135,11 @@
 	</div>
 
 	{#if role !== 'owner'}
-		<div class="mt-sm flex items-center">
+		<div class="mt-sm flex items-center md:ml-2xl md:w-full md:justify-around">
 			<div class="relative" bind:this={changeStatusContainer}>
 				<button
 					on:click={() => (showChangeStatus = !showChangeStatus)}
-					class="flex items-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700"
+					class="flex items-center justify-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700 md:px-2 md:py-1"
 				>
 					<span class="font-bold text-grey-700 dark:text-grey-200">{roleFormatted}</span>
 					<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-300" />
