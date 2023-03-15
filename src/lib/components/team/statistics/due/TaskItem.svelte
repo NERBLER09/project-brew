@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Assinged from '$lib/components/projects/card/Assinged.svelte';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte';
@@ -12,6 +13,7 @@
 
 	let project_name: string;
 	let doneListId: number | null;
+	let assignedPeople: string[] = [];
 
 	let itemDone = false;
 
@@ -30,9 +32,10 @@
 			.eq('status', 'done')
 			.limit(1)
 			.single();
-		doneListId = list?.id ?? null;
 
+		doneListId = list?.id ?? null;
 		project_name = data?.project_name ?? '';
+		assignedPeople = data?.invited_people ?? [];
 	});
 
 	const handleUpdateStatusWhenComplete = async () => {
@@ -62,4 +65,9 @@
 			{project_name}
 		</a>
 	</li>
+	<div class="ml-auto flex items-center px-2">
+		{#each assignedPeople as id}
+			<Assinged {id} />
+		{/each}
+	</div>
 </div>

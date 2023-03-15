@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
