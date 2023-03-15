@@ -206,8 +206,8 @@
 		</div>
 	</header>
 
-	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
-		<div class="mb-lg flex flex-wrap gap-md">
+	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
+		<div class="flex flex-wrap">
 			{#if $currentProject.tags.length > 1}
 				<div class="mb-sm flex flex-wrap gap-md">
 					{#if inEditMode}
@@ -217,19 +217,21 @@
 					{/if}
 				</div>
 			{/if}
+		</div>
 
-			{#if !inEditMode}
-				{#if $currentProject.description}
-					<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
-						{$currentProject.description}
-					</p>
-				{/if}
+		{#if !inEditMode}
+			{#if $currentProject.description}
+				<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
+					{$currentProject.description}
+				</p>
+			{/if}
 
-				{#if $userTeams.length > 0}
-					<TransferProjectToTeam {teamName} />
-				{/if}
-				<InvitedTeamMembers invited_people={$currentProject.invited_people} />
-			{:else}
+			{#if $userTeams.length > 0}
+				<TransferProjectToTeam {teamName} />
+			{/if}
+			<InvitedTeamMembers invited_people={$currentProject.invited_people} />
+		{:else}
+			<div class="flex flex-col">
 				<label for="description-input" class="input--label mb-sm"
 					>Edit the project description</label
 				>
@@ -239,48 +241,48 @@
 					placeholder="Enter a brief description"
 					bind:value={newProjectDescription}
 				/>
-			{/if}
-		</div>
-		{#if inEditMode}
-			<section class="mt-md">
-				<header>
-					<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100">Cover Properties</h2>
-				</header>
-
-				<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
-
-				{#if !newCoverURL}
-					<button
-						class="button--secondary flex w-full items-center justify-center gap-md"
-						on:click={() => coverInputElement.click()}
-					>
-						<Image className="stroke-grey-70 dark:text-grey-1000 w-6 h-6" />
-						Set a project cover
-					</button>
-				{:else if newCoverURL}
-					<button
-						class="button--primary flex w-full items-center justify-center gap-md"
-						on:click={() => coverInputElement.click()}
-					>
-						<Image className="stroke-grey-200 w-6 h-6" />
-						Update project cover
-					</button>
-					<button
-						class="button--secondary mt-sm flex w-full items-center justify-center gap-md"
-						on:click={handleRemoveCover}
-					>
-						<Trash className="stroke-grey-700 dark:stroke-grey-100 w-6 h-6" />
-						Remove cover
-					</button>
-				{/if}
-			</section>
-
-			<footer class="mx-auto mt-xl flex w-1/2 items-center justify-around gap-md">
-				<button class="button--secondary" on:click={() => (inEditMode = false)}>Cancel</button>
-				<button class="button--primary" on:click={handleUpdateProject}>Save</button>
-			</footer>
+			</div>
 		{/if}
 	</div>
+	{#if inEditMode}
+		<section class="mt-md">
+			<header>
+				<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100">Cover Properties</h2>
+			</header>
+
+			<input type="file" class="hidden" bind:this={coverInputElement} bind:files={newCoverFile} />
+
+			{#if !newCoverURL}
+				<button
+					class="button--secondary flex w-full items-center justify-center gap-md"
+					on:click={() => coverInputElement.click()}
+				>
+					<Image className="stroke-grey-70 dark:text-grey-1000 w-6 h-6" />
+					Set a project cover
+				</button>
+			{:else if newCoverURL}
+				<button
+					class="button--primary flex w-full items-center justify-center gap-md"
+					on:click={() => coverInputElement.click()}
+				>
+					<Image className="stroke-grey-200 w-6 h-6" />
+					Update project cover
+				</button>
+				<button
+					class="button--secondary mt-sm flex w-full items-center justify-center gap-md"
+					on:click={handleRemoveCover}
+				>
+					<Trash className="stroke-grey-700 dark:stroke-grey-100 w-6 h-6" />
+					Remove cover
+				</button>
+			{/if}
+		</section>
+
+		<footer class="mx-auto mt-xl flex w-1/2 items-center justify-around gap-md">
+			<button class="button--secondary" on:click={() => (inEditMode = false)}>Cancel</button>
+			<button class="button--primary" on:click={handleUpdateProject}>Save</button>
+		</footer>
+	{/if}
 </dialog>
 
 <ManageInvited bind:shown={$showManageInvitedPrompt} />

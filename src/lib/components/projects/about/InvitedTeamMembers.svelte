@@ -7,7 +7,7 @@
 	export let invited_people: string[] | null | undefined;
 </script>
 
-<section class="mt-md">
+<section class="mt-md w-full">
 	<header>
 		<div class="flex items-center">
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited people</h2>
