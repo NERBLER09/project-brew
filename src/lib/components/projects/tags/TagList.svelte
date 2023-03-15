@@ -15,7 +15,7 @@
 	});
 </script>
 
-<div class="mb-md flex flex-wrap gap-md">
+<div class="mb-sm flex flex-wrap gap-md">
 	{#each formattedTags as tag}
 		<TagItem {tag} />
 	{/each}

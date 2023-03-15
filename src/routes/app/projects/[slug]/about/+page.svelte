@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import TransferTeam from '$lib/components/dropdowns/projects/TransferTeam.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
@@ -195,7 +193,7 @@
 		{/if}
 	</header>
 	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
-		<div class="mb-lg flex flex-wrap gap-md">
+		<div class="mb-sm flex flex-wrap gap-md">
 			{#if inEditMode}
 				<NewTagsInput bind:newTags={newProjectTags} />
 			{:else}
@@ -203,7 +201,9 @@
 			{/if}
 		</div>
 		{#if !inEditMode}
-			<Description banner="" description={$currentProject.description} />
+			<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
+				{$currentProject.description}
+			</p>
 			{#if $userTeams.length > 0}
 				<TransferProjectToTeam {teamName} />
 			{/if}

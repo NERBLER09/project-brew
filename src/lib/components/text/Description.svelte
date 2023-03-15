@@ -21,9 +21,9 @@
 	<p
 		class="min-h-fit font-medium {expandContents
 			? 'h-fit'
-			: 'max-h-[4.125rem]'} overflow-hidden text-ellipsis {banner
+			: 'max-h-[3.375rem] md:max-h-[4.125rem]'} overflow-hidden text-ellipsis {banner
 			? 'text-grey-200'
-			: 'text-grey-700 dark:text-grey-200'} text-sm sm:text-base"
+			: 'text-grey-700 dark:text-grey-200'} text-sm transition-all duration-300 ease-in sm:text-base"
 		bind:this={descriptionElement}
 	>
 		{description}
@@ -32,7 +32,7 @@
 		<button
 			class="font-medium {banner
 				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} mt-sm text-sm"
+				: 'text-grey-700 dark:text-grey-200'} relative z-50 mt-sm text-sm"
 			on:click={() => (expandContents = !expandContents)}
 		>
 			{#if expandContents}
