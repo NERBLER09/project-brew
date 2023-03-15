@@ -84,9 +84,9 @@
 
 		<section>
 			<header>
-				<h2 class="font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
+				<h2 class="my-md font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
 			</header>
-			<div class="max-w-xl">
+			<div class="w-full">
 				<label
 					class="flex h-32 w-full cursor-pointer appearance-none justify-center rounded-md border-2 border-dashed border-grey-800 bg-grey-100 px-4 transition hover:border-grey-600 focus:outline-none dark:bg-grey-800"
 				>
