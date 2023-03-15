@@ -9,7 +9,6 @@
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
-	import Description from '$lib/components/text/Description.svelte';
 	import { currentProject, userTeams } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
@@ -26,6 +25,8 @@
 	let coverInputElement: HTMLInputElement;
 
 	let teamName = '';
+
+	console.log($currentProject.tags);
 
 	const getTeamName = async () => {
 		const { data: team } = await supabase
@@ -193,17 +194,23 @@
 		{/if}
 	</header>
 	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
-		<div class="mb-sm flex flex-wrap gap-md">
-			{#if inEditMode}
-				<NewTagsInput bind:newTags={newProjectTags} />
-			{:else}
-				<TagList tags={$currentProject.tags} />
-			{/if}
-		</div>
+		{#if $currentProject.tags.length > 1}
+			<div class="mb-sm flex flex-wrap gap-md">
+				{#if inEditMode}
+					<NewTagsInput bind:newTags={newProjectTags} />
+				{:else}
+					<TagList tags={$currentProject.tags} />
+				{/if}
+			</div>
+		{/if}
+
 		{#if !inEditMode}
-			<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
-				{$currentProject.description}
-			</p>
+			{#if $currentProject.description}
+				<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
+					{$currentProject.description}
+				</p>
+			{/if}
+
 			{#if $userTeams.length > 0}
 				<TransferProjectToTeam {teamName} />
 			{/if}
