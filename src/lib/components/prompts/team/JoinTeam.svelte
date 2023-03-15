@@ -23,7 +23,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="relative h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+	class="h-[18.75rem] w-full overflow-hidden rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 md:h-[18.75rem] md:w-[25rem]"
 	on:close={() => (shown = false)}
 >
 	<header class="mb-md flex items-center">
@@ -60,7 +60,7 @@
 			required
 		/>
 
-		<footer class="mx-auto mt-lg flex w-1/2 items-center justify-around">
+		<footer class="mt-lg flex w-full items-center justify-center gap-2xl">
 			<button class="button--secondary" on:click={() => (shown = false)} type="button">Join</button>
 			<button class="button--primary" type="submit">Create</button>
 		</footer>
