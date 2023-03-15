@@ -141,6 +141,24 @@
 
 				<TaskList />
 			</section>
+			<section class="mb-md">
+				<header>
+					<h3 class="my-sm text-md font-semibold text-grey-800 dark:text-grey-200">
+						Tasks Due Soon
+					</h3>
+				</header>
+
+				<TaskList type="soon" />
+			</section>
+			<section class="mb-md">
+				<header>
+					<h3 class="my-sm text-md font-semibold text-grey-800 dark:text-grey-200">
+						Overdue Tasks
+					</h3>
+				</header>
+
+				<TaskList type="overdue" />
+			</section>
 		{/if}
 	</section>
 
