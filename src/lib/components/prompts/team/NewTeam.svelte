@@ -3,6 +3,7 @@
 	import Image from '$lib/assets/Image.svelte';
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import { goto } from '$app/navigation';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
