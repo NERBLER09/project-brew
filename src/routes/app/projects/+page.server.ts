@@ -32,7 +32,8 @@ export const load = (async (event) => {
 
 	if (data && invited) {
 		let allProjects = [...data, ...invited, ...(team ?? [])];
-		allProjects = lodash.uniqBy(allProjects, "id");
+
+allProjects = lodash.uniqBy(allProjects, "id");
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
