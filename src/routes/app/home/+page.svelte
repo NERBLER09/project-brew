@@ -148,9 +148,11 @@
 		</section>
 	</div>
 
-	<section class="col-span-2 hidden md:inline">
+	<section class="col-span-2">
 		<header>
-			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Jump Back Into</h2>
+			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
+				Jump Back Into
+			</h2>
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				Resume working on recently edited projects
 			</p>

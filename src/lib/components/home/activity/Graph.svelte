@@ -15,7 +15,7 @@
 	});
 </script>
 
-<div class="relative h-[calc(100%-5.5625rem)]">
+<div class="relative h-[calc(100%-5.5625rem)] max-h-[10rem]">
 	<div class="flex h-full flex-col-reverse justify-around text-end">
 		<div class="flex items-center gap-md">
 			<span class="w-[2ch] text-sm font-bold text-grey-600 dark:text-grey-400">0</span>
