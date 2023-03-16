@@ -61,8 +61,10 @@
 		/>
 
 		<footer class="mt-lg flex w-full items-center justify-center gap-2xl">
-			<button class="button--secondary" on:click={() => (shown = false)} type="button">Join</button>
-			<button class="button--primary" type="submit">Create</button>
+			<button class="button--secondary" on:click={() => (shown = false)} type="button"
+				>Cancel</button
+			>
+			<button class="button--primary" type="submit">Join</button>
 		</footer>
 	</form>
 </dialog>
