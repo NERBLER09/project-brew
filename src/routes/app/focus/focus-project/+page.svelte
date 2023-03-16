@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Check from '$lib/assets/Check.svelte';
 
 	import Search from '$lib/assets/Search.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
@@ -7,19 +8,21 @@
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import { focusProject } from '$lib/stores/focus';
 	import type { Projects } from '$lib/types/projects';
+	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const handleSelectFocusProject = (project: Projects) => {
 		$focusProject = project;
+		toast.success(`Selected ${project.project_name} as something to focus on`);
 		goto('/app/focus');
 	};
 
-	let unfilteredList = data.all;
+	let unfiltteredList = data.all;
 	let query = '';
 	const handleSearch = () => {
-		data.all = unfilteredList.filter((value) => value.project_name.includes(query));
+		data.all = unfiltteredList?.filter((value) => value.project_name.toLowerCase().includes(query));
 	};
 </script>
 
@@ -39,12 +42,17 @@
 	</div>
 	<div class="flex flex-col gap-md">
 		{#each data.all as project}
-			<button
-				class="input--label button--text w-full pl-2 text-start"
-				on:click={() => handleSelectFocusProject(project)}
-			>
-				{project.project_name}
-			</button>
+			<div class="flex items-center gap-md">
+				{#if $focusProject?.id === project.id}
+					<Check className="stroke-grey-700 dark:stroke-grey-300 w-8 h-8" />
+				{/if}
+				<button
+					class="input--label button--text w-full pl-2 text-start"
+					on:click={() => handleSelectFocusProject(project)}
+				>
+					{project.project_name}
+				</button>
+			</div>
 		{/each}
 
 		{#if $focusProject}
