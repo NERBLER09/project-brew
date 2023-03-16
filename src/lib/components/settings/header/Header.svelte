@@ -32,7 +32,9 @@
 					: ' relative -top-2'} aspect-square h-[6.25rem] w-[6.25rem] rounded-full object-cover"
 			/>
 		{:else}
-			<User className="w-[6.25rem] h-[6.25rem] stroke-grey-700 dark:stroke-grey-200" />
+			<User
+				className="w-[6.25rem] h-[6.25rem] stroke-grey-700 dark:stroke-grey-200 bg-grey-100 dark:bg-grey-800 rounded-full"
+			/>
 		{/if}
 
 		<div class="z-50 mt-sm flex h-full w-full flex-col overflow-hidden md:mt-md md:w-auto">
