@@ -39,31 +39,39 @@
 		};
 	}}
 >
-	{#if notificationsEnabled}
-		<section>
-			<header>
-				<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
-					Push Notifications
-				</h2>
-				<p class="font-medium text-grey-700 dark:text-grey-200">
-					Control what you get a push notification from.
-				</p>
-			</header>
-			<div class="mt-md flex flex-col gap-md">
-				<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
-				<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
-				<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
-				<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
-			</div>
-		</section>
-	{:else}
-		<p class="font-medium text-grey-700 dark:text-grey-200">
-			In order to recive push notifications you are going to have to enable them for this page
-			<button
-				class="button--primary mt-sm"
-				on:click={() => Notification.requestPermission().then(() => (notificationsEnabled = true))}
-				type="button">Enable</button
-			>
+	<section>
+		<header>
+			<h2 class="mb-sm text-lg font-semibold text-grey-900 dark:text-grey-100">
+				Push Notifications
+			</h2>
+			<p class="font-medium text-grey-700 dark:text-grey-200">
+				Control what you get a push notification from.
+			</p>
+		</header>
+		<div class="mt-md flex flex-col gap-md">
+			<Switch id="project-invite" text="Invited to a project" bind:checked={pushInvited} />
+			<Switch id="new-task" text="Assigned a new task" bind:checked={pushAssigned} />
+			<Switch id="due-tasks" text="Due Tasks" bind:checked={pushDueTask} />
+			<Switch id="focus-timer-up" text="When focus timer is up" bind:checked={pushFocusTimerUp} />
+		</div>
+	</section>
+
+	{#if !notificationsEnabled && Notification.permission !== 'denied'}
+		<p class="mt-md font-medium text-grey-700 dark:text-grey-200">
+			In order to receive push notifications you are going to have to enable them for this page
+		</p>
+		<button
+			class="button--primary mt-sm w-full md:w-fit"
+			on:click={() =>
+				Notification.requestPermission().then(
+					() => (notificationsEnabled = Notification.permission === 'granted')
+				)}
+			type="button">Enable</button
+		>
+	{:else if Notification.permission === 'denied'}
+		<p class="mt-md font-medium text-grey-700 dark:text-grey-200">
+			You have denied access to send push notifications, you will not receive any push
+			notifications, but will continue to receive in app notifications.
 		</p>
 	{/if}
 	<section class="mt-md">
