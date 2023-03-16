@@ -30,10 +30,15 @@
 	let totalFocusTime = 0;
 
 	let userDropdownContainer: HTMLElement;
+	let notificationsContainer: HTMLElement;
 
 	const handleAutoCloseDropdown = (event: Event) => {
 		if (!userDropdownContainer.contains(event.target)) {
 			showUserDropdown = false;
+		}
+
+		if (!notificationsContainer.contains(event.target)) {
+			showNotificationsDropdown = false;
 		}
 	};
 
@@ -75,7 +80,7 @@
 			<span class="sr-only">View current notifications</span>
 		</a>
 
-		<div class="relative hidden md:inline">
+		<div class="relative hidden md:inline" bind:this={notificationsContainer}>
 			<button on:click={() => (showNotificationsDropdown = !showNotificationsDropdown)}>
 				<Bell className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8 md:w-[2rem] md:h-[2rem]" />
 				<span class="sr-only">View current notifications</span>
