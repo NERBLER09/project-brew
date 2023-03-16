@@ -169,7 +169,7 @@
 		</div>
 	</section>
 
-	<section class="col-span-1 hidden md:inline">
+	<section class="col-span-1 hidden w-fit md:inline">
 		<header>
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
 		</header>
@@ -182,7 +182,9 @@
 				<div class="mt-sm flex flex-col text-center">
 					<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span>
 					<span class="mt-md mb-sm text-md font-medium text-grey-700 dark:text-grey-200"
-						><span class="font-semibold">{totalFocusTime}</span> minutes</span
+						><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1
+							? 's'
+							: ''}</span
 					>
 					<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span>
 					<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span>
