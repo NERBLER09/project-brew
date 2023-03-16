@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Check from '$lib/assets/Check.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
@@ -6,6 +7,7 @@
 	import { supabase } from '$lib/supabase';
 	import type { Projects } from '$lib/types/projects';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	export let shown = false;
 	let projects: Projects[] = [];
@@ -25,7 +27,7 @@
 
 		if (data && invited) {
 			projects = [...data, ...invited];
-			unfilteredList = projects;
+			unfiltteredList = projects;
 		}
 	});
 
@@ -42,13 +44,16 @@
 
 	const handleSelectFocusProject = (project: Projects) => {
 		$focusProject = project;
+		toast.success(`Selected ${project.project_name} as something to focus on`);
 		shown = false;
 	};
 
-	let unfilteredList: Projects[];
+	let unfiltteredList = projects;
 	let query = '';
 	const handleSearch = () => {
-		projects = unfilteredList.filter((value) => value?.project_name?.includes(query));
+		projects = unfiltteredList?.filter((value) =>
+			value?.project_name.toLowerCase().includes(query)
+		);
 	};
 
 	$: handleModalStatus(shown);
@@ -80,12 +85,17 @@
 
 	<div class="flex flex-col gap-md">
 		{#each projects as project}
-			<button
-				class="input--label button--text w-full pl-2 text-start"
-				on:click={() => handleSelectFocusProject(project)}
-			>
-				{project.project_name}
-			</button>
+			<div class="flex items-center gap-md">
+				{#if $focusProject?.id === project.id}
+					<Check className="stroke-grey-700 dark:stroke-grey-300 w-8 h-8" />
+				{/if}
+				<button
+					class="input--label button--text w-full pl-2 text-start"
+					on:click={() => handleSelectFocusProject(project)}
+				>
+					{project.project_name}
+				</button>
+			</div>
 		{/each}
 	</div>
 

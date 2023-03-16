@@ -74,8 +74,8 @@
 			/>
 		{:else}
 			<User
-				className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-[6.25rem] md:w-[6.25rem] {data.banner
-					? 'stroke-grey-200'
+				className="w-20 h-20 md:h-[6.25rem] md:w-[6.25rem] {data.banner
+					? 'stroke-grey-700 dark:stroke-grey-200 bg-grey-100 dark:bg-grey-800 rounded-full'
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
 		{/if}

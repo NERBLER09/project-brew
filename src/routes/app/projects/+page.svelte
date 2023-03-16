@@ -17,11 +17,16 @@
 	export let data: PageData;
 
 	let query = '';
-	let allProjects: Projects[] = data.all;
+	const unsortedList: any[] = data.all?.map((project: Projects) => ({
+		...project,
+		searchTerms: `${project.project_name} ${project.description}`
+	}));
+
+	let allProjects = unsortedList;
 
 	const handleSearch = () => {
-		allProjects = data.all;
-		allProjects = data.all.filter((value) => value.project_name?.includes(query));
+		allProjects = unsortedList;
+		allProjects = unsortedList.filter((value) => value.searchTerms.toLowerCase().includes(query));
 		allProjects = [...allProjects];
 	};
 
@@ -154,13 +159,12 @@
 		</div>
 	</div>
 	<div class="flex flex-col gap-lg md:flex-row md:flex-wrap">
-		{#if data.all.length === 0}
+		{#each allProjects as project}
+			<ProjectCard {...project} />
+		{:else}
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				To create a new project click on the plus button.
 			</p>
-		{/if}
-		{#each allProjects as project}
-			<ProjectCard {...project} />
 		{/each}
 	</div>
 </section>

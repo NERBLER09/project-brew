@@ -3,6 +3,7 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import UserRemove from '$lib/assets/User-Remove.svelte';
+	import User from '$lib/assets/User.svelte';
 	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
 	import TeamMemberDropdown from '$lib/components/dropdowns/team/TeamMemberDropdown.svelte';
 	import { currentTeam, userRole } from '$lib/stores/team';
@@ -112,11 +113,16 @@
 
 <div class="w-full items-center md:flex">
 	<div class="flex w-full gap-lg">
-		<img
-			src={avatar}
-			alt="{name} profile"
-			class="aspect-square h-12 w-12 rounded-full object-cover"
-		/>
+		{#if avatar}
+			<img
+				src={avatar}
+				alt="{name} profile"
+				class="aspect-square h-12 w-12 rounded-full object-cover"
+			/>
+		{:else}
+			<User className="h-12 w-12 stroke-grey-700 dark:stroke-grey-200" />
+		{/if}
+
 		<div class="flex w-[calc(100%-4.875rem)] flex-col gap-sm">
 			<div class="flex items-center gap-sm">
 				<span class="truncate font-bold text-grey-700 dark:text-grey-200">{name}</span>

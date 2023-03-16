@@ -7,9 +7,9 @@
 	let showNewTeamPrompt = false;
 </script>
 
-<div class="relative h-full">
+<div class="relative h-full w-full">
 	<section
-		class="md:staticmd:justify-center absolute flex h-full flex-col items-center justify-center gap-md px-6 text-center"
+		class="md:staticmd:justify-center absolute flex h-full w-full flex-col items-center justify-center gap-md px-6 text-center"
 	>
 		<header>
 			<h1 class="text-lg font-semibold text-grey-800 dark:text-grey-100">No Teams</h1>

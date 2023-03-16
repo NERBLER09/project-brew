@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import CircleInfo from '$lib/assets/Circle-Info.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import AboutTeam from '$lib/components/prompts/team/about/AboutTeam.svelte';
@@ -141,6 +140,24 @@
 				</header>
 
 				<TaskList />
+			</section>
+			<section class="mb-md">
+				<header>
+					<h3 class="my-sm text-md font-semibold text-grey-800 dark:text-grey-200">
+						Tasks Due Soon
+					</h3>
+				</header>
+
+				<TaskList type="soon" />
+			</section>
+			<section class="mb-md">
+				<header>
+					<h3 class="my-sm text-md font-semibold text-grey-800 dark:text-grey-200">
+						Overdue Tasks
+					</h3>
+				</header>
+
+				<TaskList type="overdue" />
 			</section>
 		{/if}
 	</section>

@@ -30,10 +30,15 @@
 	let totalFocusTime = 0;
 
 	let userDropdownContainer: HTMLElement;
+	let notificationsContainer: HTMLElement;
 
 	const handleAutoCloseDropdown = (event: Event) => {
 		if (!userDropdownContainer.contains(event.target)) {
 			showUserDropdown = false;
+		}
+
+		if (!notificationsContainer.contains(event.target)) {
+			showNotificationsDropdown = false;
 		}
 	};
 
@@ -75,7 +80,7 @@
 			<span class="sr-only">View current notifications</span>
 		</a>
 
-		<div class="relative hidden md:inline">
+		<div class="relative hidden md:inline" bind:this={notificationsContainer}>
 			<button on:click={() => (showNotificationsDropdown = !showNotificationsDropdown)}>
 				<Bell className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8 md:w-[2rem] md:h-[2rem]" />
 				<span class="sr-only">View current notifications</span>
@@ -148,9 +153,11 @@
 		</section>
 	</div>
 
-	<section class="col-span-2 hidden md:inline">
+	<section class="col-span-2">
 		<header>
-			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Jump Back Into</h2>
+			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
+				Jump Back Into
+			</h2>
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				Resume working on recently edited projects
 			</p>
@@ -167,7 +174,7 @@
 		</div>
 	</section>
 
-	<section class="col-span-1 hidden md:inline">
+	<section class="col-span-1 hidden w-fit md:inline">
 		<header>
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
 		</header>
@@ -180,7 +187,9 @@
 				<div class="mt-sm flex flex-col text-center">
 					<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span>
 					<span class="mt-md mb-sm text-md font-medium text-grey-700 dark:text-grey-200"
-						><span class="font-semibold">{totalFocusTime}</span> minutes</span
+						><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1
+							? 's'
+							: ''}</span
 					>
 					<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span>
 					<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span>

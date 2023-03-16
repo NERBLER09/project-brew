@@ -1,4 +1,5 @@
-<script lang="ts">
+<script lang="ts">	import Calendar from '$lib/assets/Calendar.svelte';
+	import Assinged from '$lib/components/projects/card/Assinged.svelte';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte';
@@ -9,9 +10,13 @@
 	export let id: number;
 	export let incompleteTasks: Task[];
 	export let index: number;
+	export let type: 'today' | 'soon' | 'overdue' = 'today';
+	export let dueDate: string = '';
 
 	let project_name: string;
 	let doneListId: number | null;
+	let assignedPeople: string[] = [];
+	let date: string = '';
 
 	let itemDone = false;
 
@@ -30,9 +35,14 @@
 			.eq('status', 'done')
 			.limit(1)
 			.single();
-		doneListId = list?.id ?? null;
 
+		doneListId = list?.id ?? null;
 		project_name = data?.project_name ?? '';
+		assignedPeople = data?.invited_people ?? [];
+
+		const tempDueDate = new Date(dueDate);
+		tempDueDate.setDate(tempDueDate.getDate() + 1);
+		date = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	});
 
 	const handleUpdateStatusWhenComplete = async () => {
@@ -62,4 +72,17 @@
 			{project_name}
 		</a>
 	</li>
+
+	{#if type !== 'today'}
+		<div class="ml-md flex items-center md:ml-2xl md:gap-sm">
+			<Calendar className="h-6 w-6 stroke-accent-light" />
+			<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">{date}</span>
+		</div>
+	{/if}
+
+	<div class="ml-auto hidden items-center px-2 md:flex">
+		{#each assignedPeople as id}
+			<Assinged {id} />
+		{/each}
+	</div>
 </div>

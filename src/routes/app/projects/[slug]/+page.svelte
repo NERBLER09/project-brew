@@ -108,7 +108,7 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <header
-	class="relative -top-6 -left-6 max-h-[18.75rem] {data.banner
+	class="relative -top-6 -left-6 h-[18.75rem] {data.banner
 		? 'h-fit'
 		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner

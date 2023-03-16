@@ -34,6 +34,9 @@
 			seconds = duration % 60;
 
 			if (duration <= 0) {
+				minutes = 0;
+				seconds = 0;
+				duration = 0;
 				clearCountdown();
 				if (Notification.permission === 'granted' && data.notifcations_settings.push.timerUp) {
 					new Notification('Your focus timer is up');

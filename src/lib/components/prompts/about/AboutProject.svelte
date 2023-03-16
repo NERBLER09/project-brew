@@ -8,11 +8,12 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import TransferTeam from '$lib/components/dropdowns/projects/TransferTeam.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
+	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, userTeams } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import lodash from 'lodash';
@@ -215,57 +216,42 @@
 		</div>
 	</header>
 
-	<div class="relative {!$currentProject.banner ? '-top-8' : ''}">
-		<div class="mb-lg flex flex-wrap gap-md">
-			{#if inEditMode}
-				<NewTagsInput bind:newTags={newProjectTags} />
-			{:else}
-				<TagList tags={$currentProject.tags} />
+	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
+		<div class="flex flex-wrap">
+			{#if $currentProject.tags.length > 1}
+				<div class="mb-sm flex flex-wrap gap-md">
+					{#if inEditMode}
+						<NewTagsInput bind:newTags={newProjectTags} />
+					{:else}
+						<TagList tags={$currentProject.tags} />
+					{/if}
+				</div>
 			{/if}
 		</div>
 
 		{#if !inEditMode}
-			<Description banner="" description={$currentProject.description} />
-			<div
-				class="relative mt-md flex items-center gap-sm overflow-visible font-medium text-grey-700 dark:text-grey-200 md:static"
-				bind:this={transferDropdownContainer}
-			>
-				{#if $currentProject.team}
-					<span>Part of</span>
-					<button
-						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
-						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
-					>
-						{teamName}
-						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-						{#if showTransferTeamDropdown}
-							<TransferTeam bind:visibility={showTransferTeamDropdown} />
-						{/if}
-					</button>
-				{:else}
-					<span>Transfer this project to a</span>
-					<button
-						class="button--text m-0 flex items-center gap-sm p-0 md:relative"
-						on:click={() => (showTransferTeamDropdown = !showTransferTeamDropdown)}
-					>
-						team
-						<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-						{#if showTransferTeamDropdown}
-							<TransferTeam bind:visibility={showTransferTeamDropdown} />
-						{/if}
-					</button>
-				{/if}
-			</div>
+			{#if $currentProject.description}
+				<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
+					{$currentProject.description}
+				</p>
+			{/if}
 
+			{#if $userTeams.length > 0}
+				<TransferProjectToTeam {teamName} />
+			{/if}
 			<InvitedTeamMembers invited_people={$currentProject.invited_people} />
 		{:else}
-			<label for="description-input" class="input--label mb-sm">Edit the project description</label>
-			<textarea
-				name="description"
-				class="input--text h-36 w-full resize-none"
-				placeholder="Enter a brief description"
-				bind:value={newProjectDescription}
-			/>
+			<div class="flex flex-col">
+				<label for="description-input" class="input--label mb-sm"
+					>Edit the project description</label
+				>
+				<textarea
+					name="description"
+					class="input--text h-36 w-full resize-none"
+					placeholder="Enter a brief description"
+					bind:value={newProjectDescription}
+				/>
+			</div>
 		{/if}
 	</div>
 	{#if inEditMode}

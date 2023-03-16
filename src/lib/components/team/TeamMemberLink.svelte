@@ -94,9 +94,9 @@
 					class="aspect-square h-12 w-12 rounded-full object-cover"
 				/>
 			{:else}
-				<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
+				<User className="min-w-[3rem] h-12 stroke-grey-700 dark:stroke-grey-200" />
 			{/if}
-			<div class="mr-md flex w-[calc(100%-3.625rem)] flex-col items-start justify-start gap-sm">
+			<div class="mr-md flex w-[calc(100%-4.2rem)] flex-col items-start justify-start gap-sm">
 				<div class="flex w-full items-center">
 					<span class="font-bold text-grey-700 dark:text-grey-100">{name}</span>
 					<span class="ml-auto text-sm font-medium text-grey-700 dark:text-grey-100">
