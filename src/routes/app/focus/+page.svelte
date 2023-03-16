@@ -4,32 +4,15 @@
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
-	import PlusNew from '$lib/assets/Plus-New.svelte';
-	import Trash from '$lib/assets/Trash.svelte';
 	import FocusProjectPrompt from '$lib/components/prompts/focus/FocusProjectPrompt.svelte';
 	import { focusMinutes, focusOptions, focusProject } from '$lib/stores/focus';
 
 	let strokeArray = 720;
-	let minutes = $focusOptions.minutes;
+	let minutes = 1;
 	let seconds = $focusOptions.seconds;
 
-	let blockedURLS: string[] = $focusOptions.blockedURLS;
-	let blockURL = '';
-	const addBlockedURL = () => {
-		blockedURLS = [blockURL, ...blockedURLS];
-		blockURL = '';
-		$focusOptions.blockedURLS = blockedURLS;
-	};
-
-	const removeURL = (url: string) => {
-		const index = blockedURLS.indexOf(url);
-		blockedURLS.splice(index, 1);
-		blockedURLS = blockedURLS;
-		$focusOptions.blockedURLS = blockedURLS;
-	};
-
 	$: percent = ((minutes + seconds / 100) / 120) * 100;
-	$: if (minutes < 0) minutes = 0;
+	$: if (minutes < 5) minutes = 5;
 	else if (minutes > 120) minutes = 120;
 
 	$: if (seconds < 0) seconds = 0;
