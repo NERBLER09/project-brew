@@ -13,7 +13,7 @@
 	import ProjectDropdown from '$lib/components/dropdowns/projects/ProjectDropdown.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 
-	import type { PageData } from './$types';
+	import type { LayoutData, PageData } from './$types';
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -23,12 +23,11 @@
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 
-	export let data: PageData;
+	export let data: LayoutData;
 	currentProject.set(data);
 	userTeams.set(data.userTeams ?? []);
 
 	let showProjectDropdown = false;
-	let createNewList = false;
 
 	const handleDnd = (event) => {
 		data.lists = event.detail.items;

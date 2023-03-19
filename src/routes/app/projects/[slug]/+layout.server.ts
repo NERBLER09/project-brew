@@ -1,6 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -46,7 +46,7 @@ export const load = (async (event) => {
 	if (errProject) {
 		throw redirect(303, '/app/projects/not-invited');
 	}
-}) satisfies PageServerLoad;
+}) satisfies LayoutServerLoad;
 
 export const actions: Actions = {
 	newTask: async (event) => {
