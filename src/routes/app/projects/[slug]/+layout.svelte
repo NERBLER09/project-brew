@@ -22,6 +22,7 @@
 	import { invalidate } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
+	import Aside from '$lib/components/projects/aside/Aside.svelte';
 
 	export let data: LayoutData;
 	currentProject.set(data);
@@ -194,6 +195,9 @@
 	{/if}
 </header>
 
-<ProjectNav />
+<div class="flex w-full items-center">
+	<ProjectNav />
+	<Aside />
+</div>
 
 <slot />

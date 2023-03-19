@@ -21,7 +21,7 @@
 
 <svelte:window on:click={handleAutoClose} />
 
-<div class="flex items-start gap-sm" bind:this={navContainer}>
+<div class="flex items-start gap-sm md:w-[calc(100%-12.3125rem)]" bind:this={navContainer}>
 	<nav class="flex items-center md:hidden">
 		<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
 			{#if currentPage === 'dashboard'}
