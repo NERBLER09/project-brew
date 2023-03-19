@@ -4,12 +4,14 @@
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import UserAdd from '$lib/assets/User-Add.svelte';
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
+	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
 
 	export let name: string;
@@ -28,6 +30,9 @@
 	let newName = name;
 	let newDescription = description;
 
+	let showAssignNewUsers = false;
+	let newTaskAssignedPeople: string[] = [];
+
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
 			newName = name;
@@ -43,6 +48,12 @@
 		}
 		await supabase.from('tasks').update({ description: newDescription }).eq('id', id);
 		description = newDescription;
+	};
+
+	const updateAssignedPeople = async () => {
+		await supabase.from('tasks').update({ assigned: newTaskAssignedPeople }).eq('id', id);
+		assinged = newTaskAssignedPeople;
+		showAssignNewUsers = false;
 	};
 
 	const checkIfTaskIsDueToday = async () => {
@@ -190,10 +201,28 @@
 					{/each}
 				</div>
 			{/if}
+			{#if assinged?.length === 0 && !showAssignNewUsers}
+				<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
+					<UserAdd
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:broder-grey-300 rounded-full"
+					/>
+				</button>
+			{:else if assinged?.length === 0 && showAssignNewUsers}
+				<button on:click={updateAssignedPeople}>
+					<Check
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:broder-grey-300 rounded-full"
+					/>
+				</button>
+			{/if}
+
 			{#if isPriority}
 				<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
 			{/if}
 		</div>
+
+		{#if showAssignNewUsers}
+			<AssignPerson bind:assingedUserIds={newTaskAssignedPeople} />
+		{/if}
 	</section>
 </div>
 
