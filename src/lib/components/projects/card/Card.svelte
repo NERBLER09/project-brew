@@ -83,9 +83,7 @@
 					{#if status === 'done'}
 						<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
 					{/if}
-					<h3
-						class="font-semibold text-grey-700 dark:text-grey-200 card__text--{status} h-fit lg:text-md"
-					>
+					<h3 class="font-semibold text-grey-700 dark:text-grey-200 card__text--{status} h-fit">
 						{name}
 					</h3>
 				</div>
