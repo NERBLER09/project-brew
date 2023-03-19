@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Calendar from '$lib/assets/Calendar.svelte';
+	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
@@ -23,6 +24,16 @@
 
 	let showCardDropdown = false;
 	let formattedDate = '';
+
+	let newName = name;
+
+	const updateTaskName = async () => {
+		if (newName === name || !newName) {
+			newName = name;
+			return;
+		}
+		await supabase.from('tasks').update({ name: newName }).eq('id', id);
+	};
 
 	const checkIfTaskIsDueToday = async () => {
 		if (!dueDate) return;
@@ -83,18 +94,33 @@
 					{#if status === 'done'}
 						<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
 					{/if}
-					<h3 class="font-semibold text-grey-700 dark:text-grey-200 card__text--{status} h-fit">
+					<h3
+						class="font-bold text-grey-700 dark:text-grey-200 card__text--{status} h-fit"
+						contenteditable
+						bind:textContent={newName}
+						on:blur={updateTaskName}
+					>
 						{name}
 					</h3>
 				</div>
-				{#if dueDate}
-					<div class="flex items-center md:gap-sm">
-						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-							>{formattedDate}</span
-						>
-					</div>
-				{/if}
+				<div>
+					{#if dueDate}
+						<button class="flex items-center md:gap-sm">
+							<Calendar className="h-6 w-6 stroke-accent-light" />
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>{formattedDate}</span
+							>
+						</button>
+					{:else}
+						<button class="flex items-center md:gap-sm">
+							<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
+								Add
+								<span class="sr-only">a due date</span>
+							</span>
+						</button>
+					{/if}
+				</div>
 			</div>
 
 			<div class="ml-auto flex h-8 w-8 items-center gap-md">
