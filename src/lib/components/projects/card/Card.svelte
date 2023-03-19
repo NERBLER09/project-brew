@@ -4,6 +4,7 @@
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
 	import { currentProject } from '$lib/stores/project';
@@ -11,6 +12,7 @@
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
+	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
 
@@ -29,9 +31,11 @@
 
 	let newName = name;
 	let newDescription = description;
+	let newTags: string[] = [];
 
 	let showAssignNewUsers = false;
 	let newTaskAssignedPeople: string[] = [];
+	let addNewTags = false;
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -54,6 +58,16 @@
 		await supabase.from('tasks').update({ assigned: newTaskAssignedPeople }).eq('id', id);
 		assinged = newTaskAssignedPeople;
 		showAssignNewUsers = false;
+	};
+
+	const updateTaskTags = async () => {
+		if (!tags) {
+			newTags = tags;
+			return;
+		}
+		await supabase.from('tasks').update({ tags: newTags }).eq('id', id);
+		addNewTags = false;
+		tags = newTags;
 	};
 
 	const checkIfTaskIsDueToday = async () => {
@@ -190,6 +204,27 @@
 						<span class="text-sm font-medium text-grey-700">{tag}</span>
 					</div>
 				{/each}
+			</div>
+		{:else}
+			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
+				{#if !addNewTags}
+					<button
+						class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300"
+						on:click={() => (addNewTags = true)}
+					>
+						Add new tags
+						<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
+					</button>
+				{:else}
+					<button
+						class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300"
+						on:click={updateTaskTags}
+					>
+						Update tags
+						<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
+					</button>
+					<NewTagsInput bind:newTags />
+				{/if}
 			</div>
 		{/if}
 
