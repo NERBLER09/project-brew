@@ -204,9 +204,7 @@
 	{/if}
 </header>
 
-<div class="relative">
-	<ProjectNav />
-</div>
+<ProjectNav />
 
 <section
 	class="relative {!data.banner
