@@ -25,6 +25,7 @@
 	import type { User as Profile } from '$lib/types/projects';
 	import { invalidate } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
+	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 
 	export let data: PageData;
 	currentProject.set(data);
@@ -202,6 +203,10 @@
 		</div>
 	{/if}
 </header>
+
+<div class="relative">
+	<ProjectNav />
+</div>
 
 <section
 	class="relative {!data.banner
