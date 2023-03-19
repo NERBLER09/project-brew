@@ -25,33 +25,33 @@
 	<nav class="flex items-center md:hidden">
 		<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
 			{#if currentPage === 'dashboard'}
-				<Item name="Dashboard" page="#" icon={DashboardHome} />
+				<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
 			{:else if currentPage === 'milestones'}
-				<Item name="Milestones" page="#" icon={Milestone} />
+				<Item name="Milestones" page="milestones" icon={Milestone} />
 			{:else if currentPage === 'board'}
-				<Item name="Board" page="#" icon={Stack} />
+				<Item name="Board" page="board" icon={Stack} />
 			{:else if currentPage === 'list'}
-				<Item name="List" page="#" icon={List} />
+				<Item name="Table" page="list" icon={List} />
 			{:else if currentPage === 'roadmap'}
-				<Item name="Roadmap" page="#" icon={Roadmap} />
+				<Item name="Roadmap" page="roadmap" icon={Roadmap} />
 			{/if}
 		</button>
 		{#if showPageSwitcher}
 			<div class="dropdown--container z-50">
-				<Item name="Dashboard" page="#" icon={DashboardHome} />
-				<Item name="Milestones" page="#" icon={Milestone} />
-				<Item name="Board" page="#" icon={Stack} />
-				<Item name="List" page="#" icon={List} />
-				<Item name="Roadmap" page="#" icon={Roadmap} />
+				<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
+				<Item name="Milestones" page="milestones" icon={Milestone} />
+				<Item name="Board" page="board" icon={Stack} />
+				<Item name="Table" page="list" icon={List} />
+				<Item name="Roadmap" page="roadmap" icon={Roadmap} />
 			</div>
 		{/if}
 	</nav>
 	<nav class="hidden items-center gap-md overflow-scroll md:flex">
-		<Item name="Dashboard" page="#" icon={DashboardHome} />
-		<Item name="Milestones" page="#" icon={Milestone} />
-		<Item name="Board" page="#" icon={Stack} />
-		<Item name="List" page="#" icon={List} />
-		<Item name="Roadmap" page="#" icon={Roadmap} />
+		<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
+		<Item name="Milestones" page="milestones" icon={Milestone} />
+		<Item name="Board" page="board" icon={Stack} />
+		<Item name="Table" page="list" icon={List} />
+		<Item name="Roadmap" page="roadmap" icon={Roadmap} />
 	</nav>
 	<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
 		<Down className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
