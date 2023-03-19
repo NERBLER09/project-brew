@@ -26,6 +26,7 @@
 	let formattedDate = '';
 
 	let newName = name;
+	let newDescription = description;
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -33,6 +34,15 @@
 			return;
 		}
 		await supabase.from('tasks').update({ name: newName }).eq('id', id);
+	};
+
+	const updateTaskDescription = async () => {
+		if (newDescription === description || !newDescription) {
+			newDescription = description;
+			return;
+		}
+		await supabase.from('tasks').update({ description: newDescription }).eq('id', id);
+		description = newDescription;
 	};
 
 	const checkIfTaskIsDueToday = async () => {
@@ -142,9 +152,24 @@
 		</header>
 
 		<div class="mb-md">
-			<p class="max-h-[10ch] text-sm font-medium text-grey-700 empty:hidden dark:text-grey-200">
-				{description}
-			</p>
+			{#if description}
+				<p
+					class="max-h-[10ch] text-sm font-medium text-grey-700 empty:hidden dark:text-grey-200"
+					contenteditable
+					bind:textContent={newDescription}
+					on:blur={updateTaskDescription}
+				>
+					{description}
+				</p>
+			{:else}
+				<input
+					type="text"
+					bind:value={newDescription}
+					on:blur={updateTaskDescription}
+					placeholder="Enter a description"
+					class="border-1 m-0 w-full rounded-md border-dashed border-grey-700 bg-grey-100 p-1 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-800"
+				/>
+			{/if}
 		</div>
 
 		{#if tags}
