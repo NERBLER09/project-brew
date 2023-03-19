@@ -32,10 +32,12 @@
 	let newName = name;
 	let newDescription = description;
 	let newTags: string[] = [];
+	let newDate: Date;
+	let newTaskAssignedPeople: string[] = [];
 
 	let showAssignNewUsers = false;
-	let newTaskAssignedPeople: string[] = [];
 	let addNewTags = false;
+	let dateInputElement: HTMLInputElement;
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -68,6 +70,17 @@
 		await supabase.from('tasks').update({ tags: newTags }).eq('id', id);
 		addNewTags = false;
 		tags = newTags;
+	};
+
+	const updateTaskDate = async () => {
+		await supabase
+			.from('tasks')
+			.update({ due_date: new Date(newDate).toISOString() })
+			.eq('id', id);
+		dueDate = new Date(newDate).toISOString();
+		const tempDueDate = new Date(dueDate);
+		tempDueDate.setDate(tempDueDate.getDate() + 1);
+		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	};
 
 	const checkIfTaskIsDueToday = async () => {
@@ -139,22 +152,30 @@
 					</h3>
 				</div>
 				<div>
-					{#if dueDate}
-						<button class="flex items-center md:gap-sm">
+					<button
+						class="flex items-center md:gap-sm"
+						on:click={() => dateInputElement.showPicker()}
+					>
+						{#if dueDate}
 							<Calendar className="h-6 w-6 stroke-accent-light" />
 							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
 								>{formattedDate}</span
 							>
-						</button>
-					{:else}
-						<button class="flex items-center md:gap-sm">
+						{:else}
 							<CalendarAdd className="h-6 w-6 stroke-accent-light" />
 							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
 								Add
 								<span class="sr-only">a due date</span>
 							</span>
-						</button>
-					{/if}
+						{/if}
+					</button>
+					<input
+						type="date"
+						class="hidden"
+						bind:this={dateInputElement}
+						bind:value={newDate}
+						on:change={updateTaskDate}
+					/>
 				</div>
 			</div>
 
