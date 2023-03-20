@@ -1,13 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import DashboardHome from '$lib/assets/DashboardHome.svelte';
 	import List from '$lib/assets/List.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
 	import Roadmap from '$lib/assets/Roadmap.svelte';
 	import Stack from '$lib/assets/Stack.svelte';
+	import { currentProject } from '$lib/stores/project';
 	import Item from './Item.svelte';
 
-	let currentPage = 'dashboard';
+	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
 	let showPageSwitcher = false;
 
 	let navContainer: HTMLElement;
@@ -17,6 +20,10 @@
 			showPageSwitcher = false;
 		}
 	};
+
+	page.subscribe((page) => {
+		showPageSwitcher = false;
+	});
 </script>
 
 <svelte:window on:click={handleAutoClose} />
@@ -54,6 +61,10 @@
 		<Item name="Roadmap" page="roadmap" icon={Roadmap} />
 	</nav>
 	<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
-		<Down className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
+		{#if !showPageSwitcher}
+			<Down className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
+		{:else}
+			<Up className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
+		{/if}
 	</button>
 </div>
