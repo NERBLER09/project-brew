@@ -213,7 +213,7 @@
 					bind:value={newDescription}
 					on:blur={updateTaskDescription}
 					placeholder="Enter a description"
-					class="border-1 m-0 w-full rounded-md border-dashed border-grey-700 bg-grey-100 p-1 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-800"
+					class="border-1 m-0 w-full rounded-md border-dashed border-grey-700 bg-grey-100 p-1 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-800 dark:text-grey-300 dark:placeholder:text-grey-300"
 				/>
 			{/if}
 		</div>
@@ -260,13 +260,13 @@
 			{#if assinged?.length === 0 && !showAssignNewUsers}
 				<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
 					<UserAdd
-						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:broder-grey-300 rounded-full"
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
 					/>
 				</button>
 			{:else if assinged?.length === 0 && showAssignNewUsers}
 				<button on:click={updateAssignedPeople}>
 					<Check
-						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:broder-grey-300 rounded-full"
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
 					/>
 				</button>
 			{/if}

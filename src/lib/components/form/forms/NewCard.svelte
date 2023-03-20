@@ -89,14 +89,16 @@
 		placeholder="Enter a short description"
 		bind:value={newTaskDescription}
 	/>
-	<label for="date-input" class="input--label mt-sm">Select a due date</label>
-	<input
-		type="date"
-		class="input--text mt-sm"
-		id="date-input"
-		name="date"
-		bind:value={newTaskDueDate}
-	/>
+	<div class="flex flex-col items-start gap-sm">
+		<label for="date-input" class="input--label mt-sm">Select a due date</label>
+		<input
+			type="date"
+			class="input--text mt-sm"
+			id="date-input"
+			name="date"
+			bind:value={newTaskDueDate}
+		/>
+	</div>
 	<br />
 
 	<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
