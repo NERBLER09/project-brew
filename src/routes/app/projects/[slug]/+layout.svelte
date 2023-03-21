@@ -19,7 +19,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { supabase } from '$lib/supabase';
 	import type { User as Profile } from '$lib/types/projects';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 	import Aside from '$lib/components/projects/aside/Aside.svelte';
@@ -49,6 +49,7 @@
 	let headerHeight: number = 0;
 
 	onMount(async () => {
+		goto(`/app/projects/${data.id}/dashboard`);
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
 			$recentlyEdited = [data.project, ...$recentlyEdited];
@@ -61,7 +62,6 @@
 		$invitedTeamMembers = await getInvitedTeamMembers();
 
 		headerHeight = headerElement.offsetHeight;
-		console.log(headerHeight + 32);
 	});
 	const projectsRealtime = supabase
 		.channel('project-detail-updates')
