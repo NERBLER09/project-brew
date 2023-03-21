@@ -8,7 +8,7 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { tasksCompletedThisDay } from '$lib/stores/project';
+	import { searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
@@ -19,6 +19,7 @@
 	export let status: string;
 	let tasks: Task[] = [];
 
+	let unsortedTasks: any[] = [];
 	let showListDropdown = false;
 	let listDropdownElement: HTMLElement;
 
@@ -57,6 +58,10 @@
 	onMount(async () => {
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
 		tasks = data || [];
+		unsortedTasks = tasks.map((task: Task) => ({
+			...task,
+			searchTerms: `${task.name} ${task.description}`
+		}));
 	});
 
 	const handleClickOutside = (event: Event) => {
@@ -64,6 +69,14 @@
 			showListDropdown = false;
 		}
 	};
+
+	const handleSearch = (query: string) => {
+		tasks = unsortedTasks;
+		tasks = unsortedTasks.filter((item) => item?.searchTerms.toLowerCase().includes(query));
+		tasks = [...tasks];
+	};
+
+	$: handleSearch($searchQuery);
 </script>
 
 <svelte:window on:click={handleClickOutside} />

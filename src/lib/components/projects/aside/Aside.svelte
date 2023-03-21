@@ -2,6 +2,7 @@
 	import Filter from '$lib/assets/Filter.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import Sort from '$lib/assets/Sort.svelte';
+	import { searchQuery } from '$lib/stores/project';
 
 	let search = false;
 	let searchInput: HTMLElement;
@@ -11,6 +12,10 @@
 			search = false;
 		}
 	};
+
+	$: if (!search) {
+		$searchQuery = '';
+	}
 </script>
 
 <svelte:window on:click={autoCloseDropdowns} />
@@ -22,6 +27,7 @@
 				type="text"
 				placeholder="Search for a task"
 				class="input--text absolute right-0 top-8 md:top-0 md:right-8"
+				bind:value={$searchQuery}
 			/>
 		{/if}
 		<button on:click={() => (search = !search)}>

@@ -12,3 +12,5 @@ export const tasksCompletedThisDay: Writable<number> = writable(0);
 
 export const invitedTeamMembers = writable<User[] | null>();
 export const userTeams = writable<Teams[]>();
+
+export const searchQuery = writable<string>();
