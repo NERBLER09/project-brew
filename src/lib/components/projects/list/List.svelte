@@ -64,6 +64,7 @@
 						new Date(item.due_date).getTime() <= new Date().setDate(new Date().getDate() + 4)
 					);
 				});
+
 				break;
 			case 'today':
 				unsortedTasks = unsortedTasks.filter((item) => {
@@ -77,9 +78,22 @@
 						date.getFullYear() === today.getFullYear()
 					);
 				});
-
 				break;
 
+			case 'overdue':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					const date = new Date(item.due_date);
+					const today = new Date();
+					date.setDate(date.getDate() + 1);
+
+					return date < today && date.getTime() !== 86400000;
+				});
+				break;
+			case 'unset':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					return !item.due_date;
+				});
+				break;
 			default:
 				unsortedTasks = dbTasks;
 				break;
