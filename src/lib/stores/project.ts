@@ -14,3 +14,4 @@ export const invitedTeamMembers = writable<User[] | null>();
 export const userTeams = writable<Teams[]>();
 
 export const searchQuery = writable<string>();
+export let dateFilter = writable<'soon' | 'today' | 'overdue' | 'unset' | null>(null);

@@ -8,7 +8,7 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
+	import { dateFilter, searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
@@ -55,13 +55,51 @@
 		}
 	};
 
+	const handleDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset' | null) => {
+		switch (option) {
+			case 'soon':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					return (
+						new Date(item.due_date).getTime() >= new Date().getTime() &&
+						new Date(item.due_date).getTime() <= new Date().setDate(new Date().getDate() + 4)
+					);
+				});
+				break;
+			case 'today':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					const date = new Date(item.due_date);
+					const today = new Date();
+					date.setDate(date.getDate() + 1);
+
+					return (
+						date.getDate() === today.getDate() &&
+						date.getMonth() === today.getMonth() &&
+						date.getFullYear() === today.getFullYear()
+					);
+				});
+
+				break;
+
+			default:
+				unsortedTasks = dbTasks;
+				break;
+		}
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
+	$: handleDateFilter($dateFilter);
+
+	let dbTasks: Task[] = [];
 	onMount(async () => {
 		const { data, error } = await supabase.from('tasks').select().eq('list', id);
 		tasks = data || [];
+		dbTasks = data ?? [];
 		unsortedTasks = tasks.map((task: Task) => ({
 			...task,
 			searchTerms: `${task.name} ${task.description}`
 		}));
+		handleDateFilter($dateFilter);
 	});
 
 	const handleClickOutside = (event: Event) => {
