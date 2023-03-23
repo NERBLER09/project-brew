@@ -41,4 +41,30 @@
 			<span class="dropdown--label">Date - No Date</span>
 		</button>
 	{/if}
+
+	{#if $dateFilter}
+		<hr class="mx-auto w-1/2" />
+	{/if}
+
+	{#if $dateFilter === 'soon'}
+		<button class="dropdown--item" on:click={() => ($dateFilter = null)}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Date - Soon</span>
+		</button>
+	{:else if $dateFilter === 'today'}
+		<button class="dropdown--item" on:click={() => ($dateFilter = null)}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Date - Today</span>
+		</button>
+	{:else if $dateFilter === 'overdue'}
+		<button class="dropdown--item" on:click={() => ($dateFilter = null)}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Date - Overdue</span>
+		</button>
+	{:else if $dateFilter === 'unset'}
+		<button class="dropdown--item" on:click={() => ($dateFilter = null)}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Date - No Date</span>
+		</button>
+	{/if}
 </div>

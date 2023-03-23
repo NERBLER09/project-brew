@@ -56,6 +56,7 @@
 	};
 
 	const handleDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset' | null) => {
+		unsortedTasks = dbTasks;
 		switch (option) {
 			case 'soon':
 				unsortedTasks = unsortedTasks.filter((item) => {
