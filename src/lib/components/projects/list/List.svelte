@@ -8,7 +8,7 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { dateFilter, searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
+	import { dateFilter, filterTags, searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
@@ -103,7 +103,22 @@
 		tasks = [...tasks];
 	};
 
+	const handleTagsFilter = (tags: string[]) => {
+		unsortedTasks = dbTasks;
+
+		if (!tags) {
+			return;
+		}
+
+		unsortedTasks = unsortedTasks.filter((item: Task) => {
+			return item.tags?.includes(tags.toString());
+		});
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
 	$: handleDateFilter($dateFilter);
+	$: handleTagsFilter($filterTags);
 
 	let dbTasks: Task[] = [];
 	onMount(async () => {

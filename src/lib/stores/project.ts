@@ -15,3 +15,4 @@ export const userTeams = writable<Teams[]>();
 
 export const searchQuery = writable<string>();
 export let dateFilter = writable<'soon' | 'today' | 'overdue' | 'unset' | null>(null);
+export let filterTags = writable<string[]>();

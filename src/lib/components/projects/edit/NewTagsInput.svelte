@@ -1,12 +1,11 @@
 <script lang="ts">
-	import CloseMultiply from "$lib/assets/Close-Multiply.svelte";
-	import PlusNew from "$lib/assets/Plus-New.svelte";
-	import Trash from "$lib/assets/Trash.svelte";
-
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 
 	let addNewTag = false;
 	let tagName = '';
-	export let newTags: string[] = [];
+	export let newTags: string[];
 
 	const handleCreateNewTag = () => {
 		newTags = [...newTags, tagName];
@@ -22,8 +21,8 @@
 </script>
 
 {#each newTags as tag}
-	<div class="bg-grey-200 dark:bg-grey-800 py-2 px-3 w-fit rounded flex items-center">
-		<span class="text-grey-700 dark:text-grey-200 font-medium">{tag}</span>
+	<div class="flex w-fit items-center rounded bg-grey-200 py-2 px-3 dark:bg-grey-800">
+		<span class="font-medium text-grey-700 dark:text-grey-200">{tag}</span>
 		<button on:click={() => handleRemoveTag(tag)}>
 			<Trash className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
 			<span class="sr-only">Remove {tag} tag</span>
@@ -32,7 +31,7 @@
 {/each}
 
 {#if addNewTag}
-	<form on:submit={handleCreateNewTag} class="flex items-center gap-sm ml-auto">
+	<form on:submit={handleCreateNewTag} class="ml-auto flex items-center gap-sm">
 		<input
 			type="text"
 			class="input--text w-36"
