@@ -3,6 +3,7 @@
 	import Search from '$lib/assets/Search.svelte';
 	import Sort from '$lib/assets/Sort.svelte';
 	import FilterDropdown from '$lib/components/dropdowns/projects/FilterDropdown.svelte';
+	import SortDropdown from '$lib/components/dropdowns/projects/SortDropdown.svelte';
 	import { searchQuery } from '$lib/stores/project';
 
 	let search = false;
@@ -11,12 +12,19 @@
 	let filter = false;
 	let filterContainer: HTMLElement;
 
+	let sort = false;
+	let sortContainer: HTMLElement;
+
 	const autoCloseDropdowns = (event: Event) => {
 		if (!searchInput.contains(event.target)) {
 			search = false;
 		}
 		if (!filterContainer.contains(event.target)) {
 			filter = false;
+		}
+
+		if (!sortContainer.contains(event.target)) {
+			sort = false;
 		}
 	};
 
@@ -56,8 +64,13 @@
 			<FilterDropdown />
 		{/if}
 	</div>
-	<button class="flex items-center gap-sm">
-		<Sort className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-200" />
-		<span class="sr-only font-medium text-grey-700 dark:text-grey-200 md:not-sr-only">Sort</span>
-	</button>
+	<div bind:this={sortContainer} class="md:relative">
+		<button class="flex items-center gap-sm" on:click={() => (sort = !sort)}>
+			<Sort className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-200" />
+			<span class="sr-only font-medium text-grey-700 dark:text-grey-200 md:not-sr-only">Sort</span>
+		</button>
+		{#if sort}
+			<SortDropdown />
+		{/if}
+	</div>
 </div>

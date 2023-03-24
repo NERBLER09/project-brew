@@ -16,3 +16,9 @@ export const userTeams = writable<Teams[]>();
 export const searchQuery = writable<string>();
 export let dateFilter = writable<'soon' | 'today' | 'overdue' | 'unset' | null>(null);
 export let filterTags = writable<string[]>();
+
+interface Options {
+  date: 'ascending' | 'descending' | null;
+  priority: 'ascending' | 'descending' | null;
+}
+export let sortOptions = writable<Options>({ date: null, priority: null })
