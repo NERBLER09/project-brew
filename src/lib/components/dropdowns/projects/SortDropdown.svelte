@@ -5,16 +5,7 @@
 
 	let addSort = false;
 
-	interface Options {
-		date: 'ascending' | 'descending' | null;
-		priority: 'ascending' | 'descending' | null;
-	}
-
-	const sortOptions: Options = {
-		date: null,
-		priority: null
-	};
-
+	const sortOptions = $projectSort;
 	$: $projectSort = sortOptions;
 </script>
 

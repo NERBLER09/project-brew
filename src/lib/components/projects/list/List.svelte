@@ -8,7 +8,15 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { dateFilter, filterTags, searchQuery, tasksCompletedThisDay } from '$lib/stores/project';
+	import {
+		dateFilter,
+		filterTags,
+		searchQuery,
+		sortOptions,
+		tasksCompletedThisDay,
+		type SortOption,
+		type SortOptions
+	} from '$lib/stores/project';
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
@@ -117,8 +125,24 @@
 		tasks = [...tasks];
 	};
 
+	const handleDateSort = (option: SortOptions) => {
+		if (option.date === 'descending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return new Date().getTime() - new Date(item.due_date).getTime();
+			});
+		} else if (option.date === 'ascending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return new Date(item.due_date).getTime() - new Date().getTime();
+			});
+		}
+
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
 	$: handleDateFilter($dateFilter);
 	$: handleTagsFilter($filterTags);
+	$: handleDateSort($sortOptions);
 
 	let dbTasks: Task[] = [];
 	onMount(async () => {

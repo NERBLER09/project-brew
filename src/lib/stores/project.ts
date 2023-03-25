@@ -17,8 +17,8 @@ export const searchQuery = writable<string>();
 export let dateFilter = writable<'soon' | 'today' | 'overdue' | 'unset' | null>(null);
 export let filterTags = writable<string[]>();
 
-interface Options {
+export interface SortOptions {
   date: 'ascending' | 'descending' | null;
   priority: 'ascending' | 'descending' | null;
 }
-export let sortOptions = writable<Options>({ date: null, priority: null })
+export let sortOptions = writable<SortOptions>({ date: null, priority: null })
