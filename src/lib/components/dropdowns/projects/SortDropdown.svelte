@@ -3,6 +3,7 @@
 	import CirclePriority from '$lib/assets/Circle-Priority.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 	import { sortOptions as projectSort } from '$lib/stores/project';
 
 	let addSort = false;
@@ -29,6 +30,7 @@
 	{/if}
 
 	{#if sortOptions.date}
+		<hr class="mx-auto w-1/2" />
 		<div class="flex w-full items-center gap-sm">
 			<span class="dropdown--label">Date: </span>
 			<select
@@ -46,6 +48,7 @@
 		</div>
 	{/if}
 	{#if sortOptions.priority}
+		<hr class="mx-auto w-1/2" />
 		<div class="flex w-full items-center gap-md">
 			<span class="dropdown--label">Prority: </span>
 			<select
@@ -61,5 +64,20 @@
 				<span class="sr-only">Remove task priority sorting</span>
 			</button>
 		</div>
+	{/if}
+
+	{#if sortOptions.date || sortOptions.priority}
+		<hr class="mx-auto w-1/2" />
+
+		<button
+			class="dropdown--item"
+			on:click={() => {
+				sortOptions.date = null;
+				sortOptions.priority = null;
+			}}
+		>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Clear sorting</span>
+		</button>
 	{/if}
 </div>
