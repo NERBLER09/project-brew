@@ -14,9 +14,9 @@
 		searchQuery,
 		sortOptions,
 		tasksCompletedThisDay,
-		type SortOption,
 		type SortOptions
 	} from '$lib/stores/project';
+
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
@@ -125,7 +125,7 @@
 		tasks = [...tasks];
 	};
 
-	const handleDateSort = (option: SortOptions) => {
+	const handleSort = (option: SortOptions) => {
 		if (option.date === 'descending') {
 			unsortedTasks = unsortedTasks.sort((item: Task) => {
 				return new Date().getTime() - new Date(item.due_date).getTime();
@@ -136,13 +136,23 @@
 			});
 		}
 
+		if (option.priority === 'ascending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return !item.is_priority;
+			});
+		} else if (option.priority === 'descending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return item.is_priority;
+			});
+		}
+
 		tasks = unsortedTasks;
 		tasks = [...tasks];
 	};
 
 	$: handleDateFilter($dateFilter);
 	$: handleTagsFilter($filterTags);
-	$: handleDateSort($sortOptions);
+	$: handleSort($sortOptions);
 
 	let dbTasks: Task[] = [];
 	onMount(async () => {
