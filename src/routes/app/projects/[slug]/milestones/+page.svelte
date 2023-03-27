@@ -10,6 +10,25 @@
 
 	export let data: PageData;
 
+	let showSearch = false;
+	let query = '';
+	let milestones = data.milestones;
+	let searchContainer: HTMLElement;
+
+	const handleMilestoneSearch = (query: string) => {
+		milestones = data.milestones;
+		milestones = milestones.filter((item) => item.name.toLowerCase().includes(query));
+	};
+
+	const handleAutoCloseSearch = (event: Event) => {
+		if (!searchContainer.contains(event.target)) {
+			showSearch = false;
+			query = '';
+		}
+	};
+
+	$: handleMilestoneSearch(query);
+
 	let showNewMilestonePrompt = false;
 
 	onMount(() => {
@@ -21,17 +40,15 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{$currentProject.name} - Milestones</title>
+</svelte:head>
+
+<svelte:window on:click={handleAutoCloseSearch} />
+
 <header class="flex items-center">
 	<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg">Milestones</h2>
 	<div class="ml-auto flex items-center gap-md lg:gap-2xl">
-		<button
-			class="button--primary hidden items-center gap-md md:flex"
-			on:click={() => (showNewMilestonePrompt = true)}
-		>
-			<PlusNew className="h-5 w-5 stroke-grey-200" />
-			New Milestone
-		</button>
-
 		<a
 			class="button--circle absolute bottom-32 right-8 z-50 md:hidden"
 			href="/app/projects/{$currentProject.id}/milestones/new"
@@ -40,14 +57,31 @@
 			<span class="sr-only">Create a new milestone</span>
 		</a>
 
-		<button>
-			<Search className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-200" />
-			<span class="sr-only">Search through milestones</span>
+		<div class="relative flex items-center" bind:this={searchContainer}>
+			{#if showSearch}
+				<input
+					type="text"
+					class="input--text absolute top-8 right-0 z-50 md:top-6 lg:static lg:mr-md"
+					bind:value={query}
+					placeholder="Search for a milestone"
+				/>
+			{/if}
+			<button on:click={() => (showSearch = !showSearch)}>
+				<Search className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-200" />
+				<span class="sr-only">Search through milestones</span>
+			</button>
+		</div>
+		<button
+			class="button--primary hidden items-center gap-md md:flex"
+			on:click={() => (showNewMilestonePrompt = true)}
+		>
+			<PlusNew className="h-5 w-5 stroke-grey-200" />
+			New Milestone
 		</button>
 	</div>
 </header>
 
-{#each data.milestones as milestone}
+{#each milestones as milestone}
 	<MilestoneLink {...milestone} />
 {/each}
 
