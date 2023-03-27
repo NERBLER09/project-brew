@@ -7,13 +7,26 @@
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 	import NewList from '$lib/components/form/forms/NewList.svelte';
 	import type { PageData } from './$types';
+	import { supabase } from '$lib/supabase';
+	import { userData } from '$lib/stores/user';
 
 	export let data: PageData;
 
 	let createNewList = false;
 
-	const handleDnd = (event) => {
+	const handleDnd = async (event) => {
 		data.lists = event.detail.items;
+		const found = data?.lists.find((list) => list.id === event.detail.info.id);
+		if (!data?.lists.includes(found) && found) return;
+
+		await supabase
+			.from('lists')
+			.update({
+				project: data.project?.id,
+				user_id: $userData.id,
+				position: data.lists?.indexOf(found)
+			})
+			.eq('id', event.detail.info.id);
 	};
 </script>
 

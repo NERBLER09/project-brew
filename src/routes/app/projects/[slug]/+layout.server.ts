@@ -21,7 +21,11 @@ export const load = (async (event) => {
 		.limit(1)
 		.single();
 
-	const { data: lists } = await supabaseClient.from('lists').select().eq('project', projectId);
+	const { data: lists } = await supabaseClient
+		.from('lists')
+		.select()
+		.eq('project', projectId)
+		.order('position', { ascending: false });
 
 	const { data: userTeams } = await supabaseClient
 		.from('teams')

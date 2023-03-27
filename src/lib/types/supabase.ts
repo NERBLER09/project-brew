@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           id: number
           list_name: string
+          position: number
           project: number
           status: string
           user_id: string
@@ -20,6 +21,7 @@ export interface Database {
         Insert: {
           id?: number
           list_name: string
+          position?: number
           project: number
           status?: string
           user_id: string
@@ -27,9 +29,36 @@ export interface Database {
         Update: {
           id?: number
           list_name?: string
+          position?: number
           project?: number
           status?: string
           user_id?: string
+        }
+      }
+      milestones: {
+        Row: {
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          owner: string | null
+          start_date: string
+        }
+        Insert: {
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          owner?: string | null
+          start_date: string
+        }
+        Update: {
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          owner?: string | null
+          start_date?: string
         }
       }
       notifications: {
@@ -105,9 +134,30 @@ export interface Database {
           your_activity?: Json[] | null
         }
       }
+      project_members: {
+        Row: {
+          id: string
+          project: number
+          role: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          project: number
+          role?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          project?: number
+          role?: string
+          user_id?: string
+        }
+      }
       projects: {
         Row: {
           banner: string | null
+          default_view: string | null
           description: string | null
           id: number
           invited_people: string[] | null
@@ -119,6 +169,7 @@ export interface Database {
         }
         Insert: {
           banner?: string | null
+          default_view?: string | null
           description?: string | null
           id?: number
           invited_people?: string[] | null
@@ -130,6 +181,7 @@ export interface Database {
         }
         Update: {
           banner?: string | null
+          default_view?: string | null
           description?: string | null
           id?: number
           invited_people?: string[] | null
@@ -140,6 +192,32 @@ export interface Database {
           user_id?: string
         }
       }
+      sub_tasks: {
+        Row: {
+          completed: boolean
+          id: string
+          list: number
+          name: string
+          project: number
+          task: number
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          list: number
+          name: string
+          project: number
+          task: number
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          list?: number
+          name?: string
+          project?: number
+          task?: number
+        }
+      }
       tasks: {
         Row: {
           assigned: string[] | null
@@ -148,9 +226,10 @@ export interface Database {
           id: number
           is_priority: boolean
           list: number
+          milestone: string | null
           name: string
+          priority_level: string | null
           project: number
-          status: string
           tags: string[] | null
           user_id: string
         }
@@ -161,9 +240,10 @@ export interface Database {
           id?: number
           is_priority?: boolean
           list: number
+          milestone?: string | null
           name?: string
+          priority_level?: string | null
           project: number
-          status: string
           tags?: string[] | null
           user_id: string
         }
@@ -174,9 +254,10 @@ export interface Database {
           id?: number
           is_priority?: boolean
           list?: number
+          milestone?: string | null
           name?: string
+          priority_level?: string | null
           project?: number
-          status?: string
           tags?: string[] | null
           user_id?: string
         }

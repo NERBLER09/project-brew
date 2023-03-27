@@ -18,6 +18,7 @@ export interface List {
 	project: number;
 	status: string;
 	user_id: string;
+	position: number;
 }
 
 export interface Projects {
