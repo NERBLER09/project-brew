@@ -9,6 +9,7 @@
 	export let name: string;
 	export let page: string;
 	export let icon: ComponentType;
+	export let showFavorite = true;
 
 	const handleSetAsDefaultView = async () => {
 		await supabase
@@ -30,13 +31,15 @@
 	<svelte:component this={icon} className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 	{name}
 
-	<div class="ml-auto h-6 w-6 group-hover:block md:ml-0 md:hidden">
-		{#if $currentProject.project.default_view === page}
-			<Favorited className="fill-grey-700 dark:fill-grey-200 w-6 h-6" />
-		{:else}
-			<button on:click={handleSetAsDefaultView}>
-				<Heart className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
-			</button>
-		{/if}
-	</div>
+	{#if showFavorite}
+		<div class="ml-auto h-6 w-6 group-hover:block md:ml-0 md:hidden">
+			{#if $currentProject.project.default_view === page}
+				<Favorited className="fill-grey-700 dark:fill-grey-200 w-6 h-6" />
+			{:else}
+				<button on:click={handleSetAsDefaultView}>
+					<Heart className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
+				</button>
+			{/if}
+		</div>
+	{/if}
 </a>

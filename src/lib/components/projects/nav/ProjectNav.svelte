@@ -30,18 +30,30 @@
 
 <div class="flex items-start gap-sm md:w-[calc(100%-12.3125rem)]" bind:this={navContainer}>
 	<nav class="flex items-center md:hidden">
-		<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
+		<button
+			on:click={() => (showPageSwitcher = !showPageSwitcher)}
+			class="flex items-center gap-sm {showPageSwitcher
+				? 'rounded-md bg-grey-200 dark:bg-grey-800'
+				: ''}"
+		>
 			{#if currentPage === 'dashboard'}
-				<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
+				<Item name="Dashboard" page="dashboard" icon={DashboardHome} showFavorite={false} />
 			{:else if currentPage === 'milestones'}
-				<Item name="Milestones" page="milestones" icon={Milestone} />
+				<Item name="Milestones" page="milestones" icon={Milestone} showFavorite={false} />
 			{:else if currentPage === 'board'}
-				<Item name="Board" page="board" icon={Stack} />
+				<Item name="Board" page="board" icon={Stack} showFavorite={false} />
 			{:else if currentPage === 'list'}
-				<Item name="Table" page="list" icon={List} />
+				<Item name="Table" page="list" icon={List} showFavorite={false} />
 			{:else if currentPage === 'roadmap'}
-				<Item name="Roadmap" page="roadmap" icon={Roadmap} />
+				<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} />
 			{/if}
+
+			{#if !showPageSwitcher}
+				<Down className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
+			{:else}
+				<Up className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
+			{/if}
+			<span class="sr-only">Switch project view</span>
 		</button>
 		{#if showPageSwitcher}
 			<div class="dropdown--container z-50">
@@ -53,6 +65,10 @@
 			</div>
 		{/if}
 	</nav>
+
+	<button on:click={() => (showPageSwitcher = true)} />
+
+	<!-- Only visible on desktop -->
 	<nav class="hidden items-center gap-md overflow-scroll md:flex">
 		<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
 		<Item name="Milestones" page="milestones" icon={Milestone} />
@@ -60,11 +76,4 @@
 		<Item name="Table" page="list" icon={List} />
 		<Item name="Roadmap" page="roadmap" icon={Roadmap} />
 	</nav>
-	<button on:click={() => (showPageSwitcher = !showPageSwitcher)}>
-		{#if !showPageSwitcher}
-			<Down className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
-		{:else}
-			<Up className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 md:hidden" />
-		{/if}
-	</button>
 </div>
