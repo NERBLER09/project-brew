@@ -3,6 +3,7 @@
 		currentProject,
 		invitedTeamMembers,
 		recentlyEdited,
+		showProjectAside,
 		userTeams
 	} from '$lib/stores/project';
 
@@ -195,9 +196,11 @@
 	{/if}
 </header>
 
-<div class="flex w-full items-center">
+<div class="mb-md flex w-full items-center">
 	<ProjectNav />
-	<Aside />
+	{#if $showProjectAside}
+		<Aside />
+	{/if}
 </div>
 
 <slot />
