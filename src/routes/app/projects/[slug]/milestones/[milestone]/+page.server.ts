@@ -8,6 +8,8 @@ export const load = (async (event) => {
     throw redirect(303, '/');
   }
 
+  event.depends("milestone:open")
+
   const milestoneId = event.params.milestone;
 
   const { data: milestone, error: err } = await supabaseClient

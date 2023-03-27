@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import Target from '$lib/assets/Target.svelte';
-	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import { supabase } from '$lib/supabase';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -17,8 +18,25 @@
 		day: 'numeric'
 	});
 
-	let strokeArray = 380;
+	let updatedName = data.milestone.name;
+	let updatedDescription = data.milestone.description;
+	let updatedStartDate: Date;
+	let updatedEndDate: Date;
 
+	const updateMilestoneName = async () => {
+		if (updatedName === data.milestone.name) return;
+		else if (!updatedName) {
+			updatedName = data.milestone.name;
+			return;
+		}
+		await supabase
+			.from('milestones')
+			.update({ name: updatedName })
+			.eq('project', $currentProject.id);
+		invalidate('milestone:open');
+	};
+
+	let strokeArray = 380;
 	let percentCompleted = 100;
 </script>
 
@@ -26,23 +44,20 @@
 	<title>{data.milestone.name}</title>
 </svelte:head>
 
-<MobileSubPageLayout
-	pageName={data.milestone.name}
-	previousPage="/app/projects/{$currentProject.id}/milestones"
-/>
-
-<header>
-	<a
-		class="hidden items-center gap-md md:flex"
-		href="/app/projects/{$currentProject.id}/milestones"
-	>
+<header class="flex items-center gap-md">
+	<a href="/app/projects/{$currentProject.id}/milestones">
 		<Back
 			className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-200 md:h-10 md:w-10"
 		/>
-		<h1 class="w-full truncate text-xl font-semibold text-grey-700 dark:text-grey-200">
-			{data.milestone.name}
-		</h1>
 	</a>
+	<h1
+		class="w-full truncate text-lg text-grey-700 dark:text-grey-200 md:text-xl md:font-semibold"
+		contenteditable
+		bind:textContent={updatedName}
+		on:blur={updateMilestoneName}
+	>
+		{data.milestone.name}
+	</h1>
 </header>
 
 <div class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row">
@@ -90,6 +105,19 @@
 				<span class="font-medium text-grey-700 dark:text-grey-300">{endDate}</span>
 			</div>
 		</div>
-		<p class="font-medium text-grey-700 dark:text-grey-300">{data.milestone.description}</p>
+		<p
+			class="font-medium text-grey-700 dark:text-grey-300"
+			contenteditable
+			bind:textContent={updatedDescription}
+			on:blur={() =>
+				updateMilestoneDetails(
+					updatedName,
+					updatedDescription,
+					updatedStartDate?.toISOString(),
+					updatedEndDate?.toISOString()
+				)}
+		>
+			{data.milestone.description}
+		</p>
 	</div>
 </div>
