@@ -1,10 +1,14 @@
 <script lang="ts">
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Search from '$lib/assets/Search.svelte';
+	import MilestoneLink from '$lib/components/projects/milestones/MilestoneLink.svelte';
 	import NewMilestonePrompt from '$lib/components/projects/milestones/NewMilestonePrompt.svelte';
 
 	import { currentProject, showProjectAside } from '$lib/stores/project';
 	import { onDestroy, onMount } from 'svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let showNewMilestonePrompt = false;
 
@@ -42,5 +46,9 @@
 		</button>
 	</div>
 </header>
+
+{#each data.milestones as milestone}
+	<MilestoneLink {...milestone} />
+{/each}
 
 <NewMilestonePrompt bind:shown={showNewMilestonePrompt} />
