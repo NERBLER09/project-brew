@@ -49,7 +49,7 @@
 	let headerHeight: number = 0;
 
 	onMount(async () => {
-		goto(`/app/projects/${data.id}/dashboard`);
+		goto(`/app/projects/${data.id}/${data.project?.default_view}`);
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
 			$recentlyEdited = [data.project, ...$recentlyEdited];
