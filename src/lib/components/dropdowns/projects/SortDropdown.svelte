@@ -12,7 +12,7 @@
 	$: $projectSort = sortOptions;
 </script>
 
-<div class="dropdown--container top-6 right-0 z-50 md:min-w-[15.625rem]">
+<div class="dropdown--container right-0 z-50 md:top-6 md:min-w-[15.625rem]">
 	<button class="dropdown--item" on:click={() => (addSort = !addSort)}>
 		<PlusNew className="dropdown--icon" />
 		<span class="dropdown--label"> Add sort </span>

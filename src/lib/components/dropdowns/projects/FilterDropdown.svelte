@@ -35,7 +35,7 @@
 	};
 </script>
 
-<div class="dropdown--container top-6 right-0 z-50 min-w-[15.1875rem]">
+<div class="dropdown--container right-0 z-50 min-w-[15.1875rem] md:top-6">
 	<button class="dropdown--item" on:click={clearFilters}>
 		<Trash className="dropdown--icon" />
 		<span class="dropdown--label">Clear Filters</span>
