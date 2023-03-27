@@ -42,6 +42,7 @@ export interface Database {
           id: string
           name: string
           owner: string | null
+          project: number
           start_date: string
         }
         Insert: {
@@ -50,6 +51,7 @@ export interface Database {
           id?: string
           name: string
           owner?: string | null
+          project: number
           start_date: string
         }
         Update: {
@@ -58,6 +60,7 @@ export interface Database {
           id?: string
           name?: string
           owner?: string | null
+          project?: number
           start_date?: string
         }
       }
@@ -157,7 +160,7 @@ export interface Database {
       projects: {
         Row: {
           banner: string | null
-          default_view: string | null
+          default_view: string
           description: string | null
           id: number
           invited_people: string[] | null
@@ -169,7 +172,7 @@ export interface Database {
         }
         Insert: {
           banner?: string | null
-          default_view?: string | null
+          default_view?: string
           description?: string | null
           id?: number
           invited_people?: string[] | null
@@ -181,7 +184,7 @@ export interface Database {
         }
         Update: {
           banner?: string | null
-          default_view?: string | null
+          default_view?: string
           description?: string | null
           id?: number
           invited_people?: string[] | null
