@@ -8,7 +8,7 @@ export const load = (async (event) => {
     throw redirect(303, '/');
   }
 
-  event.depends("milestone:open")
+  event.depends('milestone:open');
 
   const milestoneId = event.params.milestone;
 
@@ -19,8 +19,10 @@ export const load = (async (event) => {
     .limit(1)
     .single();
 
+  const { data: tasks } = await supabaseClient.from('tasks').select().eq('milestone', milestoneId).eq("project", event.params.slug);
+
   if (!err) {
-    return { milestone };
+    return { milestone: { ...milestone, tasks: tasks ?? [] } };
   }
   throw error(404, `Failed to fetch milestone ${err.message}`);
 }) satisfies PageServerLoad;

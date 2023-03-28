@@ -2,6 +2,7 @@
 	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Calendar from '$lib/assets/Calendar.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Target from '$lib/assets/Target.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
@@ -83,7 +84,7 @@
 	<title>{data.milestone.name}</title>
 </svelte:head>
 
-<header class="flex items-center gap-md">
+<header class="flex items-center gap-md lg:px-80">
 	<a href="/app/projects/{$currentProject.id}/milestones">
 		<Back
 			className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-200 md:h-10 md:w-10"
@@ -99,7 +100,7 @@
 	</h1>
 </header>
 
-<div class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row">
+<div class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row lg:px-80">
 	<div
 		class="w-full rounded-xl bg-grey-100 p-lg shadow shadow-grey-700 dark:bg-grey-800 dark:shadow-grey-600 md:w-fit"
 	>
@@ -170,3 +171,21 @@
 		</p>
 	</div>
 </div>
+
+<section class="mt-md md:mt-lg lg:px-80">
+	<header class="flex items-center">
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
+
+		<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+	</header>
+
+	<div class="flex flex-col gap-md">
+		{#each data.milestone.tasks as task}
+			<span>{task.name}</span>
+		{:else}
+			<p class="font-semibold text-grey-700 dark:text-grey-300">
+				There are no tasks associated with this milestone.
+			</p>
+		{/each}
+	</div>
+</section>
