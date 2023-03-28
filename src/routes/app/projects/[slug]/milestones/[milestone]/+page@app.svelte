@@ -4,6 +4,7 @@
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Target from '$lib/assets/Target.svelte';
+	import AddTask from '$lib/components/projects/milestones/AddTask.svelte';
 	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
@@ -79,6 +80,8 @@
 
 	let strokeArray = 380;
 	let percentCompleted = 100;
+
+	let showAddTaskDropdown = false;
 </script>
 
 <svelte:head>
@@ -177,12 +180,19 @@
 	<header class="flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
 
-		<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+		<div class="relative ml-auto">
+			<button on:click={() => (showAddTaskDropdown = true)}>
+				<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+			</button>
+			{#if showAddTaskDropdown}
+				<AddTask milestoneId={data.milestone.id} bind:show={showAddTaskDropdown} />
+			{/if}
+		</div>
 	</header>
 
 	<div
 		class="flex flex-col gap-md {data.milestone.tasks
-			? 'rounded-xl bg-grey-100 dark:bg-grey-800 md:p-lg'
+			? 'rounded-xl bg-none md:bg-grey-100 md:p-lg md:dark:bg-grey-800'
 			: ''}"
 	>
 		{#each data.milestone.tasks as task}
