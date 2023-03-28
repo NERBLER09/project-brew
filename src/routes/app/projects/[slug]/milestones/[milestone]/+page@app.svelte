@@ -174,7 +174,7 @@
 			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 		</div>
 	</div>
-	<div>
+	<div class="w-full">
 		<div class="flex items-center gap-sm">
 			<button class="flex items-center gap-sm" on:click={() => startDateInput.showPicker()}>
 				<input
@@ -202,14 +202,23 @@
 				<span class="sr-only">Click to update the end date of this milestone</span>
 			</button>
 		</div>
-		<p
-			class="font-medium text-grey-700 dark:text-grey-300"
-			contenteditable
-			bind:textContent={updatedDescription}
-			on:blur={updateMilestoneDescription}
-		>
-			{data.milestone.description}
-		</p>
+		{#if data.milestone.description}
+			<p
+				class="font-medium text-grey-700 dark:text-grey-300"
+				contenteditable
+				bind:textContent={updatedDescription}
+				on:blur={updateMilestoneDescription}
+			>
+				{data.milestone.description}
+			</p>
+		{:else}
+			<textarea
+				bind:value={updatedDescription}
+				on:blur={updateMilestoneDescription}
+				placeholder="Enter a description"
+				class="border-1 m-0 h-36 w-full resize-none rounded-md border-dashed border-grey-700 bg-white p-2 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-900 dark:text-grey-300 dark:placeholder:text-grey-300"
+			/>
+		{/if}
 	</div>
 </div>
 
