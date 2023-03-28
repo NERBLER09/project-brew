@@ -7,20 +7,22 @@
 	import AddTask from '$lib/components/projects/milestones/AddTask.svelte';
 	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
 	import { currentProject } from '$lib/stores/project';
+	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	let startDate = new Date(data.milestone.start_date).toLocaleDateString('en-US', {
-		month: 'short',
-		day: 'numeric'
-	});
-	let endDate = new Date(data.milestone?.end_date).toLocaleDateString('en-US', {
-		month: 'short',
-		day: 'numeric'
-	});
+	let startDate = new Date(data.milestone.start_date).setDate(
+		new Date(data.milestone.start_date).getDate() + 1
+	);
+	let endDate = new Date(data.milestone?.end_date).setDate(
+		new Date(data.milestone?.end_date).getDate() + 1
+	);
+
+	let formattedStartDate = '';
+	let formattedEndDate = '';
 
 	let updatedName = data.milestone.name;
 	let updatedDescription = data.milestone.description;
@@ -60,7 +62,7 @@
 			.eq('project', $currentProject.id);
 
 		invalidate('milestone:open');
-		startDate = new Date(data.milestone.start_date).toLocaleDateString('en-US', {
+		formattedStartDate = new Date(data.milestone.start_date).toLocaleDateString('en-US', {
 			month: 'short',
 			day: 'numeric'
 		});
@@ -73,7 +75,7 @@
 			.eq('project', $currentProject.id);
 
 		invalidate('milestone:open');
-		endDate = new Date(data.milestone?.end_date).toLocaleDateString('en-US', {
+		formattedEndDate = new Date(data.milestone?.end_date).toLocaleDateString('en-US', {
 			month: 'short',
 			day: 'numeric'
 		});
@@ -85,6 +87,8 @@
 	let percentCompleted = 0;
 
 	onMount(async () => {
+		$showMobileNav = false;
+
 		const { data: tasks } = await supabase
 			.from('tasks')
 			.select()
@@ -92,7 +96,18 @@
 		totalTasks = tasks?.length ?? 0;
 		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
+
+		formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {
+			month: 'short',
+			day: 'numeric'
+		});
+		formattedEndDate = new Date(endDate).toLocaleDateString('en-US', {
+			month: 'short',
+			day: 'numeric'
+		});
 	});
+
+	onDestroy(() => ($showMobileNav = true));
 
 	let showAddTaskDropdown = false;
 </script>
@@ -161,7 +176,7 @@
 					on:change={updateMilestoneStartDate}
 				/>
 				<Calendar className="h-8 w-8 stroke-accent-light" />
-				<span class="font-medium text-grey-700 dark:text-grey-300">{startDate}</span>
+				<span class="font-medium text-grey-700 dark:text-grey-300">{formattedStartDate}</span>
 				<span class="sr-only">Click to update the start date of this milestone</span>
 			</button>
 			<Back className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300 rotate-180" />
@@ -174,7 +189,7 @@
 					on:change={updateMilestoneEndDate}
 				/>
 				<Target className="h-8 w-8 stroke-accent-light" />
-				<span class="font-medium text-grey-700 dark:text-grey-300">{endDate}</span>
+				<span class="font-medium text-grey-700 dark:text-grey-300">{formattedEndDate}</span>
 				<span class="sr-only">Click to update the end date of this milestone</span>
 			</button>
 		</div>
