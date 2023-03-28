@@ -4,6 +4,7 @@
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Target from '$lib/assets/Target.svelte';
+	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
 	import type { PageData } from './$types';
@@ -179,9 +180,13 @@
 		<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
 	</header>
 
-	<div class="flex flex-col gap-md">
+	<div
+		class="flex flex-col gap-md {data.milestone.tasks
+			? 'rounded-xl bg-grey-100 dark:bg-grey-800 md:p-lg'
+			: ''}"
+	>
 		{#each data.milestone.tasks as task}
-			<span>{task.name}</span>
+			<MilestoneTask {...task} />
 		{:else}
 			<p class="font-semibold text-grey-700 dark:text-grey-300">
 				There are no tasks associated with this milestone.
