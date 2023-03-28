@@ -20,8 +20,10 @@
 
 	let updatedName = data.milestone.name;
 	let updatedDescription = data.milestone.description;
-	let updatedStartDate: Date;
-	let updatedEndDate: Date;
+	let updatedStartDate: Date = new Date();
+	let startDateInput: HTMLInputElement;
+	let updatedEndDate: Date = new Date();
+	let endDateInput: HTMLInputElement;
 
 	const updateMilestoneName = async () => {
 		if (updatedName === data.milestone.name) return;
@@ -34,6 +36,43 @@
 			.update({ name: updatedName })
 			.eq('project', $currentProject.id);
 		invalidate('milestone:open');
+	};
+
+	const updateMilestoneDescription = async () => {
+		if (updatedDescription === data.milestone.description) return;
+
+		await supabase
+			.from('milestones')
+			.update({ description: updatedDescription })
+			.eq('project', $currentProject.id);
+
+		invalidate('milestone:open');
+	};
+
+	const updateMilestoneStartDate = async () => {
+		await supabase
+			.from('milestones')
+			.update({ start_date: new Date(updatedStartDate).toISOString() })
+			.eq('project', $currentProject.id);
+
+		invalidate('milestone:open');
+		startDate = new Date(data.milestone.start_date).toLocaleDateString('en-US', {
+			month: 'short',
+			day: 'numeric'
+		});
+	};
+
+	const updateMilestoneEndDate = async () => {
+		await supabase
+			.from('milestones')
+			.update({ start_date: new Date(updatedEndDate).toISOString() })
+			.eq('project', $currentProject.id);
+
+		invalidate('milestone:open');
+		endDate = new Date(data.milestone?.end_date).toLocaleDateString('en-US', {
+			month: 'short',
+			day: 'numeric'
+		});
 	};
 
 	let strokeArray = 380;
@@ -95,27 +134,37 @@
 	</div>
 	<div>
 		<div class="flex items-center gap-sm">
-			<div class="flex items-center gap-sm">
+			<button class="flex items-center gap-sm" on:click={() => startDateInput.showPicker()}>
+				<input
+					type="date"
+					class="hidden"
+					bind:this={startDateInput}
+					bind:value={updatedStartDate}
+					on:change={updateMilestoneStartDate}
+				/>
 				<Calendar className="h-8 w-8 stroke-accent-light" />
 				<span class="font-medium text-grey-700 dark:text-grey-300">{startDate}</span>
-			</div>
+				<span class="sr-only">Click to update the start date of this milestone</span>
+			</button>
 			<Back className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300 rotate-180" />
-			<div class="flex items-center gap-sm">
+			<button class="flex items-center gap-sm" on:click={() => endDateInput.showPicker()}>
+				<input
+					type="date"
+					class="hidden"
+					bind:this={endDateInput}
+					bind:value={updatedEndDate}
+					on:change={updateMilestoneEndDate}
+				/>
 				<Target className="h-8 w-8 stroke-accent-light" />
 				<span class="font-medium text-grey-700 dark:text-grey-300">{endDate}</span>
-			</div>
+				<span class="sr-only">Click to update the end date of this milestone</span>
+			</button>
 		</div>
 		<p
 			class="font-medium text-grey-700 dark:text-grey-300"
 			contenteditable
 			bind:textContent={updatedDescription}
-			on:blur={() =>
-				updateMilestoneDetails(
-					updatedName,
-					updatedDescription,
-					updatedStartDate?.toISOString(),
-					updatedEndDate?.toISOString()
-				)}
+			on:blur={updateMilestoneDescription}
 		>
 			{data.milestone.description}
 		</p>
