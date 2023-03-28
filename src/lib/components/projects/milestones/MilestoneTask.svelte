@@ -15,7 +15,6 @@
 		const { data } = await supabase.from('profiles').select('avatar_url, name').in('id', assigned);
 		assignedUserProfiles =
 			data?.map((item) => ({ profile: item.avatar_url ?? '', name: item.name })) ?? [];
-		console.table(assignedUserProfiles);
 	});
 </script>
 

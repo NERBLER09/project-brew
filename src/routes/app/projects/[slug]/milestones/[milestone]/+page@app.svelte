@@ -6,6 +6,7 @@
 	import Target from '$lib/assets/Target.svelte';
 	import AddTask from '$lib/components/projects/milestones/AddTask.svelte';
 	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
+	import RoadmapItem from '$lib/components/projects/milestones/RoadmapItem.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
@@ -205,7 +206,7 @@
 </div>
 
 <section class="mt-md md:mt-lg lg:px-80">
-	<header class="flex items-center">
+	<header class="mb-md flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
 
 		<div class="relative ml-auto">
@@ -229,6 +230,20 @@
 			<p class="font-semibold text-grey-700 dark:text-grey-300">
 				There are no tasks associated with this milestone.
 			</p>
+		{/each}
+	</div>
+</section>
+
+<section class="mt-md md:mt-lg lg:px-80">
+	<header class="mb-md flex items-center">
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Roadmap</h2>
+
+		<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+	</header>
+
+	<div class="flex flex-col gap-sm">
+		{#each data.milestone.roadmap as item}
+			<RoadmapItem {...item} />
 		{/each}
 	</div>
 </section>

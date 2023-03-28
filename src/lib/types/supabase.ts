@@ -195,6 +195,32 @@ export interface Database {
           user_id?: string
         }
       }
+      roadmap: {
+        Row: {
+          assigned: string[] | null
+          description: string | null
+          id: string
+          milestone: string
+          name: string
+          target: string
+        }
+        Insert: {
+          assigned?: string[] | null
+          description?: string | null
+          id?: string
+          milestone: string
+          name: string
+          target: string
+        }
+        Update: {
+          assigned?: string[] | null
+          description?: string | null
+          id?: string
+          milestone?: string
+          name?: string
+          target?: string
+        }
+      }
       sub_tasks: {
         Row: {
           completed: boolean

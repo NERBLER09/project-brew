@@ -19,10 +19,19 @@ export const load = (async (event) => {
     .limit(1)
     .single();
 
-  const { data: tasks } = await supabaseClient.from('tasks').select().eq('milestone', milestoneId).eq("project", event.params.slug);
+  const { data: tasks } = await supabaseClient
+    .from('tasks')
+    .select()
+    .eq('milestone', milestoneId)
+    .eq('project', event.params.slug);
+
+  const { data: roadmap } = await supabaseClient
+    .from('roadmap')
+    .select()
+    .eq('milestone', milestoneId);
 
   if (!err) {
-    return { milestone: { ...milestone, tasks: tasks ?? [] } };
+    return { milestone: { ...milestone, tasks: tasks ?? [], roadmap: roadmap ?? [] } };
   }
   throw error(404, `Failed to fetch milestone ${err.message}`);
 }) satisfies PageServerLoad;
