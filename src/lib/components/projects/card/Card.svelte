@@ -3,6 +3,7 @@
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
+	import Milestone from '$lib/assets/Milestone.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import UserAdd from '$lib/assets/User-Add.svelte';
@@ -25,9 +26,11 @@
 	export let status: 'other' | 'todo' | 'done' | 'doing';
 	export let assinged: string[] | null;
 	export let tasks: Task[] | undefined;
+	export let milestone: string | null;
 
 	let showCardDropdown = false;
 	let formattedDate = '';
+	let milestoneName = '';
 
 	let newName = name;
 	let newDescription = description;
@@ -114,7 +117,7 @@
 		}
 	};
 
-	onMount(() => {
+	onMount(async () => {
 		if (!dueDate) return '';
 
 		const tempDueDate = new Date(dueDate);
@@ -122,6 +125,17 @@
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
 		checkIfTaskIsDueToday();
+
+		if (milestone) {
+			const { data } = await supabase
+				.from('milestones')
+				.select('name')
+				.eq('id', milestone)
+				.limit(1)
+				.single();
+
+			milestoneName = data?.name ?? '';
+		}
 	});
 
 	let cardDropdownElement: HTMLElement;
@@ -176,6 +190,18 @@
 						bind:value={newDate}
 						on:change={updateTaskDate}
 					/>
+				</div>
+				<div class="flex items-center md:gap-sm">
+					<Milestone className="h-6 w-6 stroke-accent-light" />
+					{#if milestoneName}
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							>{milestoneName}</span
+						>
+					{:else}
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							>Add to milestone
+						</span>
+					{/if}
 				</div>
 			</div>
 
