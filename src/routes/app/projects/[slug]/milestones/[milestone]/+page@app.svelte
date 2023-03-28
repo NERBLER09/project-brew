@@ -8,6 +8,7 @@
 	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -79,7 +80,19 @@
 	};
 
 	let strokeArray = 380;
-	let percentCompleted = 100;
+	let totalTasks = 0;
+	let completedTasks = 0;
+	let percentCompleted = 0;
+
+	onMount(async () => {
+		const { data: tasks } = await supabase
+			.from('tasks')
+			.select()
+			.eq('milestone', data.milestone.id);
+		totalTasks = tasks?.length ?? 0;
+		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
+		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
+	});
 
 	let showAddTaskDropdown = false;
 </script>

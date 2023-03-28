@@ -1,12 +1,23 @@
 <script lang="ts">
 	import { currentProject } from '$lib/stores/project';
+	import { supabase } from '$lib/supabase';
+	import { onMount } from 'svelte';
 
 	export let name: string;
 	export let id: string;
 
 	let strokeArray = 380;
 
-	let percentCompleted = 100;
+	let totalTasks = 0;
+	let completedTasks = 0;
+	let percentCompleted = 0;
+
+	onMount(async () => {
+		const { data } = await supabase.from('tasks').select().eq('milestone', id);
+		totalTasks = data?.length ?? 0;
+		completedTasks = data?.filter((item) => item.status === 'done').length!;
+		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
+	});
 </script>
 
 <a href="/app/projects/{$currentProject.id}/milestones/{id}">

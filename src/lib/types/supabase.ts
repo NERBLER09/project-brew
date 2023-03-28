@@ -233,6 +233,7 @@ export interface Database {
           name: string
           priority_level: string | null
           project: number
+          status: string
           tags: string[] | null
           user_id: string
         }
@@ -247,6 +248,7 @@ export interface Database {
           name?: string
           priority_level?: string | null
           project: number
+          status?: string
           tags?: string[] | null
           user_id: string
         }
@@ -261,6 +263,7 @@ export interface Database {
           name?: string
           priority_level?: string | null
           project?: number
+          status?: string
           tags?: string[] | null
           user_id?: string
         }

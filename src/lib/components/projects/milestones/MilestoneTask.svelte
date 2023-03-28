@@ -6,6 +6,7 @@
 	export let name: string;
 	export let assigned: string[];
 	export let id: number;
+	export let status: string;
 
 	let assignedUserProfiles: any[] = [];
 
@@ -19,7 +20,11 @@
 </script>
 
 <div class="flex items-center">
-	<span class="font-bold text-grey-700 dark:text-grey-200">{name}</span>
+	<span
+		class="font-bold text-grey-700 dark:text-grey-200 {status === 'done'
+			? 'text-emerald-600 line-through dark:text-emerald-500'
+			: ''}">{name}</span
+	>
 
 	<div class="ml-auto flex w-fit flex-row-reverse items-center">
 		{#each assignedUserProfiles as assigned}
