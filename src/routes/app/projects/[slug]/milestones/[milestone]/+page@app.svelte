@@ -12,6 +12,8 @@
 	import { supabase } from '$lib/supabase';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
 
 	export let data: PageData;
 
@@ -111,6 +113,7 @@
 	onDestroy(() => ($showMobileNav = true));
 
 	let showAddTaskDropdown = false;
+	let showCreateRoadmapItem = false;
 </script>
 
 <svelte:head>
@@ -238,8 +241,56 @@
 	<header class="mb-md flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Roadmap</h2>
 
-		<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200 ml-auto" />
+		<button class="ml-auto" on:click={() => (showCreateRoadmapItem = !showCreateRoadmapItem)}>
+			<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+		</button>
 	</header>
+
+	{#if showCreateRoadmapItem}
+		<section class="mb-lg">
+			<header class="mb-sm">
+				<h3 class="font-semibold text-grey-800 dark:text-grey-200 md:text-md">Create a new item</h3>
+			</header>
+			<form
+				method="POST"
+				use:enhance={() => {
+					return async ({ result }) => {
+						if (result.type === 'failure') {
+							toast.error(`Failed to create new item: ${result.data.errMsg}`);
+						} else if (result.type === 'success') {
+							toast.success('Successfully created roadmap item');
+							invalidate('milestone:open');
+						}
+					};
+				}}
+			>
+				<input
+					type="text"
+					class="input--text w-full md:w-1/2"
+					placeholder="What should happen on this date?"
+					name="name"
+				/>
+				<textarea
+					name="description"
+					id="description-input"
+					class="input--text mt-sm h-36 w-full resize-none"
+					placeholder="Write a simple description on what needs to happen."
+				/>
+
+				<label for="target-date-input" class="input--label mt-sm">What is the target?</label>
+				<input type="date" id="target-date-input" class="input--text mt-sm" name="target-date" />
+
+				<div class="mt-md flex w-full items-center justify-center gap-md">
+					<button class="button--primary">Create</button>
+					<button
+						class="button--secondary"
+						type="button"
+						on:click={() => (showCreateRoadmapItem = false)}>Cancel</button
+					>
+				</div>
+			</form>
+		</section>
+	{/if}
 
 	<div class="flex flex-col gap-sm">
 		{#each data.milestone.roadmap as item}
