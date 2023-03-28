@@ -28,7 +28,8 @@ export const load = (async (event) => {
   const { data: roadmap } = await supabaseClient
     .from('roadmap')
     .select()
-    .eq('milestone', milestoneId);
+    .eq('milestone', milestoneId)
+    .order('target', { ascending: false });
 
   if (!err) {
     return { milestone: { ...milestone, tasks: tasks ?? [], roadmap: roadmap ?? [] } };
@@ -50,13 +51,14 @@ export const actions = {
     const description = data.get('description') as string;
     const target_date = data.get('target-date') as string;
 
-    const { error: err } = await supabaseClient.from("roadmap").insert({ name, description, target: target_date, milestone: params.milestone })
+    const { error: err } = await supabaseClient
+      .from('roadmap')
+      .insert({ name, description, target: target_date, milestone: params.milestone });
 
     if (!err) {
       return { success: true };
     } else {
       return fail(400, { failCreate: true, errMsg: err.message });
     }
-
   }
-} satisfies Actions
+} satisfies Actions;

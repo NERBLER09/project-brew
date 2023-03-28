@@ -17,6 +17,11 @@
 
 	export let data: PageData;
 
+	let tasks = data.milestone.tasks.sort((item) => {
+		if (item.status === 'done') return 1;
+		else return 0;
+	});
+
 	let startDate = new Date(data.milestone.start_date).setDate(
 		new Date(data.milestone.start_date).getDate() + 1
 	);
@@ -227,7 +232,7 @@
 			? 'rounded-xl bg-none md:bg-grey-100 md:p-lg md:dark:bg-grey-800'
 			: ''}"
 	>
-		{#each data.milestone.tasks as task}
+		{#each tasks as task}
 			<MilestoneTask {...task} />
 		{:else}
 			<p class="font-semibold text-grey-700 dark:text-grey-300">
