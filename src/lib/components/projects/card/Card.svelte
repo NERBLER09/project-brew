@@ -16,6 +16,7 @@
 	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
+	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
 
 	export let name: string;
 	export let tags: any[] = [];
@@ -41,6 +42,8 @@
 	let showAssignNewUsers = false;
 	let addNewTags = false;
 	let dateInputElement: HTMLInputElement;
+
+	let updateTaskMilestone = false;
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -117,15 +120,7 @@
 		}
 	};
 
-	onMount(async () => {
-		if (!dueDate) return '';
-
-		const tempDueDate = new Date(dueDate);
-		tempDueDate.setDate(tempDueDate.getDate() + 1);
-		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-		checkIfTaskIsDueToday();
-
+	const getMilestoneName = async () => {
 		if (milestone) {
 			const { data } = await supabase
 				.from('milestones')
@@ -136,12 +131,28 @@
 
 			milestoneName = data?.name ?? '';
 		}
+	};
+
+	onMount(() => {
+		if (!dueDate) return '';
+
+		const tempDueDate = new Date(dueDate);
+		tempDueDate.setDate(tempDueDate.getDate() + 1);
+		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+		checkIfTaskIsDueToday();
+		getMilestoneName();
 	});
 
 	let cardDropdownElement: HTMLElement;
+	let milestoneDropdownElement: HTMLElement;
 	const handleClickOutside = (event: Event) => {
 		if (!cardDropdownElement.contains(event.target)) {
 			showCardDropdown = false;
+		}
+
+		if (!milestoneDropdownElement.contains(event.target)) {
+			updateTaskMilestone = false;
 		}
 	};
 </script>
@@ -191,16 +202,30 @@
 						on:change={updateTaskDate}
 					/>
 				</div>
-				<div class="flex items-center md:gap-sm">
-					<Milestone className="h-6 w-6 stroke-accent-light" />
-					{#if milestoneName}
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-							>{milestoneName}</span
-						>
-					{:else}
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-							>Add to milestone
-						</span>
+				<div class="relative" bind:this={milestoneDropdownElement}>
+					<button
+						class="flex items-center md:gap-sm"
+						on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
+					>
+						<Milestone className="h-6 w-6 stroke-accent-light" />
+						{#if milestoneName}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>{milestoneName}</span
+							>
+						{:else}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>Add to milestone
+							</span>
+						{/if}
+					</button>
+
+					{#if updateTaskMilestone}
+						<UpdateTaskMilestone
+							bind:currentMilestone={milestone}
+							bind:shown={updateTaskMilestone}
+							taskId={id}
+							{getMilestoneName}
+						/>
 					{/if}
 				</div>
 			</div>
