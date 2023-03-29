@@ -7,7 +7,7 @@
 	import Milestone from '$lib/assets/Milestone.svelte';
 	import Roadmap from '$lib/assets/Roadmap.svelte';
 	import Stack from '$lib/assets/Stack.svelte';
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, showProjectAside } from '$lib/stores/project';
 	import Item from './Item.svelte';
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
@@ -28,7 +28,10 @@
 
 <svelte:window on:click={handleAutoClose} />
 
-<div class="flex items-start gap-sm md:w-[calc(100%-12.3125rem)]" bind:this={navContainer}>
+<div
+	class="flex items-start gap-sm  {$showProjectAside ? 'md:w-[calc(100%-12.3125rem)]' : 'w-full'}"
+	bind:this={navContainer}
+>
 	<nav class="flex items-center md:hidden">
 		<button
 			on:click={() => (showPageSwitcher = !showPageSwitcher)}
