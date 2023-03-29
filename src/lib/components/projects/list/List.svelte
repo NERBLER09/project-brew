@@ -11,6 +11,7 @@
 	import {
 		dateFilter,
 		filterTags,
+		milestoneFilter,
 		searchQuery,
 		sortOptions,
 		tasksCompletedThisDay,
@@ -125,6 +126,19 @@
 		tasks = [...tasks];
 	};
 
+	const handleMilestoneFilter = (id: string | undefined) => {
+		unsortedTasks = dbTasks;
+
+		if (!id) return;
+
+		unsortedTasks = unsortedTasks.filter((item) => {
+			return item.milestone === id;
+		});
+
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
 	const handleSort = (option: SortOptions) => {
 		if (option.date === 'descending') {
 			unsortedTasks = unsortedTasks.sort((item: Task) => {
@@ -152,6 +166,7 @@
 
 	$: handleDateFilter($dateFilter);
 	$: handleTagsFilter($filterTags);
+	$: handleMilestoneFilter($milestoneFilter?.id);
 	$: handleSort($sortOptions);
 
 	let dbTasks: Task[] = [];
