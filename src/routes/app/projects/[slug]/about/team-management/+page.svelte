@@ -59,7 +59,6 @@
 		return async ({ result }) => {
 			if (result.type === 'success') {
 				toast.success(`Added ${emailSearch} to ${data.project?.project_name}`);
-				$currentProject.invited_people = result.data.invited_people;
 				invalidate('project:about');
 				invalidate('project:invited');
 			} else if (result.data.notFound) {

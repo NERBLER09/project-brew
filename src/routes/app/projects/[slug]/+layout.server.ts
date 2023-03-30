@@ -1,5 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, fail, redirect, type Actions } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -27,6 +27,11 @@ export const load = (async (event) => {
 		.eq('project', projectId)
 		.order('position', { ascending: false });
 
+	const { data: invited_people } = await supabaseClient
+		.from('project_members')
+		.select()
+		.eq('project', projectId);
+
 	const { data: userTeams } = await supabaseClient
 		.from('teams')
 		.select('*, team_members!inner(user_id)')
@@ -41,7 +46,7 @@ export const load = (async (event) => {
 			tags: JSON.parse(project?.tags) || [],
 			lists: lists || [],
 			project,
-			invited_people: project.invited_people || [],
+			invited_people: invited_people || [],
 			team: project.team,
 			userTeams
 		};

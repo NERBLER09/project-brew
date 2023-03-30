@@ -1,5 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { redirect, type Actions } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async (event) => {

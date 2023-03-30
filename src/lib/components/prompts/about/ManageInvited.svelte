@@ -58,14 +58,13 @@
 	</header>
 
 	<form
-		action="/app/projects/{$currentProject.id}/about/team-mangement?/invite"
+		action="about/team-management?/invite"
 		method="POST"
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'success') {
-					toast.success(`Added ${emailSearch} to ${$currentProject.name}`);
-					$currentProject.invited_people = result.data.invited_people;
-					invalidate('project:invited');
+					toast.success(`Added ${emailSearch} to ${$currentProject.project?.project_name}`);
+					invalidate('app:project');
 				} else if (result.data.notFound) {
 					toast.error(`A user with the email: ${emailSearch} doesn't exist`);
 				} else if (result.data.invited) {
@@ -102,8 +101,8 @@
 		</header>
 		<div>
 			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-				{#each $currentProject.invited_people as id}
-					<TeamMember {id} />
+				{#each $currentProject.invited_people as { user_id, id, role }}
+					<TeamMember {user_id} dbId={id} {role} />
 				{:else}
 					<p class="text-grey-700 dark:text-grey-200 font-medium">
 						No one has been invited to this project.
