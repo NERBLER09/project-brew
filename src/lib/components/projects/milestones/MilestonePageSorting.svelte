@@ -6,17 +6,16 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import { sortOptions as projectSort } from '$lib/stores/project';
 
-	let addSort = false;
-
 	interface MilestoneSorting {
 		endDate: 'asc' | 'dsc' | null;
 		progress: 'asc' | 'dsc' | null;
 	}
-
 	export let milestoneSorting: MilestoneSorting = {
 		endDate: null,
 		progress: null
 	};
+
+	let addSort = false;
 
 	const sortOptions = $projectSort;
 	$: $projectSort = sortOptions;

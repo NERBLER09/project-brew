@@ -19,9 +19,30 @@
 
 	let showSort = false;
 
+	interface MilestoneSorting {
+		endDate: 'asc' | 'dsc' | null;
+		progress: 'asc' | 'dsc' | null;
+	}
+	export let milestoneSorting: MilestoneSorting = {
+		endDate: null,
+		progress: null
+	};
+
 	const handleMilestoneSearch = (query: string) => {
 		milestones = data.milestones;
 		milestones = milestones.filter((item) => item.name.toLowerCase().includes(query));
+	};
+
+	const handleSorting = (sortOptions: MilestoneSorting) => {
+		if (sortOptions.endDate === 'dsc') {
+			milestones = milestones.sort((item) => {
+				return new Date().getTime() - new Date(item.end_date).getTime();
+			});
+		} else if (sortOptions.endDate === 'asc') {
+			milestones = milestones.sort((item) => {
+				return new Date(item.end_date).getTime() - new Date().getTime();
+			});
+		}
 	};
 
 	const handleAutoCloseSearch = (event: Event) => {
@@ -32,6 +53,7 @@
 	};
 
 	$: handleMilestoneSearch(query);
+	$: handleSorting(milestoneSorting);
 
 	let showNewMilestonePrompt = false;
 
@@ -85,7 +107,7 @@
 			</button>
 
 			{#if showSort}
-				<MilestonePageSorting />
+				<MilestonePageSorting bind:milestoneSorting />
 			{/if}
 		</div>
 		<button
