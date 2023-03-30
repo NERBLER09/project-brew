@@ -99,16 +99,14 @@
 		<header>
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 		</header>
-		<div>
-			<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-				{#each $currentProject.invited_people as { user_id, id, role }}
-					<TeamMember {user_id} dbId={id} {role} />
-				{:else}
-					<p class="text-grey-700 dark:text-grey-200 font-medium">
-						No one has been invited to this project.
-					</p>
-				{/each}
-			</div>
+		<div class="mt-md flex flex-col gap-md">
+			{#each $currentProject.invited_people as { user_id, id, role }}
+				<TeamMember {user_id} dbId={id} {role} />
+			{:else}
+				<p class="text-grey-700 dark:text-grey-200 font-medium">
+					No one has been invited to this project.
+				</p>
+			{/each}
 		</div>
 	</section>
 </dialog>

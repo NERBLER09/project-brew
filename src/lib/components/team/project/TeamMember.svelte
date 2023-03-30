@@ -1,83 +1,135 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import User from '$lib/assets/User.svelte';
-
+	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
+	import { currentProject } from '$lib/stores/project';
+	import { userRole } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
-	import TeamMemberDropdown from '../../dropdowns/team/TeamMemberDropdown.svelte';
 
-	export let user_id: string | undefined;
+	export let user_id: string;
 	export let dbId: string;
-	export let role: string;
+	export let projectId: number;
+	export let role: 'owner' | 'admin' | 'editor' | 'viewer';
 
-	let name: string = '';
-	let avatar_url: string | null = '';
-	let email: string = '';
+	let name: string;
+	let email: string;
+	let avatar: string;
+	let roleFormatted: string;
 
-	let showTeamMemberDropdown = false;
+	const formateRole = () => {
+		switch (role) {
+			case 'owner':
+				roleFormatted = 'Owner';
+				break;
+			case 'admin':
+				roleFormatted = 'Admin';
+				break;
+			case 'editor':
+				roleFormatted = 'Editor';
+				break;
+			case 'viewer':
+				roleFormatted = 'Viewer';
+				break;
+		}
+	};
 
 	onMount(async () => {
-		const { data: member, error } = await supabase
+		const { data: profile, error } = await supabase
 			.from('profiles')
 			.select()
 			.eq('id', user_id)
 			.limit(1)
 			.single();
 
-		if (member) {
-			name = member.name;
-			email = member.email;
-			avatar_url = member.avatar_url;
+		if (profile) {
+			name = profile.name;
+			email = profile.email;
+			avatar = profile.avatar_url ?? '';
 		}
+
+		formateRole();
 	});
 
-	const removeUser = async () => {
-		const { error } = await supabase.from('project_members').delete().eq('id', dbId);
-		if (!error) {
-			toast.success(`Removed ${name}`);
-			invalidate('open:project');
-			invalidate('project:about');
-		} else {
-			toast.error(`Failed to remove ${name}`);
+	let showChangeStatus = false;
+
+	let changeStatusContainer: HTMLElement;
+	let teamMemberDropdown: HTMLElement;
+
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!changeStatusContainer) return;
+		if (!changeStatusContainer.contains(event.target)) {
+			showChangeStatus = false;
 		}
 	};
 
-	let memberDropdownContainer: HTMLElement;
+	const handleUpdateStatus = async (event) => {
+		const newRole = event.detail.role;
+		showChangeStatus = false;
 
-	const handleAutoCloseDropdown = (event: Event) => {
-		if (!memberDropdownContainer.contains(event.target)) {
-			showTeamMemberDropdown = false;
+		if ($userRole === 'owner' || $userRole === 'admin') {
+			await supabase
+				.from('project_members')
+				.update({ role: newRole })
+				.eq('user_id', dbId)
+				.eq('project', $currentProject.id);
+
+			role = newRole;
+			formateRole();
+			invalidate('app:team');
+		} else {
+			toast.error('User is not the team owner or an admin.');
 		}
 	};
 </script>
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
-<div class="flex w-full items-center md:relative">
-	<a href="/app/team/member/{user_id}" class="flex w-full items-start gap-md">
-		{#if avatar_url}
+<div class="w-full items-center md:flex">
+	<div class="flex w-full gap-lg">
+		{#if avatar}
 			<img
-				src={avatar_url}
-				alt="User profile"
+				src={avatar}
+				alt="{name} profile"
 				class="aspect-square h-12 w-12 rounded-full object-cover"
 			/>
 		{:else}
-			<User className="w-12 h-12 stroke-grey-700 dark:stroke-grey-200" />
+			<User className="h-12 w-12 stroke-grey-700 dark:stroke-grey-200" />
 		{/if}
-		<div class="flex flex-col items-start justify-start gap-sm">
-			<p class="font-bold text-grey-700 dark:text-grey-100">{name}</p>
-			<p class="font-bold text-grey-700 dark:text-grey-100">{email}</p>
-		</div>
-	</a>
-	<div bind:this={memberDropdownContainer}>
-		<button on:click={() => (showTeamMemberDropdown = !showTeamMemberDropdown)} class="ml-auto">
-			<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-		</button>
 
-		{#if showTeamMemberDropdown}
-			<TeamMemberDropdown bind:visibility={showTeamMemberDropdown} {email} {removeUser} />
+		<div class="flex w-[calc(100%-4.875rem)] flex-col gap-sm">
+			<div class="flex items-center gap-sm">
+				<span class="truncate font-bold text-grey-700 dark:text-grey-200">{name}</span>
+
+				{#if role === 'owner'}
+					<li
+						class="ml-md list-inside list-disc truncate text-sm font-medium text-grey-700 dark:text-grey-300 md:hidden md:text-base"
+					>
+						Owner
+					</li>
+				{/if}
+			</div>
+			<span class="truncate font-medium text-grey-700 dark:text-grey-300">{email}</span>
+		</div>
+	</div>
+
+	<div class="relative ml-auto mt-sm" bind:this={changeStatusContainer}>
+		{#if role !== 'owner'}
+			<button
+				on:click={() => (showChangeStatus = !showChangeStatus)}
+				class="flex items-center justify-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700 md:px-2 md:py-1"
+			>
+				<span class="font-bold text-grey-700 dark:text-grey-200">{roleFormatted}</span>
+				<Down className="w-6 h-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Change team member status</span>
+			</button>
+			{#if showChangeStatus}
+				<ChangeStatus on:update={handleUpdateStatus} />
+			{/if}
+		{:else}
+			<span class="hidden font-medium text-grey-700 dark:text-grey-300 md:inline">Owner</span>
 		{/if}
 	</div>
 </div>
