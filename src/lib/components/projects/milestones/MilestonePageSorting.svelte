@@ -1,10 +1,8 @@
 <script lang="ts">
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
-	import CirclePriority from '$lib/assets/Circle-Priority.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { sortOptions as projectSort } from '$lib/stores/project';
 
 	interface MilestoneSorting {
 		endDate: 'asc' | 'dsc' | null;
@@ -14,9 +12,6 @@
 	};
 
 	let addSort = false;
-
-	const sortOptions = $projectSort;
-	$: $projectSort = sortOptions;
 </script>
 
 <div class="dropdown--container right-0 z-50 md:top-6 md:min-w-[15.625rem]">

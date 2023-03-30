@@ -1,64 +1,82 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-  const { session, supabaseClient } = await getSupabase(event);
-  if (!session) {
-    throw redirect(303, '/');
-  }
+	const { session, supabaseClient } = await getSupabase(event);
+	if (!session) {
+		throw redirect(303, '/');
+	}
 
-  event.depends('milestone:open');
+	event.depends('milestone:open');
 
-  const milestoneId = event.params.milestone;
+	const milestoneId = event.params.milestone;
 
-  const { data: milestone, error: err } = await supabaseClient
-    .from('milestones')
-    .select()
-    .eq('id', milestoneId)
-    .limit(1)
-    .single();
+	const { data: milestone, error: err } = await supabaseClient
+		.from('milestones')
+		.select()
+		.eq('id', milestoneId)
+		.limit(1)
+		.single();
 
-  const { data: tasks } = await supabaseClient
-    .from('tasks')
-    .select()
-    .eq('milestone', milestoneId)
-    .eq('project', event.params.slug);
+	const { data: tasks } = await supabaseClient
+		.from('tasks')
+		.select()
+		.eq('milestone', milestoneId)
+		.eq('project', event.params.slug);
 
-  const { data: roadmap } = await supabaseClient
-    .from('roadmap')
-    .select()
-    .eq('milestone', milestoneId)
-    .order('target', { ascending: false });
+	const { data: roadmap } = await supabaseClient
+		.from('roadmap')
+		.select()
+		.eq('milestone', milestoneId)
+		.order('target', { ascending: false });
 
-  if (!err) {
-    return { milestone: { ...milestone, tasks: tasks ?? [], roadmap: roadmap ?? [] } };
-  }
-  throw error(404, `Failed to fetch milestone ${err.message}`);
+	let leaderProfilePicture = '';
+	if (milestone?.leader) {
+		const { data: profile } = await supabaseClient
+			.from('profiles')
+			.select('avatar_url')
+			.eq('id', milestone.leader)
+			.limit(1)
+			.single();
+		leaderProfilePicture = profile?.avatar_url ?? '';
+	}
+
+	if (!err) {
+		return {
+			milestone: {
+				...milestone,
+				tasks: tasks ?? [],
+				roadmap: roadmap ?? [],
+				leader_profile: leaderProfilePicture
+			}
+		};
+	}
+	throw error(404, `Failed to fetch milestone ${err.message}`);
 }) satisfies PageServerLoad;
 
 export const actions = {
-  default: async (event) => {
-    const { request, params } = event;
-    const { session, supabaseClient } = await getSupabase(event);
-    if (!session) {
-      // the user is not signed in
-      throw error(403, { message: 'Unauthorized' });
-    }
+	default: async (event) => {
+		const { request, params } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
 
-    const data = await request.formData();
-    const name = data.get('name') as string;
-    const description = data.get('description') as string;
-    const target_date = data.get('target-date') as string;
+		const data = await request.formData();
+		const name = data.get('name') as string;
+		const description = data.get('description') as string;
+		const target_date = data.get('target-date') as string;
 
-    const { error: err } = await supabaseClient
-      .from('roadmap')
-      .insert({ name, description, target: target_date, milestone: params.milestone });
+		const { error: err } = await supabaseClient
+			.from('roadmap')
+			.insert({ name, description, target: target_date, milestone: params.milestone });
 
-    if (!err) {
-      return { success: true };
-    } else {
-      return fail(400, { failCreate: true, errMsg: err.message });
-    }
-  }
+		if (!err) {
+			return { success: true };
+		} else {
+			return fail(400, { failCreate: true, errMsg: err.message });
+		}
+	}
 } satisfies Actions;

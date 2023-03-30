@@ -14,6 +14,7 @@
 	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import User from '$lib/assets/User.svelte';
 
 	export let data: PageData;
 
@@ -97,12 +98,8 @@
 	onMount(async () => {
 		$showMobileNav = false;
 
-		const { data: tasks } = await supabase
-			.from('tasks')
-			.select()
-			.eq('milestone', data.milestone.id);
-		totalTasks = tasks?.length ?? 0;
-		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
+		totalTasks = data.milestone.tasks?.length ?? 0;
+		completedTasks = data.milestone.tasks?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
 
 		formattedStartDate = new Date(startDate).toLocaleDateString('en-US', {
@@ -175,32 +172,58 @@
 		</div>
 	</div>
 	<div class="w-full">
-		<div class="flex items-center gap-sm">
-			<button class="flex items-center gap-sm" on:click={() => startDateInput.showPicker()}>
-				<input
-					type="date"
-					class="hidden"
-					bind:this={startDateInput}
-					bind:value={updatedStartDate}
-					on:change={updateMilestoneStartDate}
-				/>
-				<Calendar className="h-8 w-8 stroke-accent-light" />
-				<span class="font-medium text-grey-700 dark:text-grey-300">{formattedStartDate}</span>
-				<span class="sr-only">Click to update the start date of this milestone</span>
-			</button>
-			<Back className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300 rotate-180" />
-			<button class="flex items-center gap-sm" on:click={() => endDateInput.showPicker()}>
-				<input
-					type="date"
-					class="hidden"
-					bind:this={endDateInput}
-					bind:value={updatedEndDate}
-					on:change={updateMilestoneEndDate}
-				/>
-				<Target className="h-8 w-8 stroke-accent-light" />
-				<span class="font-medium text-grey-700 dark:text-grey-300">{formattedEndDate}</span>
-				<span class="sr-only">Click to update the end date of this milestone</span>
-			</button>
+		<div class="flex items-center">
+			<div class="flex items-center gap-sm">
+				<button class="flex items-center gap-sm" on:click={() => startDateInput.showPicker()}>
+					<input
+						type="date"
+						class="hidden"
+						bind:this={startDateInput}
+						bind:value={updatedStartDate}
+						on:change={updateMilestoneStartDate}
+					/>
+					<Calendar className="h-8 w-8 stroke-accent-light" />
+					<span class="font-medium text-grey-700 dark:text-grey-300">{formattedStartDate}</span>
+					<span class="sr-only">Click to update the start date of this milestone</span>
+				</button>
+				<Back className="w-8 h-8 stroke-grey-700 dark:stroke-grey-300 rotate-180" />
+				<button class="flex items-center gap-sm" on:click={() => endDateInput.showPicker()}>
+					<input
+						type="date"
+						class="hidden"
+						bind:this={endDateInput}
+						bind:value={updatedEndDate}
+						on:change={updateMilestoneEndDate}
+					/>
+					<Target className="h-8 w-8 stroke-accent-light" />
+					<span class="font-medium text-grey-700 dark:text-grey-300">{formattedEndDate}</span>
+					<span class="sr-only">Click to update the end date of this milestone</span>
+				</button>
+			</div>
+
+			<div class="ml-auto">
+				{#if data.milestone.leader}
+					<!--TODO: Display milestone lead profile picture  -->
+					<div class="flex items-center gap-md">
+						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone lead</span>
+						{#if data.milestone.leader_profile}
+							<img
+								class="h-8 w-8 rounded-full object-cover"
+								src={data.milestone.leader_profile}
+								alt="Milestone leader"
+							/>
+						{:else}
+							<User className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300" />
+						{/if}
+					</div>
+				{:else}
+					<button class="button--text m-0 flex items-center gap-md p-0">
+						<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+						<span class="sr-only">Add a milestone leader</span>
+						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone leader</span>
+					</button>
+				{/if}
+			</div>
 		</div>
 		{#if data.milestone.description}
 			<p
