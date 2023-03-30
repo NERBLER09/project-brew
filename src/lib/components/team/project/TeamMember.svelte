@@ -11,6 +11,8 @@
 	import TeamMemberDropdown from '../../dropdowns/team/TeamMemberDropdown.svelte';
 
 	export let id: string | undefined;
+	export let invited_people: string[] | null;
+	export let projectId: number;
 
 	let name: string = '';
 	let avatar_url: string | null = '';
@@ -34,13 +36,13 @@
 	});
 
 	const removeUser = async () => {
-		let invitedUsers = $currentProject.invited_people;
-		const index = invitedUsers.indexOf(id);
-		invitedUsers = invitedUsers.splice(index, 1);
+		let invitedUsers = invited_people ?? [];
+		const index = invitedUsers?.indexOf(id);
+		invitedUsers = invitedUsers?.splice(index, 1);
 		const { error } = await supabase
 			.from('projects')
 			.update({ invited_people: invitedUsers })
-			.eq('id', $currentProject.id);
+			.eq('id', projectId);
 
 		if (!error) {
 			$currentProject.invited_people = $currentProject.invited_people.splice(index, 1);

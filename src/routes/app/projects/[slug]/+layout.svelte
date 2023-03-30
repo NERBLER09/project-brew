@@ -24,16 +24,13 @@
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 	import Aside from '$lib/components/projects/aside/Aside.svelte';
+	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 
 	export let data: LayoutData;
 	currentProject.set(data);
 	userTeams.set(data.userTeams ?? []);
 
 	let showProjectDropdown = false;
-
-	const handleDnd = (event) => {
-		data.lists = event.detail.items;
-	};
 
 	const getInvitedTeamMembers = async (): Promise<Profile[]> => {
 		let invitedUserData: Profile[] = [];
@@ -45,9 +42,6 @@
 		}
 		return invitedUserData;
 	};
-
-	let headerElement: HTMLElement;
-	let headerHeight: number = 0;
 
 	onMount(async () => {
 		goto(`/app/projects/${data.id}/${data.project?.default_view}`);
@@ -61,32 +55,6 @@
 		}
 
 		$invitedTeamMembers = await getInvitedTeamMembers();
-
-		headerHeight = headerElement.offsetHeight;
-	});
-	const projectsRealtime = supabase
-		.channel('project-detail-updates')
-		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'projects' }, () =>
-			invalidate('app:project')
-		)
-		.subscribe();
-
-	const listsRealtime = supabase
-		.channel('list-updates')
-		.on('postgres_changes', { event: '*', schema: 'public', table: 'lists' }, () =>
-			invalidate('app:project')
-		)
-		.subscribe();
-
-	const cardsRealtime = supabase
-		.channel('list-updates')
-		.on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () =>
-			invalidate('app:project')
-		)
-		.subscribe();
-
-	onDestroy(() => {
-		supabase.removeAllChannels();
 	});
 
 	let projectDropdownContainer: HTMLElement;
@@ -107,7 +75,6 @@
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.banner});"
-	bind:this={headerElement}
 >
 	<div class="mb-md flex items-center md:mb-sm md:items-start">
 		<a class="flex w-[calc(100%-100px)] items-center gap-md" href="/app/projects">
@@ -204,3 +171,5 @@
 </div>
 
 <slot />
+
+<AboutProject bind:shown={$showAboutProjectPrompt} />

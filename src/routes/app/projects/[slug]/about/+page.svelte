@@ -9,30 +9,30 @@
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
-	import { currentProject, userTeams } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import camelCase from 'lodash';
 	import { onDestroy, onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let inEditMode = false;
-	let newProjectName = $currentProject.name;
-	let newProjectDescription = $currentProject.description;
-	let newProjectTags: any[] = $currentProject?.tags;
-	let newCoverURL = $currentProject.banner;
+	let newProjectName = data.project?.project_name;
+	let newProjectDescription = data.project?.description;
+	let newProjectTags: any[] = data.project?.tags;
+	let newCoverURL = data.project?.banner;
 	let newCoverFile: FileList | null;
 	let coverInputElement: HTMLInputElement;
 
 	let teamName = '';
 
-	console.log($currentProject.tags);
-
 	const getTeamName = async () => {
 		const { data: team } = await supabase
 			.from('teams')
 			.select()
-			.eq('id', $currentProject.team)
+			.eq('id', data.project?.team)
 			.limit(1)
 			.single();
 		if (team) {
@@ -40,7 +40,7 @@
 		}
 	};
 
-	$: if ($currentProject.team) getTeamName();
+	$: if (data.project?.team) getTeamName();
 
 	onMount(async () => {
 		$showMobileNav = false;
@@ -77,15 +77,17 @@
 	};
 
 	const handleUpdateProject = async () => {
-		let updatedCoverURL = $currentProject.banner;
+		let updatedCoverURL = data.project?.banner;
+		inEditMode = false;
+
 		if (newCoverFile && newCoverFile[0].size > 5000000) {
 			toast.error("Cover can't be over 5mb in size.");
 			return;
 		} else if (newCoverFile && newCoverFile[0].size < 5000000) {
 			updatedCoverURL = await uploadNewCover(newCoverFile);
 		}
-		inEditMode = false;
-		const { data, error } = await supabase
+
+		const { error } = await supabase
 			.from('projects')
 			.update({
 				project_name: newProjectName,
@@ -93,17 +95,15 @@
 				tags: JSON.stringify(newProjectTags).replace('\\', ''),
 				banner: updatedCoverURL
 			})
-			.eq('id', $currentProject.id)
+			.eq('id', data.project?.id)
 			.select();
 
-		if (data) {
-			$currentProject = data[0];
-			$currentProject.tags = JSON.parse(data[0]?.tags ?? '[]');
-			$currentProject.name = data[0]?.project_name;
+		if (!error) {
 			invalidate('app:project');
+			invalidate('project:about');
 			toast.success('Updated project details');
 		} else {
-			toast.error(`Failed to update project details: ${error.message}`);
+			toast.error(`Failed to update project details: ${error?.message}`);
 		}
 	};
 
@@ -120,16 +120,16 @@
 	$: if (newCoverFile) getFileURL(newCoverFile[0]);
 
 	$: if (!inEditMode) {
-		newProjectName = $currentProject.name;
-		newProjectDescription = $currentProject.description;
-		newProjectTags = $currentProject?.tags;
-		newCoverURL = $currentProject.banner;
+		newProjectName = data.project?.project_name;
+		newProjectDescription = data.project?.description;
+		newProjectTags = data.project?.tags;
+		newCoverURL = data.project?.banner;
 		newCoverFile = null;
 	}
 </script>
 
 <svelte:head>
-	<title>About {$currentProject.name}</title>
+	<title>About {data.project?.project_name}</title>
 </svelte:head>
 
 <header
@@ -138,17 +138,17 @@
 		: 'h-[12.5rem]'}"
 	style="background-image: {newCoverURL
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
-		: ''} url({!inEditMode ? $currentProject.banner : newCoverURL});"
+		: ''} url({!inEditMode ? data.project?.banner : newCoverURL});"
 >
 	{#if !inEditMode}
 		<a
-			class="flex items-center gap-md {!$currentProject.banner
+			class="flex items-center gap-md {!data.project?.banner
 				? 'max-w-[calc(100%-80px)]'
 				: 'w-full'}"
-			href="/app/projects/{$currentProject.id}"
+			href="/app/projects/{data.project?.id}"
 		>
 			<Back
-				className="w-8 h-8 aspect-square {$currentProject.banner
+				className="w-8 h-8 aspect-square {data.project?.banner
 					? 'stroke-grey-200'
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
@@ -157,7 +157,7 @@
 					? 'max-w-[calc(100%-80px)] text-grey-200'
 					: 'w-full text-grey-700 dark:text-grey-200'} truncate"
 			>
-				{$currentProject?.name}
+				{data.project?.project_name}
 			</h1>
 		</a>
 	{:else}
@@ -168,7 +168,7 @@
 			contenteditable="true"
 			bind:textContent={newProjectName}
 		>
-			{$currentProject?.name}
+			{data.project?.project_name}
 		</h1>
 	{/if}
 
@@ -184,7 +184,7 @@
 	{:else}
 		<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
 			<Edit
-				className="h-8 w-8 {$currentProject.banner
+				className="h-8 w-8 {data.project?.banner
 					? 'stroke-grey-200'
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
@@ -193,28 +193,31 @@
 	{/if}
 </header>
 
-<div class="relative {$currentProject.banner ? '-top-3' : '-top-8'}">
-	{#if $currentProject.tags.length > 1}
+<div class="relative {data.project?.banner ? '-top-3' : '-top-8'}">
+	{#if data.project?.tags.length > 1}
 		<div class="mb-sm flex flex-wrap gap-md">
 			{#if inEditMode}
 				<NewTagsInput bind:newTags={newProjectTags} />
 			{:else}
-				<TagList tags={$currentProject.tags} />
+				<TagList tags={data.project?.tags} />
 			{/if}
 		</div>
 	{/if}
 
 	{#if !inEditMode}
-		{#if $currentProject.description}
+		{#if data.project?.description}
 			<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
-				{$currentProject.description}
+				{data.project?.description}
 			</p>
 		{/if}
 
-		{#if $userTeams.length > 0}
-			<TransferProjectToTeam {teamName} />
+		{#if data?.project.user_teams.length > 0}
+			<TransferProjectToTeam {teamName} team={data.project?.team} projectId={data.project?.id} />
 		{/if}
-		<InvitedTeamMembers invited_people={$currentProject.invited_people} />
+		<InvitedTeamMembers
+			invited_people={data.project?.invited_people}
+			projectId={data.project?.id}
+		/>
 	{:else}
 		<label for="description-input" class="input--label mb-sm">Edit the project description</label>
 		<textarea

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
-	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
@@ -9,6 +8,7 @@
 	import toast from 'svelte-french-toast';
 	import { enhance } from '$app/forms';
 	import UserAdd from '$lib/assets/User-Add.svelte';
+	import { currentProject } from '$lib/stores/project';
 
 	export let data: PageData;
 
@@ -28,21 +28,22 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!$currentProject.banner
-		? 'static w-fit'
-		: 'h-[12.5rem]'}"
-	style="background-image: {$currentProject.banner
+	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {data
+		.project?.banner
+		? 'h-[12.5rem]'
+		: 'static w-fit'}"
+	style="background-image: {data.project?.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
-		: ''} url({$currentProject.banner});"
+		: ''} url({data.project?.banner});"
 >
-	<a class="flex w-full items-center gap-md" href="/app/projects/{$currentProject.id}/about">
+	<a class="flex w-full items-center gap-md" href="/app/projects/{data.project?.id}/about">
 		<Back
-			className="w-8 h-8 aspect-square {$currentProject.banner
+			className="w-8 h-8 aspect-square {data.project?.banner
 				? 'stroke-grey-200'
 				: 'stroke-grey-700 dark:stroke-grey-200'}"
 		/>
 		<h1
-			class="truncate text-lg {$currentProject.banner
+			class="truncate text-lg {data.project?.banner
 				? 'max-w-[calc(100%-80px)] text-grey-200'
 				: 'text-grey-700 dark:text-grey-200'} w-fit "
 		>
@@ -57,8 +58,9 @@
 	use:enhance={() => {
 		return async ({ result }) => {
 			if (result.type === 'success') {
-				toast.success(`Added ${emailSearch} to ${$currentProject.name}`);
+				toast.success(`Added ${emailSearch} to ${data.project?.project_name}`);
 				$currentProject.invited_people = result.data.invited_people;
+				invalidate('project:about');
 				invalidate('project:invited');
 			} else if (result.data.notFound) {
 				toast.error(`A user with the email: ${emailSearch} doesn't exist`);
