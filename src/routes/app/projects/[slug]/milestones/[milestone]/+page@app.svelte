@@ -15,6 +15,8 @@
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
 	import User from '$lib/assets/User.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
+	import ConfirmDelete from '$lib/components/prompts/projects/milestones/ConfirmDelete.svelte';
 
 	export let data: PageData;
 
@@ -113,6 +115,7 @@
 
 	let showAddTaskDropdown = false;
 	let showCreateRoadmapItem = false;
+	let showDeleteWarning = false;
 </script>
 
 <svelte:head>
@@ -133,6 +136,10 @@
 	>
 		{data.milestone.name}
 	</h1>
+
+	<button class="button--secondary m-0 border-0 p-0" on:click={() => (showDeleteWarning = true)}>
+		<Trash className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+	</button>
 </header>
 
 <div class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row lg:px-80">
@@ -169,7 +176,9 @@
 		</div>
 	</div>
 	<div class="w-full">
-		<div class="flex items-center">
+		<div
+			class="mb-sm flex flex-col items-start gap-sm md:mb-0 md:flex-row md:items-center md:gap-0"
+		>
 			<div class="flex items-center gap-sm">
 				<button class="flex items-center gap-sm" on:click={() => startDateInput.showPicker()}>
 					<input
@@ -198,7 +207,7 @@
 				</button>
 			</div>
 
-			<div class="ml-auto">
+			<div class="md:ml-auto">
 				{#if data.milestone.leader}
 					<!--TODO: Display milestone lead profile picture  -->
 					<div class="flex items-center gap-md">
@@ -336,3 +345,5 @@
 		{/each}
 	</div>
 </section>
+
+<ConfirmDelete bind:shown={showDeleteWarning} name={data.milestone.name} id={data.milestone.id} />
