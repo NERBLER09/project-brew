@@ -309,6 +309,10 @@
 	<div class="flex flex-col gap-sm">
 		{#each data.milestone.roadmap as item}
 			<RoadmapItem {...item} />
+		{:else}
+			<p class="font-semibold text-grey-700 dark:text-grey-300">
+				There are not important dates for this milestone.
+			</p>
 		{/each}
 	</div>
 </section>

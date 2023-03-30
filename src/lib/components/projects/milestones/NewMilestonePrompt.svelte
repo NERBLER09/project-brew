@@ -36,6 +36,7 @@
 
 	<form
 		method="POST"
+		action="milestones/new?"
 		class="mt-md"
 		use:enhance={() => {
 			return async ({ result }) => {
