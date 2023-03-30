@@ -85,3 +85,10 @@ export interface Teams {
 	id: string;
 	name: string;
 }
+
+export interface ProjectMember {
+	id: string;
+	project: number;
+	role: string;
+	user_id: string;
+}

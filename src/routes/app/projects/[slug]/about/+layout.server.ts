@@ -21,6 +21,11 @@ export const load = (async (event) => {
     .limit(1)
     .single();
 
+  const { data: invited_people } = await supabaseClient
+    .from('project_members')
+    .select()
+    .eq('project', projectId);
+
   const { data: userTeams } = await supabaseClient
     .from('teams')
     .select('*, team_members!inner(user_id)')
@@ -31,7 +36,8 @@ export const load = (async (event) => {
       project: {
         ...project,
         tags: JSON.parse(project?.tags ?? '[]') ?? [],
-        user_teams: userTeams ?? []
+        user_teams: userTeams ?? [],
+        invited_people: invited_people ?? []
       }
     };
   }

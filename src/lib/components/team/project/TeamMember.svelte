@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
-
 	import User from '$lib/assets/User.svelte';
-	import { currentProject } from '$lib/stores/project';
 
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 	import TeamMemberDropdown from '../../dropdowns/team/TeamMemberDropdown.svelte';
 
-	export let id: string | undefined;
-	export let invited_people: string[] | null;
-	export let projectId: number;
+	export let user_id: string | undefined;
+	export let dbId: string;
+	export let role: string;
 
 	let name: string = '';
 	let avatar_url: string | null = '';
@@ -24,7 +22,7 @@
 		const { data: member, error } = await supabase
 			.from('profiles')
 			.select()
-			.eq('id', id)
+			.eq('id', user_id)
 			.limit(1)
 			.single();
 
@@ -36,20 +34,13 @@
 	});
 
 	const removeUser = async () => {
-		let invitedUsers = invited_people ?? [];
-		const index = invitedUsers?.indexOf(id);
-		invitedUsers = invitedUsers?.splice(index, 1);
-		const { error } = await supabase
-			.from('projects')
-			.update({ invited_people: invitedUsers })
-			.eq('id', projectId);
-
+		const { error } = await supabase.from('project_members').delete().eq('id', dbId);
 		if (!error) {
-			$currentProject.invited_people = $currentProject.invited_people.splice(index, 1);
-
-			invalidate('project:invited');
+			toast.success(`Removed ${name}`);
+			invalidate('open:project');
+			invalidate('project:about');
 		} else {
-			console.log(error);
+			toast.error(`Failed to remove ${name}`);
 		}
 	};
 
@@ -65,7 +56,7 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <div class="flex w-full items-center md:relative">
-	<a href="/app/team/{id}" class="flex w-full items-start gap-md">
+	<a href="/app/team/member/{user_id}" class="flex w-full items-start gap-md">
 		{#if avatar_url}
 			<img
 				src={avatar_url}

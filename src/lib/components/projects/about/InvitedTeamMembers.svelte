@@ -2,8 +2,9 @@
 	import Filter from '$lib/assets/Filter.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
+	import type { ProjectMember } from '$lib/types/projects';
 
-	export let invited_people: string[] | null | undefined;
+	export let invited_people: ProjectMember[];
 	export let projectId: string;
 </script>
 
@@ -34,8 +35,8 @@
 	</header>
 
 	<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
-		{#each invited_people as id}
-			<TeamMember {id} />
+		{#each invited_people as { user_id, id, role }}
+			<TeamMember {user_id} dbId={id} {role} />
 		{/each}
 	</div>
 </section>
