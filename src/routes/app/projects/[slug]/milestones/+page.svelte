@@ -21,11 +21,9 @@
 
 	interface MilestoneSorting {
 		endDate: 'asc' | 'dsc' | null;
-		progress: 'asc' | 'dsc' | null;
 	}
 	export let milestoneSorting: MilestoneSorting = {
-		endDate: null,
-		progress: null
+		endDate: null
 	};
 
 	const handleMilestoneSearch = (query: string) => {
@@ -34,11 +32,11 @@
 	};
 
 	const handleSorting = (sortOptions: MilestoneSorting) => {
-		if (sortOptions.endDate === 'dsc') {
+		if (sortOptions.endDate === 'asc') {
 			milestones = milestones.sort((item) => {
 				return new Date().getTime() - new Date(item.end_date).getTime();
 			});
-		} else if (sortOptions.endDate === 'asc') {
+		} else if (sortOptions.endDate === 'dsc') {
 			milestones = milestones.sort((item) => {
 				return new Date(item.end_date).getTime() - new Date().getTime();
 			});

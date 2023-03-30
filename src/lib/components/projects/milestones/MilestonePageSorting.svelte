@@ -8,11 +8,9 @@
 
 	interface MilestoneSorting {
 		endDate: 'asc' | 'dsc' | null;
-		progress: 'asc' | 'dsc' | null;
 	}
 	export let milestoneSorting: MilestoneSorting = {
-		endDate: null,
-		progress: null
+		endDate: null
 	};
 
 	let addSort = false;
@@ -38,16 +36,6 @@
 			<CalendarAdd className="dropdown--icon" />
 			<span class="dropdown--label"> End date </span>
 		</button>
-		<button
-			class="dropdown--item"
-			on:click={() => {
-				milestoneSorting.progress = 'asc';
-				addSort = false;
-			}}
-		>
-			<CirclePriority className="dropdown--icon" />
-			<span class="dropdown--label"> Milestone progress </span>
-		</button>
 	{/if}
 
 	{#if milestoneSorting.endDate}
@@ -59,8 +47,8 @@
 				bind:value={milestoneSorting.endDate}
 				class="input--text w-1/2 bg-grey-300 dark:bg-grey-700 md:w-fit"
 			>
-				<option value="asc">Ascending</option>
-				<option value="dsc">Descending</option>
+				<option value="asc">Closer</option>
+				<option value="dsc">Further</option>
 			</select>
 			<button on:click={() => (milestoneSorting.endDate = null)} class="ml-auto">
 				<CloseMultiply className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
@@ -68,25 +56,6 @@
 			</button>
 		</div>
 	{/if}
-	{#if milestoneSorting.progress}
-		<hr class="mx-auto w-1/2" />
-		<div class="flex w-full items-center gap-md">
-			<span class="dropdown--label mr-md">Progress: </span>
-			<select
-				name="date-sort-input"
-				bind:value={milestoneSorting.progress}
-				class="input--text w-1/2 bg-grey-300 dark:bg-grey-700 md:w-fit"
-			>
-				<option value="asc">Ascending</option>
-				<option value="dsc">Descending</option>
-			</select>
-			<button on:click={() => (milestoneSorting.progress = null)} class="ml-auto">
-				<CloseMultiply className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
-				<span class="sr-only">Remove milestone progress sorting</span>
-			</button>
-		</div>
-	{/if}
-
 	{#if milestoneSorting.endDate || milestoneSorting.progress}
 		<hr class="mx-auto w-1/2" />
 
