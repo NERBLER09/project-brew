@@ -45,11 +45,11 @@
 					<img
 						src={avatar_url}
 						alt=""
-						class="-ml-lg aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
+						class="-mr-lg aspect-square h-10 w-10 rounded-full object-cover"
 					/>
 				{:else}
 					<User
-						className="bg-grey-200 dark:bg-grey-700 rounded-full w-10 h-10 stroke-grey-700 dark:stroke-grey-200 -ml-lg first:ml-0"
+						className="bg-grey-200 dark:bg-grey-700 rounded-full w-10 h-10 stroke-grey-700 dark:stroke-grey-200 -mr-lg"
 					/>
 				{/if}
 			{/each}
@@ -84,21 +84,23 @@
 
 		<div class="mt-md flex flex-col gap-sm">
 			{#each filteredList as user}
-				<button
-					class="flex items-center gap-md rounded p-2 hover:bg-grey-200 hover:dark:bg-grey-700"
-					on:click={() => handleAddItem(user.id, user)}
-					type="button"
-				>
-					<img
-						src={user.avatar_url}
-						alt=""
-						class="aspect-square h-10 w-10 rounded-full object-cover"
-					/>
-					<div class="flex flex-col items-start gap-sm">
-						<span class="font-bold text-grey-700 dark:text-grey-200">{user.name}</span>
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{user.email}</span>
-					</div>
-				</button>
+				{#if !assingedUserIds.includes(user.id)}
+					<button
+						class="flex items-center gap-md rounded p-2 hover:bg-grey-200 hover:dark:bg-grey-700"
+						on:click={() => handleAddItem(user.id, user)}
+						type="button"
+					>
+						<img
+							src={user.avatar_url}
+							alt=""
+							class="aspect-square h-10 w-10 rounded-full object-cover"
+						/>
+						<div class="flex flex-col items-start gap-sm">
+							<span class="font-bold text-grey-700 dark:text-grey-200">{user.name}</span>
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{user.email}</span>
+						</div>
+					</button>
+				{/if}
 			{/each}
 		</div>
 	{/if}

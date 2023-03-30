@@ -24,7 +24,6 @@
 	let newTaskAssignedPeople: string[] = [];
 
 	const handleCreateNewTask = async (event) => {
-		console.log(newTaskAssignedPeople);
 		showCreateTask = false;
 
 		const form = new FormData(this);

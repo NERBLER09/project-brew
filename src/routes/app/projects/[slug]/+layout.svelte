@@ -14,13 +14,13 @@
 	import ProjectDropdown from '$lib/components/dropdowns/projects/ProjectDropdown.svelte';
 	import Description from '$lib/components/text/Description.svelte';
 
-	import type { LayoutData, PageData } from './$types';
+	import type { LayoutData } from './$types';
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { supabase } from '$lib/supabase';
 	import type { User as Profile } from '$lib/types/projects';
-	import { goto, invalidate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 	import Aside from '$lib/components/projects/aside/Aside.svelte';
@@ -35,7 +35,12 @@
 	const getInvitedTeamMembers = async (): Promise<Profile[]> => {
 		let invitedUserData: Profile[] = [];
 		for (const item of data.invited_people) {
-			const { data } = await supabase.from('profiles').select().eq('id', item).limit(1).single();
+			const { data } = await supabase
+				.from('profiles')
+				.select()
+				.eq('id', item.user_id)
+				.limit(1)
+				.single();
 			if (data) {
 				invitedUserData = [data, ...invitedUserData];
 			}
