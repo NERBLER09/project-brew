@@ -1,31 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, redirect, fail, type Actions } from '@sveltejs/kit';
-
-import type { PageServerLoad } from './$types';
-
-export const load = (async (event) => {
-	const { session, supabaseClient } = await getSupabase(event);
-	if (!session) {
-		throw redirect(303, '/');
-	}
-
-	event.depends('project:invited');
-
-	const { data: project, error: err } = await supabaseClient
-		.from('projects')
-		.select('invited_people')
-		.eq('id', event.params.slug)
-		.limit(1)
-		.single();
-
-	if (project) {
-		return {
-			invited_people: project?.invited_people ?? []
-		};
-	}
-
-	throw error(404, err?.message);
-}) satisfies PageServerLoad;
+import { fail, type Actions } from '@sveltejs/kit';
+import { parseInt } from 'lodash';
 
 export const actions = {
 	invite: async (event) => {
@@ -49,31 +24,23 @@ export const actions = {
 		}
 
 		const { data: checkExists } = await supabaseClient
-			.from('projects')
+			.from('project_members')
 			.select()
-			.eq('id', slug)
+			.eq('user_id', user.id)
 			.limit(1)
 			.single();
 
-		if (checkExists?.invited_people?.includes(user.id)) {
+		if (checkExists) {
 			return fail(400, { invited: true, message: 'Already invited that user' });
 		}
 
-		const { data: project } = await supabaseClient
-			.from('projects')
-			.select()
-			.eq('id', slug)
-			.limit(1)
-			.single();
-		const newInvitedPeople = [user.id, ...(project?.invited_people ?? [])];
-
 		const { error: inviteErr } = await supabaseClient
-			.from('projects')
-			.update({ invited_people: newInvitedPeople })
+			.from('project_members')
+			.insert({ project: parseInt(slug ?? '0'), user_id: user.id })
 			.eq('id', slug);
 
 		if (!inviteErr) {
-			return { success: true, invited_people: newInvitedPeople };
+			return { success: true };
 		} else {
 			return fail(400, { message: inviteErr.message });
 		}

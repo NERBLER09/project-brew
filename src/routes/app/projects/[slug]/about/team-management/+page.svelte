@@ -94,7 +94,7 @@
 	</header>
 	<div>
 		<div class="mt-md flex w-full flex-col items-start gap-lg md:grid md:grid-cols-2">
-			{#each data.project.invited_people as { user_id, id, project, role }}
+			{#each data.project.invited_people as { user_id, id, role }}
 				<TeamMember {user_id} dbId={id} {role} />
 			{:else}
 				<p class="text-grey-700 dark:text-grey-200 font-medium">
