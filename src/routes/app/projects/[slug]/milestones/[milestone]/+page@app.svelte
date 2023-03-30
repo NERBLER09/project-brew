@@ -46,10 +46,7 @@
 			updatedName = data.milestone.name;
 			return;
 		}
-		await supabase
-			.from('milestones')
-			.update({ name: updatedName })
-			.eq('project', $currentProject.id);
+		await supabase.from('milestones').update({ name: updatedName }).eq('id', data.milestone.id);
 		invalidate('milestone:open');
 	};
 
@@ -59,7 +56,7 @@
 		await supabase
 			.from('milestones')
 			.update({ description: updatedDescription })
-			.eq('project', $currentProject.id);
+			.eq('id', data.milestone.id);
 
 		invalidate('milestone:open');
 	};
@@ -68,7 +65,7 @@
 		await supabase
 			.from('milestones')
 			.update({ start_date: new Date(updatedStartDate).toISOString() })
-			.eq('project', $currentProject.id);
+			.eq('id', data.milestone.id);
 
 		invalidate('milestone:open');
 		formattedStartDate = new Date(data.milestone.start_date).toLocaleDateString('en-US', {
@@ -81,7 +78,7 @@
 		await supabase
 			.from('milestones')
 			.update({ start_date: new Date(updatedEndDate).toISOString() })
-			.eq('project', $currentProject.id);
+			.eq('id', data.milestone.id);
 
 		invalidate('milestone:open');
 		formattedEndDate = new Date(data.milestone?.end_date).toLocaleDateString('en-US', {
