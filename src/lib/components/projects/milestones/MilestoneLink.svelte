@@ -20,9 +20,9 @@
 	});
 </script>
 
-<a href="/app/projects/{$currentProject.id}/milestones/{id}">
+<a href="/app/projects/{$currentProject.id}/milestones/{id}" class="w-full sm:w-fit">
 	<section
-		class="flex w-fit min-w-[8rem] flex-col items-center rounded-xl bg-grey-100 p-md text-center dark:bg-grey-800"
+		class="flex w-full min-w-[8rem] flex-col items-center rounded-xl bg-grey-100 p-md text-center dark:bg-grey-800 sm:w-fit"
 	>
 		<div
 			class="relative flex aspect-square h-32 w-32 flex-col items-center justify-center gap-sm rounded-full"

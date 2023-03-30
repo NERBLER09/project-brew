@@ -1,7 +1,9 @@
 <script lang="ts">
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Search from '$lib/assets/Search.svelte';
+	import Sort from '$lib/assets/Sort.svelte';
 	import MilestoneLink from '$lib/components/projects/milestones/MilestoneLink.svelte';
+	import MilestonePageSorting from '$lib/components/projects/milestones/MilestonePageSorting.svelte';
 	import NewMilestonePrompt from '$lib/components/projects/milestones/NewMilestonePrompt.svelte';
 
 	import { currentProject, showProjectAside } from '$lib/stores/project';
@@ -14,6 +16,8 @@
 	let query = '';
 	let milestones = data.milestones;
 	let searchContainer: HTMLElement;
+
+	let showSort = false;
 
 	const handleMilestoneSearch = (query: string) => {
 		milestones = data.milestones;
@@ -46,9 +50,9 @@
 
 <svelte:window on:click={handleAutoCloseSearch} />
 
-<header class="flex items-center">
+<header class="mb-md flex items-center">
 	<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg">Milestones</h2>
-	<div class="ml-auto flex items-center gap-md lg:gap-2xl">
+	<div class="ml-auto flex items-center gap-lg">
 		<a
 			class="button--circle absolute bottom-32 right-8 z-50 md:hidden"
 			href="/app/projects/{$currentProject.id}/milestones/new"
@@ -71,18 +75,33 @@
 				<span class="sr-only">Search through milestones</span>
 			</button>
 		</div>
+
+		<div class="md:relative">
+			<button class="flex items-center gap-sm" on:click={() => (showSort = true)}>
+				<Sort className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-200" />
+				<span class="sr-only font-medium text-grey-700 dark:text-grey-200 md:not-sr-only">
+					Sort
+				</span>
+			</button>
+
+			{#if showSort}
+				<MilestonePageSorting />
+			{/if}
+		</div>
 		<button
-			class="button--primary hidden items-center gap-md md:flex"
+			class="lg:button--primary button--circle hidden items-center gap-md md:flex"
 			on:click={() => (showNewMilestonePrompt = true)}
 		>
-			<PlusNew className="h-5 w-5 stroke-grey-200" />
-			New Milestone
+			<PlusNew className="h-6 w-6 stroke-grey-200" />
+			<span class="md:sr-only lg:not-sr-only"> New Milestone </span>
 		</button>
 	</div>
 </header>
 
-{#each milestones as milestone}
-	<MilestoneLink {...milestone} />
-{/each}
+<div class="flex flex-wrap gap-lg">
+	{#each milestones as milestone}
+		<MilestoneLink {...milestone} />
+	{/each}
+</div>
 
 <NewMilestonePrompt bind:shown={showNewMilestonePrompt} />
