@@ -18,8 +18,6 @@
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import { onMount } from 'svelte';
-	import { supabase } from '$lib/supabase';
-	import type { User as Profile } from '$lib/types/projects';
 	import { goto } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
@@ -32,22 +30,6 @@
 
 	let showProjectDropdown = false;
 
-	const getInvitedTeamMembers = async (): Promise<Profile[]> => {
-		let invitedUserData: Profile[] = [];
-		for (const item of data.invited_people) {
-			const { data } = await supabase
-				.from('profiles')
-				.select()
-				.eq('id', item.user_id)
-				.limit(1)
-				.single();
-			if (data) {
-				invitedUserData = [data, ...invitedUserData];
-			}
-		}
-		return invitedUserData;
-	};
-
 	onMount(async () => {
 		goto(`/app/projects/${data.id}/${data.project?.default_view}`);
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
@@ -58,8 +40,6 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
-
-		$invitedTeamMembers = await getInvitedTeamMembers();
 	});
 
 	let projectDropdownContainer: HTMLElement;
@@ -136,36 +116,32 @@
 		<Description banner={data.banner} description={data.description} />
 	</div>
 
-	{#if $invitedTeamMembers}
-		<div
-			class="static right-6 bottom-8 z-40 mt-sm ml-auto flex w-full items-center justify-end md:absolute"
-		>
-			{#each $invitedTeamMembers as { avatar_url }}
-				{#if avatar_url}
-					<img
-						src={avatar_url}
-						alt="User profile"
-						class="-ml-md aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
-					/>
-				{:else}
-					<User
-						className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full  -ml-md first:ml-0"
-					/>
-				{/if}
-			{/each}
-			{#if $invitedTeamMembers}
-				<!-- Mobile -->
-				<a href="/app/projects/{data.id}/about/team-management" class="ml-md md:hidden">
-					<PlusNew
-						className="h-10 w-10 {data.banner
-							? 'stroke-grey-200'
-							: 'stroke-grey-700 dark:stroke-grey-200'}"
-					/>
-					<span class="sr-only">Invite new team members</span>
-				</a>
+	<div
+		class="static right-6 bottom-8 z-40 mt-sm ml-auto flex w-full items-center justify-end md:absolute"
+	>
+		{#each data.project?.invite.profiles as { avatar_url }}
+			{#if avatar_url}
+				<img
+					src={avatar_url}
+					alt="User profile"
+					class="-ml-md aspect-square h-10 w-10 rounded-full object-cover first:ml-0"
+				/>
+			{:else}
+				<User
+					className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full  -ml-md first:ml-0"
+				/>
 			{/if}
-		</div>
-	{/if}
+		{/each}
+		<!-- Mobile -->
+		<a href="/app/projects/{data.id}/about/team-management" class="ml-md md:hidden">
+			<PlusNew
+				className="h-10 w-10 {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+			<span class="sr-only">Invite new team members</span>
+		</a>
+	</div>
 </header>
 
 <div class="mb-md flex w-full items-center">
