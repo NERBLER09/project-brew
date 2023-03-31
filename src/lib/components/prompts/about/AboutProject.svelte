@@ -9,7 +9,6 @@
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
-	import Description from '$lib/components/text/Description.svelte';
 
 	import { currentProject, userTeams } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
@@ -147,7 +146,7 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 {!newCoverURL
+		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!newCoverURL
 			? 'w-[calc(100%+64px)]'
 			: 'h-[12.5rem]'}"
 		style="background-image: {newCoverURL
