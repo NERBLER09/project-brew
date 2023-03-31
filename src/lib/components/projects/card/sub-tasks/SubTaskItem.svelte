@@ -21,5 +21,10 @@
 		id="{name}-sub-task"
 		on:change={updateStatus}
 	/>
-	<label for="{name}-sub-task" class="input--label">{name}</label>
+	<label
+		for="{name}-sub-task"
+		class="input--label ml-sm {completed
+			? 'text-emerald-600 line-through dark:text-emerald-500'
+			: ''}">{name}</label
+	>
 </div>
