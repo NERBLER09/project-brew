@@ -28,12 +28,14 @@
 	let showSubTasks = false;
 	let showCreateSubTasks = false;
 
-	onMount(async () => {
+	const getSubTasks = async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
 		subTasks = tasks ?? [];
 		total = subTasks.length;
 		completed = [...subTasks.filter((item) => item.completed)].length;
-	});
+	};
+
+	onMount(getSubTasks);
 </script>
 
 {#if subTasks.length > 0}
@@ -65,7 +67,7 @@
 	{#if showSubTasks}
 		<div class="mb-md flex flex-col gap-sm">
 			{#each subTasks as task}
-				<SubTaskItem {...task} />
+				<SubTaskItem {...task} {getSubTasks} />
 			{/each}
 		</div>
 		<button
@@ -91,5 +93,5 @@
 {/if}
 
 {#if showCreateSubTasks}
-	<NewSubTask task={taskId} {list} {project} />
+	<NewSubTask task={taskId} {list} {project} {getSubTasks} />
 {/if}
