@@ -1,5 +1,26 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const load = (async (event) => {
+  const { supabaseClient } = await getSupabase(event);
+  const projectId = event.params.slug;
+
+  const { data: invited } = await supabaseClient.from("project_members").select().eq("project", projectId)
+  const invitedUserIds = invited?.map((item) => item.user_id) ?? []
+
+  const { data: users } = await supabaseClient.from("profiles").select().in("id", [...invitedUserIds])
+  if (users) {
+    return {
+      test: "test",
+      project: {
+        invited: {
+          users
+        }
+      }
+    }
+  }
+}) satisfies PageServerLoad;
 
 export const actions = {
   default: async (event) => {
@@ -15,10 +36,19 @@ export const actions = {
     const description = data.get('description') as string;
     const start_date = data.get('start-date') as string;
     const end_date = data.get('end-date') as string;
+    const leader = data.get("lead") as string
 
     const { data: milestone, error: err } = await supabaseClient
       .from('milestones')
-      .insert({ name, description, start_date, end_date, project: parseInt(params.slug), owner: session.user.id })
+      .insert({
+        name,
+        description,
+        start_date,
+        end_date,
+        project: parseInt(params.slug),
+        owner: session.user.id,
+        leader
+      })
       .select()
       .limit(1)
       .single();
