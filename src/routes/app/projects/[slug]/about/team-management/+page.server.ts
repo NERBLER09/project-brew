@@ -1,6 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { fail, type Actions } from '@sveltejs/kit';
-import { parseInt } from 'lodash';
+import lodash from 'lodash';
+const { parseInt } = lodash;
 
 export const actions = {
 	invite: async (event) => {
