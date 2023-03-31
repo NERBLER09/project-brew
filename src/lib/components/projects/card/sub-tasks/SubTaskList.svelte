@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	import SubTaskItem from './SubTaskItem.svelte';
 
 	export let taskId: number;
 
@@ -18,6 +20,8 @@
 	let subTasks: SubTask[] = [];
 	let total = 0;
 	let completed = 0;
+
+	let showSubTasks = false;
 
 	onMount(async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
@@ -39,11 +43,27 @@
 			/>
 			<div class="h-1 w-full rounded-full bg-grey-300 dark:bg-grey-700" />
 		</div>
-		<button class="button--secondary m-0 flex items-center gap-md border-0 p-0 text-start">
-			<Down className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-			<span class="sr-only">Show sub tasks</span>
+		<button
+			class="button--secondary m-0 flex items-center gap-md border-0 p-0 text-start"
+			on:click={() => (showSubTasks = !showSubTasks)}
+		>
+			{#if showSubTasks}
+				<Up className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Hide sub tasks</span>
+			{:else}
+				<Down className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Show sub tasks</span>
+			{/if}
 		</button>
 	</div>
+
+	{#if showSubTasks}
+		<div class="mb-md flex flex-row gap-sm">
+			{#each subTasks as task}
+				<SubTaskItem {...task} />
+			{/each}
+		</div>
+	{/if}
 {:else}
 	<button
 		class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
