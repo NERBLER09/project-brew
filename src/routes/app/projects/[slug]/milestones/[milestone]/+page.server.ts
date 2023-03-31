@@ -32,6 +32,7 @@ export const load = (async (event) => {
 		.order('target', { ascending: false });
 
 	let leaderProfilePicture = '';
+
 	if (milestone?.leader) {
 		const { data: profile } = await supabaseClient
 			.from('profiles')
@@ -42,6 +43,18 @@ export const load = (async (event) => {
 		leaderProfilePicture = profile?.avatar_url ?? '';
 	}
 
+	const { data: invited_people } = await supabaseClient
+		.from('project_members')
+		.select()
+		.eq('project', event.params.slug);
+
+	const invitedUserIds = invited_people?.map((item) => item.user_id) ?? [];
+
+	const { data: users } = await supabaseClient
+		.from('profiles')
+		.select()
+		.in('id', [...invitedUserIds]);
+
 	if (!err) {
 		return {
 			milestone: {
@@ -49,6 +62,10 @@ export const load = (async (event) => {
 				tasks: tasks ?? [],
 				roadmap: roadmap ?? [],
 				leader_profile: leaderProfilePicture
+			},
+			project: {
+				invited_people: users ?? [],
+				id: event.params.slug
 			}
 		};
 	}

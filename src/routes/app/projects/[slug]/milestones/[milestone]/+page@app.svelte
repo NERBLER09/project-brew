@@ -7,7 +7,6 @@
 	import AddTask from '$lib/components/projects/milestones/AddTask.svelte';
 	import MilestoneTask from '$lib/components/projects/milestones/MilestoneTask.svelte';
 	import RoadmapItem from '$lib/components/projects/milestones/RoadmapItem.svelte';
-	import { currentProject } from '$lib/stores/project';
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import { onDestroy, onMount } from 'svelte';
@@ -17,6 +16,7 @@
 	import User from '$lib/assets/User.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/projects/milestones/ConfirmDelete.svelte';
+	import AddLead from '$lib/components/projects/milestones/AddLead.svelte';
 
 	export let data: PageData;
 
@@ -41,6 +41,9 @@
 	let startDateInput: HTMLInputElement;
 	let updatedEndDate: Date = new Date();
 	let endDateInput: HTMLInputElement;
+
+	let newMilestoneLead = '';
+	let showAddLead = false;
 
 	const updateMilestoneName = async () => {
 		if (updatedName === data.milestone.name) return;
@@ -89,6 +92,13 @@
 		});
 	};
 
+	const setMilestoneLead = async (id: string) => {
+		await supabase.from('milestones').update({ leader: id }).eq('id', data.milestone.id);
+		invalidate('milestone:open');
+	};
+
+	$: setMilestoneLead(newMilestoneLead);
+
 	let strokeArray = 380;
 	let totalTasks = 0;
 	let completedTasks = 0;
@@ -123,7 +133,7 @@
 </svelte:head>
 
 <header class="flex items-center gap-md lg:px-80">
-	<a href="/app/projects/{$currentProject.id}/milestones">
+	<a href="/app/projects/{data.project.id}/milestones">
 		<Back
 			className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-200 md:h-10 md:w-10"
 		/>
@@ -223,11 +233,23 @@
 						{/if}
 					</div>
 				{:else}
-					<button class="button--text m-0 flex items-center gap-md p-0">
-						<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-						<span class="sr-only">Add a milestone leader</span>
-						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone leader</span>
-					</button>
+					<div class="md:relative">
+						<button
+							class="button--text m-0 flex items-center gap-md p-0"
+							on:click={() => (showAddLead = true)}
+						>
+							<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+							<span class="sr-only">Add a milestone leader</span>
+							<span class="font-medium text-grey-700 dark:text-grey-300">Milestone leader</span>
+						</button>
+						{#if showAddLead}
+							<AddLead
+								invited_users={data.project.invited_people}
+								bind:milestoneLead={newMilestoneLead}
+								bind:shown={showAddLead}
+							/>
+						{/if}
+					</div>
 				{/if}
 			</div>
 		</div>
