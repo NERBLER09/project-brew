@@ -16,6 +16,7 @@
 	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
+	import SubTaskList from './sub-tasks/SubTaskList.svelte';
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
 
 	export let name: string;
@@ -299,6 +300,8 @@
 				{/if}
 			</div>
 		{/if}
+
+		<SubTaskList taskId={id} />
 
 		<div class="flex items-center">
 			{#if assinged}

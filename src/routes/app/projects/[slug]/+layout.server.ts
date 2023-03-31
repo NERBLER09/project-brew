@@ -25,7 +25,7 @@ export const load = (async (event) => {
 		.from('lists')
 		.select()
 		.eq('project', projectId)
-		.order('position', { ascending: false });
+		.order('position', { ascending: true });
 
 	const { data: invited_people } = await supabaseClient
 		.from('project_members')
