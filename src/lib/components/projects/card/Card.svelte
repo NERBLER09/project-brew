@@ -29,6 +29,7 @@
 	export let assinged: string[] | null;
 	export let tasks: Task[] | undefined;
 	export let milestone: string | null;
+	export let list: number;
 
 	let showCardDropdown = false;
 	let formattedDate = '';
@@ -301,7 +302,7 @@
 			</div>
 		{/if}
 
-		<SubTaskList taskId={id} />
+		<SubTaskList taskId={id} {list} project={$currentProject.id} />
 
 		<div class="flex items-center">
 			{#if assinged}

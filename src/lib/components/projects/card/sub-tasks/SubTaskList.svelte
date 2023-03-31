@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	import NewSubTask from './NewSubTask.svelte';
 	import SubTaskItem from './SubTaskItem.svelte';
 
 	export let taskId: number;
+	export let list: number;
+	export let project: number;
 
 	interface SubTask {
 		completed: boolean;
@@ -22,6 +26,7 @@
 	let completed = 0;
 
 	let showSubTasks = false;
+	let showCreateSubTasks = false;
 
 	onMount(async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
@@ -58,11 +63,23 @@
 	</div>
 
 	{#if showSubTasks}
-		<div class="mb-md flex flex-row gap-sm">
+		<div class="mb-md flex flex-col gap-sm">
 			{#each subTasks as task}
 				<SubTaskItem {...task} />
 			{/each}
 		</div>
+		<button
+			class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
+			on:click={() => (showCreateSubTasks = !showCreateSubTasks)}
+		>
+			{#if showCreateSubTasks}
+				<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				Cancel
+			{:else}
+				<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				Add a sub task
+			{/if}
+		</button>
 	{/if}
 {:else}
 	<button
@@ -71,4 +88,8 @@
 		<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
 		Add a sub task
 	</button>
+{/if}
+
+{#if showCreateSubTasks}
+	<NewSubTask task={taskId} {list} {project} />
 {/if}

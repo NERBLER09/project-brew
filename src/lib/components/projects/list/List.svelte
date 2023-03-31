@@ -247,6 +247,7 @@
 				bind:tasks
 				assinged={task.assigned}
 				milestone={task.milestone}
+				list={id}
 			/>
 		{/each}
 	</div>
