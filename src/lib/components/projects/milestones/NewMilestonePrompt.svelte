@@ -4,9 +4,13 @@
 	import { currentProject } from '$lib/stores/project';
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import type { User as Profile } from '$lib/types/projects';
+	import AssignLead from './AssignLead.svelte';
 
 	export let shown = false;
+	export let invited_users: Profile[] = [];
 	let dialog: HTMLDialogElement;
+	let milestoneLead = '';
 
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
@@ -71,6 +75,9 @@
 			<label for="end-date" class="input--label">End date:</label>
 			<input type="date" class="input--text" id="end-date" required name="end-date" />
 		</div>
+
+		<AssignLead {invited_users} bind:milestoneLead />
+		<input type="text" class="hidden" name="lead" bind:value={milestoneLead} />
 
 		<div class="mx-auto mt-xl flex w-1/2 items-center justify-around">
 			<button class="button--secondary" on:click={() => (shown = false)} type="button"

@@ -123,5 +123,7 @@
 		<MilestoneLink {...milestone} />
 	{/each}
 </div>
-
-<NewMilestonePrompt bind:shown={showNewMilestonePrompt} />
+<NewMilestonePrompt
+	bind:shown={showNewMilestonePrompt}
+	invited_users={data.project?.invite.profiles}
+/>
