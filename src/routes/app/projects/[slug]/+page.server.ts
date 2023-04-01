@@ -1,3 +1,6 @@
+import { getSupabase } from '@supabase/auth-helpers-sveltekit';
+import { error, fail, type Actions } from '@sveltejs/kit';
+
 export const actions: Actions = {
   newTask: async (event) => {
     const { request } = event;
@@ -11,12 +14,12 @@ export const actions: Actions = {
     const name = data.get('name') as string;
     const description = data.get('description') as string;
     let dueDate: string | null = data.get('date') as string;
-    const isPriority = data.get('priority');
     const list = data.get('list-id');
     const status = data.get('list-status') as string;
     const project = data.get('project');
     const project_name = data.get('project_name');
     const user = data.get('user_object');
+    const priority_level = data.get('priority_level') as string;
 
     const assignedString = data.get('assigned') as string;
     let assigned = assignedString.split(',') || null;
@@ -26,9 +29,7 @@ export const actions: Actions = {
     let tags = formTags?.split(',') || null;
     tags = tags[0] === '' ? [] : tags;
 
-    console.log(dueDate);
     dueDate = dueDate ? dueDate : null;
-    console.log(dueDate);
 
     if (assigned) {
       for (const id of assigned) {
@@ -50,11 +51,12 @@ export const actions: Actions = {
         name,
         description,
         due_date: dueDate,
-        is_priority: isPriority,
+        is_priority: false,
         user_id: session.user.id,
         status,
         tags,
-        assigned
+        assigned,
+        priority_level
       })
       .select();
 

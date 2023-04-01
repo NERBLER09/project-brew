@@ -7,9 +7,9 @@
 
 	let addFilter = false;
 
-	// let tags: string[] = [];
-	// $: $filterTags = tags;
-	//
+	let tags: string[] = [];
+	$: $filterTags = tags;
+
 	const setDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset') => {
 		$dateFilter = option;
 		addFilter = false;
