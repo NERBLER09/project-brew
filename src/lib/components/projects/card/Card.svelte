@@ -22,11 +22,11 @@
 	export let name: string;
 	export let tags: string[] = [];
 	export let description = '';
-	export let dueDate: string;
-	export let isPriority = false;
+	export let due_date: string;
+	export let is_priority = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
-	export let assinged: string[] | null;
+	export let assigned: string[] | null;
 	export let tasks: Task[] | undefined;
 	export let milestone: string | null;
 	export let list: number;
@@ -67,7 +67,7 @@
 
 	const updateAssignedPeople = async () => {
 		await supabase.from('tasks').update({ assigned: newTaskAssignedPeople }).eq('id', id);
-		assinged = newTaskAssignedPeople;
+		assigned = newTaskAssignedPeople;
 		showAssignNewUsers = false;
 	};
 
@@ -86,15 +86,15 @@
 			.from('tasks')
 			.update({ due_date: new Date(newDate).toISOString() })
 			.eq('id', id);
-		dueDate = new Date(newDate).toISOString();
-		const tempDueDate = new Date(dueDate);
+		due_date = new Date(newDate).toISOString();
+		const tempDueDate = new Date(due_date);
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	};
 
 	const checkIfTaskIsDueToday = async () => {
-		if (!dueDate) return;
-		const date = new Date(dueDate);
+		if (!due_date) return;
+		const date = new Date(due_date);
 		const today = new Date();
 
 		date.setDate(date.getDate() + 1);
@@ -137,9 +137,9 @@
 	};
 
 	onMount(() => {
-		if (!dueDate) return '';
+		if (!due_date) return '';
 
-		const tempDueDate = new Date(dueDate);
+		const tempDueDate = new Date(due_date);
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -184,7 +184,7 @@
 						class="flex items-center md:gap-sm"
 						on:click={() => dateInputElement.showPicker()}
 					>
-						{#if dueDate}
+						{#if due_date}
 							<Calendar className="h-6 w-6 stroke-accent-light" />
 							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
 								>{formattedDate}</span
@@ -243,7 +243,7 @@
 						<CardDropdown
 							bind:visibility={showCardDropdown}
 							{id}
-							bind:priority={isPriority}
+							bind:priority={is_priority}
 							bind:tasks
 						/>
 					{/if}
@@ -306,20 +306,20 @@
 		<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
 		<div class="flex items-center">
-			{#if assinged}
+			{#if assigned}
 				<div class="relative mt-md flex items-center">
-					{#each assinged as id}
+					{#each assigned as id}
 						<Assinged {id} />
 					{/each}
 				</div>
 			{/if}
-			{#if assinged?.length === 0 && !showAssignNewUsers}
+			{#if assigned?.length === 0 && !showAssignNewUsers}
 				<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
 					<UserAdd
 						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
 					/>
 				</button>
-			{:else if assinged?.length === 0 && showAssignNewUsers}
+			{:else if assigned?.length === 0 && showAssignNewUsers}
 				<button on:click={updateAssignedPeople}>
 					<Check
 						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
@@ -327,7 +327,7 @@
 				</button>
 			{/if}
 
-			{#if isPriority}
+			{#if is_priority}
 				<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
 			{/if}
 		</div>
