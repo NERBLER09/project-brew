@@ -117,7 +117,7 @@
 	const handleTagsFilter = (tags: string[]) => {
 		unsortedTasks = dbTasks;
 
-		if (!tags) {
+		if (!tags || tags.length === 0) {
 			return;
 		}
 
