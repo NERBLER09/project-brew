@@ -164,75 +164,20 @@
 
 <div class="md:relative">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
-		<header class="mb-sm flex h-fit items-start">
-			<div>
-				<div class="flex items-center gap-sm">
-					{#if status === 'done'}
-						<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
-					{/if}
-					<h3
-						class="font-bold text-grey-700 dark:text-grey-200 card__text--{status} h-fit"
-						contenteditable
-						bind:textContent={newName}
-						on:blur={updateTaskName}
-					>
-						{name}
-					</h3>
-				</div>
-				<div>
-					<button
-						class="flex items-center md:gap-sm"
-						on:click={() => dateInputElement.showPicker()}
-					>
-						{#if due_date}
-							<Calendar className="h-6 w-6 stroke-accent-light" />
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-								>{formattedDate}</span
-							>
-						{:else}
-							<CalendarAdd className="h-6 w-6 stroke-accent-light" />
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
-								Add
-								<span class="sr-only">a due date</span>
-							</span>
-						{/if}
-					</button>
-					<input
-						type="date"
-						class="hidden"
-						bind:this={dateInputElement}
-						bind:value={newDate}
-						on:change={updateTaskDate}
-					/>
-				</div>
-				<div class="relative" bind:this={milestoneDropdownElement}>
-					<button
-						class="flex items-center md:gap-sm"
-						on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
-					>
-						<Milestone className="h-6 w-6 stroke-accent-light" />
-						{#if milestoneName}
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-								>{milestoneName}</span
-							>
-						{:else}
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-								>Add to milestone
-							</span>
-						{/if}
-					</button>
-
-					{#if updateTaskMilestone}
-						<UpdateTaskMilestone
-							bind:currentMilestone={milestone}
-							bind:shown={updateTaskMilestone}
-							taskId={id}
-							{getMilestoneName}
-						/>
-					{/if}
-				</div>
+		<header class="mb-md flex h-fit items-center">
+			<div class="flex items-center gap-sm">
+				{#if status === 'done'}
+					<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
+				{/if}
+				<h3
+					class="font-bold text-grey-700 dark:text-grey-200 card__text--{status} h-fit"
+					contenteditable
+					bind:textContent={newName}
+					on:blur={updateTaskName}
+				>
+					{name}
+				</h3>
 			</div>
-
 			<div class="ml-auto flex h-8 w-8 items-center gap-md">
 				<div bind:this={cardDropdownElement}>
 					<button on:click={() => (showCardDropdown = !showCardDropdown)}>
@@ -250,7 +195,65 @@
 				</div>
 			</div>
 		</header>
+		<div class="mb-md flex flex-col items-start gap-md lg:mb-sm lg:flex-row lg:items-center">
+			<div>
+				<button class="flex items-center md:gap-sm" on:click={() => dateInputElement.showPicker()}>
+					{#if due_date}
+						<Calendar className="h-6 w-6 stroke-accent-light" />
+						<span
+							class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							>{formattedDate}</span
+						>
+					{:else}
+						<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
+							Add
+							<span class="sr-only">a due date</span>
+						</span>
+					{/if}
+				</button>
+				<input
+					type="date"
+					class="hidden"
+					bind:this={dateInputElement}
+					bind:value={newDate}
+					on:change={updateTaskDate}
+				/>
+			</div>
+			<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
+			<div class="rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+				<!--TODO: Display actual task priority  -->
+				<span class="font-medium text-grey-700 dark:text-grey-300">High</span>
+			</div>
+			<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
+			<div class="relative" bind:this={milestoneDropdownElement}>
+				<button
+					class="flex items-center md:gap-sm"
+					on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
+				>
+					<Milestone className="h-6 w-6 stroke-accent-light" />
+					{#if milestoneName}
+						<a
+							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							href="milestones/{milestone}">{milestoneName}</a
+						>
+					{:else}
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							>Add to milestone
+						</span>
+					{/if}
+				</button>
 
+				{#if updateTaskMilestone}
+					<UpdateTaskMilestone
+						bind:currentMilestone={milestone}
+						bind:shown={updateTaskMilestone}
+						taskId={id}
+						{getMilestoneName}
+					/>
+				{/if}
+			</div>
+		</div>
 		<div class="mb-md">
 			{#if description}
 				<p
@@ -275,8 +278,8 @@
 		{#if tags}
 			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
-					<div class="w-fit rounded bg-grey-200 py-1 px-2">
-						<span class="text-sm font-medium text-grey-700">{tag}</span>
+					<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 					</div>
 				{/each}
 			</div>
@@ -305,32 +308,26 @@
 
 		<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
-		<div class="flex items-center">
-			{#if assigned}
-				<div class="relative mt-md flex items-center">
-					{#each assigned as id}
-						<Assinged {id} />
-					{/each}
-				</div>
-			{/if}
-			{#if assigned?.length === 0 && !showAssignNewUsers}
-				<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
-					<UserAdd
-						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-					/>
-				</button>
-			{:else if assigned?.length === 0 && showAssignNewUsers}
-				<button on:click={updateAssignedPeople}>
-					<Check
-						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-					/>
-				</button>
-			{/if}
-
-			{#if is_priority}
-				<CirclePriority className="h-12 w-12 fill-[#E68F16] ml-auto" />
-			{/if}
-		</div>
+		{#if assigned}
+			<div class="relative mt-md flex items-center">
+				{#each assigned as id}
+					<Assinged {id} />
+				{/each}
+			</div>
+		{/if}
+		{#if assigned?.length === 0 && !showAssignNewUsers}
+			<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
+				<UserAdd
+					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+				/>
+			</button>
+		{:else if assigned?.length === 0 && showAssignNewUsers}
+			<button on:click={updateAssignedPeople}>
+				<Check
+					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+				/>
+			</button>
+		{/if}
 
 		{#if showAssignNewUsers}
 			<AssignPerson bind:assingedUserIds={newTaskAssignedPeople} />

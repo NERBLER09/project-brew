@@ -24,16 +24,16 @@
 	});
 </script>
 
-<div class="group relative -m-md first:ml-0">
+<div class="group relative -ml-md first:ml-0">
 	{#if avatar_url}
 		<img
 			src={avatar_url}
 			alt="User profile"
-			class="border-1 aspect-square h-10 w-10 rounded-full border-solid border-grey-100 object-cover first:border-0 dark:border-grey-800"
+			class="border-1 aspect-square h-6 w-6 rounded-full border-solid border-grey-100 object-cover first:border-0 dark:border-grey-800"
 		/>
 	{:else}
 		<User
-			className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full border-1 border-solid border-grey-100 first:border-0 dark:border-grey-800"
+			className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full border-1 border-solid border-grey-100 first:border-0 dark:border-grey-800"
 		/>
 	{/if}
 	<span

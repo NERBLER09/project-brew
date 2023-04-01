@@ -29,7 +29,9 @@
 <svelte:window on:click={handleAutoClose} />
 
 <div
-	class="flex items-start gap-sm  {$showProjectAside ? 'md:w-[calc(100%-12.3125rem)]' : 'w-full'}"
+	class="flex items-start gap-sm overflow-y-hidden {$showProjectAside
+		? 'md:w-[calc(100%-12.3125rem)]'
+		: 'w-full'}"
 	bind:this={navContainer}
 >
 	<nav class="flex items-center md:hidden">
