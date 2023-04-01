@@ -8,7 +8,7 @@ export const load = (async (event) => {
 		throw redirect(303, '/');
 	}
 
-	let params = event.params;
+	const params = event.params;
 	const projectId = params.slug;
 
 	event.depends('app:project');
@@ -20,12 +20,6 @@ export const load = (async (event) => {
 		.eq('id', projectId)
 		.limit(1)
 		.single();
-
-	const { data: lists } = await supabaseClient
-		.from('lists')
-		.select()
-		.eq('project', projectId)
-		.order('position', { ascending: true });
 
 	const { data: invited_people } = await supabaseClient
 		.from('project_members')
@@ -50,8 +44,7 @@ export const load = (async (event) => {
 			id: project.id,
 			description: project?.description,
 			banner: project?.banner,
-			tags: JSON.parse(project?.tags) || [],
-			lists: lists || [],
+			tags: JSON.parse(project?.tags ?? '[]'),
 			project: {
 				...project,
 				invite: {
