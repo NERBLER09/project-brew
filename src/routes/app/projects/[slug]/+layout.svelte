@@ -1,10 +1,5 @@
 <script lang="ts">
-	import {
-		currentProject,
-		recentlyEdited,
-		showProjectAside,
-		userTeams
-	} from '$lib/stores/project';
+	import { currentProject, recentlyEdited, showProjectAside, userTeams } from '$lib/stores/project';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
@@ -17,7 +12,6 @@
 	import { showAboutProjectPrompt } from '$lib/stores/ui';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import User from '$lib/assets/User.svelte';
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 	import Aside from '$lib/components/projects/aside/Aside.svelte';
@@ -30,7 +24,6 @@
 	let showProjectDropdown = false;
 
 	onMount(async () => {
-		goto(`/app/projects/${data.id}/${data.project?.default_view}`);
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
 			$recentlyEdited = [data.project, ...$recentlyEdited];
