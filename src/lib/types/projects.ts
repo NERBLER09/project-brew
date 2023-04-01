@@ -1,3 +1,5 @@
+import type { Json } from "./supabase";
+
 export interface User {
 	avatar_url: string | null;
 	banner: string | null;
@@ -80,7 +82,7 @@ export interface TeamMembers {
 
 export interface Teams {
 	banner: string | null;
-	dashboard_settings: object;
+	dashboard_settings: Json;
 	description: string | null;
 	id: string;
 	name: string;

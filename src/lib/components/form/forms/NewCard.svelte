@@ -36,7 +36,7 @@
 		form.append('list-status', listStatus);
 		form.append('project', $currentProject.id);
 		form.append('assigned', newTaskAssignedPeople.toString());
-		form.append('project_name', $currentProject.name);
+		form.append('project_name', $currentProject.project_name);
 		form.append('user_object', $userData);
 
 		const response = await fetch('/app/projects/{project_id}?/newTask', {

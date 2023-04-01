@@ -35,7 +35,7 @@
 	$: handleModalStatus(shown);
 
 	let inEditMode = false;
-	let newProjectName = $currentProject.name;
+	let newProjectName = $currentProject.project_name;
 	let newProjectDescription = $currentProject.description;
 	let newProjectTags: any[] = $currentProject?.tags;
 	let newCoverURL = $currentProject.banner;
@@ -110,7 +110,7 @@
 		if (data) {
 			$currentProject = data[0];
 			$currentProject.tags = JSON.parse(data[0]?.tags ?? '[]');
-			$currentProject.name = data[0]?.project_name;
+			$currentProject.project_name = data[0]?.project_name;
 			console.log(data[0].tags);
 			invalidate('app:project');
 			toast.success('Updated project details');
@@ -132,7 +132,7 @@
 	$: if (newCoverFile) getFileURL(newCoverFile[0]);
 
 	$: if (!inEditMode) {
-		newProjectName = $currentProject.name;
+		newProjectName = $currentProject.project_name;
 		newProjectDescription = $currentProject.description;
 		newProjectTags = $currentProject?.tags;
 		newCoverURL = $currentProject.banner;

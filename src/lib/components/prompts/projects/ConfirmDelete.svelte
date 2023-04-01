@@ -28,7 +28,7 @@
 		if ($currentProject.banner) {
 			await supabase.storage
 				.from('project-covers')
-				.remove([`${$userData.id}/${camelCase($currentProject.name)}`]);
+				.remove([`${$userData.id}/${camelCase($currentProject.project_name)}`]);
 		}
 
 		await supabase.from('tasks').delete().eq('project', $currentProject.id);
@@ -57,7 +57,7 @@
 		</button>
 	</header>
 	<p class="pt-sm font-medium text-grey-700 dark:text-grey-200">
-		Are you sure you want to delete {$currentProject.name}.
+		Are you sure you want to delete {$currentProject.project_name}.
 	</p>
 	<p class="pt-sm font-medium text-red-500 dark:text-red-400">
 		This action is <span class="font-bold">irreversible</span>.

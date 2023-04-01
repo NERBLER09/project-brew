@@ -65,7 +65,7 @@
 </script>
 
 <svelte:head>
-	<title>{$currentProject.name} - Milestones</title>
+	<title>{$currentProject.project_name} - Milestones</title>
 </svelte:head>
 
 <svelte:window on:click={handleAutoCloseSearch} />

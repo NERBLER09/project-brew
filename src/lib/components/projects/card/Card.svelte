@@ -108,12 +108,12 @@
 				.from('notifications')
 				.select()
 				.eq('target_user', $userData.id)
-				.eq('message', `${name} in ${$currentProject.name} is due today`);
+				.eq('message', `${name} in ${$currentProject.project_name} is due today`);
 
 			if (notifications?.length === 0) {
 				const { error } = await supabase.from('notifications').insert({
-					title: $currentProject.name,
-					message: `${name} in ${$currentProject.name} is due today`,
+					title: $currentProject.project_name,
+					message: `${name} in ${$currentProject.project_name} is due today`,
 					target_user: $userData.id,
 					type: 'dueTask'
 				});

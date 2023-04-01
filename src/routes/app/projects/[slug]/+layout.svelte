@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {
 		currentProject,
-		invitedTeamMembers,
 		recentlyEdited,
 		showProjectAside,
 		userTeams
@@ -25,7 +24,7 @@
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 
 	export let data: LayoutData;
-	currentProject.set(data);
+	currentProject.set(data.project);
 	userTeams.set(data.userTeams ?? []);
 
 	let showProjectDropdown = false;
