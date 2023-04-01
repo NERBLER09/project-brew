@@ -24,11 +24,11 @@
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 
 	export let name: string;
-	export let id: any;
+	export let id: number;
 	export let status: string;
 	let tasks: Task[] = [];
 
-	let unsortedTasks: any[] = [];
+	let unsortedTasks: Task[] = [];
 	let showListDropdown = false;
 	let listDropdownElement: HTMLElement;
 
@@ -42,25 +42,27 @@
 		const found = tasks.find((task) => task.id === event.detail.info.id);
 		if (!tasks.includes(found)) return;
 
-		const { error } = await supabase
+		await supabase
 			.from('tasks')
 			.update({ list: id, user_id: $userData.id, status })
 			.eq('id', event.detail.info.id);
 
-		const index = tasks.indexOf(found!);
-		if (index < 0) return; // Prevents error if index is below 0
-		tasks[index].status = status;
+		if (found) {
+			const index = tasks.indexOf(found);
+			if (index < 0) return; // Prevents error if index is below 0
+			tasks[index].status = status;
 
-		if (tasks[index].status === 'done') {
-			$tasksCompletedThisDay++;
-			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
+			if (tasks[index].status === 'done') {
+				$tasksCompletedThisDay++;
+				$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
 
-			await supabase
-				.from('profiles')
-				.update({ your_activity: $weeklyActivity })
-				.eq('id', $userData.id);
+				await supabase
+					.from('profiles')
+					.update({ your_activity: $weeklyActivity })
+					.eq('id', $userData.id);
 
-			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
+				localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
+			}
 		}
 	};
 
@@ -171,7 +173,8 @@
 
 	let dbTasks: Task[] = [];
 	onMount(async () => {
-		const { data, error } = await supabase.from('tasks').select().eq('list', id);
+		const { data } = await supabase.from('tasks').select('*, sub_tasks(*)').eq('list', id);
+
 		tasks = data || [];
 		dbTasks = data ?? [];
 		unsortedTasks = tasks.map((task: Task) => ({
@@ -236,19 +239,7 @@
 		on:finalize={handleFinalize}
 	>
 		{#each tasks as task (task.id)}
-			<Card
-				name={task.name}
-				description={task.description}
-				dueDate={task.due_date}
-				isPriority={task.is_priority}
-				id={task.id}
-				status={task.status}
-				tags={task.tags}
-				bind:tasks
-				assinged={task.assigned}
-				milestone={task.milestone}
-				list={id}
-			/>
+			<Card {...task} list={id} />
 		{/each}
 	</div>
 </section>

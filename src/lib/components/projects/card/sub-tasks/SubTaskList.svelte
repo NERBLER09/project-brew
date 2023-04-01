@@ -4,6 +4,7 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import { supabase } from '$lib/supabase';
+	import type { SubTask } from '$lib/types/projects';
 	import { onMount } from 'svelte';
 	import NewSubTask from './NewSubTask.svelte';
 	import SubTaskItem from './SubTaskItem.svelte';
@@ -12,16 +13,7 @@
 	export let list: number;
 	export let project: number;
 
-	interface SubTask {
-		completed: boolean;
-		id: string;
-		list: number;
-		name: string;
-		project: number;
-		task: number;
-	}
-
-	let subTasks: SubTask[] = [];
+	export let subTasks: SubTask[] = [];
 	let total = 0;
 	let completed = 0;
 
@@ -35,7 +27,11 @@
 		completed = [...subTasks.filter((item) => item.completed)].length;
 	};
 
-	onMount(getSubTasks);
+	onMount(() => {
+		subTasks = subTasks ?? [];
+		total = subTasks.length;
+		completed = [...subTasks.filter((item) => item.completed)].length;
+	});
 </script>
 
 {#if subTasks.length > 0}

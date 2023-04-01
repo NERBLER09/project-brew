@@ -11,7 +11,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
-	import type { Task } from '$lib/types/projects';
+	import type { SubTask, Task } from '$lib/types/projects';
 	import { onMount } from 'svelte/internal';
 	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
@@ -20,16 +20,17 @@
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
 
 	export let name: string;
-	export let tags: any[] = [];
-	export let description: string = '';
-	export let dueDate: any;
-	export let isPriority: boolean = false;
+	export let tags: string[] = [];
+	export let description = '';
+	export let dueDate: string;
+	export let isPriority = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
 	export let assinged: string[] | null;
 	export let tasks: Task[] | undefined;
 	export let milestone: string | null;
 	export let list: number;
+	export let sub_tasks: SubTask[] = [];
 
 	let showCardDropdown = false;
 	let formattedDate = '';
@@ -302,7 +303,7 @@
 			</div>
 		{/if}
 
-		<SubTaskList taskId={id} {list} project={$currentProject.id} />
+		<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
 		<div class="flex items-center">
 			{#if assinged}

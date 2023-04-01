@@ -95,3 +95,12 @@ export interface ProjectMember {
 	role: string;
 	user_id: string;
 }
+
+export interface SubTask {
+	completed: boolean;
+	id: string;
+	list: number;
+	name: string;
+	project: number;
+	task: number;
+}
