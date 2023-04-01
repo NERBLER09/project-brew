@@ -228,13 +228,13 @@
 			{#if $userTeams.length > 0}
 				<TransferProjectToTeam
 					{teamName}
-					projectId={$currentProject.project.id}
-					team={$currentProject.project.team}
+					projectId={$currentProject.id}
+					team={$currentProject.team}
 				/>
 			{/if}
 			<InvitedTeamMembers
 				invited_people={$currentProject.invited_people}
-				projectId={$currentProject.project.id}
+				projectId={$currentProject.id}
 			/>
 		{:else}
 			<div class="flex flex-col">

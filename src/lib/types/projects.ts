@@ -1,4 +1,4 @@
-import type { Json } from "./supabase";
+import type { Json } from './supabase';
 
 export interface User {
 	avatar_url: string | null;
@@ -24,15 +24,16 @@ export interface List {
 }
 
 export interface Projects {
-	banner?: string | null;
-	description?: string | null;
-	id?: number;
-	invited_people?: string[] | null;
-	pinned?: boolean;
-	project_name?: string;
-	tags?: string | null;
-	user_id?: string;
+	banner: string | null;
+	default_view: string;
+	description: string | null;
+	id: number;
+	invited_people: string[] | null;
+	pinned: boolean;
+	project_name: string;
+	tags: string | null;
 	team: string | null;
+	user_id: string;
 }
 
 export interface Task {

@@ -12,11 +12,8 @@
 	export let showFavorite = true;
 
 	const handleSetAsDefaultView = async () => {
-		await supabase
-			.from('projects')
-			.update({ default_view: page })
-			.eq('id', $currentProject.project.id);
-		$currentProject.project.default_view = page;
+		await supabase.from('projects').update({ default_view: page }).eq('id', $currentProject.id);
+		$currentProject.default_view = page;
 	};
 </script>
 
@@ -33,7 +30,7 @@
 
 	{#if showFavorite}
 		<div class="ml-auto h-6 w-6 group-hover:block md:ml-0 md:hidden">
-			{#if $currentProject.project.default_view === page}
+			{#if $currentProject.default_view === page}
 				<Favorited className="fill-grey-700 dark:fill-grey-200 w-6 h-6" />
 			{:else}
 				<button on:click={handleSetAsDefaultView}>

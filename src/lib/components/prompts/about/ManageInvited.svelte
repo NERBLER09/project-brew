@@ -63,7 +63,7 @@
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'success') {
-					toast.success(`Added ${emailSearch} to ${$currentProject.project?.project_name}`);
+					toast.success(`Added ${emailSearch} to ${$currentProject.project_name}`);
 					invalidate('app:project');
 				} else if (result.data.notFound) {
 					toast.error(`A user with the email: ${emailSearch} doesn't exist`);
