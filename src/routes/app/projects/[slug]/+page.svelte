@@ -6,6 +6,6 @@
 	export let data: PageData;
 
 	onMount(() => {
-		goto(data.project?.default_view);
+		goto(`${data.id}/${data.project?.default_view}`);
 	});
 </script>
