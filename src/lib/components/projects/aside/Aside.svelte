@@ -19,9 +19,10 @@
 		if (!searchInput.contains(event.target)) {
 			search = false;
 		}
-		if (!filterContainer.contains(event.target)) {
-			filter = false;
-		}
+
+		// if (!filterContainer.contains(event.target)) {
+		// 	filter = false;
+		// }
 
 		if (!sortContainer.contains(event.target)) {
 			sort = false;

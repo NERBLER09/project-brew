@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import { currentProject, dateFilter, filterTags, milestoneFilter } from '$lib/stores/project';
@@ -6,14 +8,10 @@
 	import { onMount } from 'svelte';
 
 	let addFilter = false;
+	let showMilestonesFilter = false;
 
 	let tags: string[] = [];
 	$: $filterTags = tags;
-
-	const setDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset') => {
-		$dateFilter = option;
-		addFilter = false;
-	};
 
 	const clearFilters = () => {
 		$dateFilter = null;
@@ -25,6 +23,7 @@
 	let projectMilestones: any[] = [];
 	const setMilestoneFilter = (name: string, id: string) => {
 		$milestoneFilter = { name, id };
+		addFilter = false;
 	};
 
 	onMount(async () => {
@@ -45,33 +44,49 @@
 	</button>
 
 	{#if addFilter}
-		<button class="dropdown--item" on:click={() => setDateFilter('soon')}>
-			<span class="dropdown--label">Date - Soon</span>
-		</button>
-		<button class="dropdown--item" on:click={() => setDateFilter('today')}
-			><span class="dropdown--label">Date - Today </span>
-		</button>
-		<button class="dropdown--item" on:click={() => setDateFilter('overdue')}
-			><span class="dropdown--label">Date - Overdue</span></button
-		>
-		<button class="dropdown--item" on:click={() => setDateFilter('unset')}>
-			<span class="dropdown--label">Date - No Date</span>
-		</button>
-
+		<div class="flex w-full items-center gap-md">
+			<label for="date-filter-select" class="input--label whitespace-nowrap">Date filter:</label>
+			<select
+				id="date-filter-select"
+				class="input--text w-full"
+				bind:value={$dateFilter}
+				on:change={() => (addFilter = false)}
+			>
+				<option value={null} selected disabled hidden>No filter</option>
+				<option value="today">Today</option>
+				<option value="soon">Soon</option>
+				<option value="overdue">Overdue</option>
+				<option value="unset">Unset</option>
+			</select>
+		</div>
 		<section>
-			<header>
-				<h4 class="dropdown--label px-md py-sm text-md">Milestone</h4>
+			<header class="flex items-center">
+				<h4 class="dropdown--label px-md py-sm text-md">Milestones</h4>
+				<button
+					class="button--secondary m-0 ml-auto border-0 p-0"
+					on:click={() => (showMilestonesFilter = !showMilestonesFilter)}
+				>
+					{#if showMilestonesFilter}
+						<Up className="h-8 w-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300" />
+						<span class="sr-only">Hide milestones to filter by</span>
+					{:else}
+						<Down className="h-8 w-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300" />
+						<span class="sr-only">Show milestones to filter by</span>
+					{/if}
+				</button>
 			</header>
 
-			{#each projectMilestones as milestone}
-				<button
-					class="dropdown--item"
-					on:click={() => setMilestoneFilter(milestone.name, milestone.id)}
-				>
-					<PlusNew className="dropdown--icon" />
-					<span class="dropdown--label">{milestone.name}</span>
-				</button>
-			{/each}
+			{#if showMilestonesFilter}
+				{#each projectMilestones as milestone}
+					<button
+						class="dropdown--item w-full"
+						on:click={() => setMilestoneFilter(milestone.name, milestone.id)}
+					>
+						<PlusNew className="dropdown--icon" />
+						<span class="dropdown--label">{milestone.name}</span>
+					</button>
+				{/each}
+			{/if}
 		</section>
 	{/if}
 
@@ -102,7 +117,7 @@
 	{/if}
 
 	{#if $milestoneFilter}
-		<button class="dropdown--item" on:click={() => ($milestoneFilter = null)}>
+		<button class="dropdown--item w-full" on:click={() => ($milestoneFilter = null)}>
 			<Trash className="dropdown--icon" />
 			<span class="dropdown--label">{$milestoneFilter.name}</span>
 		</button>
