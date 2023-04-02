@@ -43,7 +43,9 @@ export interface Task {
 	id: number;
 	is_priority: boolean;
 	list: number;
+	milestone: string | null;
 	name: string;
+	priority_level: string | null;
 	project: number;
 	status: string;
 	tags: string[] | null;
