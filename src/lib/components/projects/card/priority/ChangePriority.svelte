@@ -7,7 +7,7 @@
 	export let taskId: number;
 
 	const updatePriority = async (priority) => {
-		await supabase.from('tasks').update({ priority_level: priority }).eq('id', id);
+		await supabase.from('tasks').update({ priority_level: priority }).eq('id', taskId);
 	};
 </script>
 

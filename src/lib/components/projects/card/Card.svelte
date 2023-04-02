@@ -2,7 +2,6 @@
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Check from '$lib/assets/Check.svelte';
-	import CirclePriority from '$lib/assets/Fill/CirclePriority.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
