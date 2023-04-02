@@ -15,6 +15,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{data.project?.project_name} - Dashboard</title>
+</svelte:head>
+
 <div class="grid gap-md md:grid-cols-2 md:gap-lg lg:grid-cols-5 lg:gap-2xl">
 	<section class="md:col-span-2 lg:col-span-3">
 		<header class="mb-sm">

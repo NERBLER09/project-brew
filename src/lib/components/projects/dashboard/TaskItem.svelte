@@ -56,7 +56,7 @@
 	</div>
 
 	{#if milestone}
-		<div class="flex gap-sm">
+		<div class="flex gap-sm md:hidden lg:inline">
 			<Milestone className="h-6 w-6 stroke-accent-light" />
 			<span
 				class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
