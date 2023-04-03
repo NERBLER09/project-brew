@@ -11,6 +11,7 @@
 	let showMilestonesFilter = false;
 
 	let tags: string[] = [];
+	let tagName = '';
 	$: $filterTags = tags;
 
 	const clearFilters = () => {
@@ -88,6 +89,36 @@
 				{/each}
 			{/if}
 		</section>
+
+		<section>
+			<header>
+				<h4 class="dropdown--label px-md py-sm text-md">Tags</h4>
+			</header>
+
+			<form
+				on:submit|preventDefault={() => {
+					tags = [tagName, ...tags];
+					tagName = '';
+				}}
+			>
+				<div class="input--text flex w-full items-center">
+					<input
+						type="text"
+						placeholder="Enter the tag name"
+						class="input--text m-0 w-full p-0"
+						bind:value={tagName}
+						name="invite_email"
+						required
+					/>
+					<button type="submit">
+						<PlusNew
+							className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+						/>
+						<span class="add entered tag to by filter" />
+					</button>
+				</div>
+			</form>
+		</section>
 	{/if}
 
 	{#if $dateFilter}
@@ -122,4 +153,22 @@
 			<span class="dropdown--label">{$milestoneFilter.name}</span>
 		</button>
 	{/if}
+
+	<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
+		{#each $filterTags as tag}
+			<div
+				class="flex w-fit items-center gap-sm rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700"
+			>
+				<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
+				<button
+					on:click={() => {
+						const index = $filterTags.indexOf(tag);
+						$filterTags.splice(index, 1);
+					}}
+				>
+					<Trash className="w-8 h-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300" />
+				</button>
+			</div>
+		{/each}
+	</div>
 </div>
