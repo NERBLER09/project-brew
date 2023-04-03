@@ -36,7 +36,14 @@
 				/>
 			</svg>
 		</div>
-		<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
+		<span class="font-bold text-grey-700 dark:text-grey-200">
+			{#if percentCompleted}
+				{percentCompleted}
+			{:else}
+				100
+			{/if}
+			%</span
+		>
 		<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 	</div>
 
