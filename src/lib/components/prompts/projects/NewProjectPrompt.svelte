@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
-	import { goto, invalidate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 	import InviteTeamMember from '$lib/components/projects/new/InviteTeamMember.svelte';
-	import { currentUsers, invitedTeamMembers, userData } from '$lib/stores/user';
+	import { currentUsers, invitedTeamMembers } from '$lib/stores/user';
 	import toast from 'svelte-french-toast';
 	import { supabase } from '$lib/supabase';
 	import AddTeam from '$lib/components/projects/new/AddTeam.svelte';
@@ -42,10 +42,10 @@
 	let description = '';
 	let invitedMembers: string[];
 	let tags: string[] = [];
-	let selectedTeam: string;
+	let selectedTeam = '';
 
 	const handleSubmit = async (event) => {
-		const data = new FormData(this);
+		const data = new FormData(event.target);
 		data.append('cover-url', files[0] ?? '');
 		data.append('name', name);
 		data.append('description', description);
