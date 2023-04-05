@@ -47,7 +47,7 @@
 		<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 	</div>
 
-	<div class="hidden w-full md:inline">
+	<div class="hidden w-full flex-col gap-md md:flex">
 		{#each today as today}
 			<TaskItem {...today} />
 		{/each}

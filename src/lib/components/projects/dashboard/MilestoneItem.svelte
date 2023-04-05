@@ -55,7 +55,7 @@
 		{#if tasksDueSoon.length > 0}
 			<section>
 				<header>
-					<h4 class="text-grey-700 dark:text-grey-300">What is due soon</h4>
+					<h4 class="font-medium text-grey-700 dark:text-grey-300">What is due soon</h4>
 				</header>
 			</section>
 			<div class="flex flex-col gap-sm">
@@ -64,7 +64,7 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="text-grey-700 dark:text-grey-300">
+			<p class="font-medium text-grey-700 dark:text-grey-300">
 				There are no tasks in this milestone that are due soon
 			</p>
 		{/if}

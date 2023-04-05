@@ -1,5 +1,6 @@
 <script lang="ts">
 	import MilestoneItem from '$lib/components/projects/dashboard/MilestoneItem.svelte';
+	import TaskItem from '$lib/components/projects/dashboard/TaskItem.svelte';
 	import TodayProgress from '$lib/components/projects/dashboard/TodayProgress.svelte';
 	import { showProjectAside } from '$lib/stores/project';
 	import { onDestroy, onMount } from 'svelte';
@@ -28,11 +29,22 @@
 
 		<TodayProgress today={data.dashboard?.today ?? []} />
 	</section>
+
 	<section class="md:col-span-1 md:row-start-3 lg:col-span-2 lg:col-start-4 lg:row-start-1">
 		<header>
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Behind Tasks</h2>
 		</header>
+		<div class="hidden w-full flex-col gap-md md:flex">
+			{#each data.dashboard.behind as behind}
+				<TaskItem {...behind} />
+			{:else}
+				<h2 class="text-grey-800 dark:text-grey-200 font-medium">
+					There are no tasks that are overdue.
+				</h2>
+			{/each}
+		</div>
 	</section>
+
 	<section
 		class="row-start-4 md:col-span-1 md:row-start-3 lg:col-span-2 lg:col-start-1 lg:row-start-2"
 	>
