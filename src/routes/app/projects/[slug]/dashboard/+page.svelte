@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MilestoneItem from '$lib/components/projects/dashboard/MilestoneItem.svelte';
 	import TodayProgress from '$lib/components/projects/dashboard/TodayProgress.svelte';
 	import { showProjectAside } from '$lib/stores/project';
 	import { onDestroy, onMount } from 'svelte';
@@ -40,10 +41,16 @@
 		</header>
 	</section>
 	<section
-		class="row-start-3 md:col-span-2 md:row-start-2 lg:col-span-3 lg:col-start-3 lg:row-start-2"
+		class="row-start-3 overflow-hidden md:col-span-2 md:row-start-2 lg:col-span-3 lg:col-start-3 lg:row-start-2"
 	>
 		<header>
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Milestone Progress</h2>
 		</header>
+
+		<div class="flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
+			{#each data.dashboard?.milestones as milestone}
+				<MilestoneItem {...milestone} />
+			{/each}
+		</div>
 	</section>
 </div>

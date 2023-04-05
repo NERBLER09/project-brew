@@ -24,11 +24,17 @@ export const load = (async (event) => {
     .eq('due_date', new Date().toISOString())
     .eq('project', projectId);
 
+  const { data: milestones } = await supabaseClient
+    .from('milestones')
+    .select('*, tasks!inner(*)')
+    .eq('project', projectId);
+
   if (tasks) {
     return {
       dashboard: {
         tasks,
-        today
+        today,
+        milestones: milestones ?? []
       }
     };
   }
