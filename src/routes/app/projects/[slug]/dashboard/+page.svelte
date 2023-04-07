@@ -2,6 +2,8 @@
 	import MilestoneItem from '$lib/components/projects/dashboard/MilestoneItem.svelte';
 	import TaskItem from '$lib/components/projects/dashboard/TaskItem.svelte';
 	import TodayProgress from '$lib/components/projects/dashboard/TodayProgress.svelte';
+	import Tags from '$lib/components/projects/dashboard/workload/tags/Tags.svelte';
+	import TagsDark from '$lib/components/projects/dashboard/workload/tags/TagsDark.svelte';
 	import { showProjectAside } from '$lib/stores/project';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
@@ -51,6 +53,18 @@
 		<header>
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Task Workload</h2>
 		</header>
+
+		<section>
+			<header>
+				<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300 md:text-md">Tags</h4>
+			</header>
+			<div class="inline dark:hidden">
+				<Tags tasks={data.dashboard?.tasks} />
+			</div>
+			<div class="hidden dark:inline">
+				<TagsDark tasks={data.dashboard?.tasks} />
+			</div>
+		</section>
 	</section>
 	<section
 		class="row-start-3 overflow-hidden md:col-span-2 md:row-start-2 lg:col-span-3 lg:col-start-3 lg:row-start-2"
