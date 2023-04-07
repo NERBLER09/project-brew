@@ -22,8 +22,8 @@ export const load = (async (event) => {
     .from('tasks')
     .select()
     .eq('due_date', new Date().toISOString())
-    .eq('project', projectId)
-    .neq("status", "done");
+    .eq('project', projectId);
+  // .neq("status", "done");
 
   const { data: milestones } = await supabaseClient
     .from('milestones')
@@ -34,9 +34,8 @@ export const load = (async (event) => {
     .from('tasks')
     .select()
     .eq('project', projectId)
-    .lt("due_date", new Date().toISOString())
-    .neq("status", "done");
-
+    .lt('due_date', new Date().toISOString())
+    .neq('status', 'done');
 
   if (tasks) {
     return {

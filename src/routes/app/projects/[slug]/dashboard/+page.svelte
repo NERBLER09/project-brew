@@ -10,6 +10,8 @@
 
 	export let data: PageData;
 
+	let due = data.dashboard?.today?.filter((item) => item.status !== 'done');
+
 	onMount(() => {
 		$showProjectAside = false;
 	});
@@ -29,7 +31,7 @@
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Today's Progress</h2>
 		</header>
 
-		<TodayProgress today={data.dashboard?.today ?? []} />
+		<TodayProgress today={data.dashboard?.today ?? []} {due} />
 	</section>
 
 	<section class="md:col-span-1 md:row-start-3 lg:col-span-2 lg:col-start-4 lg:row-start-1">
@@ -56,7 +58,7 @@
 
 		<section>
 			<header>
-				<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300 md:text-md">Tags</h4>
+				<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
 			</header>
 			<div class="inline dark:hidden">
 				<Tags tasks={data.dashboard?.tasks} />

@@ -41,6 +41,7 @@
 			legend: {
 				position: 'bottom'
 			}
-		}
+		},
+		borderColor: '#212529'
 	}}
 />
