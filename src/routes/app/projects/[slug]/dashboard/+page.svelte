@@ -73,17 +73,19 @@
 				</div>
 			</section>
 
-			<section>
-				<header>
-					<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Assigned People</h4>
-				</header>
-				<div class="inline dark:hidden">
-					<Assigned tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
-				</div>
-				<div class="hidden dark:inline">
-					<AssignedDark tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
-				</div>
-			</section>
+			{#if invitedUserIds.length > 0}
+				<section>
+					<header>
+						<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Assigned People</h4>
+					</header>
+					<div class="inline dark:hidden">
+						<Assigned tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
+					</div>
+					<div class="hidden dark:inline">
+						<AssignedDark tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
+					</div>
+				</section>
+			{/if}
 		</div>
 	</section>
 
@@ -97,6 +99,10 @@
 		<div class="flex w-full flex-nowrap items-start gap-lg overflow-x-auto md:flex-wrap">
 			{#each data.dashboard?.milestones as milestone}
 				<MilestoneItem {...milestone} />
+			{:else}
+				<p class="text-grey-700 dark:text-grey-300 font-medium">
+					There are no milestones for this project.
+				</p>
 			{/each}
 		</div>
 	</section>
