@@ -2,6 +2,7 @@
 	import type { Task } from '$lib/types/projects';
 	import TaskItem from './TaskItem.svelte';
 	import TodayTaskStatus from './TodayTaskStatus.svelte';
+	import TodayTaskStatusDark from './TodayTaskStatusDark.svelte';
 
 	export let today: Task[];
 	export let due: Task[];
@@ -50,7 +51,14 @@
 			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 		</div>
 
-		<TodayTaskStatus {today} />
+		{#if today.length > 0}
+			<div class="inline dark:hidden">
+				<TodayTaskStatus {today} />
+			</div>
+			<div class="hidden dark:inline">
+				<TodayTaskStatusDark {today} />
+			</div>
+		{/if}
 	</div>
 
 	<div class="hidden w-full flex-col gap-md md:flex">
