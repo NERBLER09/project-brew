@@ -122,6 +122,4 @@
 			</div>
 		</span>
 	</div>
-
-	<div class="absolute left-0 -bottom-1 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
 </div>

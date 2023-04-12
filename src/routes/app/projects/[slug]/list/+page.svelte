@@ -1,7 +1,17 @@
 <script lang="ts">
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
+	import { searchQuery } from '$lib/stores/project';
 	import type { PageData } from './$types';
 	export let data: PageData;
+
+	let filteredTasks = data.project?.tasks ?? [];
+
+	const handleSearch = (query: string) => {
+		filteredTasks = data.project?.tasks ?? [];
+		filteredTasks = filteredTasks.filter((item) => item.name.toLowerCase().includes(query));
+		filteredTasks = [...filteredTasks];
+	};
+	$: handleSearch($searchQuery);
 </script>
 
 <svelte:head>
@@ -56,7 +66,7 @@
 	</div>
 
 	<div class="relative flex flex-col flex-nowrap items-start gap-md">
-		{#each data.project?.tasks as task}
+		{#each filteredTasks as task}
 			<TaskItem {...task} />
 		{/each}
 	</div>
