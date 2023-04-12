@@ -15,9 +15,14 @@ export const load = (async (event) => {
 
 	const { data: tasks } = await supabaseClient.from('tasks').select().eq('project', projectId);
 
+	const { project } = await event.parent();
+
 	if (tasks) {
 		return {
-			tasks: tasks || []
+			project: {
+				...project,
+				tasks: tasks || []
+			}
 		};
 	}
 
