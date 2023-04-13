@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
 	import { searchQuery } from '$lib/stores/project';
 	import type { PageData } from './$types';
@@ -71,3 +72,8 @@
 		{/each}
 	</div>
 </div>
+
+<button class="button--secondary my-sm mx-0 flex w-full items-center gap-md border-0 p-sm md:w-fit">
+	<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+	New Task
+</button>

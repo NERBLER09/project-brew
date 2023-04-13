@@ -113,7 +113,7 @@
 	</div>
 	<div class="min-w-[10.625rem]">
 		<span class="font-bold text-grey-700 dark:text-grey-300">
-			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
+			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
 					<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
