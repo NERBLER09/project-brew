@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Calendar from '$lib/assets/Calendar.svelte';
+	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -47,8 +48,13 @@
 		<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 	</div>
 	<div class="relative mr-md flex min-w-[10.625rem] items-center gap-sm">
-		<Calendar className="h-6 w-6 stroke-accent-light" />
-		<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+		{#if due_date}
+			<Calendar className="h-6 w-6 stroke-accent-light" />
+			<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+		{:else}
+			<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+			<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
+		{/if}
 	</div>
 	<div class="relative mr-md min-w-[10.625rem]">
 		<div class="w-fit">
