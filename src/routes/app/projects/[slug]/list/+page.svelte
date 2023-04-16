@@ -4,10 +4,11 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
-	import { searchQuery } from '$lib/stores/project';
+	import { searchQuery, sortOptions } from '$lib/stores/project';
 	import type { ActionResult } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
+	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
 	export let data: PageData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -39,6 +40,9 @@
 			toast.error(`Failed to create new task: ${result.data.message}`);
 		}
 	};
+
+	$: filteredTasks = handleSortingTasks(filteredTasks, $sortOptions);
+	$: filteredTasks = handleSortClear($sortOptions, data.project?.tasks ?? []);
 </script>
 
 <svelte:head>

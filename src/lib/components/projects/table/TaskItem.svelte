@@ -103,11 +103,13 @@
 		</div>
 	</div>
 	<div class="relative mr-md min-w-[10.625rem]">
-		<div class="relative mt-md flex items-center">
-			{#each assigned as id}
-				<Assinged {id} />
-			{/each}
-		</div>
+		{#if assigned}
+			<div class="relative mt-md flex items-center">
+				{#each assigned as id}
+					<Assinged {id} />
+				{/each}
+			</div>
+		{/if}
 	</div>
 	<div class="relative mr-md flex min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm">
 		<Milestone className="h-6 w-6 stroke-accent-light" />
@@ -120,11 +122,11 @@
 	<div class="min-w-[10.625rem]">
 		<span class="font-bold text-grey-700 dark:text-grey-300">
 			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
-				{#each tags as tag}
+				<!-- {#each tags as tag}
 					<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 					</div>
-				{/each}
+				{/each} -->
 			</div>
 		</span>
 	</div>
