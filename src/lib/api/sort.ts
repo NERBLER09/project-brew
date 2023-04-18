@@ -1,8 +1,8 @@
-import type { SortOptions } from '$lib/stores/project';
+import { type SortOptions } from '$lib/stores/project';
 import type { Task } from '$lib/types/projects';
 
 export const handleSortingTasks = (tasks: Task[], option: SortOptions): Task[] => {
-	let sortedTasks = tasks;
+	const sortedTasks = tasks;
 
 	if (option.priority === 'ascending') {
 		sortedTasks.sort((item) => {
@@ -36,11 +36,25 @@ export const handleSortingTasks = (tasks: Task[], option: SortOptions): Task[] =
 		});
 	}
 
+	if (option.date === 'ascending') {
+		sortedTasks.sort((item) => {
+			if (!item.due_date) return 0;
+			return new Date(item.due_date).getTime() - new Date().getTime();
+		});
+	} else if (option.date === 'descending') {
+		sortedTasks.sort((item) => {
+			if (!item.due_date) return 999;
+			return new Date(item.due_date).getTime() - new Date().getTime();
+		});
+	}
+
 	return sortedTasks;
 };
 
-export const handleSortClear = (options: SortOptions, originalTasks: Task[]): Task[] => {
+export const handleSortClear = (options: SortOptions, originalTasks: Task[]) => {
 	if (options.priority === null) {
+		return originalTasks;
+	} else if (options.date === null) {
 		return originalTasks;
 	}
 };
