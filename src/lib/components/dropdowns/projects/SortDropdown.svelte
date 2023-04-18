@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
+	import Check from '$lib/assets/Check.svelte';
 	import CirclePriority from '$lib/assets/Circle-Priority.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
@@ -27,6 +29,13 @@
 			<CirclePriority className="dropdown--icon" />
 			<span class="dropdown--label"> Add priority sort </span>
 		</button>
+
+		{#if $page.url.pathname.includes('list')}
+			<button class="dropdown--item" on:click={() => (sortOptions.status = 'ascending')}>
+				<Check className="dropdown--icon" />
+				<span class="dropdown--label"> Add status sort </span>
+			</button>
+		{/if}
 	{/if}
 
 	{#if sortOptions.date}
@@ -66,7 +75,26 @@
 		</div>
 	{/if}
 
-	{#if sortOptions.date || sortOptions.priority}
+	{#if sortOptions.status}
+		<hr class="mx-auto w-1/2" />
+		<div class="flex w-full items-center gap-md">
+			<span class="dropdown--label">Status: </span>
+			<select
+				name="date-sort-input"
+				bind:value={sortOptions.status}
+				class="input--text w-fit bg-grey-300 dark:bg-grey-700"
+			>
+				<option value="ascending">Ascending</option>
+				<option value="descending">Descending</option>
+			</select>
+			<button on:click={() => (sortOptions.status = null)} class="ml-auto">
+				<CloseMultiply className="w-8 h-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Remove task status sorting</span>
+			</button>
+		</div>
+	{/if}
+
+	{#if sortOptions.date || sortOptions.priority || sortOptions.status}
 		<hr class="mx-auto w-1/2" />
 
 		<button

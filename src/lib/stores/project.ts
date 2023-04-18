@@ -21,8 +21,9 @@ export const showProjectAside = writable(true);
 export interface SortOptions {
 	date: 'ascending' | 'descending' | null;
 	priority: 'ascending' | 'descending' | null;
+	status: 'ascending' | 'descending' | null;
 }
-export const sortOptions = writable<SortOptions>({ date: null, priority: null });
+export const sortOptions = writable<SortOptions>({ date: null, priority: null, status: null });
 
 interface MilestoneFilter {
 	name: string;
