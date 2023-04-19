@@ -4,11 +4,18 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
-	import { searchQuery, sortOptions } from '$lib/stores/project';
+	import {
+		dateFilter,
+		filterTags,
+		milestoneFilter,
+		searchQuery,
+		sortOptions
+	} from '$lib/stores/project';
 	import type { ActionResult } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
+	import { handleFilter } from '$lib/api/filter';
 	export let data: PageData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -43,6 +50,12 @@
 
 	$: filteredTasks = handleSortingTasks(filteredTasks, $sortOptions);
 	$: filteredTasks = handleSortClear($sortOptions, data.project?.tasks ?? []);
+	$: filteredTasks = handleFilter(
+		data.project?.tasks ?? [],
+		$dateFilter,
+		$filterTags,
+		$milestoneFilter
+	);
 </script>
 
 <svelte:head>

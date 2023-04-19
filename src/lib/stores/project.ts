@@ -25,7 +25,7 @@ export interface SortOptions {
 }
 export const sortOptions = writable<SortOptions>({ date: null, priority: null, status: null });
 
-interface MilestoneFilter {
+export interface MilestoneFilter {
 	name: string;
 	id: string;
 }
