@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
@@ -34,6 +35,20 @@
 		}
 	};
 
+	let newDate: Date;
+	let newDateInput: HTMLInputElement;
+	const updateDetails = async (name: string, date: Date) => {
+		await supabase
+			.from('tasks')
+			.update({ name, due_date: new Date(date).toISOString() })
+			.eq('id', id);
+		invalidate('project:list');
+
+		const tempDueDate = new Date(newDate);
+		tempDueDate.setDate(tempDueDate.getDate() + 1);
+		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	};
+
 	onMount(() => {
 		const tempDueDate = new Date(due_date);
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
@@ -45,9 +60,24 @@
 
 <div class="flex items-center">
 	<div class="relative mr-md min-w-[15.625rem]">
-		<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
+		<span
+			class="font-bold text-grey-700 dark:text-grey-300"
+			contenteditable
+			bind:textContent={name}
+			on:blur={() => updateDetails(name, newDate)}>{name}</span
+		>
 	</div>
-	<div class="relative mr-md flex min-w-[10.625rem] items-center gap-sm">
+	<button
+		class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
+		on:click={() => newDateInput.showPicker()}
+	>
+		<input
+			type="date"
+			class="hidden"
+			bind:this={newDateInput}
+			bind:value={newDate}
+			on:change={() => updateDetails(name, newDate)}
+		/>
 		{#if due_date}
 			<Calendar className="h-6 w-6 stroke-accent-light" />
 			<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
@@ -55,7 +85,7 @@
 			<CalendarAdd className="h-6 w-6 stroke-accent-light" />
 			<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
 		{/if}
-	</div>
+	</button>
 	<div class="relative mr-md min-w-[10.625rem]">
 		<div class="w-fit">
 			{#if status === 'done'}
