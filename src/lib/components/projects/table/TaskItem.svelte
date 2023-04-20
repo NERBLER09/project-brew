@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
 	import Calendar from '$lib/assets/Calendar.svelte';
 	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
@@ -42,7 +41,6 @@
 			.from('tasks')
 			.update({ name, due_date: new Date(date).toISOString() })
 			.eq('id', id);
-		invalidate('project:list');
 
 		const tempDueDate = new Date(newDate);
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
@@ -150,14 +148,16 @@
 		{/if}
 	</div>
 	<div class="min-w-[10.625rem]">
-		<span class="font-bold text-grey-700 dark:text-grey-300">
-			<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
-				<!-- {#each tags as tag}
-					<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
-					</div>
-				{/each} -->
-			</div>
-		</span>
+		{#if tags && tags.length > 0}
+			<span class="font-bold text-grey-700 dark:text-grey-300">
+				<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
+					{#each tags as tag}
+						<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
+						</div>
+					{/each}
+				</div>
+			</span>
+		{/if}
 	</div>
 </div>
