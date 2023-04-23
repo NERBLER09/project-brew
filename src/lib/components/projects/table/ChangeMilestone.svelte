@@ -20,7 +20,16 @@
 	export let projectId: number;
 	export let shown = false;
 
+	let search = '';
+
 	let milestones: Milestone[] = [];
+	let searchedMilestones = milestones;
+
+	const handleSearch = () => {
+		searchedMilestones = milestones.filter((item) =>
+			item.name.toLowerCase().includes(search.toLowerCase())
+		);
+	};
 
 	const updateMilestone = async (id: string) => {
 		await supabase.from('tasks').update({ milestone: id }).eq('id', taskId);
@@ -28,20 +37,35 @@
 		shown = false;
 	};
 
+	const handleRemoveMilestone = async () => {
+		await supabase.from('tasks').update({ milestone: null }).eq('id', taskId);
+		invalidate('project:list');
+		shown = false;
+	};
+
 	onMount(async () => {
 		const { data } = await supabase.from('milestones').select().eq('project', projectId);
 		milestones = data ?? [];
+		searchedMilestones = milestones;
 	});
 </script>
 
 <div class="dropdown--container z-50">
 	{#if milestoneId}
-		<button class="dropdown--item"><span class="dropdown--label">Remove milestone</span></button>
+		<button class="dropdown--item" on:click={handleRemoveMilestone}
+			><span class="dropdown--label">Remove milestone</span></button
+		>
 	{/if}
 
-	<input type="search" class="input--text" placeholder="Search for a milestone" />
+	<input
+		type="search"
+		class="input--text"
+		placeholder="Search for a milestone"
+		bind:value={search}
+		on:change={handleSearch}
+	/>
 
-	{#each milestones as milestone}
+	{#each searchedMilestones as milestone}
 		<button class="dropdown--item" on:click={() => updateMilestone(milestone.id)}>
 			{#if milestone.id === milestoneId}
 				<Check className="dropdown--icon" />
