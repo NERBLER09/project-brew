@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import Assinged from '../card/Assinged.svelte';
 	import PriorityLevel from '../card/priority/PriorityLevel.svelte';
+	import ChangeMilestone from './ChangeMilestone.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -15,12 +16,14 @@
 	export let assigned: string[] | null;
 	export let milestone: string | null;
 	export let priority_level: string | null;
+	export let projectId: number;
 
 	tags = tags ?? [];
 	assigned = assigned ?? [];
 
 	let formattedDate = '';
 	let milestoneName = '';
+	let showChangeMilestone = false;
 
 	const getMilestoneName = async () => {
 		if (milestone) {
@@ -120,12 +123,26 @@
 			</div>
 		{/if}
 	</div>
-	<div class="relative mr-md flex min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm">
-		<Milestone className="h-6 w-6 stroke-accent-light" />
-		{#if milestoneName}
-			<span class="truncate font-bold text-grey-700 dark:text-grey-300">{milestoneName}</span>
-		{:else}
-			<span class="truncate font-bold text-grey-700 dark:text-grey-300">No milestone</span>
+	<div class="relative mr-md min-w-[10.625rem] max-w-[10.625rem]">
+		<button
+			class="button--secondary m-0 flex w-fit items-center gap-sm border-0 p-0"
+			on:click={() => (showChangeMilestone = !showChangeMilestone)}
+		>
+			<Milestone className="h-6 w-6 stroke-accent-light" />
+			{#if milestoneName}
+				<span class="truncate font-bold text-grey-700 dark:text-grey-300">{milestoneName}</span>
+			{:else}
+				<span class="truncate font-bold text-grey-700 dark:text-grey-300">No milestone</span>
+			{/if}
+		</button>
+
+		{#if showChangeMilestone}
+			<ChangeMilestone
+				{projectId}
+				milestoneId={milestone}
+				taskId={id}
+				bind:shown={showChangeMilestone}
+			/>
 		{/if}
 	</div>
 	<div class="min-w-[10.625rem]">

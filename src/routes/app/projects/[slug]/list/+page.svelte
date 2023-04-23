@@ -111,7 +111,7 @@
 
 	<div class="relative flex flex-col flex-nowrap items-start gap-md">
 		{#each filteredTasks as task}
-			<TaskItem {...task} />
+			<TaskItem {...task} projectId={data.project?.id} />
 		{/each}
 	</div>
 
