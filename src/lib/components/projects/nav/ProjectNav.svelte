@@ -21,7 +21,7 @@
 		}
 	};
 
-	page.subscribe((page) => {
+	page.subscribe(() => {
 		showPageSwitcher = false;
 	});
 </script>
@@ -49,8 +49,8 @@
 				<Item name="Board" page="board" icon={Stack} showFavorite={false} />
 			{:else if currentPage === 'list'}
 				<Item name="Table" page="list" icon={List} showFavorite={false} />
-			{:else if currentPage === 'roadmap'}
-				<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} />
+			<!-- {:else if currentPage === 'roadmap'} -->
+			<!-- 	<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} /> -->
 			{/if}
 
 			{#if !showPageSwitcher}
@@ -66,7 +66,7 @@
 				<Item name="Milestones" page="milestones" icon={Milestone} />
 				<Item name="Board" page="board" icon={Stack} />
 				<Item name="Table" page="list" icon={List} />
-				<Item name="Roadmap" page="roadmap" icon={Roadmap} />
+				<!-- <Item name="Roadmap" page="roadmap" icon={Roadmap} /> -->
 			</div>
 		{/if}
 	</nav>
@@ -79,6 +79,6 @@
 		<Item name="Milestones" page="milestones" icon={Milestone} />
 		<Item name="Board" page="board" icon={Stack} />
 		<Item name="Table" page="list" icon={List} />
-		<Item name="Roadmap" page="roadmap" icon={Roadmap} />
+		<!-- <Item name="Roadmap" page="roadmap" icon={Roadmap} /> -->
 	</nav>
 </div>
