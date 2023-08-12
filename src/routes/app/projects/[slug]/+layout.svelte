@@ -19,6 +19,8 @@
 
 	export let data: LayoutData;
 	currentProject.set(data.project);
+	$currentProject.invited_people = data.invited_people ?? [];
+	$currentProject = $currentProject;
 	userTeams.set(data.userTeams ?? []);
 
 	let showProjectDropdown = false;
