@@ -64,7 +64,7 @@
 				<header>
 					<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
 				</header>
-				{#if data.dashboard.tags}
+				{#if data.dashboard?.tags}
 					<div class="inline dark:hidden">
 						<Tags tasks={data.dashboard?.tasks} />
 					</div>
