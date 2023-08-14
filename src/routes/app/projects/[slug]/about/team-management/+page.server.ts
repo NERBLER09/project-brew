@@ -42,6 +42,7 @@ export const actions = {
 
 		if (!inviteErr) {
 			return { success: true };
+
 		} else {
 			return fail(400, { message: inviteErr.message });
 		}

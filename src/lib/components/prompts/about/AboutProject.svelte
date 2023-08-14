@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import TransferTeam from '$lib/components/dropdowns/projects/TransferTeam.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
@@ -138,7 +140,15 @@
 		newCoverURL = $currentProject.banner;
 		newCoverFile = null;
 	}
+
+	let showTransferTeamDropdown = false;
+	let transferDropdownContainer: HTMLElement;
+	const handleAutoCloseDropdown = (event: Event) => {
+		if (!transferDropdownContainer.contains(event.target)) showTransferTeamDropdown = false;
+	};
 </script>
+
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <dialog
 	bind:this={dialog}

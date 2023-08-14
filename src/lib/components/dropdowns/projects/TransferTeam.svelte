@@ -51,6 +51,7 @@
 				<Check className="dropdown--icon" />
 			{/if}
 			<span class="dropdown--label">{name}</span>
+
 		</button>
 	{/each}
 </div>
