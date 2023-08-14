@@ -29,6 +29,17 @@ module.exports = {
 					700: '#495057',
 					800: '#343A40',
 					900: '#212529'
+				},
+				tag: {
+					'light-grey': '#E9ECEF',
+					'dark-grey': '#6C757D',
+					orange: '#fb923c',
+					yellow: '#fde047',
+					red: '#f87171',
+					green: '#34d399',
+					blue: '#60a5fa',
+					purple: '#c084fc',
+					pink: '#f472b6'
 				}
 			}
 		},

@@ -1,4 +1,3 @@
-import { goto } from '$app/navigation';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
@@ -21,7 +20,7 @@ export const load = (async (event) => {
 		.eq('id', session.user.id)
 		.limit(1)
 		.single();
-	console.log(notifications);
+
 	if (user) {
 		return {
 			notifications,

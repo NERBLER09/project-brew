@@ -1,4 +1,5 @@
-<script lang="ts">	import Calendar from '$lib/assets/Calendar.svelte';
+<script lang="ts">
+	import Calendar from '$lib/assets/Calendar.svelte';
 	import Assinged from '$lib/components/projects/card/Assinged.svelte';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';

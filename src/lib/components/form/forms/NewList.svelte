@@ -19,7 +19,7 @@
 		form.append('list-status', newStatus);
 		form.append('project-id', $currentProject.id);
 
-		const response = await fetch('/app/projects/{data.id}?/newList', {
+		const response = await fetch(`/app/projects/${$currentProject.id}?/newList`, {
 			method: 'POST',
 			body: form
 		});
@@ -27,7 +27,7 @@
 		const result = deserialize(await response.text());
 
 		if (result?.type === 'success') {
-			invalidate('app:project');
+			invalidate('project:board');
 		} else if (result.type === 'failure') {
 			toast.error(result?.data.message);
 		}

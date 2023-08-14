@@ -1,17 +1,18 @@
 <script lang="ts">
 	import Filter from '$lib/assets/Filter.svelte';
 	import TeamMember from '$lib/components/team/project/TeamMember.svelte';
-	import { currentProject } from '$lib/stores/project';
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
+	import type { ProjectMember } from '$lib/types/projects';
 
-	export let invited_people: string[] | null | undefined;
+	export let invited_people: ProjectMember[];
+	export let projectId: string;
 </script>
 
 <section class="mt-md w-full">
 	<header>
 		<div class="flex items-center">
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited people</h2>
-			<a href="/app/projects/{$currentProject.id}/about/team-management" class="ml-auto md:hidden">
+			<a href="/app/projects/{projectId}/about/team-management" class="ml-auto md:hidden">
 				<Filter
 					className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200"
 					parentBg="grey-100 dark:stroke-grey-900"
@@ -34,8 +35,8 @@
 	</header>
 
 	<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
-		{#each invited_people as id}
-			<TeamMember {id} />
+		{#each invited_people as { user_id, id, role }}
+			<TeamMember {user_id} dbId={id} {role} />
 		{/each}
 	</div>
 </section>

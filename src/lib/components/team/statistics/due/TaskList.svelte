@@ -6,7 +6,7 @@
 	import TaskItem from './TaskItem.svelte';
 
 	export let type: 'today' | 'soon' | 'overdue' = 'today';
-  
+
 	let incompleteTasks: Task[] = [];
 	let teamId = $currentTeam.id;
 
@@ -38,7 +38,6 @@
 		query = query.neq('status', 'done');
 
 		const { data: tasks, error } = await query;
-
 
 		if (tasks) {
 			incompleteTasks = tasks;

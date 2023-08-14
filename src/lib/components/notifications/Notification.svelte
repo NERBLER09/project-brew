@@ -16,7 +16,7 @@
 		if (sentDate.getDay() === today.getDay() && sentDate.getMonth() === today.getMonth()) {
 			received = 'Today';
 		} else {
-			received = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+			received = sentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 		}
 	});
 </script>

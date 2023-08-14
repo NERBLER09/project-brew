@@ -8,17 +8,27 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
 	import NewCard from '$lib/components/form/forms/NewCard.svelte';
-	import { tasksCompletedThisDay } from '$lib/stores/project';
+	import {
+		dateFilter,
+		filterTags,
+		milestoneFilter,
+		searchQuery,
+		sortOptions,
+		tasksCompletedThisDay,
+		type SortOptions
+	} from '$lib/stores/project';
+
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 
 	export let name: string;
-	export let id: any;
+	export let id: number;
 	export let status: string;
 	let tasks: Task[] = [];
 
+	let unsortedTasks: Task[] = [];
 	let showListDropdown = false;
 	let listDropdownElement: HTMLElement;
 
@@ -32,31 +42,146 @@
 		const found = tasks.find((task) => task.id === event.detail.info.id);
 		if (!tasks.includes(found)) return;
 
-		const { error } = await supabase
+		await supabase
 			.from('tasks')
 			.update({ list: id, user_id: $userData.id, status })
 			.eq('id', event.detail.info.id);
 
-		const index = tasks.indexOf(found!);
-		if (index < 0) return; // Prevents error if index is below 0
-		tasks[index].status = status;
+		if (found) {
+			const index = tasks.indexOf(found);
+			if (index < 0) return; // Prevents error if index is below 0
+			tasks[index].status = status;
 
-		if (tasks[index].status === 'done') {
-			$tasksCompletedThisDay++;
-			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
+			if (tasks[index].status === 'done') {
+				$tasksCompletedThisDay++;
+				$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;
 
-			await supabase
-				.from('profiles')
-				.update({ your_activity: $weeklyActivity })
-				.eq('id', $userData.id);
+				await supabase
+					.from('profiles')
+					.update({ your_activity: $weeklyActivity })
+					.eq('id', $userData.id);
 
-			localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
+				localStorage.setItem('tasksCompletedToday', $tasksCompletedThisDay);
+			}
 		}
 	};
 
+	const handleDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset' | null) => {
+		unsortedTasks = dbTasks;
+		switch (option) {
+			case 'soon':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					return (
+						new Date(item.due_date).getTime() >= new Date().getTime() &&
+						new Date(item.due_date).getTime() <= new Date().setDate(new Date().getDate() + 4)
+					);
+				});
+
+				break;
+			case 'today':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					const date = new Date(item.due_date);
+					const today = new Date();
+					date.setDate(date.getDate() + 1);
+
+					return (
+						date.getDate() === today.getDate() &&
+						date.getMonth() === today.getMonth() &&
+						date.getFullYear() === today.getFullYear()
+					);
+				});
+				break;
+
+			case 'overdue':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					const date = new Date(item.due_date);
+					const today = new Date();
+					date.setDate(date.getDate() + 1);
+
+					return date < today && date.getTime() !== 86400000;
+				});
+				break;
+			case 'unset':
+				unsortedTasks = unsortedTasks.filter((item) => {
+					return !item.due_date;
+				});
+				break;
+			default:
+				unsortedTasks = dbTasks;
+				break;
+		}
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
+	const handleTagsFilter = (tags: string[]) => {
+		unsortedTasks = dbTasks;
+
+		if (!tags || tags.length === 0) {
+			return;
+		}
+
+		unsortedTasks = unsortedTasks.filter((item: Task) => {
+			return item.tags?.includes(tags.toString());
+		});
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
+	const handleMilestoneFilter = (id: string | undefined) => {
+		unsortedTasks = dbTasks;
+
+		if (!id) return;
+
+		unsortedTasks = unsortedTasks.filter((item) => {
+			return item.milestone === id;
+		});
+
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
+	const handleSort = (option: SortOptions) => {
+		if (option.date === 'descending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return new Date().getTime() - new Date(item.due_date).getTime();
+			});
+		} else if (option.date === 'ascending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return new Date(item.due_date).getTime() - new Date().getTime();
+			});
+		}
+
+		if (option.priority === 'ascending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return !item.is_priority;
+			});
+		} else if (option.priority === 'descending') {
+			unsortedTasks = unsortedTasks.sort((item: Task) => {
+				return item.is_priority;
+			});
+		}
+
+		tasks = unsortedTasks;
+		tasks = [...tasks];
+	};
+
+	$: handleDateFilter($dateFilter);
+	$: handleTagsFilter($filterTags);
+	$: handleMilestoneFilter($milestoneFilter?.id);
+	$: handleSort($sortOptions);
+
+	let dbTasks: Task[] = [];
 	onMount(async () => {
-		const { data, error } = await supabase.from('tasks').select().eq('list', id);
+		const { data } = await supabase.from('tasks').select('*, sub_tasks(*)').eq('list', id);
+
 		tasks = data || [];
+		dbTasks = data ?? [];
+		unsortedTasks = tasks.map((task: Task) => ({
+			...task,
+			searchTerms: `${task.name} ${task.description}`
+		}));
+		handleDateFilter($dateFilter);
 	});
 
 	const handleClickOutside = (event: Event) => {
@@ -64,6 +189,14 @@
 			showListDropdown = false;
 		}
 	};
+
+	const handleSearch = (query: string) => {
+		tasks = unsortedTasks;
+		tasks = unsortedTasks.filter((item) => item?.searchTerms.toLowerCase().includes(query));
+		tasks = [...tasks];
+	};
+
+	$: handleSearch($searchQuery);
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -106,17 +239,7 @@
 		on:finalize={handleFinalize}
 	>
 		{#each tasks as task (task.id)}
-			<Card
-				name={task.name}
-				description={task.description}
-				dueDate={task.due_date}
-				isPriority={task.is_priority}
-				id={task.id}
-				status={task.status}
-				tags={task.tags}
-				bind:tasks
-				assinged={task.assigned}
-			/>
+			<Card {...task} list={id} />
 		{/each}
 	</div>
 </section>

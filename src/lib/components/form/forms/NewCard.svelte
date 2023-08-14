@@ -19,12 +19,11 @@
 	let newTaskName = '';
 	let newTaskDescription = '';
 	let newTaskDueDate: string | Date = '';
-	let newTaskPriority = false;
 	let newTaskTags: string[] = [];
 	let newTaskAssignedPeople: string[] = [];
+	let newTaskPriorityLevel = 'high';
 
 	const handleCreateNewTask = async (event) => {
-		console.log(newTaskAssignedPeople);
 		showCreateTask = false;
 
 		const form = new FormData(this);
@@ -32,13 +31,13 @@
 		form.append('description', newTaskDescription);
 		form.append('tags', newTaskTags.toString());
 		form.append('date', newTaskDueDate.toString());
-		form.append('priority', newTaskPriority.toString() ?? null);
 		form.append('list-id', listId);
 		form.append('list-status', listStatus);
 		form.append('project', $currentProject.id);
 		form.append('assigned', newTaskAssignedPeople.toString());
-		form.append('project_name', $currentProject.name);
+		form.append('project_name', $currentProject.project_name);
 		form.append('user_object', $userData);
+		form.append('priority_level', newTaskPriorityLevel);
 
 		const response = await fetch('/app/projects/{project_id}?/newTask', {
 			method: 'POST',
@@ -89,24 +88,30 @@
 		placeholder="Enter a short description"
 		bind:value={newTaskDescription}
 	/>
-	<label for="date-input" class="input--label mt-sm">Select a due date</label>
-	<input
-		type="date"
-		class="input--text mt-sm"
-		id="date-input"
-		name="date"
-		bind:value={newTaskDueDate}
-	/>
+	<div class="flex flex-col items-start gap-sm">
+		<label for="date-input" class="input--label mt-sm">Select a due date</label>
+		<input
+			type="date"
+			class="input--text mt-sm"
+			id="date-input"
+			name="date"
+			bind:value={newTaskDueDate}
+		/>
+	</div>
 	<br />
 
-	<label for="priority-input" class="input--label mt-sm">Mark as priority</label>
-	<input
-		type="checkbox"
-		class="input--checkbox my-sm"
-		id="prority-input"
-		name="priority"
-		bind:checked={newTaskPriority}
-	/>
+	<label for="priority-input" class="input--label mt-sm">Select a priority level:</label>
+	<select
+		name="priority-level"
+		id="priority-input"
+		class="input--text"
+		bind:value={newTaskPriorityLevel}
+	>
+		<option value="high">High</option>
+		<option value="med">Medium</option>
+		<option value="low">Low</option>
+		<option value="none">None</option>
+	</select>
 
 	<section>
 		<h4 class="font-bold text-grey-700 dark:text-grey-200">Tags</h4>

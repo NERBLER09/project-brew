@@ -1,3 +1,5 @@
+import type { Json } from './supabase';
+
 export interface User {
 	avatar_url: string | null;
 	banner: string | null;
@@ -18,18 +20,20 @@ export interface List {
 	project: number;
 	status: string;
 	user_id: string;
+	position: number;
 }
 
 export interface Projects {
-	banner?: string | null;
-	description?: string | null;
-	id?: number;
-	invited_people?: string[] | null;
-	pinned?: boolean;
-	project_name?: string;
-	tags?: string | null;
-	user_id?: string;
+	banner: string | null;
+	default_view: string;
+	description: string | null;
+	id: number;
+	invited_people: string[] | null;
+	pinned: boolean;
+	project_name: string;
+	tags: string | null;
 	team: string | null;
+	user_id: string;
 }
 
 export interface Task {
@@ -39,7 +43,9 @@ export interface Task {
 	id: number;
 	is_priority: boolean;
 	list: number;
+	milestone: string | null;
 	name: string;
+	priority_level: string | null;
 	project: number;
 	status: string;
 	tags: string[] | null;
@@ -79,8 +85,25 @@ export interface TeamMembers {
 
 export interface Teams {
 	banner: string | null;
-	dashboard_settings: object;
+	dashboard_settings: Json;
 	description: string | null;
 	id: string;
 	name: string;
+}
+
+export interface ProjectMember {
+	id: string;
+	project: number;
+	role: string;
+	user_id: string;
+}
+
+export interface SubTask {
+	completed: boolean;
+	id: string;
+	list: number;
+	name: string;
+	project: number;
+	task: number;
+
 }
