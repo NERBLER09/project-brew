@@ -32,7 +32,7 @@ export const load = (async (event) => {
 
 	if (data && invited) {
 		let allProjects = [...data, ...invited, ...(team ?? [])];
-		allProjects = lodash.uniqBy(allProjects, "id");
+		allProjects = lodash.uniqBy(allProjects, 'id');
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
 	}
@@ -62,8 +62,6 @@ export const actions: Actions = {
 		const invitedString = data.get('invited') as string;
 		let invited = invitedString.split(',') || null;
 		invited = invited[0] === '' ? [] : invited;
-
-		tags = tags[0] === '' ? [] : tags;
 
 		let coverURL = null;
 
@@ -106,14 +104,16 @@ export const actions: Actions = {
 				description,
 				project_name,
 				user_id: session.user.id,
-				tags,
+				tags: tags ?? null,
 				banner: coverURL,
 				invited_people: invited,
-				team
+				team: team === '' ? null : team
 			})
 			.select()
 			.limit(1)
 			.single();
+
+		console.log(err);
 
 		if (!err) {
 			return { success: true, id: project.id };
