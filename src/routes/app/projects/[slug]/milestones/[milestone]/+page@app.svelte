@@ -185,7 +185,7 @@
 			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
 		</div>
 	</div>
-	<div class="w-full">
+	<div class="relative -top-1 w-full">
 		<div
 			class="mb-sm flex flex-col items-start gap-sm md:mb-0 md:flex-row md:items-center md:gap-0"
 		>
@@ -219,7 +219,6 @@
 
 			<div class="md:ml-auto">
 				{#if data.milestone.leader}
-					<!--TODO: Display milestone lead profile picture  -->
 					<div class="flex items-center gap-md">
 						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone lead</span>
 						{#if data.milestone.leader_profile}
@@ -273,7 +272,7 @@
 	</div>
 </div>
 
-<section class="mt-md md:mt-lg lg:px-80">
+<section class="relative -top-1 mt-md md:mt-lg lg:px-80">
 	<header class="mb-md flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
 

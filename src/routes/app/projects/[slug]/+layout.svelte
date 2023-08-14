@@ -138,13 +138,15 @@
 	</div>
 </header>
 
-<div class="mb-md flex w-full items-center">
+<div class="relative -top-6 mb-md flex w-full items-center">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />
 	{/if}
 </div>
 
-<slot />
+<div class="relative -top-6">
+	<slot />
+</div>
 
 <AboutProject bind:shown={$showAboutProjectPrompt} />
