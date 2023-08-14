@@ -159,7 +159,7 @@
 					? 'text-grey-200'
 					: 'text-grey-700 dark:text-grey-200'} truncate"
 			>
-				{$currentProject?.name}
+				{$currentProject?.project_name}
 			</h1>
 		{:else}
 			<h1
@@ -169,7 +169,7 @@
 				contenteditable="true"
 				bind:textContent={newProjectName}
 			>
-				{$currentProject?.name}
+				{$currentProject?.project_name}
 			</h1>
 		{/if}
 

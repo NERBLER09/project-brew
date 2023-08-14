@@ -29,7 +29,7 @@
 <svelte:window on:click={handleAutoClose} />
 
 <div
-	class="flex items-start gap-sm overflow-y-hidden {$showProjectAside
+	class="flex items-start gap-sm overflow-x-auto overflow-y-hidden {$showProjectAside
 		? 'md:w-[calc(100%-12.3125rem)]'
 		: 'w-full'}"
 	bind:this={navContainer}
@@ -49,8 +49,8 @@
 				<Item name="Board" page="board" icon={Stack} showFavorite={false} />
 			{:else if currentPage === 'list'}
 				<Item name="Table" page="list" icon={List} showFavorite={false} />
-			<!-- {:else if currentPage === 'roadmap'} -->
-			<!-- 	<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} /> -->
+				<!-- {:else if currentPage === 'roadmap'} -->
+				<!-- 	<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} /> -->
 			{/if}
 
 			{#if !showPageSwitcher}
@@ -74,7 +74,7 @@
 	<button on:click={() => (showPageSwitcher = true)} />
 
 	<!-- Only visible on desktop -->
-	<nav class="hidden items-center gap-md overflow-scroll md:flex">
+	<nav class="hidden items-center gap-md overflow-x-auto md:flex md:w-full">
 		<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
 		<Item name="Milestones" page="milestones" icon={Milestone} />
 		<Item name="Board" page="board" icon={Stack} />

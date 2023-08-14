@@ -14,7 +14,6 @@
 
 	let invitedUserIds = data.project?.invite.profiles?.map((item) => item.id) ?? [];
 	let invitedUserNames = data.project?.invite.profiles.map((item) => item.name) ?? [];
-
 	let due = data.dashboard?.today?.filter((item) => item.status !== 'done');
 
 	onMount(() => {
@@ -46,9 +45,9 @@
 			{#each data.dashboard.behind as behind}
 				<TaskItem {...behind} />
 			{:else}
-				<h2 class="text-grey-800 dark:text-grey-200 font-medium">
+				<p class="text-grey-800 dark:text-grey-200 font-medium">
 					There are no tasks that are overdue.
-				</h2>
+				</p>
 			{/each}
 		</div>
 	</section>
@@ -65,27 +64,37 @@
 				<header>
 					<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
 				</header>
-				<div class="inline dark:hidden">
-					<Tags tasks={data.dashboard?.tasks} />
-				</div>
-				<div class="hidden dark:inline">
-					<TagsDark tasks={data.dashboard?.tasks} />
-				</div>
+				{#if data.dashboard?.tags}
+					<div class="inline dark:hidden">
+						<Tags tasks={data.dashboard?.tasks} />
+					</div>
+					<div class="hidden dark:inline">
+						<TagsDark tasks={data.dashboard?.tasks} />
+					</div>
+				{:else}
+					<p class="font-medium text-grey-800 dark:text-grey-200">
+						Create tasks with tags to view what tags are being used.
+					</p>
+				{/if}
 			</section>
+			<section>
+				<header>
+					<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Assigned People</h4>
+				</header>
 
-			{#if invitedUserIds.length > 0}
-				<section>
-					<header>
-						<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Assigned People</h4>
-					</header>
+				{#if invitedUserIds.length > 1}
 					<div class="inline dark:hidden">
 						<Assigned tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
 					</div>
 					<div class="hidden dark:inline">
 						<AssignedDark tasks={data.dashboard?.tasks} {invitedUserNames} {invitedUserIds} />
 					</div>
-				</section>
-			{/if}
+				{:else}
+					<p class="font-medium text-grey-800 dark:text-grey-200">
+						Invite and assign people to tasks to view the work distribution.
+					</p>
+				{/if}
+			</section>
 		</div>
 	</section>
 
