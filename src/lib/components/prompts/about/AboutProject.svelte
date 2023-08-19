@@ -37,7 +37,7 @@
 	let inEditMode = false;
 	let newProjectName = $currentProject.project_name;
 	let newProjectDescription = $currentProject.description;
-	let newProjectTags: any[] = $currentProject?.tags;
+	let newProjectTags: string[] = $currentProject?.tags;
 	let newCoverURL = $currentProject.banner;
 	let newCoverFile: FileList | null;
 	let coverInputElement: HTMLInputElement;
@@ -146,7 +146,7 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!newCoverURL
+		class="relative -left-8 -top-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!newCoverURL
 			? 'w-[calc(100%+64px)]'
 			: 'h-[12.5rem]'}"
 		style="background-image: {newCoverURL
@@ -173,7 +173,7 @@
 			</h1>
 		{/if}
 
-		<div class="relative ml-auto mb-auto flex items-center gap-md ">
+		<div class="relative mb-auto ml-auto flex items-center gap-md">
 			{#if inEditMode}
 				<button on:click={() => (inEditMode = false)}>
 					<Trash
@@ -207,7 +207,7 @@
 
 	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
 		<div class="flex flex-wrap">
-			{#if $currentProject.tags.length > 1}
+			{#if $currentProject?.tags?.length > 1}
 				<div class="mb-sm flex flex-wrap gap-md">
 					{#if inEditMode}
 						<NewTagsInput bind:newTags={newProjectTags} />
@@ -225,7 +225,7 @@
 				</p>
 			{/if}
 
-			{#if $userTeams.length > 0}
+			{#if $userTeams?.length > 0}
 				<TransferProjectToTeam
 					{teamName}
 					projectId={$currentProject.id}
