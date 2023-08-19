@@ -8,7 +8,7 @@
 	export let banner: string | null = '';
 	export let invited_people: string[] | null = [];
 	export let description: string | null = '';
-	export let tags: string[];
+	export let tags: string[] = [];
 	tags = tags ?? [];
 
 	let invitedPeople = $invitedTeamMembers ?? [];
@@ -36,13 +36,13 @@
 			>
 				{description}
 			</p>
-
-			<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
-				{#each tags as tag}
-					<TagItem {tag} sm={true} />
-				{/each}
-			</div>
-
+			{#if tags}
+				<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
+					{#each tags as tag}
+						<TagItem {tag} sm={true} />
+					{/each}
+				</div>
+			{/if}
 			<div class="mt-md flex items-center empty:hidden">
 				{#each invitedPeople as { avatar_url }}
 					{#if avatar_url}
