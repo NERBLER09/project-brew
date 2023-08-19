@@ -21,6 +21,12 @@
 	export let shown = false;
 	let dialog: HTMLDialogElement;
 
+	export let project_name: string | null = '';
+	export let description: string | null = '';
+	export let tags: string[] | null = [];
+	export let banner: string | null = '';
+	tags = tags ?? [];
+
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
 		if (status) {
@@ -35,10 +41,10 @@
 	$: handleModalStatus(shown);
 
 	let inEditMode = false;
-	let newProjectName = $currentProject.project_name;
-	let newProjectDescription = $currentProject.description;
-	let newProjectTags: string[] = $currentProject?.tags;
-	let newCoverURL = $currentProject.banner;
+	let newProjectName = project_name;
+	let newProjectDescription = description;
+	let newProjectTags: string[] = tags;
+	let newCoverURL = banner;
 	let newCoverFile: FileList | null;
 	let coverInputElement: HTMLInputElement;
 
@@ -66,7 +72,7 @@
 		if (!coverList) return '';
 		let cover = coverList[0];
 
-		const ccName = lodash.camelCase(newProjectName);
+		const ccName = lodash.camelCase(newProjectName ?? '');
 		const { data: user } = await supabase.auth.getUser();
 
 		const { error: coverErr } = await supabase.storage
@@ -99,7 +105,7 @@
 		const { data, error } = await supabase
 			.from('projects')
 			.update({
-				project_name: newProjectName,
+				project_name: newProjectName ?? '',
 				description: newProjectDescription,
 				tags: JSON.stringify(newProjectTags).replace('\\', ''),
 				banner: updatedCoverURL
@@ -132,9 +138,9 @@
 	$: if (newCoverFile) getFileURL(newCoverFile[0]);
 
 	$: if (!inEditMode) {
-		newProjectName = $currentProject.project_name;
-		newProjectDescription = $currentProject.description;
-		newProjectTags = $currentProject?.tags;
+		newProjectName = project_name;
+		newProjectDescription = description;
+		newProjectTags = tags ?? [];
 		newCoverURL = $currentProject.banner;
 		newCoverFile = null;
 	}
@@ -142,7 +148,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="h-1/2 w-2/3 rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
+	class="h-1/2 w-2/3 overflow-x-hidden rounded-2xl bg-grey-100 p-8 dark:bg-grey-900 xl:h-2/3 xl:w-1/3"
 	on:close={() => (shown = false)}
 >
 	<header
@@ -155,11 +161,11 @@
 	>
 		{#if !inEditMode}
 			<h1
-				class="w-fit text-lg {$currentProject.banner
+				class="w-fit text-lg {banner
 					? 'text-grey-200'
 					: 'text-grey-700 dark:text-grey-200'} truncate"
 			>
-				{$currentProject?.project_name}
+				{project_name}
 			</h1>
 		{:else}
 			<h1
@@ -207,7 +213,7 @@
 
 	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
 		<div class="flex flex-wrap">
-			{#if $currentProject?.tags?.length > 1}
+			{#if tags?.length > 1}
 				<div class="mb-sm flex flex-wrap gap-md">
 					{#if inEditMode}
 						<NewTagsInput bind:newTags={newProjectTags} />
