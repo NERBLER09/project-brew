@@ -213,7 +213,7 @@
 
 	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
 		<div class="flex flex-wrap">
-			{#if tags?.length > 1}
+			{#if tags}
 				<div class="mb-sm flex flex-wrap gap-md">
 					{#if inEditMode}
 						<NewTagsInput bind:newTags={newProjectTags} />
