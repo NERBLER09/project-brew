@@ -61,7 +61,7 @@
 </script>
 
 <div class="flex items-center">
-	<div class="relative mr-md min-w-[15.625rem]">
+	<div class="relative mr-md min-w-[15.625rem] max-w-[15.625rem] truncate">
 		<span
 			class="font-bold text-grey-700 dark:text-grey-300"
 			contenteditable
@@ -91,19 +91,19 @@
 	<div class="relative mr-md min-w-[10.625rem]">
 		<div class="w-fit">
 			{#if status === 'done'}
-				<div class="rounded-full bg-emerald-400 py-1 px-4 dark:bg-emerald-500">
+				<div class="rounded-full bg-emerald-400 px-3 py-[0.125rem] dark:bg-emerald-500">
 					<span class="font-medium text-grey-100">Done</span>
 				</div>
 			{:else if status === 'doing'}
-				<div class="rounded-full bg-yellow-300 py-1 px-4 dark:bg-yellow-400">
+				<div class="rounded-full bg-yellow-300 px-3 py-[0.125rem] dark:bg-yellow-400">
 					<span class="font-medium text-grey-700">Doing</span>
 				</div>
 			{:else if status === 'todo'}
-				<div class="rounded-full bg-orange-400 py-1 px-4 dark:bg-orange-600">
+				<div class="rounded-full bg-orange-400 px-3 py-[0.125rem] dark:bg-orange-600">
 					<span class="font-medium text-grey-100">To-do</span>
 				</div>
 			{:else if status === 'other' || status === null}
-				<div class="rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+				<div class="rounded-full bg-grey-200 px-3 py-[0.125rem] dark:bg-grey-700">
 					<span class="font-medium text-grey-700 dark:text-grey-300">Other</span>
 				</div>
 			{/if}
@@ -123,14 +123,16 @@
 			</div>
 		{/if}
 	</div>
-	<div class="relative mr-md min-w-[10.625rem] max-w-[10.625rem]">
+	<div class="relative mr-md min-w-[10.625rem] max-w-[10.625rem] truncate">
 		<button
-			class="button--secondary m-0 flex w-fit items-center gap-sm border-0 p-0"
+			class="button--secondary m-0 flex w-fit min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm border-0 p-0"
 			on:click={() => (showChangeMilestone = !showChangeMilestone)}
 		>
-			<Milestone className="h-6 w-6 stroke-accent-light" />
+			<Milestone className="min-h-6 min-w-6 w-6 h-6 stroke-accent-light" />
 			{#if milestoneName}
-				<span class="truncate font-bold text-grey-700 dark:text-grey-300">{milestoneName}</span>
+				<span class="max-w-[10ch] truncate font-bold text-grey-700 dark:text-grey-300"
+					>{milestoneName}</span
+				>
 			{:else}
 				<span class="truncate font-bold text-grey-700 dark:text-grey-300">No milestone</span>
 			{/if}
@@ -148,9 +150,9 @@
 	<div class="min-w-[10.625rem]">
 		{#if tags && tags.length > 0}
 			<span class="font-bold text-grey-700 dark:text-grey-300">
-				<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
+				<div class="flex items-center gap-md pt-sm empty:hidden">
 					{#each tags as tag}
-						<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+						<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
 							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 						</div>
 					{/each}
