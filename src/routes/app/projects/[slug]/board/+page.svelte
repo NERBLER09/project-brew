@@ -35,9 +35,7 @@
 </svelte:head>
 
 <section
-	class="relative {!data.banner
-		? '-top-8'
-		: ''} flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
+	class="relative flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
 	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}

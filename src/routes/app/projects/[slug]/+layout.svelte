@@ -48,8 +48,8 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <header
-	class="relative -left-6 -top-6 h-[18.75rem] {data.banner
-		? 'h-fit'
+	class="relative -left-6 -top-6 {data.banner
+		? 'h-[18.75rem]'
 		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
@@ -138,7 +138,7 @@
 	</div>
 </header>
 
-<div class="mb-md flex w-full items-center">
+<div class="-top-6 mb-md flex w-full items-center md:relative">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />
