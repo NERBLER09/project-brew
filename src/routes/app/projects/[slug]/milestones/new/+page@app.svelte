@@ -58,8 +58,10 @@
 			<input type="date" class="input--text" id="end-date" required name="end-date" />
 		</div>
 
-		<AssignLead invited_users={data.project?.invited.users} bind:milestoneLead />
-		<input type="text" class="hidden" name="lead" bind:value={milestoneLead} />
+		{#if data.project?.invited.users}
+			<AssignLead invited_users={data.project?.invited.users} bind:milestoneLead />
+			<input type="text" class="hidden" name="lead" bind:value={milestoneLead} />
+		{/if}
 
 		<button class="button--circle absolute bottom-8 right-8" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
