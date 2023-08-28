@@ -18,6 +18,7 @@
 	import PriorityLevel from './priority/PriorityLevel.svelte';
 	import SubTaskList from './sub-tasks/SubTaskList.svelte';
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -41,7 +42,6 @@
 	let newDescription = description;
 	let newTags: string[] = [];
 	let newDate: Date;
-	let newTaskAssignedPeople: string[] = [];
 
 	let showAssignNewUsers = false;
 	let addNewTags = false;
@@ -66,9 +66,13 @@
 		description = newDescription;
 	};
 
-	const updateAssignedPeople = async () => {
-		await supabase.from('tasks').update({ assigned: newTaskAssignedPeople }).eq('id', id);
-		assigned = newTaskAssignedPeople;
+	const assignTask = async (userId: string) => {
+		const tempAssigned = assigned ?? [];
+		await supabase
+			.from('tasks')
+			.update({ assigned: [...tempAssigned, userId] })
+			.eq('id', id);
+
 		showAssignNewUsers = false;
 	};
 
@@ -314,30 +318,30 @@
 
 		<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
-		{#if assigned}
-			<div class="relative mt-md flex items-center">
+		<div class="relative mt-md flex items-center">
+			{#if assigned}
 				{#each assigned as id}
 					<Assinged {id} />
 				{/each}
-			</div>
-		{/if}
-
-		{#if assigned?.length === 0 && !showAssignNewUsers}
-			<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
-				<UserAdd
-					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-				/>
+			{/if}
+			<button
+				on:click={() => (showAssignNewUsers = !showAssignNewUsers)}
+				class:ml-auto={assigned?.length > 0}
+			>
+				{#if !showAssignNewUsers}
+					<UserAdd
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+					/>
+				{:else}
+					<CloseMultiply
+						className="h-10 w-10 stroke-grey-700 dark:stroke-grey-300 border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+					/>
+				{/if}
 			</button>
-		{:else if assigned?.length === 0 && showAssignNewUsers}
-			<button on:click={updateAssignedPeople}>
-				<Check
-					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-				/>
-			</button>
-		{/if}
+		</div>
 
 		{#if showAssignNewUsers}
-			<AssignPerson bind:assingedUserIds={newTaskAssignedPeople} />
+			<AssignPerson {assignTask} />
 		{/if}
 	</section>
 </div>
