@@ -37,7 +37,7 @@
 				Let's get your first team setup
 			</h1>
 
-			<p class="w-full text-grey-700">
+			<p class="w-full font-medium text-grey-700">
 				Take a few moments to create a team. If you create a team you can invite people to this once
 				you are done setting up your account.
 			</p>

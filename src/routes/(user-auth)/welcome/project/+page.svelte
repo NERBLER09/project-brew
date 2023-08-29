@@ -38,7 +38,7 @@
 				Let's get your first project setup
 			</h1>
 
-			<p class="w-full text-grey-700">
+			<p class="w-full font-medium text-grey-700">
 				You can take a few moments to setup a basic project. You can invite people to this project
 				once you are done setting up your account.
 			</p>

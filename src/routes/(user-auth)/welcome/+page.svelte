@@ -52,7 +52,7 @@
 		<header>
 			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
 
-			<p class="text-grey-700">Please take a few moments to setup your account.</p>
+			<p class="font-medium text-grey-700">Please take a few moments to setup your account.</p>
 		</header>
 
 		<form

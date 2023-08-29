@@ -112,6 +112,10 @@
 	<div class="relative flex flex-col flex-nowrap items-start gap-md">
 		{#each filteredTasks as task}
 			<TaskItem {...task} projectId={data.project?.id} />
+		{:else}
+			<span class="font-medium text-grey-700 dark:text-grey-300"
+				>Click the button below to create your first task
+			</span>
 		{/each}
 	</div>
 
