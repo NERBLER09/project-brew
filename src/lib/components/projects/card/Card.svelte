@@ -193,12 +193,7 @@
 					</button>
 
 					{#if showCardDropdown}
-						<CardDropdown
-							bind:visibility={showCardDropdown}
-							{id}
-							bind:priority={is_priority}
-							bind:tasks
-						/>
+						<CardDropdown bind:visibility={showCardDropdown} {id} />
 					{/if}
 				</div>
 			</div>
