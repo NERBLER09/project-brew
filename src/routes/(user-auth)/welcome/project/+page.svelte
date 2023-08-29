@@ -7,10 +7,12 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ProjectsPage from '$lib/assets/Landing-Page/ProjectsPage.png';
 	import toast from 'svelte-french-toast';
+	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
 
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
 	let bannerURL = '';
+	let tags: string[] = [];
 
 	const getBannerPreview = (file: any) => {
 		if (!file) return;
@@ -47,7 +49,8 @@
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'failure') {
-						toast.error(result?.data.message);
+						toast.error('Failed to create project');
+						goto('/welcome/team');
 					} else if (result.type === 'success') {
 						goto('/welcome/team');
 					}
@@ -85,6 +88,17 @@
 						/>
 					</div>
 				</div>
+				<section>
+					<header>
+						<h3 class="input--label">Tags</h3>
+					</header>
+
+					<input type="text" class="hidden" bind:value={tags} name="tags" />
+
+					<div class="mb-md flex flex-wrap gap-md">
+						<NewTagsInput bind:newTags={tags} />
+					</div>
+				</section>
 			</section>
 
 			<section>
@@ -138,12 +152,13 @@
 			</section>
 
 			<div class="flex flex-col-reverse items-center gap-md md:flex-row">
-				<button
+				<a
 					class="button--secondary gap-mdm flex w-full items-center justify-center md:w-fit"
 					type="button"
+					href="/welcome/team"
 				>
 					Skip
-				</button>
+				</a>
 
 				<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
 					Next
