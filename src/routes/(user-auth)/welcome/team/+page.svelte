@@ -50,7 +50,8 @@
 					if (result.type === 'failure') {
 						toast.error(result?.data.message);
 					} else if (result.type === 'success') {
-						goto('/welcome/team');
+						goto('/app/home');
+						toast.success('Welcome to project brew');
 					}
 				};
 			}}
@@ -139,12 +140,13 @@
 			</section>
 
 			<div class="flex flex-col-reverse items-center gap-md md:flex-row">
-				<button
+				<a
 					class="button--secondary gap-mdm flex w-full items-center justify-center md:w-fit"
 					type="button"
+					href="/app/home"
 				>
 					Skip and finish
-				</button>
+				</a>
 
 				<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
 					Finish
