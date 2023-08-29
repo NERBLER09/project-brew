@@ -17,7 +17,6 @@
 
 	$currentTeam = data.team;
 	$userRole = data.role;
-
 	let showAboutDialog = false;
 
 	supabase
@@ -61,7 +60,7 @@
 <header
 	class="{!data.team.banner
 		? 'static w-full'
-		: 'relative -top-6 -left-6 h-[12.5rem] w-[calc(100%+48px)] p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8'} rounded-b-3xl bg-cover bg-center bg-origin-border object-cover "
+		: 'relative -left-6 -top-6 h-[12.5rem] w-[calc(100%+48px)] p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8'} rounded-b-3xl bg-cover bg-center bg-origin-border object-cover"
 	style="background-image: {data.team.banner
 		? 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.team.banner});"
@@ -106,8 +105,10 @@
 	</div>
 </header>
 
-<div class="md:grid md:grid-cols-2 md:gap-lg lg:grid-cols-5 lg:gap-2xl">
-	<section class="md:col-span-2 md:col-start-1 lg:col-span-3">
+<div
+	class="md:grid md:grid-cols-2 md:gap-lg lg:grid-cols-4 lg:grid-rows-2 lg:gap-2xl xl:grid-cols-5"
+>
+	<section class="md:col-span-2 md:col-start-1 lg:col-span-2 lg:row-span-2 xl:col-span-3">
 		<header>
 			<h2 class="my-md text-lg font-semibold text-grey-900 dark:text-grey-100">
 				Here is what needs to get done
@@ -163,7 +164,9 @@
 	</section>
 
 	{#if data.team.dashboard_settings.projects}
-		<section class="my-mb col-span-1 my-md md:col-start-1 lg:col-start-4">
+		<section
+			class="my-mb col-span-1 my-md min-w-[18rem] md:col-start-1 lg:col-span-2 lg:col-start-3 lg:row-span-1 lg:row-start-1 xl:col-span-1 xl:col-start-4"
+		>
 			<header class="my-sm flex items-center">
 				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Projects</h2>
 			</header>
@@ -181,7 +184,9 @@
 	{/if}
 
 	{#if data.team.dashboard_settings.members}
-		<section class="col-span-1 md:col-start-2 lg:col-start-5">
+		<section
+			class="col-span-1 min-w-[18rem] md:col-start-2 lg:col-start-3 lg:row-span-1 lg:row-start-2 xl:col-start-5 xl:row-span-1"
+		>
 			<header class="my-sm flex items-center">
 				<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Members</h2>
 				<a href="/app/team/{data.team.id}/about#team" class="ml-auto md:hidden">

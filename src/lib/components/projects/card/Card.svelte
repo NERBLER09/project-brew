@@ -18,6 +18,7 @@
 	import PriorityLevel from './priority/PriorityLevel.svelte';
 	import SubTaskList from './sub-tasks/SubTaskList.svelte';
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -41,7 +42,6 @@
 	let newDescription = description;
 	let newTags: string[] = [];
 	let newDate: Date;
-	let newTaskAssignedPeople: string[] = [];
 
 	let showAssignNewUsers = false;
 	let addNewTags = false;
@@ -66,9 +66,13 @@
 		description = newDescription;
 	};
 
-	const updateAssignedPeople = async () => {
-		await supabase.from('tasks').update({ assigned: newTaskAssignedPeople }).eq('id', id);
-		assigned = newTaskAssignedPeople;
+	const assignTask = async (userId: string) => {
+		const tempAssigned = assigned ?? [];
+		await supabase
+			.from('tasks')
+			.update({ assigned: [...tempAssigned, userId] })
+			.eq('id', id);
+
 		showAssignNewUsers = false;
 	};
 
@@ -171,7 +175,9 @@
 					<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
 				{/if}
 				<h3
-					class="font-bold text-grey-700 dark:text-grey-200 card__text--{status} h-fit"
+					class="h-fit font-bold text-grey-700 dark:text-grey-200 {status === 'done'
+						? 'text-[#059669] line-through'
+						: null}"
 					contenteditable
 					bind:textContent={newName}
 					on:blur={updateTaskName}
@@ -179,6 +185,7 @@
 					{name}
 				</h3>
 			</div>
+
 			<div class="ml-auto flex h-8 w-8 items-center gap-md">
 				<div bind:this={cardDropdownElement}>
 					<button on:click={() => (showCardDropdown = !showCardDropdown)}>
@@ -196,6 +203,7 @@
 				</div>
 			</div>
 		</header>
+
 		<div class="mb-md flex flex-col items-start gap-md lg:mb-sm lg:flex-row lg:items-center">
 			<div>
 				<button class="flex items-center md:gap-sm" on:click={() => dateInputElement.showPicker()}>
@@ -236,7 +244,7 @@
 					<Milestone className="h-6 w-6 stroke-accent-light" />
 					{#if milestoneName}
 						<a
-							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
 							href="milestones/{milestone}">{milestoneName}</a
 						>
 					{:else}
@@ -280,7 +288,7 @@
 		{#if tags}
 			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
 				{#each tags as tag}
-					<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+					<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 					</div>
 				{/each}
@@ -310,35 +318,30 @@
 
 		<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
-		{#if assigned}
-			<div class="relative mt-md flex items-center">
+		<div class="relative mt-md flex items-center">
+			{#if assigned}
 				{#each assigned as id}
 					<Assinged {id} />
 				{/each}
-			</div>
-		{/if}
-		{#if assigned?.length === 0 && !showAssignNewUsers}
-			<button on:click={() => (showAssignNewUsers = !showAssignNewUsers)}>
-				<UserAdd
-					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-				/>
+			{/if}
+			<button
+				on:click={() => (showAssignNewUsers = !showAssignNewUsers)}
+				class:ml-auto={assigned?.length > 0}
+			>
+				{#if !showAssignNewUsers}
+					<UserAdd
+						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+					/>
+				{:else}
+					<CloseMultiply
+						className="h-10 w-10 stroke-grey-700 dark:stroke-grey-300 border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+					/>
+				{/if}
 			</button>
-		{:else if assigned?.length === 0 && showAssignNewUsers}
-			<button on:click={updateAssignedPeople}>
-				<Check
-					className="h-6 w-6 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-				/>
-			</button>
-		{/if}
+		</div>
 
 		{#if showAssignNewUsers}
-			<AssignPerson bind:assingedUserIds={newTaskAssignedPeople} />
+			<AssignPerson {assignTask} />
 		{/if}
 	</section>
 </div>
-
-<style>
-	.card__text--done {
-		@apply text-[#059669] line-through;
-	}
-</style>

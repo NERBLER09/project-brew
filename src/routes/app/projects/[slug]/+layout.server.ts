@@ -38,13 +38,14 @@ export const load = (async (event) => {
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
 
+
 	if (project) {
 		return {
 			name: project?.project_name,
 			id: project.id,
 			description: project?.description,
 			banner: project?.banner,
-			tags: JSON.parse(project?.tags ?? '[]'),
+			tags: project.tags,
 			project: {
 				...project,
 				invite: {
@@ -53,7 +54,7 @@ export const load = (async (event) => {
 			},
 			invited_people: invited_people || [],
 			team: project.team,
-			userTeams
+			userTeams: userTeams ?? []
 		};
 	}
 

@@ -10,6 +10,8 @@
 	export let page: string;
 	export let icon: ComponentType;
 	export let showFavorite = true;
+	$: highlighted =
+		$window.url.pathname.substring($window.url.pathname.lastIndexOf('/') + 1) === page;
 
 	const handleSetAsDefaultView = async () => {
 		await supabase.from('projects').update({ default_view: page }).eq('id', $currentProject.id);
@@ -19,11 +21,8 @@
 
 <a
 	href="/app/projects/{$currentProject.id}/{page}"
-	class="group flex items-center gap-md rounded px-md py-sm font-bold text-grey-700 hover:bg-grey-100 dark:text-grey-200 hover:dark:bg-grey-800 {$window.url.pathname.includes(
-		page
-	)
-		? 'md:bg-grey-200 md:dark:bg-grey-700'
-		: ''}"
+	class="group flex items-center gap-md rounded px-md py-sm font-bold text-grey-700 hover:bg-grey-100 dark:text-grey-200 hover:dark:bg-grey-800
+	{highlighted ? 'md:bg-grey-200 md:dark:bg-grey-700' : ''}"
 >
 	<svelte:component this={icon} className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 	{name}

@@ -105,7 +105,7 @@
 				<span class="font-bold text-grey-700 dark:text-grey-300">Tags</span>
 			</div>
 
-			<div class="absolute left-0 -bottom-1 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
+			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
 		</div>
 	</div>
 
@@ -126,7 +126,6 @@
 				type="text"
 				class="input--text m-0 w-full p-0"
 				placeholder="Enter a task name"
-				autofocus
 				name="new-task-name"
 				required
 				on:blur={handleCreateNewTask}
@@ -144,7 +143,7 @@
 <div class="h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
 
 <button
-	class="button--secondary my-sm mx-0 flex w-full items-center gap-md border-0 p-sm md:w-fit"
+	class="button--secondary mx-0 my-sm flex w-full items-center gap-md border-0 p-sm md:w-fit"
 	on:click={() => (addNewTask = !addNewTask)}
 >
 	{#if !addNewTask}

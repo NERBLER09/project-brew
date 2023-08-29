@@ -48,9 +48,9 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <header
-	class="relative -top-6 -left-6 h-[18.75rem] {data.banner
-		? 'h-fit'
-		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-top-8 md:-left-8 md:w-[calc(100%+64px)] md:p-8"
+	class="relative -left-6 -top-6 {data.banner
+		? 'h-[18.75rem]'
+		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.banner});"
@@ -111,7 +111,7 @@
 	</div>
 
 	<div
-		class="static right-6 bottom-8 z-40 mt-sm ml-auto flex w-full items-center justify-end md:absolute"
+		class="static bottom-8 right-6 z-40 ml-auto mt-sm flex w-full items-center justify-end md:absolute"
 	>
 		{#each data.project?.invite.profiles as { avatar_url }}
 			{#if avatar_url}
@@ -138,7 +138,7 @@
 	</div>
 </header>
 
-<div class="mb-md flex w-full items-center">
+<div class="-top-6 mb-md flex w-full items-center md:relative">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />
@@ -147,4 +147,4 @@
 
 <slot />
 
-<AboutProject bind:shown={$showAboutProjectPrompt} />
+<AboutProject bind:shown={$showAboutProjectPrompt} {...data.project} />
