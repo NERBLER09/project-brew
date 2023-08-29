@@ -107,7 +107,7 @@
 			.update({
 				project_name: newProjectName ?? '',
 				description: newProjectDescription,
-				tags: JSON.stringify(newProjectTags).replace('\\', ''),
+				tags: JSON.parse(newProjectTags),
 				banner: updatedCoverURL
 			})
 			.eq('id', $currentProject.id)

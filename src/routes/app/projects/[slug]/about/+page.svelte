@@ -92,7 +92,7 @@
 			.update({
 				project_name: newProjectName,
 				description: newProjectDescription,
-				tags: JSON.stringify(newProjectTags).replace('\\', ''),
+				tags: JSON.parse(newProjectTags),
 				banner: updatedCoverURL
 			})
 			.eq('id', data.project?.id)
@@ -133,7 +133,7 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!newCoverURL
+	class="relative -left-6 -top-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!newCoverURL
 		? 'static w-[calc(100%+48px)]'
 		: 'h-[12.5rem]'}"
 	style="background-image: {newCoverURL
@@ -173,7 +173,7 @@
 	{/if}
 
 	{#if inEditMode}
-		<button class="z-50 ml-auto mb-auto" on:click={() => (inEditMode = false)}>
+		<button class="z-50 mb-auto ml-auto" on:click={() => (inEditMode = false)}>
 			<Trash
 				className="h-8 w-8 {newCoverURL
 					? 'stroke-grey-200'
@@ -182,7 +182,7 @@
 			<span class="sr-only">Drop changes</span>
 		</button>
 	{:else}
-		<button class="ml-auto mb-auto" on:click={() => (inEditMode = true)}>
+		<button class="mb-auto ml-auto" on:click={() => (inEditMode = true)}>
 			<Edit
 				className="h-8 w-8 {data.project?.banner
 					? 'stroke-grey-200'
