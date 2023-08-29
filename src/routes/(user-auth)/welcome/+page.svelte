@@ -48,7 +48,7 @@
 </svelte:head>
 
 <div class="relative flex items-center gap-10 md:flex lg:gap-[10%]">
-	<div class="p-6 md:p-8 md:pr-0">
+	<div class="p-6 md:w-1/2 md:p-8 md:pr-0 lg:w-1/3">
 		<header>
 			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
 
@@ -62,8 +62,7 @@
 					if (result.type === 'failure') {
 						toast.error(result?.data.message);
 					} else if (result.type === 'success') {
-						toast.success('Welcome to Project Brew!');
-						goto('/app/home');
+						goto('/welcome/project');
 					}
 				};
 			}}
@@ -95,7 +94,7 @@
 							type="text"
 							class="input--text w-full"
 							id="location-input"
-							name="name"
+							name="location"
 							placeholder="Enter your location"
 						/>
 					</div>
@@ -107,7 +106,7 @@
 							type="text"
 							class="input--text w-full"
 							id="company-input"
-							name="name"
+							name="company"
 							placeholder="Enter your company"
 						/>
 					</div>
@@ -115,13 +114,13 @@
 						<label for="pronouns-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
 							>Pronouns</label
 						>
-						<select name="pronouns" id="pronouns-input" class="input--text w-full">
-							<option>Don't show</option>
-							<option>He/Him</option>
-							<option>She/Her</option>
-							<option>They/Them</option>
-							<option>Custom</option>
-						</select>
+						<input
+							type="text"
+							class="input--text w-full"
+							id="pronouns-input"
+							name="pronouns"
+							placeholder="Enter your company"
+						/>
 					</div>
 					<div class="w-full">
 						<label for="bio-input" class="input--label mb-sm inline-block w-full text-start"
@@ -232,14 +231,16 @@
 				</div>
 			</section>
 
-			<button class="button--primary flex w-full items-center justify-center gap-md">
+			<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
 				Next
 				<Back className="h-8 w-8 stroke-grey-200 rotate-180" />
 			</button>
 		</form>
 	</div>
 
-	<div class="rouned-lg relative top-0 hidden shadow-md md:inline lg:h-[100vh-20px]">
+	<div
+		class="rouned-lg relative top-0 my-md hidden aspect-[77/47] shadow-md md:inline lg:h-[100vh-20px] lg:w-full"
+	>
 		<img
 			src={DashboardPage}
 			alt="dashboard page"
