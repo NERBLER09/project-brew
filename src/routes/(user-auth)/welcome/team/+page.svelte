@@ -5,8 +5,9 @@
 	import Edit from '$lib/assets/Edit.svelte';
 	import Image from '$lib/assets/Image.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import ProjectsPage from '$lib/assets/Landing-Page/ProjectsPage.png';
+	import TeamPage from '$lib/assets/Landing-Page/TeamPage.png';
 	import toast from 'svelte-french-toast';
+	import Check from '$lib/assets/Check.svelte';
 
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
@@ -33,12 +34,12 @@
 	<div class="p-6 md:w-1/2 md:p-8 md:pr-0">
 		<header>
 			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl lg:whitespace-nowrap">
-				Let's get your first project setup
+				Let's get your first team setup
 			</h1>
 
 			<p class="w-full text-grey-700">
-				You can take a few moments to setup a basic project. You can invite people to this project
-				once you are done setting up your account.
+				Take a few moments to create a team. If you create a team you can invite people to this once
+				you are done setting up your account.
 			</p>
 		</header>
 
@@ -57,7 +58,7 @@
 		>
 			<section>
 				<header>
-					<h2 class="w-full text-start text-md font-semibold text-grey-700">Project Details</h2>
+					<h2 class="w-full text-start text-md font-semibold text-grey-700">Team Details</h2>
 				</header>
 				<div class="mb-md mt-2 w-full">
 					<div class="flex items-center">
@@ -69,7 +70,7 @@
 							class="input--text w-full"
 							id="name-input"
 							name="name"
-							placeholder="What should this project be called?"
+							placeholder="What should this team be called?"
 							required
 						/>
 					</div>
@@ -81,7 +82,7 @@
 							class="input--text h-36 w-full resize-none"
 							id="bio-input"
 							name="bio"
-							placeholder="What is this project about?"
+							placeholder="What is this team about?"
 						/>
 					</div>
 				</div>
@@ -95,7 +96,7 @@
 				</header>
 
 				<div class="mb-md">
-					<label for="pfp-select" class="input--label mb-sm">Profile Banner</label>
+					<label for="pfp-select" class="input--label mb-sm">Team Banner</label>
 					<p class="my-sm font-medium text-grey-700">Spice up this project by uploading a banner</p>
 					<input
 						id="banner-select"
@@ -130,7 +131,7 @@
 						>
 							<div class="flex items-center gap-md rounded-md p-2 group-hover:bg-grey-200">
 								<Image className="h-8 w-8 stroke-grey-700" />
-								Select a project banner
+								Select a team banner
 							</div>
 						</button>
 					{/if}
@@ -142,12 +143,12 @@
 					class="button--secondary gap-mdm flex w-full items-center justify-center md:w-fit"
 					type="button"
 				>
-					Skip
+					Skip and finish
 				</button>
 
 				<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
-					Next
-					<Back className="h-8 w-8 stroke-grey-200 rotate-180" />
+					Finish
+					<Check className="h-8 w-8 stroke-grey-200" />
 				</button>
 			</div>
 		</form>
@@ -157,7 +158,7 @@
 		class="rouned-lg relative top-0 my-md hidden aspect-[77/47] shadow-md md:inline lg:h-[100vh-20px] lg:w-full"
 	>
 		<img
-			src={ProjectsPage}
+			src={TeamPage}
 			alt="project page"
 			class="fixed top-0 aspect-auto h-[100vh] lg:h-[100vh-20px]"
 		/>
