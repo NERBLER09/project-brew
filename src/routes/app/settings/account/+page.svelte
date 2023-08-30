@@ -206,7 +206,7 @@
 			</div>
 
 			<div class="mb-md">
-				<label for="pfp-select" class="input--label mb-sm text-md">Profile Banner</label>
+				<h3 class="input--label mb-sm text-md">Profile Banner</h3>
 				<p class="my-sm font-medium text-grey-700 dark:text-grey-300">
 					Spice up your profile by uploading a banner
 				</p>
@@ -266,5 +266,46 @@
 		>
 			<span>Save changes</span>
 		</button>
+	</form>
+</section>
+
+<header>
+	<h2
+		class="mb-sm w-full text-start text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg"
+	>
+		Account Control
+	</h2>
+</header>
+
+<section class="pb-lg">
+	<header>
+		<h3 class="input--label mb-sm text-md">Change your password</h3>
+	</header>
+	<form action="">
+		<label for="old-password" class="input--label">Old password</label>
+		<input
+			type="password"
+			class="input--text"
+			name="old-password"
+			placeholder="Enter your old password"
+		/>
+		<br />
+		<label for="new-password" class="input--label">New Password</label>
+		<input
+			type="password"
+			class="input--text"
+			name="new-password"
+			placeholder="Enter your new password"
+		/>
+		<br />
+		<label for="confirm-password" class="input--label">Confirm Password</label>
+		<input
+			type="password"
+			class="input--text"
+			name="confirm-password"
+			placeholder="Re-enter your new password again"
+		/>
+		<br />
+		<button class="button--primary">Confirm password</button>
 	</form>
 </section>
