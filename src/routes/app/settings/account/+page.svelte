@@ -9,6 +9,9 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import User from '$lib/assets/User.svelte';
 	import toast from 'svelte-french-toast';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Image from '$lib/assets/Image.svelte';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -28,7 +31,6 @@
 	};
 
 	$: if (newProfilePicture) getFileURL(newProfilePicture[0]);
-
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
 	let bannerURL = data.banner ?? '';
@@ -50,84 +52,116 @@
 	});
 </script>
 
-<p class="font-medium text-grey-700 dark:text-grey-200">
-	<span class="font-bold">Note:</span> the name you entered, bio, location, and email used to sign up
-	will be publicly visible.
-</p>
-
 <svelte:head>
 	<title>Account Settings - Project Brew</title>
 </svelte:head>
 
 <section>
-	<header>
-		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Info</h2>
-	</header>
 	<form
+		class="mt-md w-full"
 		method="POST"
 		action="/app/settings?/account"
-		class="flex flex-col gap-sm"
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'failure') {
 					toast.error(result?.data.message);
 				} else if (result.type === 'success') {
 					toast.success('Updated account settings');
+					invalidate('app:user-info');
 				}
 			};
 		}}
 	>
-		<div class="flex max-w-sm items-center">
-			<label for="name-input" class="input--label">Name</label>
-			<input
-				type="text"
-				class="input--text w-full"
-				id="name-input"
-				name="name"
-				placeholder="What should people call you"
-				required
-				value={data.name}
-			/>
-		</div>
-		<div class="flex max-w-sm items-center">
-			<label for="location-input" class="input--label">Location</label>
-			<input
-				type="text"
-				class="input--text w-full"
-				id="location-input"
-				name="location"
-				placeholder="Enter where you are"
-				value={data.location}
-			/>
-		</div>
-		<div class="flex max-w-sm items-center">
-			<label for="location-input" class="input--label">Job/Role</label>
-			<input
-				type="text"
-				class="input--text w-full"
-				id="location-input"
-				name="role"
-				placeholder="Enter what you work as and who you work for"
-				value={data.role}
-			/>
-		</div>
-		<div>
-			<label for="bio-input" class="input--label mb-sm">Bio</label>
-			<textarea
-				class="input--text h-36 w-full resize-none"
-				id="bio-input"
-				name="bio"
-				placeholder="Write something about yourself"
-				value={data.bio}
-			/>
-		</div>
-
-		<section class="mt-md">
+		<section>
 			<header>
-				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Profile Picture</h2>
+				<h2
+					class="w-full text-start text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg"
+				>
+					Account Details
+				</h2>
+				<p class="font-medium text-grey-700 dark:text-grey-300">
+					<span class="font-bold">Note:</span> the name you entered, bio, location, and email used to
+					sign up will be publicly visible.
+				</p>
 			</header>
-			<div class="mt-sm flex items-center gap-lg">
+			<div class="mb-md mt-2 w-full">
+				<div class="flex items-center">
+					<label for="name-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+						>Name</label
+					>
+					<input
+						type="text"
+						class="input--text w-full"
+						id="name-input"
+						name="name"
+						placeholder="Enter your name"
+						required
+					/>
+				</div>
+				<div class="my-sm flex items-center">
+					<label for="location-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+						>Location</label
+					>
+					<input
+						type="text"
+						class="input--text w-full"
+						id="location-input"
+						name="location"
+						placeholder="Enter your location"
+					/>
+				</div>
+				<div class="flex items-center">
+					<label for="company-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+						>Company</label
+					>
+					<input
+						type="text"
+						class="input--text w-full"
+						id="company-input"
+						name="company"
+						placeholder="Enter your company"
+					/>
+				</div>
+				<div class="mt-sm flex items-center">
+					<label for="pronouns-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+						>Pronouns</label
+					>
+					<input
+						type="text"
+						class="input--text w-full"
+						id="pronouns-input"
+						name="pronouns"
+						placeholder="Enter your company"
+					/>
+				</div>
+				<div class="w-full">
+					<label for="bio-input" class="input--label mb-sm inline-block w-full text-start"
+						>Bio</label
+					>
+					<textarea
+						class="input--text h-36 w-full resize-none"
+						id="bio-input"
+						name="bio"
+						placeholder="Write something about yourself"
+					/>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<header>
+				<h2
+					class="mb-sm w-full text-start text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg"
+				>
+					Account Appearance
+				</h2>
+			</header>
+
+			<div class="mb-md">
+				<label for="pfp-select" class="input--label mb-sm text-md">Profile picture</label>
+				<input type="text" class="hidden" value={pfpFileURL} name="set_avatar" />
 				<input
+					id="pfp-select"
 					type="file"
 					class="hidden"
 					bind:this={profilePictureElement}
@@ -135,102 +169,88 @@
 					name="profile"
 					accept="image/png, image/jpeg"
 				/>
-
-				<input type="text" bind:value={data.avatar_url} class="hidden" name="avatar_url" />
-				<input type="text" bind:value={pfpFileURL} class="hidden" name="avatar_preview" />
-
-				{#if pfpFileURL !== ''}
-					<img
-						src={pfpFileURL}
-						alt="user profile"
-						class="aspect-square h-20 w-20 rounded-full object-cover"
-					/>
-				{:else}
-					<User className="w-20 h-20 stroke-grey-700 dark:stroke-grey-200 md:h-16 md:w-16" />
-				{/if}
-
-				<div class="flex h-fit flex-col gap-sm md:flex-row md:gap-md">
-					<button
-						class="button--primary flex w-full items-center justify-center gap-md"
-						type="button"
-						on:click={() => profilePictureElement.click()}
-					>
-						<Edit className="stroke-grey-200 w-6 h-6" />
-						Change
-					</button>
-					{#if pfpFileURL}
-						<button
-							class="button--secondary flex w-full items-center justify-center gap-md"
-							type="button"
-							on:click={removeProfilePicture}
-						>
-							<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
-							Remove
-						</button>
-					{:else if data.avatar_url}
-						<button
-							class="button--secondary"
-							on:click={() => (pfpFileURL = data.avatar_url ?? '')}
-							type="button"
-						>
-							Reset
-						</button>
+				<div class="relative h-[9.375rem] w-[9.375rem]">
+					{#if pfpFileURL !== ''}
+						<img
+							src={pfpFileURL}
+							alt="user profile"
+							class="h-[9.375rem] w-[9.375rem] rounded-full border border-grey-600 bg-grey-100 stroke-grey-700 object-cover opacity-90 shadow"
+						/>
+					{:else}
+						<User
+							className="h-[9.375rem] w-[9.375rem] rounded-full object-cover stroke-grey-700 bg-grey-100 opacity-90 border-grey-600 border shadow dark:bg-grey-800 dark:stroke-grey-200"
+						/>
 					{/if}
+					<div class="absolute right-0 top-0 flex h-full w-full items-end justify-between gap-lg">
+						{#if pfpFileURL}
+							<button
+								type="button"
+								class="rounded bg-grey-200 dark:bg-grey-700"
+								on:click={removeProfilePicture}
+							>
+								<Trash className="h-12 w-12 stroke-grey-700 dark:stroke-grey-300" />
+								<span class="sr-only">Remove profile picture</span>
+							</button>
+						{/if}
+
+						<button
+							type="button"
+							class="relative ml-auto h-12 w-12 rounded-md bg-grey-200 dark:bg-grey-700"
+							on:click={() => profilePictureElement.click()}
+						>
+							<PlusNew className="h-12 w-12 stroke-grey-700 dark:stroke-grey-300" />
+							<span class="sr-only">Select a profile picture</span>
+						</button>
+					</div>
 				</div>
 			</div>
-		</section>
 
-		<section class="mt-md">
-			<header>
-				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100">Banner</h2>
-			</header>
+			<div class="mb-md">
+				<label for="pfp-select" class="input--label mb-sm text-md">Profile Banner</label>
+				<p class="my-sm font-medium text-grey-700 dark:text-grey-300">
+					Spice up your profile by uploading a banner
+				</p>
 
-			<div class="mt-sm">
-				{#if bannerURL}
-					<img src={bannerURL} alt="" class="h-[12.5rem] w-full rounded object-cover" />
-				{:else}
-					<p class="my-sm font-medium text-grey-700 dark:text-grey-200">
-						Select a file to preview it.
-					</p>
-				{/if}
+				<input type="text" class="hidden" value={bannerURL} name="set_banner" />
 				<input
+					id="banner-select"
 					type="file"
-					name="banner"
 					class="hidden"
 					bind:this={bannerInputElement}
 					bind:files={newBanner}
+					name="banner"
 					accept="image/png, image/jpeg"
 				/>
-
-				<input type="text" bind:value={data.banner} class="hidden" name="banner_url" />
-				<input type="text" bind:value={bannerURL} class="hidden" name="banner_preview" />
-
-				<div class="mx-auto mt-md flex gap-md md:w-3/4 md:max-w-xl">
+				{#if bannerURL}
+					<div
+						class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg bg-cover bg-center font-bold text-grey-700"
+						style="background-image: url({bannerURL}); background-color: rgba(0, 0, 0, .15);"
+					>
+						<div class="flex items-center gap-md rounded-md p-2">
+							<button class="hover:bg-grey-700" on:click={removeBanner}>
+								<Trash className="h-8 w-8 stroke-grey-200" />
+								<span class="sr-only">Remove banner</span>
+							</button>
+							<button class="hover:bg-grey-700" on:click={() => bannerInputElement.click()}>
+								<Edit className="h-8 w-8 stroke-grey-200" />
+								<span class="sr-only">Change banner</span>
+							</button>
+						</div>
+					</div>
+				{:else}
 					<button
-						class="button--primary flex w-full items-center justify-center gap-md md:w-1/2"
+						class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg border border-dashed border-grey-700 bg-grey-100 font-bold text-grey-700 dark:bg-grey-700 dark:text-grey-300"
 						type="button"
 						on:click={() => bannerInputElement.click()}
 					>
-						<Edit className="stroke-grey-200 w-6 h-6" />
-						Change
+						<div
+							class="flex items-center gap-md rounded-md p-2 group-hover:bg-grey-200 dark:group-hover:bg-grey-800"
+						>
+							<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300" />
+							Select a profile banner
+						</div>
 					</button>
-					{#if bannerURL}
-						<button
-							class="button--secondary flex w-full items-center justify-center gap-md md:w-1/2"
-							type="button"
-							on:click={removeBanner}
-						>
-							<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
-							Remove
-						</button>
-					{:else if data.banner}
-						<button
-							class="button--secondary md:w-1/2"
-							on:click={() => (bannerURL = data.banner ?? '')}
-							type="button">Reset</button
-						>
-					{/if}
-				</div>
+				{/if}
 			</div>
 		</section>
 
@@ -238,10 +258,11 @@
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Save info</span>
 		</button>
+
 		<button
 			class="button--primary z-50 hidden md:block {!data.banner
 				? 'mx-auto mt-md'
-				: 'absolute right-0 -top-36'}"
+				: 'absolute -top-36 right-0'}"
 		>
 			<span>Save changes</span>
 		</button>
