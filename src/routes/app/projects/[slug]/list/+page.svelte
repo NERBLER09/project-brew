@@ -25,7 +25,9 @@
 
 	const handleSearch = (query: string) => {
 		filteredTasks = data.project?.tasks ?? [];
-		filteredTasks = filteredTasks.filter((item) => item.name.toLowerCase().includes(query));
+		filteredTasks = filteredTasks.filter((item) =>
+			item.name.toLowerCase().includes(query.toLowerCase())
+		);
 		filteredTasks = [...filteredTasks];
 	};
 	$: handleSearch($searchQuery);

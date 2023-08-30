@@ -177,10 +177,7 @@
 
 		tasks = data || [];
 		dbTasks = data ?? [];
-		unsortedTasks = tasks.map((task: Task) => ({
-			...task,
-			searchTerms: `${task.name} ${task.description}`
-		}));
+		unsortedTasks = tasks;
 		handleDateFilter($dateFilter);
 	});
 
@@ -192,8 +189,7 @@
 
 	const handleSearch = (query: string) => {
 		tasks = unsortedTasks;
-		tasks = unsortedTasks.filter((item) => item?.searchTerms.toLowerCase().includes(query));
-		tasks = [...tasks];
+		tasks = unsortedTasks.filter((item) => item?.name.toLowerCase().includes(query));
 	};
 
 	$: handleSearch($searchQuery);
