@@ -50,8 +50,7 @@
 		}
 	};
 
-	$: filteredTasks = handleSortingTasks(filteredTasks, $sortOptions);
-	$: filteredTasks = handleSortClear($sortOptions, data.project?.tasks ?? []);
+	$: filteredTasks = handleSortingTasks(data.project?.tasks, $sortOptions);
 	$: filteredTasks = handleFilter(
 		data.project?.tasks ?? [],
 		$dateFilter,

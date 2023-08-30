@@ -22,6 +22,7 @@
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
+	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
 
 	export let name: string;
 	export let id: number;
@@ -152,15 +153,15 @@
 			});
 		}
 
-		if (option.priority === 'ascending') {
-			unsortedTasks = unsortedTasks.sort((item: Task) => {
-				return !item.is_priority;
-			});
-		} else if (option.priority === 'descending') {
-			unsortedTasks = unsortedTasks.sort((item: Task) => {
-				return item.is_priority;
-			});
-		}
+		// if (option.priority === 'ascending') {
+		// 	unsortedTasks = unsortedTasks.sort((item: Task) => {
+		// 		return !item.is_priority;
+		// 	});
+		// } else if (option.priority === 'descending') {
+		// 	unsortedTasks = unsortedTasks.sort((item: Task) => {
+		// 		return item.is_priority;
+		// 	});
+		// }
 
 		tasks = unsortedTasks;
 		tasks = [...tasks];
@@ -169,7 +170,7 @@
 	$: handleDateFilter($dateFilter);
 	$: handleTagsFilter($filterTags);
 	$: handleMilestoneFilter($milestoneFilter?.id);
-	$: handleSort($sortOptions);
+	$: tasks = handleSortingTasks(unsortedTasks, $sortOptions) ?? [];
 
 	let dbTasks: Task[] = [];
 	onMount(async () => {
