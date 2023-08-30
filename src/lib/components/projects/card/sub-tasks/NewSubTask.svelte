@@ -4,13 +4,12 @@
 
 	export let task: number;
 	export let project: number;
-	export let list: number;
 	export let getSubTasks: () => Promise<void>;
 
-	let subTaskName: string = '';
+	let subTaskName: string;
 
 	const handleCreateSubTask = async () => {
-		await supabase.from('sub_tasks').insert({ list, task, project, name: subTaskName });
+		await supabase.from('sub_tasks').insert({ task, project, name: subTaskName });
 		getSubTasks();
 	};
 </script>

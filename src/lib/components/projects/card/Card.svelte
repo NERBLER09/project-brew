@@ -11,7 +11,6 @@
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
 	import type { SubTask, Task } from '$lib/types/projects';
-	import { onMount } from 'svelte/internal';
 	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
@@ -19,16 +18,15 @@
 	import SubTaskList from './sub-tasks/SubTaskList.svelte';
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import { onMount } from 'svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
 	export let description = '';
 	export let due_date: string;
-	export let is_priority = false;
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
 	export let assigned: string[] | null;
-	export let tasks: Task[] | undefined;
 	export let milestone: string | null;
 	export let list: number;
 	export let sub_tasks: SubTask[] = [];

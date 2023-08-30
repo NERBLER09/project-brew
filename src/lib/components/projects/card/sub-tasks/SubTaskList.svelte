@@ -82,6 +82,7 @@
 {:else}
 	<button
 		class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
+		on:click={() => (showCreateSubTasks = true)}
 	>
 		<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
 		Add a sub task
