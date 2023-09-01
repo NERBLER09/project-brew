@@ -10,9 +10,7 @@ export const actions = {
 			// the user is not signed in
 			throw error(403, { message: 'Unauthorized' });
 		}
-
-		const data = await request.formData();
-		const name = data.get('name') as string;
+		const data = await request.formData(); const name = data.get('name') as string;
 		const location = data.get('location') as string;
 		const bio = data.get('bio') as string;
 		const role = data.get('company') as string;
@@ -105,6 +103,29 @@ export const actions = {
 
 		if (err) {
 			throw fail(403, { message: err.message });
+		}
+	},
+	resetPassword: async (event) => {
+		const { request } = event; const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
+
+		const form = await request.formData()
+		const newPassword = form.get("new-password") as string
+		const confirmPassword = form.get("confirm-password") as string
+
+		if (newPassword !== confirmPassword) {
+			return fail(403, { message: "The passwords you have entered do not match." })
+		}
+
+		const { error: err } = await supabaseClient.auth.updateUser({ password: newPassword })
+		if (err) {
+			return fail(403, { message: `Failed to change password: ${err.message}` })
+		}
+		else {
+			return { success: true }
 		}
 	}
 } satisfies Actions;

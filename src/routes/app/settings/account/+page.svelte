@@ -281,31 +281,37 @@
 	<header>
 		<h3 class="input--label mb-sm text-md">Change your password</h3>
 	</header>
-	<form action="">
-		<label for="old-password" class="input--label">Old password</label>
+	<form
+		method="POST"
+		action="/app/settings?/resetPassword"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Updated password');
+				}
+			};
+		}}
+	>
+		<label for="new-password" class="input--label inline-block w-[9rem]">New Password</label>
 		<input
 			type="password"
-			class="input--text"
-			name="old-password"
-			placeholder="Enter your old password"
-		/>
-		<br />
-		<label for="new-password" class="input--label">New Password</label>
-		<input
-			type="password"
-			class="input--text"
+			class="input--text my-sm"
 			name="new-password"
 			placeholder="Enter your new password"
+			required
 		/>
 		<br />
 		<label for="confirm-password" class="input--label">Confirm Password</label>
 		<input
 			type="password"
-			class="input--text"
+			class="input--text my-sm"
 			name="confirm-password"
 			placeholder="Re-enter your new password again"
+			required
 		/>
 		<br />
-		<button class="button--primary">Confirm password</button>
+		<button class="button--primary">Change password</button>
 	</form>
 </section>
