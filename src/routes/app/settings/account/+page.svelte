@@ -96,6 +96,7 @@
 						name="name"
 						placeholder="Enter your name"
 						required
+						value={data.user.name}
 					/>
 				</div>
 				<div class="my-sm flex items-center">
@@ -108,6 +109,7 @@
 						id="location-input"
 						name="location"
 						placeholder="Enter your location"
+						value={data.user.location}
 					/>
 				</div>
 				<div class="flex items-center">
@@ -120,6 +122,7 @@
 						id="company-input"
 						name="company"
 						placeholder="Enter your company"
+						value={data.user.role}
 					/>
 				</div>
 				<div class="mt-sm flex items-center">
@@ -131,7 +134,7 @@
 						class="input--text w-full"
 						id="pronouns-input"
 						name="pronouns"
-						placeholder="Enter your company"
+						placeholder="Enter your pronouns"
 					/>
 				</div>
 				<div class="w-full">
@@ -143,6 +146,7 @@
 						id="bio-input"
 						name="bio"
 						placeholder="Write something about yourself"
+						value={data.user.bio}
 					/>
 				</div>
 			</div>
