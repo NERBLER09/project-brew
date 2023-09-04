@@ -34,7 +34,7 @@ export const actions = {
 
     const { data: team, error: createErr } = await supabaseClient
       .from('teams')
-      .insert({ name, description, banner: cover_url })
+      .insert({ name, description: description ?? '', banner: cover_url })
       .select()
       .limit(1)
       .single();

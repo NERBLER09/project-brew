@@ -45,7 +45,7 @@ export const actions: Actions = {
     const { data: project, error: err } = await supabaseClient
       .from('projects')
       .insert({
-        description,
+        description: description ?? '',
         project_name,
         user_id: session.user.id,
         tags: tags ?? null,

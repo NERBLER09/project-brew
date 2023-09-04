@@ -1,7 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { Actions, error, fail, redirect } from '@sveltejs/kit';
+import { type Actions, fail, redirect } from '@sveltejs/kit';
 
-export const actions = {
+export const actions: Actions = {
 	join: async (event) => {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {

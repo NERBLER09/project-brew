@@ -3,16 +3,16 @@ import { fail, type Actions, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-	// const { session, supabaseClient } = await getSupabase(event);
-	// if (!session) {
-	// 	throw redirect(303, '/');
-	// }
-	//
-	// const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
-	//
-	// if (profile) {
-	// 	throw redirect(303, '/app/home');
-	// }
+	const { session, supabaseClient } = await getSupabase(event);
+	if (!session) {
+		throw redirect(303, '/');
+	}
+
+	const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
+
+	if (profile) {
+		throw redirect(303, '/app/home');
+	}
 }) satisfies PageServerLoad;
 
 export const actions = {
