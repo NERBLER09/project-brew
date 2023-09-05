@@ -58,6 +58,12 @@ export const actions: Actions = {
     console.log(err);
 
     if (!err) {
+      await supabaseClient.from('project_members').insert({
+        user_id: session.user.id,
+        role: 'owner',
+        project: project.id
+      });
+
       return { success: true, id: project.id };
     } else {
       return fail(400, { message: `Failed to create project: ${err.message}` });
