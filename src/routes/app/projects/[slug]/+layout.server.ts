@@ -16,10 +16,13 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select()
+		.select("*, project_members!inner(*)")
+		.eq("project_members.user_id", session.user.id)
 		.eq('id', projectId)
 		.limit(1)
 		.single();
+
+	console.log(project)
 
 	const { data: invited_people } = await supabaseClient
 		.from('project_members')
@@ -37,7 +40,6 @@ export const load = (async (event) => {
 		.from('teams')
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
-
 
 	if (project) {
 		return {
