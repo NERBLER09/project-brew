@@ -16,20 +16,13 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select("*, project_members!inner(*)")
-		.eq("project_members.user_id", session.user.id)
+		.select('*, project_members!inner(*)')
+		.eq('project_members.user_id', session.user.id)
 		.eq('id', projectId)
 		.limit(1)
 		.single();
 
-	console.log(project)
-
-	const { data: invited_people } = await supabaseClient
-		.from('project_members')
-		.select()
-		.eq('project', projectId);
-
-	const invitedUserIds = invited_people?.map((item) => item.user_id) ?? [];
+	const invitedUserIds = project?.project_members?.map((item) => item.user_id) ?? [];
 
 	const { data: users } = await supabaseClient
 		.from('profiles')
@@ -47,14 +40,13 @@ export const load = (async (event) => {
 			id: project.id,
 			description: project?.description,
 			banner: project?.banner,
-			tags: project.tags,
 			project: {
 				...project,
 				invite: {
 					profiles: users ?? []
 				}
 			},
-			invited_people: invited_people || [],
+			invited_people: project.project_members || [],
 			team: project.team,
 			userTeams: userTeams ?? []
 		};
