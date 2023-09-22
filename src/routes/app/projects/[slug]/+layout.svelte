@@ -16,6 +16,8 @@
 	import ProjectNav from '$lib/components/projects/nav/ProjectNav.svelte';
 	import Aside from '$lib/components/projects/aside/Aside.svelte';
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
+	import { supabase } from '$lib/supabase';
+	import { invalidate } from '$app/navigation';
 
 	export let data: LayoutData;
 	currentProject.set(data.project);
@@ -43,6 +45,17 @@
 			showProjectDropdown = false;
 		}
 	};
+
+	supabase
+		.channel('any')
+		.on(
+			'postgres_changes',
+			{ event: '*', schema: 'public', table: 'tasks', filter: `id=eq.${data.id}` },
+			async () => {
+				invalidate('app:project');
+			}
+		)
+		.subscribe();
 </script>
 
 <svelte:window on:click={handleAutoCloseDropdown} />

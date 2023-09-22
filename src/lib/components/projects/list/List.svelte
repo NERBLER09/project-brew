@@ -14,15 +14,15 @@
 		milestoneFilter,
 		searchQuery,
 		sortOptions,
-		tasksCompletedThisDay,
-		type SortOptions
+		tasksCompletedThisDay
 	} from '$lib/stores/project';
 
 	import { weeklyActivity } from '$lib/api/activity';
 	import type { Task } from '$lib/types/projects';
 	import { disableDrag } from '$lib/stores/ui';
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
-	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
+	import { handleSortingTasks } from '$lib/api/sort';
+	import { invalidate } from '$app/navigation';
 
 	export let name: string;
 	export let id: number;
@@ -142,31 +142,6 @@
 		tasks = [...tasks];
 	};
 
-	const handleSort = (option: SortOptions) => {
-		if (option.date === 'descending') {
-			unsortedTasks = unsortedTasks.sort((item: Task) => {
-				return new Date().getTime() - new Date(item.due_date).getTime();
-			});
-		} else if (option.date === 'ascending') {
-			unsortedTasks = unsortedTasks.sort((item: Task) => {
-				return new Date(item.due_date).getTime() - new Date().getTime();
-			});
-		}
-
-		// if (option.priority === 'ascending') {
-		// 	unsortedTasks = unsortedTasks.sort((item: Task) => {
-		// 		return !item.is_priority;
-		// 	});
-		// } else if (option.priority === 'descending') {
-		// 	unsortedTasks = unsortedTasks.sort((item: Task) => {
-		// 		return item.is_priority;
-		// 	});
-		// }
-
-		tasks = unsortedTasks;
-		tasks = [...tasks];
-	};
-
 	$: handleDateFilter($dateFilter);
 	$: handleTagsFilter($filterTags);
 	$: handleMilestoneFilter($milestoneFilter?.id);
@@ -194,6 +169,17 @@
 	};
 
 	$: handleSearch($searchQuery);
+
+	supabase
+		.channel('any')
+		.on(
+			'postgres_changes',
+			{ event: '*', schema: 'public', table: 'tasks', filter: `id=eq.${id}` },
+			async () => {
+				invalidate('app:project');
+			}
+		)
+		.subscribe();
 </script>
 
 <svelte:window on:click={handleClickOutside} />
