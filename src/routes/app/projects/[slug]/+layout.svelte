@@ -160,4 +160,8 @@
 
 <slot />
 
-<AboutProject bind:shown={$showAboutProjectPrompt} {...data.project} />
+<AboutProject
+	bind:shown={$showAboutProjectPrompt}
+	project_name={data.project?.project_name}
+	description={data.project?.description}
+/>

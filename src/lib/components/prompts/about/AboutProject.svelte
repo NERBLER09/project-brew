@@ -22,6 +22,9 @@
 	export let banner: string | null = '';
 	tags = tags ?? [];
 
+	project_name = $currentProject.project_name ?? '';
+	description = $currentProject.description ?? '';
+
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
 		if (status) {
@@ -35,7 +38,6 @@
 
 	$: handleModalStatus(shown);
 
-	let inEditMode = false;
 	let bannerURL = banner;
 	let newBanner: FileList | null;
 
@@ -161,8 +163,8 @@
 				? 'text-grey-200'
 				: 'text-grey-700 dark:text-grey-200'} truncate"
 			contenteditable
-			bind:innerHTML={project_name}
 			on:blur={updateProjectName}
+			bind:innerHTML={project_name}
 		>
 			{project_name}
 		</h1>
