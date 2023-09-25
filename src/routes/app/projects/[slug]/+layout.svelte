@@ -117,7 +117,7 @@
 		</div>
 	</div>
 
-	<TagList tags={data.tags} />
+	<TagList tags={data.project.tags} />
 
 	<div class="md:w-2/3 lg:w-1/2">
 		<Description banner={data.banner} description={data.description} />
