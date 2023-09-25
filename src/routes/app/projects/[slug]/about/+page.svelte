@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import Back from '$lib/assets/Arrow/Back.svelte';
-	import Edit from '$lib/assets/Edit.svelte';
-	import Image from '$lib/assets/Image.svelte';
-	import Trash from '$lib/assets/Trash.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
 	import TransferProjectToTeam from '$lib/components/projects/about/TransferProjectToTeam.svelte';
 	import { showMobileNav } from '$lib/stores/ui';
@@ -11,6 +8,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	export let data: PageData;
 
@@ -19,7 +17,6 @@
 	let description = data.project?.description;
 	let bannerURL = data.project?.banner;
 	let newBanner: FileList | null;
-	let bannerInputElement: HTMLInputElement;
 
 	let teamName = '';
 
@@ -110,9 +107,6 @@
 	};
 
 	const removeBanner = async () => {
-		bannerURL = null;
-		newBanner = null;
-
 		const { error } = await supabase
 			.from('projects')
 			.update({
@@ -128,13 +122,6 @@
 			toast.error(`Failed to update project details: ${error?.message}`);
 		}
 	};
-
-	const getFileURL = (file: any) => {
-		if (!file) return;
-		bannerURL = URL.createObjectURL(file);
-	};
-
-	$: if (newBanner) getFileURL(newBanner[0]);
 </script>
 
 <svelte:head>
@@ -194,48 +181,12 @@
 		<header>
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Project Appearance</h2>
 		</header>
-
-		<input type="text" class="hidden" value={bannerURL} name="set_banner" />
-		<input
-			id="banner-select"
-			type="file"
-			class="hidden"
-			bind:this={bannerInputElement}
-			bind:files={newBanner}
-			name="banner"
-			accept="image/png, image/jpeg"
-			on:change={updateProjectBanner}
+		<FileInput
+			bind:bannerURL
+			bind:newBanner
+			uploadBanner={updateProjectBanner}
+			postRemoveBannnerHandle={removeBanner}
 		/>
-		{#if bannerURL}
-			<div
-				class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg bg-cover bg-center font-bold text-grey-700"
-				style="background-image: url({bannerURL}); background-color: rgba(0, 0, 0, .15);"
-			>
-				<div class="flex items-center gap-md rounded-md p-2">
-					<button class="hover:bg-grey-700" on:click={removeBanner}>
-						<Trash className="h-8 w-8 stroke-grey-200" />
-						<span class="sr-only">Remove banner</span>
-					</button>
-					<button class="hover:bg-grey-700" on:click={() => bannerInputElement.click()}>
-						<Edit className="h-8 w-8 stroke-grey-200" />
-						<span class="sr-only">Change banner</span>
-					</button>
-				</div>
-			</div>
-		{:else}
-			<button
-				class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg border border-dashed border-grey-700 bg-grey-100 font-bold text-grey-700 dark:bg-grey-700 dark:text-grey-300"
-				type="button"
-				on:click={() => bannerInputElement.click()}
-			>
-				<div
-					class="flex items-center gap-md rounded-md p-2 group-hover:bg-grey-200 dark:group-hover:bg-grey-800"
-				>
-					<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300" />
-					Select a profile banner
-				</div>
-			</button>
-		{/if}
 	</section>
 
 	<InvitedTeamMembers invited_people={data.project?.invited_people} projectId={data.project?.id} />
