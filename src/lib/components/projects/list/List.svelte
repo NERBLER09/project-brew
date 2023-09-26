@@ -147,12 +147,10 @@
 	$: handleMilestoneFilter($milestoneFilter?.id);
 	$: tasks = handleSortingTasks(unsortedTasks, $sortOptions) ?? [];
 
-	let dbTasks: Task[] = [];
-	onMount(async () => {
-		const { data } = await supabase.from('tasks').select('*, sub_tasks(*)').eq('list', id);
+	export let dbTasks: Task[];
+	$: dbTasks = dbTasks.filter((item) => item.list === id);
 
-		tasks = data || [];
-		dbTasks = data ?? [];
+	onMount(async () => {
 		unsortedTasks = tasks;
 		handleDateFilter($dateFilter);
 	});
@@ -169,17 +167,6 @@
 	};
 
 	$: handleSearch($searchQuery);
-
-	supabase
-		.channel('any')
-		.on(
-			'postgres_changes',
-			{ event: '*', schema: 'public', table: 'tasks', filter: `id=eq.${id}` },
-			async () => {
-				invalidate('app:project');
-			}
-		)
-		.subscribe();
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -221,7 +208,7 @@
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
 	>
-		{#each tasks as task (task.id)}
+		{#each dbTasks as task (task.id)}
 			<Card {...task} list={id} />
 		{/each}
 	</div>

@@ -9,8 +9,10 @@
 	import type { PageData } from './$types';
 	import { supabase } from '$lib/supabase';
 	import { userData } from '$lib/stores/user';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
+	console.log(data.project.tasks);
 
 	let createNewList = false;
 
@@ -28,6 +30,13 @@
 			})
 			.eq('id', event.detail.info.id);
 	};
+
+	supabase
+		.channel('any')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+			invalidate('project:board');
+		})
+		.subscribe();
 </script>
 
 <svelte:head>
@@ -41,7 +50,7 @@
 	on:consider={handleDnd}
 >
 	{#each data.lists as list (list.id)}
-		<List name={list.list_name} id={list.id} status={list.status} />
+		<List name={list.list_name} id={list.id} status={list.status} dbTasks={data.project.tasks} />
 	{/each}
 
 	<div
