@@ -16,6 +16,7 @@
 	import type { PageData } from './$types';
 	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
 	import { handleFilter } from '$lib/api/filter';
+	import { supabase } from '$lib/supabase';
 	export let data: PageData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -57,6 +58,13 @@
 		$filterTags,
 		$milestoneFilter
 	);
+
+	supabase
+		.channel('any')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+			invalidate('project:list');
+		})
+		.subscribe();
 </script>
 
 <svelte:head>
