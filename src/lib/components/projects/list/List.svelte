@@ -67,10 +67,9 @@
 	};
 
 	const handleDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset' | null) => {
-		unsortedTasks = dbTasks;
 		switch (option) {
 			case 'soon':
-				unsortedTasks = unsortedTasks.filter((item) => {
+				tasks = unsortedTasks.filter((item) => {
 					return (
 						new Date(item.due_date).getTime() >= new Date().getTime() &&
 						new Date(item.due_date).getTime() <= new Date().setDate(new Date().getDate() + 4)
@@ -79,7 +78,7 @@
 
 				break;
 			case 'today':
-				unsortedTasks = unsortedTasks.filter((item) => {
+				tasks = unsortedTasks.filter((item) => {
 					const date = new Date(item.due_date);
 					const today = new Date();
 					date.setDate(date.getDate() + 1);
@@ -93,7 +92,7 @@
 				break;
 
 			case 'overdue':
-				unsortedTasks = unsortedTasks.filter((item) => {
+				tasks = unsortedTasks.filter((item) => {
 					const date = new Date(item.due_date);
 					const today = new Date();
 					date.setDate(date.getDate() + 1);
@@ -102,39 +101,37 @@
 				});
 				break;
 			case 'unset':
-				unsortedTasks = unsortedTasks.filter((item) => {
+				tasks = unsortedTasks.filter((item) => {
 					return !item.due_date;
 				});
 				break;
 			default:
-				unsortedTasks = dbTasks;
+				tasks = unsortedTasks;
 				break;
 		}
-		tasks = unsortedTasks;
+
 		tasks = [...tasks];
 	};
 
 	const handleTagsFilter = (tags: string[]) => {
-		unsortedTasks = dbTasks;
-
 		if (!tags || tags.length === 0) {
 			return;
 		}
 
-		unsortedTasks = unsortedTasks.filter((item: Task) => {
+		tasks = unsortedTasks.filter((item: Task) => {
 			return item.tags?.includes(tags.toString());
 		});
-		tasks = unsortedTasks;
+
 		tasks = [...tasks];
 	};
 
 	const handleMilestoneFilter = (id: string | undefined) => {
-		unsortedTasks = dbTasks;
-
 		if (!id) return;
 
 		unsortedTasks = unsortedTasks.filter((item) => {
-			return item.milestone === id;
+			if (item.milestone) {
+				return item.milestone.id === id;
+			}
 		});
 
 		tasks = unsortedTasks;
@@ -147,10 +144,11 @@
 	$: tasks = handleSortingTasks(unsortedTasks, $sortOptions) ?? [];
 
 	export let dbTasks: Task[];
-	$: dbTasks = dbTasks.filter((item) => item.list === id);
+	$: unsortedTasks = dbTasks.filter((item) => item.list === id);
+	$: tasks = dbTasks.filter((item) => item.list === id);
 
 	onMount(async () => {
-		unsortedTasks = tasks;
+		tasks = unsortedTasks;
 		handleDateFilter($dateFilter);
 	});
 
@@ -207,7 +205,7 @@
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
 	>
-		{#each dbTasks as task (task.id)}
+		{#each tasks as task (task.id)}
 			<Card {...task} list={id} milestone={task.milestone} />
 		{/each}
 	</div>
