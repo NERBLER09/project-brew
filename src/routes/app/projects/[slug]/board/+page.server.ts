@@ -21,7 +21,7 @@ export const load = (async (event) => {
 
   const { data: tasks } = await supabaseClient
     .from('tasks')
-    .select('*, sub_tasks(*), milestone!inner(*)')
+    .select('*, sub_tasks(*), milestone(*)')
     .eq('project', projectId);
 
   const { project } = await event.parent();
