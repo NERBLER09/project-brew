@@ -22,7 +22,6 @@
 	import { disableDrag } from '$lib/stores/ui';
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 	import { handleSortingTasks } from '$lib/api/sort';
-	import { invalidate } from '$app/navigation';
 
 	export let name: string;
 	export let id: number;
@@ -209,7 +208,7 @@
 		on:finalize={handleFinalize}
 	>
 		{#each dbTasks as task (task.id)}
-			<Card {...task} list={id} />
+			<Card {...task} list={id} milestone={task.milestone} />
 		{/each}
 	</div>
 </section>

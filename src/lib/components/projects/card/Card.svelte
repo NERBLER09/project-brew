@@ -27,14 +27,13 @@
 	export let id: number;
 	export let status: 'other' | 'todo' | 'done' | 'doing';
 	export let assigned: string[] | null;
-	export let milestone: string | null;
+	export let milestone: object | null;
 	export let list: number;
 	export let sub_tasks: SubTask[] = [];
 	export let priority_level: string | null;
 
 	let showCardDropdown = false;
 	let formattedDate = '';
-	let milestoneName = '';
 
 	let newName = name;
 	let newDescription = description;
@@ -126,19 +125,6 @@
 		}
 	};
 
-	const getMilestoneName = async () => {
-		if (milestone) {
-			const { data } = await supabase
-				.from('milestones')
-				.select('name')
-				.eq('id', milestone)
-				.limit(1)
-				.single();
-
-			milestoneName = data?.name ?? '';
-		}
-	};
-
 	onMount(() => {
 		if (!due_date) return '';
 
@@ -147,7 +133,6 @@
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
 		checkIfTaskIsDueToday();
-		getMilestoneName();
 	});
 
 	let cardDropdownElement: HTMLElement;
@@ -165,7 +150,7 @@
 
 <svelte:window on:click={handleClickOutside} />
 
-<div class="md:relative">
+<div class="md:relative" style="visibility: visible !important;">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-md flex h-fit items-center">
 			<div class="flex items-center gap-sm">
@@ -235,10 +220,10 @@
 					on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
 				>
 					<Milestone className="h-6 w-6 stroke-accent-light" />
-					{#if milestoneName}
+					{#if milestone?.name}
 						<a
 							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
-							href="milestones/{milestone}">{milestoneName}</a
+							href="milestones/{milestone?.id}">{milestone?.name}</a
 						>
 					{:else}
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
@@ -249,10 +234,10 @@
 
 				{#if updateTaskMilestone}
 					<UpdateTaskMilestone
-						bind:currentMilestone={milestone}
+						bind:currentMilestone={milestone.id}
 						bind:shown={updateTaskMilestone}
 						taskId={id}
-						{getMilestoneName}
+						bind:milestone
 					/>
 				{/if}
 			</div>

@@ -47,12 +47,12 @@
 </script>
 
 <div
-	class="flex w-full items-center justify-between rounded bg-grey-100  dark:bg-grey-800 {location ===
+	class="flex w-full items-center justify-between rounded bg-grey-100 dark:bg-grey-800 {location ===
 	'milestones'
 		? ''
 		: 'p-2'}"
 >
-	<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
+	<span class="max-w-[15ch] truncate font-bold text-grey-700 dark:text-grey-300">{name}</span>
 	<div class="flex gap-sm">
 		<Calendar className="h-6 w-6 stroke-accent-light" />
 		<span

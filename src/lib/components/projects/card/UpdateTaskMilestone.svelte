@@ -9,7 +9,7 @@
 	export let currentMilestone: string | null;
 	export let shown: boolean;
 	export let taskId: Number;
-	export let getMilestoneName: () => Promise<void>;
+	export let milestone: object;
 
 	let allMilestones: any[] = [];
 	let search = '';
@@ -26,18 +26,18 @@
 		allMilestones = milestones ?? [];
 	});
 
-	const updateProjectMilestone = async (id: string) => {
+	const updateProjectMilestone = async (id: string, newMilestone: object) => {
 		await supabase.from('tasks').update({ milestone: id }).eq('id', taskId);
 		currentMilestone = id;
-		getMilestoneName();
+		milestone = newMilestone;
 		shown = false;
 	};
 
 	const removeMilestone = async () => {
 		await supabase.from('tasks').update({ milestone: null }).eq('id', taskId);
 		currentMilestone = null;
-		getMilestoneName();
 		shown = false;
+		milestone = null;
 	};
 </script>
 
