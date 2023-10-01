@@ -44,7 +44,7 @@
 </svelte:head>
 
 <section
-	class="relative flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
+	class="relative flex h-[calc(100vh-400px)] flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:h-[calc(100vh-270px)] md:gap-2xl"
 	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}

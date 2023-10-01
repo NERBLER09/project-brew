@@ -94,37 +94,37 @@
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	};
 
-	const checkIfTaskIsDueToday = async () => {
-		if (!due_date) return;
-		const date = new Date(due_date);
-		const today = new Date();
-
-		date.setDate(date.getDate() + 1);
-
-		const taskDueToday =
-			date.getDate() === today.getDate() &&
-			date.getMonth() === today.getMonth() &&
-			date.getFullYear() === today.getFullYear();
-
-		if (taskDueToday) {
-			const { data: notifications } = await supabase
-				.from('notifications')
-				.select()
-				.eq('target_user', $userData.id)
-				.eq('message', `${name} in ${$currentProject.project_name} is due today`);
-
-			if (notifications?.length === 0) {
-				const { error } = await supabase.from('notifications').insert({
-					title: $currentProject.project_name,
-					message: `${name} in ${$currentProject.project_name} is due today`,
-					target_user: $userData.id,
-					type: 'dueTask'
-				});
-				console.log(error);
-			}
-		}
-	};
-
+	// const checkIfTaskIsDueToday = async () => {
+	// 	if (!due_date) return;
+	// 	const date = new Date(due_date);
+	// 	const today = new Date();
+	//
+	// 	date.setDate(date.getDate() + 1);
+	//
+	// 	const taskDueToday =
+	// 		date.getDate() === today.getDate() &&
+	// 		date.getMonth() === today.getMonth() &&
+	// 		date.getFullYear() === today.getFullYear();
+	//
+	// 	if (taskDueToday) {
+	// 		const { data: notifications } = await supabase
+	// 			.from('notifications')
+	// 			.select()
+	// 			.eq('target_user', $userData.id)
+	// 			.eq('message', `${name} in ${$currentProject.project_name} is due today`);
+	//
+	// 		if (notifications?.length === 0) {
+	// 			const { error } = await supabase.from('notifications').insert({
+	// 				title: $currentProject.project_name,
+	// 				message: `${name} in ${$currentProject.project_name} is due today`,
+	// 				target_user: $userData.id,
+	// 				type: 'dueTask'
+	// 			});
+	// 			console.log(error);
+	// 		}
+	// 	}
+	// };
+	//
 	onMount(() => {
 		if (!due_date) return '';
 
@@ -132,7 +132,7 @@
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-		checkIfTaskIsDueToday();
+		// checkIfTaskIsDueToday();
 	});
 
 	let cardDropdownElement: HTMLElement;
