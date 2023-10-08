@@ -94,6 +94,8 @@ export const actions: Actions = {
 			}
 		}
 
+		console.log()
+
 		const { data: project, error: err } = await supabaseClient
 			.from('projects')
 			.insert({
@@ -103,7 +105,7 @@ export const actions: Actions = {
 				tags: tags ?? null,
 				banner: coverURL,
 				invited_people: invited,
-				team: team === '' ? null : team
+				team: team === undefined ? team : null
 			})
 			.select()
 			.limit(1)
