@@ -65,7 +65,7 @@
 				</button>
 				<button on:click={removeMilestone}>
 					<span class="sr-only">Remove from current milestone</span>
-					{#if currentMilestone === milestone.id}
+					{#if currentMilestone?.id === milestone.id}
 						<Trash className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300 ml-auto" />
 					{/if}
 				</button>

@@ -234,7 +234,7 @@
 
 				{#if updateTaskMilestone}
 					<UpdateTaskMilestone
-						bind:currentMilestone={milestone.id}
+						bind:currentMilestone={milestone}
 						bind:shown={updateTaskMilestone}
 						taskId={id}
 						bind:milestone
