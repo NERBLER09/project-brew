@@ -43,6 +43,7 @@
 	let invitedMembers: string[];
 	let tags: string[] = [];
 	let selectedTeam = '';
+	let useTemplate = false;
 
 	const handleSubmit = async (event) => {
 		const data = new FormData(event.target);
@@ -60,16 +61,37 @@
 		});
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
+			if (useTemplate) {
+				const { data: user } = await supabase.auth.getUser();
+				const { error: err } = await supabase.from('lists').insert([
+					{
+						project: result.data.id,
+						position: 0,
+						list_name: 'To-Do',
+						status: 'todo',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 1,
+						list_name: 'Doing',
+						status: 'doing',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 2,
+						list_name: 'Done',
+						status: 'done',
+						user_id: user.user?.id
+					}
+				]);
+			}
 			toast.success('Created new project');
 			goto(`/app/projects/${result?.data.id}`);
 		} else {
 			toast.error(`Failed to create project: ${result?.data.message}`);
 		}
-	};
-
-	const resetImages = () => {
-		fileURL = '';
-		files = null;
 	};
 
 	let showTransferTeamDropdown = false;
@@ -141,7 +163,9 @@
 
 			<div class="mb-md">
 				<label for="pfp-select" class="input--label mb-sm">Project Banner</label>
-				<p class="my-sm font-medium text-grey-700 dark:text-grey-300">Spice up this project by uploading a banner</p>
+				<p class="my-sm font-medium text-grey-700 dark:text-grey-300">
+					Spice up this project by uploading a banner
+				</p>
 				<FileInput
 					bind:bannerURL={fileURL}
 					bind:newBanner
@@ -203,5 +227,14 @@
 
 		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
 
+		<input type="checkbox" id="template" class="input--checkbox" bind:checked={useTemplate} />
+		<label for="template" class="input--label">Use basic project template</label>
+
+		<footer class="mx-auto mt-xl flex w-1/2 items-center justify-around">
+			<button class="button--secondary" on:click={() => (shown = false)} type="button"
+				>Cancel</button
+			>
+			<button class="button--primary" type="submit">Update</button>
+		</footer>
 	</form>
 </dialog>

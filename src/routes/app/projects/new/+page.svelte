@@ -28,6 +28,7 @@
 	let description = '';
 	let invitedMembers: string[];
 	let selectedTeam: string;
+	let useTemplate = false;
 
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
@@ -45,6 +46,33 @@
 		});
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
+			if (useTemplate) {
+				const { data: user } = await supabase.auth.getUser();
+				const { error: err } = await supabase.from('lists').insert([
+					{
+						project: result.data.id,
+						position: 0,
+						list_name: 'To-Do',
+						status: 'todo',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 1,
+						list_name: 'Doing',
+						status: 'doing',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 2,
+						list_name: 'Done',
+						status: 'done',
+						user_id: user.user?.id
+					}
+				]);
+			}
+
 			toast.success('Created new project');
 			goto(`/app/projects/${result?.data.id}`);
 		} else {
@@ -182,6 +210,9 @@
 		</section>
 
 		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
+
+		<input type="checkbox" id="template" class="input--checkbox" bind:checked={useTemplate} />
+		<label for="template" class="input--label">Use basic project template</label>
 
 		<button class="button--circle absolute bottom-8 right-8" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
