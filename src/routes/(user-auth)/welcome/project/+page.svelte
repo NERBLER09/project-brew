@@ -8,6 +8,7 @@
 	import ProjectsPage from '$lib/assets/Landing-Page/ProjectsPage.png';
 	import toast from 'svelte-french-toast';
 	import NewTagsInput from '$lib/components/projects/edit/NewTagsInput.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
@@ -111,43 +112,8 @@
 				<div class="mb-md">
 					<label for="pfp-select" class="input--label mb-sm">Profile Banner</label>
 					<p class="my-sm font-medium text-grey-700">Spice up this project by uploading a banner</p>
-					<input
-						id="banner-select"
-						type="file"
-						class="hidden"
-						bind:this={bannerInputElement}
-						bind:files={newBanner}
-						name="banner"
-						accept="image/png, image/jpeg"
-					/>
-					{#if bannerURL}
-						<div
-							class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg bg-cover bg-center font-bold text-grey-700"
-							style="background-image: url({bannerURL}); background-color: rgba(0, 0, 0, .15);"
-						>
-							<div class="flex items-center gap-md rounded-md p-2">
-								<button class="hover:bg-grey-700" on:click={removeBanner}>
-									<Trash className="h-8 w-8 stroke-grey-200" />
-									<span class="sr-only">Remove banner</span>
-								</button>
-								<button class="hover:bg-grey-700" on:click={() => bannerInputElement.click()}>
-									<Edit className="h-8 w-8 stroke-grey-200" />
-									<span class="sr-only">Change banner</span>
-								</button>
-							</div>
-						</div>
-					{:else}
-						<button
-							class="group flex h-[9.375rem] w-full items-center justify-center rounded-lg border border-dashed border-grey-700 bg-grey-100 font-bold text-grey-700"
-							type="button"
-							on:click={() => bannerInputElement.click()}
-						>
-							<div class="flex items-center gap-md rounded-md p-2 group-hover:bg-grey-200">
-								<Image className="h-8 w-8 stroke-grey-700" />
-								Select a project banner
-							</div>
-						</button>
-					{/if}
+
+					<FileInput bind:newBanner postRemoveBannnerHandle={removeBanner} />
 				</div>
 			</section>
 
