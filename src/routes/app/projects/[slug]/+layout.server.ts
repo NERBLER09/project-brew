@@ -17,7 +17,6 @@ export const load = (async (event) => {
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
 		.select('*, project_members!inner(*)')
-		.eq('project_members.user_id', session.user.id)
 		.eq('id', projectId)
 		.limit(1)
 		.single();
