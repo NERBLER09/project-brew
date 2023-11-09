@@ -37,7 +37,7 @@
 </svelte:head>
 
 <header
-	class="relative -top-6 -left-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:top-0 md:left-0 md:h-[17.1875rem] md:w-full md:rounded-xl md:p-md lg:h-[18.75rem] {!data.banner
+	class="relative -left-6 -top-6 flex h-[15.625rem] w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:left-0 md:top-0 md:h-[17.1875rem] md:w-full md:rounded-xl md:p-md lg:h-[18.75rem] {!data.banner
 		? 'bg-grey-100 dark:bg-grey-800'
 		: 'bg-grey-100'}"
 	style="background-image: {data.banner
@@ -46,7 +46,7 @@
 >
 	<a
 		href={$currentTeam ? `/app/team/${$currentTeam.id}` : '/app/team'}
-		class="absolute top-6 left-6"
+		class="absolute left-6 top-6"
 	>
 		<Back
 			className="w-8 h-8 {data.banner ? 'stroke-grey-200' : 'stroke-grey-700 dark:stroke-grey-200'}"
@@ -55,7 +55,7 @@
 	</a>
 
 	{#if data.currentUser}
-		<a href="/app/settings/account" class="absolute top-6 right-6">
+		<a href="/app/settings/account" class="absolute right-6 top-6">
 			<Settings
 				className="w-8 h-8 {data.banner
 					? 'stroke-grey-200'
@@ -88,6 +88,10 @@
 			>
 				{data.name}
 			</h1>
+
+			{#if data.pronouns}
+				<p class="text-base text-grey-700 dark:text-grey-300">{data.pronouns}</p>
+			{/if}
 
 			{#if !data.currentUser}
 				<span

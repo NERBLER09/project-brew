@@ -77,6 +77,7 @@ export const actions = {
 			bio,
 			banner: bannerURL,
 			avatar_url: profileURL
+			pronouns
 		});
 
 		if (err) {

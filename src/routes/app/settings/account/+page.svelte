@@ -2,7 +2,8 @@
 	import Check from '$lib/assets/Check.svelte';
 	import { settingsPage } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
-	import { enhance } from '$app/forms'; import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
 	import type { ActionData } from '../$types';
 	import Edit from '$lib/assets/Edit.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
@@ -135,6 +136,7 @@
 						id="pronouns-input"
 						name="pronouns"
 						placeholder="Enter your pronouns"
+						value={data.user.pronouns}
 					/>
 				</div>
 				<div class="w-full">
