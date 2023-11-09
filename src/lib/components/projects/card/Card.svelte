@@ -319,7 +319,7 @@
 		</div>
 
 		{#if showAssignNewUsers}
-			<AssignPerson {assignTask} />
+			<AssignPerson bind:assingedUserIds={assigned} {assignTask} />
 		{/if}
 	</section>
 </div>

@@ -84,7 +84,7 @@
 	<textarea
 		name="description"
 		id="description-input"
-		class="input--text  mt-sm h-36 w-full resize-none"
+		class="input--text mt-sm h-36 w-full resize-none"
 		placeholder="Enter a short description"
 		bind:value={newTaskDescription}
 	/>
