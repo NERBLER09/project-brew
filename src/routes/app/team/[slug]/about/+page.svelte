@@ -15,6 +15,7 @@
 	import ConfirmDelete from '$lib/components/prompts/team/about/ConfirmDelete.svelte';
 	import Switch from '$lib/components/form/Switch.svelte';
 	import FileInput from '$lib/components/form/FileInput.svelte';
+	import Copy from '$lib/assets/Copy.svelte';
 
 	export let data: PageData;
 
@@ -195,8 +196,14 @@
 {#if data.role === 'owner'}
 	<span class="mb-sm mt-md font-medium text-grey-700 dark:text-grey-200"
 		>Team invite code:
-		<button class="button--text m-0 mb-md p-0 text-start font-medium" on:click={copyJoinCode}
-			>{data.team.id}</button
+		<button
+			class="button--text m-0 mb-md flex items-center gap-md p-0 text-start font-medium"
+			on:click={copyJoinCode}
+		>
+			<Copy
+				className="w-6 h-6 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-300"
+			/>
+			{data.team.id}</button
 		>
 	</span>
 {/if}
