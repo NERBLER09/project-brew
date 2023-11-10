@@ -12,6 +12,7 @@
 		dateFilter,
 		filterTags,
 		milestoneFilter,
+		priorityFilter,
 		searchQuery,
 		sortOptions,
 		tasksCompletedThisDay
@@ -22,6 +23,7 @@
 	import { disableDrag } from '$lib/stores/ui';
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 	import { handleSortingTasks } from '$lib/api/sort';
+	import { handleFilter } from '$lib/api/filter';
 
 	export let name: string;
 	export let id: number;
@@ -66,81 +68,13 @@
 		}
 	};
 
-	const handleDateFilter = (option: 'soon' | 'today' | 'overdue' | 'unset' | null) => {
-		switch (option) {
-			case 'soon':
-				tasks = unsortedTasks.filter((item) => {
-					return (
-						new Date(item.due_date).getTime() >= new Date().getTime() &&
-						new Date(item.due_date).getTime() <= new Date().setDate(new Date().getDate() + 4)
-					);
-				});
-
-				break;
-			case 'today':
-				tasks = unsortedTasks.filter((item) => {
-					const date = new Date(item.due_date);
-					const today = new Date();
-					date.setDate(date.getDate() + 1);
-
-					return (
-						date.getDate() === today.getDate() &&
-						date.getMonth() === today.getMonth() &&
-						date.getFullYear() === today.getFullYear()
-					);
-				});
-				break;
-
-			case 'overdue':
-				tasks = unsortedTasks.filter((item) => {
-					const date = new Date(item.due_date);
-					const today = new Date();
-					date.setDate(date.getDate() + 1);
-
-					return date < today && date.getTime() !== 86400000;
-				});
-				break;
-			case 'unset':
-				tasks = unsortedTasks.filter((item) => {
-					return !item.due_date;
-				});
-				break;
-			default:
-				tasks = unsortedTasks;
-				break;
-		}
-
-		tasks = [...tasks];
-	};
-
-	const handleTagsFilter = (tags: string[]) => {
-		if (!tags || tags.length === 0) {
-			return;
-		}
-
-		tasks = unsortedTasks.filter((item: Task) => {
-			return item.tags?.includes(tags.toString());
-		});
-
-		tasks = [...tasks];
-	};
-
-	const handleMilestoneFilter = (id: string | undefined) => {
-		if (!id) return;
-
-		unsortedTasks = unsortedTasks.filter((item) => {
-			if (item.milestone) {
-				return item.milestone.id === id;
-			}
-		});
-
-		tasks = unsortedTasks;
-		tasks = [...tasks];
-	};
-
-	$: handleDateFilter($dateFilter);
-	$: handleTagsFilter($filterTags);
-	$: handleMilestoneFilter($milestoneFilter?.id);
+	$: tasks = handleFilter(
+		unsortedTasks ?? [],
+		$dateFilter,
+		$priorityFilter,
+		$filterTags,
+		$milestoneFilter
+	);
 	$: tasks = handleSortingTasks(unsortedTasks, $sortOptions) ?? [];
 
 	export let dbTasks: Task[];

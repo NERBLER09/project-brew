@@ -8,6 +8,7 @@
 		dateFilter,
 		filterTags,
 		milestoneFilter,
+		priorityFilter,
 		searchQuery,
 		sortOptions
 	} from '$lib/stores/project';
@@ -55,6 +56,7 @@
 	$: filteredTasks = handleFilter(
 		data.project?.tasks ?? [],
 		$dateFilter,
+		$priorityFilter,
 		$filterTags,
 		$milestoneFilter
 	);

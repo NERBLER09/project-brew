@@ -15,6 +15,7 @@ export const userTeams = writable<Teams[]>();
 
 export const searchQuery = writable<string>();
 export const dateFilter = writable<'soon' | 'today' | 'overdue' | 'unset' | null>(null);
+export const priorityFilter = writable<'high' | 'med' | 'low' | 'none' | 'unset' | null>();
 export const filterTags = writable<string[]>();
 export const showProjectAside = writable(true);
 

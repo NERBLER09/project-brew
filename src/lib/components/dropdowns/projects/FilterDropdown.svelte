@@ -3,7 +3,13 @@
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { currentProject, dateFilter, filterTags, milestoneFilter } from '$lib/stores/project';
+	import {
+		currentProject,
+		dateFilter,
+		filterTags,
+		milestoneFilter,
+		priorityFilter
+	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -16,6 +22,7 @@
 
 	const clearFilters = () => {
 		$dateFilter = null;
+		$priorityFilter = null;
 		$filterTags = [];
 		$milestoneFilter = null;
 		addFilter = false;
@@ -57,6 +64,22 @@
 				<option value="today">Today</option>
 				<option value="soon">Soon</option>
 				<option value="overdue">Overdue</option>
+				<option value="unset">Unset</option>
+			</select>
+		</div>
+		<div class="flex w-full items-center gap-md">
+			<label for="date-filter-select" class="input--label whitespace-nowrap">Priority:</label>
+			<select
+				id="date-filter-select"
+				class="input--text w-full"
+				bind:value={$priorityFilter}
+				on:change={() => (addFilter = false)}
+			>
+				<option value={null} selected disabled hidden>No filter</option>
+				<option value="high">High</option>
+				<option value="med">Medium</option>
+				<option value="low">Low</option>
+				<option value="none">None</option>
 				<option value="unset">Unset</option>
 			</select>
 		</div>
@@ -147,6 +170,25 @@
 		</button>
 	{/if}
 
+	{#if $priorityFilter}
+		<button class="dropdown--item" on:click={() => ($priorityFilter = null)}>
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label"
+				>Priority - {#if $priorityFilter === 'high'}
+					High
+				{:else if $priorityFilter === 'med'}
+					Medium
+				{:else if $priorityFilter === 'low'}
+					Low
+				{:else if $priorityFilter === 'none'}
+					None
+				{:else}
+					Unset
+				{/if}</span
+			>
+		</button>
+	{/if}
+
 	{#if $milestoneFilter}
 		<button class="dropdown--item w-full" on:click={() => ($milestoneFilter = null)}>
 			<Trash className="dropdown--icon" />
@@ -157,7 +199,7 @@
 	<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
 		{#each $filterTags as tag}
 			<div
-				class="flex w-fit items-center gap-sm rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700"
+				class="flex w-fit items-center gap-sm rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700"
 			>
 				<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 				<button
