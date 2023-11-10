@@ -76,7 +76,7 @@ export const actions = {
 			role: company,
 			bio,
 			banner: bannerURL,
-			avatar_url: profileURL
+			avatar_url: profileURL,
 			pronouns
 		});
 
