@@ -19,6 +19,8 @@
 	export let taskId: number;
 	export let projectId: number;
 	export let shown = false;
+	export let positioning: string = '';
+	export let milestoneName: string = '';
 
 	let search = '';
 
@@ -31,15 +33,18 @@
 		);
 	};
 
-	const updateMilestone = async (id: string) => {
+	const updateMilestone = async (id: string, name: string) => {
 		await supabase.from('tasks').update({ milestone: id }).eq('id', taskId);
 		invalidate('project:list');
+		milestoneName = name;
 		shown = false;
 	};
 
 	const handleRemoveMilestone = async () => {
 		await supabase.from('tasks').update({ milestone: null }).eq('id', taskId);
 		invalidate('project:list');
+		milestoneId = null;
+		milestoneName = null;
 		shown = false;
 	};
 
@@ -50,7 +55,7 @@
 	});
 </script>
 
-<div class="dropdown--container z-50">
+<div class="dropdown--container z-50 {positioning}">
 	{#if milestoneId}
 		<button class="dropdown--item" on:click={handleRemoveMilestone}
 			><span class="dropdown--label">Remove milestone</span></button
@@ -66,7 +71,7 @@
 	/>
 
 	{#each searchedMilestones as milestone}
-		<button class="dropdown--item" on:click={() => updateMilestone(milestone.id)}>
+		<button class="dropdown--item" on:click={() => updateMilestone(milestone.id, milestone.name)}>
 			{#if milestone.id === milestoneId}
 				<Check className="dropdown--icon" />
 			{/if}

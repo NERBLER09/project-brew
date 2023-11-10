@@ -25,6 +25,8 @@
 	let milestoneName = '';
 	let showChangeMilestone = false;
 
+	$: console.log(showChangeMilestone);
+
 	const getMilestoneName = async () => {
 		if (milestone) {
 			const { data } = await supabase
@@ -123,7 +125,9 @@
 			</div>
 		{/if}
 	</div>
-	<div class="relative mr-md min-w-[10.625rem] max-w-[10.625rem] truncate">
+	<div
+		class="relative mr-md min-w-[10.625rem] max-w-[10.625rem] overflow-visible whitespace-nowrap"
+	>
 		<button
 			class="button--secondary m-0 flex w-fit min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm border-0 p-0"
 			on:click={() => (showChangeMilestone = !showChangeMilestone)}
@@ -144,6 +148,8 @@
 				milestoneId={milestone}
 				taskId={id}
 				bind:shown={showChangeMilestone}
+				positioning="top-5"
+				bind:milestoneName
 			/>
 		{/if}
 	</div>

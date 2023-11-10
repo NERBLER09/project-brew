@@ -83,7 +83,6 @@
 
 	onMount(async () => {
 		tasks = unsortedTasks;
-		handleDateFilter($dateFilter);
 	});
 
 	const handleClickOutside = (event: Event) => {
