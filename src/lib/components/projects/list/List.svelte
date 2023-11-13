@@ -68,6 +68,10 @@
 		}
 	};
 
+	export let dbTasks: Task[];
+	$: unsortedTasks = dbTasks.filter((item) => item.list === id);
+	$: tasks = dbTasks.filter((item) => item.list === id);
+
 	$: tasks = handleFilter(
 		unsortedTasks ?? [],
 		$dateFilter,
@@ -75,11 +79,8 @@
 		$filterTags,
 		$milestoneFilter
 	);
-	$: tasks = handleSortingTasks(unsortedTasks, $sortOptions) ?? [];
 
-	export let dbTasks: Task[];
-	$: unsortedTasks = dbTasks.filter((item) => item.list === id);
-	$: tasks = dbTasks.filter((item) => item.list === id);
+	$: tasks = handleSortingTasks(tasks, $sortOptions) ?? [];
 
 	onMount(async () => {
 		tasks = unsortedTasks;
