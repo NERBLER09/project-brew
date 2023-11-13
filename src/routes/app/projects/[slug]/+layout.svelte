@@ -104,18 +104,20 @@
 				/>
 				<span class="sr-only">View project info</span>
 			</button>
-			<div bind:this={projectDropdownContainer} class="z-40">
-				<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
-					<MoreHorizontal
-						className="w-8 h-8 {data.banner
-							? 'stroke-grey-200'
-							: 'stroke-grey-700 dark:stroke-grey-200'}"
-					/>
-				</button>
-				{#if showProjectDropdown}
-					<ProjectDropdown bind:visibility={showProjectDropdown} projectId={data.id} />
-				{/if}
-			</div>
+			{#if $userRole === 'owner'}
+				<div bind:this={projectDropdownContainer} class="z-40">
+					<button on:click={() => (showProjectDropdown = !showProjectDropdown)}>
+						<MoreHorizontal
+							className="w-8 h-8 {data.banner
+								? 'stroke-grey-200'
+								: 'stroke-grey-700 dark:stroke-grey-200'}"
+						/>
+					</button>
+					{#if showProjectDropdown}
+						<ProjectDropdown bind:visibility={showProjectDropdown} projectId={data.id} />
+					{/if}
+				</div>
+			{/if}
 		</div>
 	</div>
 

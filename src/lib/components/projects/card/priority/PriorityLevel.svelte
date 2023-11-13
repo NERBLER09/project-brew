@@ -24,7 +24,12 @@
 		? 'hover:bg-grey-200 hover:dark:bg-grey-700'
 		: ''} rounded md:relative {changePriorityDropdown ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 >
-	<button on:click={() => (changePriorityDropdown = !changePriorityDropdown)}>
+	<button
+		on:click={() => {
+			if (!isViewer) changePriorityDropdown = !changePriorityDropdown;
+		}}
+		class={isViewer ? 'cursor-default' : ''}
+	>
 		<span class="sr-only">Click to change the priority</span>
 		{#if priority_level === 'high'}
 			<div class="rounded-full bg-red-400 px-3 py-[0.125rem] dark:bg-red-600">

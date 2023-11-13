@@ -7,6 +7,7 @@
 	import Assinged from '../card/Assinged.svelte';
 	import PriorityLevel from '../card/priority/PriorityLevel.svelte';
 	import ChangeMilestone from './ChangeMilestone.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -25,7 +26,7 @@
 	let milestoneName = '';
 	let showChangeMilestone = false;
 
-	$: console.log(showChangeMilestone);
+	let isViewer = $userRole === 'viewer';
 
 	const getMilestoneName = async () => {
 		if (milestone) {
@@ -64,32 +65,51 @@
 
 <div class="flex items-center">
 	<div class="relative mr-md min-w-[15.625rem] max-w-[15.625rem] truncate">
-		<span
-			class="font-bold text-grey-700 dark:text-grey-300"
-			contenteditable
-			bind:textContent={name}
-			on:blur={() => updateDetails(name, newDate)}>{name}</span
-		>
-	</div>
-	<button
-		class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
-		on:click={() => newDateInput.showPicker()}
-	>
-		<input
-			type="date"
-			class="hidden"
-			bind:this={newDateInput}
-			bind:value={newDate}
-			on:change={() => updateDetails(name, newDate)}
-		/>
-		{#if due_date}
-			<Calendar className="h-6 w-6 stroke-accent-light" />
-			<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+		{#if isViewer}
+			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
-			<CalendarAdd className="h-6 w-6 stroke-accent-light" />
-			<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
+			<span
+				class="font-bold text-grey-700 dark:text-grey-300"
+				contenteditable
+				bind:textContent={name}
+				on:blur={() => updateDetails(name, newDate)}>{name}</span
+			>
 		{/if}
-	</button>
+	</div>
+	{#if isViewer}
+		<div
+			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 bg-none p-0"
+			style="background: none;"
+		>
+			{#if due_date}
+				<Calendar className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+			{:else}
+				<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">No due date</span>
+			{/if}
+		</div>
+	{:else}
+		<button
+			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
+			on:click={() => newDateInput.showPicker()}
+		>
+			<input
+				type="date"
+				class="hidden"
+				bind:this={newDateInput}
+				bind:value={newDate}
+				on:change={() => updateDetails(name, newDate)}
+			/>
+			{#if due_date}
+				<Calendar className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+			{:else}
+				<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
+			{/if}
+		</button>
+	{/if}
 	<div class="relative mr-md min-w-[10.625rem]">
 		<div class="w-fit">
 			{#if status === 'done'}

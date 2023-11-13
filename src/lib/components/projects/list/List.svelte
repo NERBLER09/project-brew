@@ -111,27 +111,31 @@
 				{tasks.length}
 			</p>
 		</div>
-		<div bind:this={listDropdownElement} class="ml-auto">
-			<button on:click={() => (showListDropdown = !showListDropdown)}>
-				<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
+		{#if $userRole !== 'viewer'}
+			<div bind:this={listDropdownElement} class="ml-auto">
+				<button on:click={() => (showListDropdown = !showListDropdown)}>
+					<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
 
-				{#if showListDropdown}
-					<ListDropdown bind:visibility={showListDropdown} listId={id} />
-				{/if}
-			</button>
-		</div>
+					{#if showListDropdown}
+						<ListDropdown bind:visibility={showListDropdown} listId={id} />
+					{/if}
+				</button>
+			</div>
+		{/if}
 	</header>
 
-	{#if showCreateTask}
-		<NewCard bind:showCreateTask bind:tasks listId={id} listStatus={status} />
-	{:else}
-		<button
-			class="button--secondary flex w-full items-center justify-center gap-md"
-			on:click={() => (showCreateTask = true)}
-		>
-			<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-			New task
-		</button>
+	{#if $userRole !== 'viewer'}
+		{#if showCreateTask}
+			<NewCard bind:showCreateTask bind:tasks listId={id} listStatus={status} />
+		{:else}
+			<button
+				class="button--secondary flex w-full items-center justify-center gap-md"
+				on:click={() => (showCreateTask = true)}
+			>
+				<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+				New task
+			</button>
+		{/if}
 	{/if}
 
 	<div
