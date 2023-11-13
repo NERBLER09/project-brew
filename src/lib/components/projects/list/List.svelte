@@ -24,6 +24,7 @@
 	import ListDropdown from '$lib/components/dropdowns/projects/ListDropdown.svelte';
 	import { handleSortingTasks } from '$lib/api/sort';
 	import { handleFilter } from '$lib/api/filter';
+	import { userRole } from '$lib/stores/team';
 
 	export let name: string;
 	export let id: number;
@@ -135,7 +136,12 @@
 
 	<div
 		class="mt-md flex min-h-[200px] flex-col gap-md"
-		use:dndzone={{ items: tasks, type: 'card', flipDurationMs: 300, dragDisabled: $disableDrag }}
+		use:dndzone={{
+			items: tasks,
+			type: 'card',
+			flipDurationMs: 300,
+			dragDisabled: $disableDrag || $userRole === 'viewer'
+		}}
 		on:consider={handleDnd}
 		on:finalize={handleFinalize}
 	>

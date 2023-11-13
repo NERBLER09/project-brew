@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import NewSubTask from './NewSubTask.svelte';
 	import SubTaskItem from './SubTaskItem.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let taskId: number;
 	export let list: number;
@@ -19,6 +20,8 @@
 
 	let showSubTasks = false;
 	let showCreateSubTasks = false;
+
+	let isViewer = $userRole === 'viewer';
 
 	const getSubTasks = async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
@@ -66,20 +69,22 @@
 				<SubTaskItem {...task} {getSubTasks} />
 			{/each}
 		</div>
-		<button
-			class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
-			on:click={() => (showCreateSubTasks = !showCreateSubTasks)}
-		>
-			{#if showCreateSubTasks}
-				<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-				Cancel
-			{:else}
-				<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-				Add a sub task
-			{/if}
-		</button>
+		{#if !isViewer}
+			<button
+				class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
+				on:click={() => (showCreateSubTasks = !showCreateSubTasks)}
+			>
+				{#if showCreateSubTasks}
+					<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+					Cancel
+				{:else}
+					<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+					Add a sub task
+				{/if}
+			</button>
+		{/if}
 	{/if}
-{:else}
+{:else if !isViewer}
 	<button
 		class="button--secondary m-0 mb-md flex w-full items-center gap-md border-0 p-0 text-start"
 		on:click={() => (showCreateSubTasks = true)}

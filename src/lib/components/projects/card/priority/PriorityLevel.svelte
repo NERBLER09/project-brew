@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { userRole } from '$lib/stores/team';
 	import ChangePriority from './ChangePriority.svelte';
 
 	export let priority_level: string | null;
@@ -6,6 +7,7 @@
 
 	let changePriorityDropdown = false;
 	let priorityContainer: HTMLElement;
+	let isViewer = $userRole === 'viewer';
 
 	const handleAutoClose = (event: Event) => {
 		if (!priorityContainer.contains(event.target)) {
@@ -18,9 +20,9 @@
 
 <div
 	bind:this={priorityContainer}
-	class="rounded hover:bg-grey-200 hover:dark:bg-grey-700 md:relative {changePriorityDropdown
-		? 'bg-grey-200 dark:bg-grey-700'
-		: ''}"
+	class="{!isViewer
+		? 'hover:bg-grey-200 hover:dark:bg-grey-700'
+		: ''} rounded md:relative {changePriorityDropdown ? 'bg-grey-200 dark:bg-grey-700' : ''}"
 >
 	<button on:click={() => (changePriorityDropdown = !changePriorityDropdown)}>
 		<span class="sr-only">Click to change the priority</span>

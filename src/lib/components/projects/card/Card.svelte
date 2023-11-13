@@ -19,6 +19,7 @@
 	import UpdateTaskMilestone from './UpdateTaskMilestone.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { onMount } from 'svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -45,6 +46,8 @@
 	let dateInputElement: HTMLInputElement;
 
 	let updateTaskMilestone = false;
+
+	let isViewer = $userRole === 'viewer';
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -125,6 +128,7 @@
 	// 	}
 	// };
 	//
+
 	onMount(() => {
 		if (!due_date) return '';
 
@@ -157,48 +161,80 @@
 				{#if status === 'done'}
 					<Check className="h-8 w-8 min-h-[2rem] min-w-[2rem] stroke-[#059669] hidden md:block" />
 				{/if}
-				<h3
-					class="h-fit font-bold text-grey-700 dark:text-grey-200 {status === 'done'
-						? 'text-[#059669] line-through'
-						: null}"
-					contenteditable
-					bind:textContent={newName}
-					on:blur={updateTaskName}
-				>
-					{name}
-				</h3>
+				{#if isViewer}
+					<h3
+						class="h-fit font-bold text-grey-700 dark:text-grey-200 {status === 'done'
+							? 'text-[#059669] line-through'
+							: null}"
+					>
+						{name}
+					</h3>
+				{:else}
+					<h3
+						class="h-fit font-bold text-grey-700 dark:text-grey-200 {status === 'done'
+							? 'text-[#059669] line-through'
+							: null}"
+						contenteditable
+						bind:textContent={newName}
+						on:blur={updateTaskName}
+					>
+						{name}
+					</h3>
+				{/if}
 			</div>
 
-			<div class="ml-auto flex h-8 w-8 items-center gap-md">
-				<div bind:this={cardDropdownElement}>
-					<button on:click={() => (showCardDropdown = !showCardDropdown)}>
-						<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-					</button>
+			{#if !isViewer}
+				<div class="ml-auto flex h-8 w-8 items-center gap-md">
+					<div bind:this={cardDropdownElement}>
+						<button on:click={() => (showCardDropdown = !showCardDropdown)}>
+							<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
+						</button>
 
-					{#if showCardDropdown}
-						<CardDropdown bind:visibility={showCardDropdown} {id} />
-					{/if}
+						{#if showCardDropdown}
+							<CardDropdown bind:visibility={showCardDropdown} {id} />
+						{/if}
+					</div>
 				</div>
-			</div>
+			{/if}
 		</header>
 
 		<div class="mb-md flex flex-col items-start gap-md lg:mb-sm lg:flex-row lg:items-center">
 			<div>
-				<button class="flex items-center md:gap-sm" on:click={() => dateInputElement.showPicker()}>
-					{#if due_date}
+				{#if isViewer}
+					<div class="flex items-center md:gap-sm">
 						<Calendar className="h-6 w-6 stroke-accent-light" />
-						<span
-							class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-							>{formattedDate}</span
-						>
-					{:else}
-						<CalendarAdd className="h-6 w-6 stroke-accent-light" />
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
-							Add
-							<span class="sr-only">a due date</span>
-						</span>
-					{/if}
-				</button>
+						{#if due_date}
+							<span
+								class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>{formattedDate}</span
+							>
+						{:else}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
+								Unset
+								<span class="sr-only">No due date has been added</span>
+							</span>
+						{/if}
+					</div>
+				{:else}
+					<button
+						class="flex items-center md:gap-sm"
+						on:click={() => dateInputElement.showPicker()}
+					>
+						<Calendar className="h-6 w-6 stroke-accent-light" />
+						{#if due_date}
+							<span
+								class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>{formattedDate}</span
+							>
+						{:else}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base">
+								Add
+								<span class="sr-only">a due date</span>
+							</span>
+						{/if}
+					</button>
+				{/if}
+
 				<input
 					type="date"
 					class="hidden"
@@ -215,22 +251,38 @@
 			<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
 
 			<div class="relative" bind:this={milestoneDropdownElement}>
-				<button
-					class="flex items-center md:gap-sm"
-					on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
-				>
-					<Milestone className="h-6 w-6 stroke-accent-light" />
-					{#if milestone?.name}
-						<a
-							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
-							href="milestones/{milestone?.id}">{milestone?.name}</a
-						>
-					{:else}
-						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-							>Add to milestone
-						</span>
-					{/if}
-				</button>
+				{#if isViewer}
+					<div class="flex items-center md:gap-sm">
+						<Milestone className="h-6 w-6 stroke-accent-light" />
+						{#if milestone?.name}
+							<a
+								class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
+								href="milestones/{milestone?.id}">{milestone?.name}</a
+							>
+						{:else}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>No Milestone
+							</span>
+						{/if}
+					</div>
+				{:else}
+					<button
+						class="flex items-center md:gap-sm"
+						on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
+					>
+						<Milestone className="h-6 w-6 stroke-accent-light" />
+						{#if milestone?.name}
+							<a
+								class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
+								href="milestones/{milestone?.id}">{milestone?.name}</a
+							>
+						{:else}
+							<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+								>Add to milestone
+							</span>
+						{/if}
+					</button>
+				{/if}
 
 				{#if updateTaskMilestone}
 					<UpdateTaskMilestone
@@ -243,7 +295,7 @@
 			</div>
 		</div>
 		<div class="mb-md">
-			{#if description}
+			{#if description && !isViewer}
 				<p
 					class="max-h-[10ch] text-sm font-medium text-grey-700 empty:hidden dark:text-grey-200"
 					contenteditable
@@ -252,7 +304,11 @@
 				>
 					{description}
 				</p>
-			{:else}
+			{:else if description && isViewer}
+				<p class="max-h-[10ch] text-sm font-medium text-grey-700 empty:hidden dark:text-grey-200">
+					{description}
+				</p>
+			{:else if !description && !isViewer}
 				<input
 					type="text"
 					bind:value={newDescription}
@@ -302,20 +358,22 @@
 					<Assinged {id} />
 				{/each}
 			{/if}
-			<button
-				on:click={() => (showAssignNewUsers = !showAssignNewUsers)}
-				class:ml-auto={assigned?.length > 0}
-			>
-				{#if !showAssignNewUsers}
-					<UserAdd
-						className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-					/>
-				{:else}
-					<CloseMultiply
-						className="h-10 w-10 stroke-grey-700 dark:stroke-grey-300 border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
-					/>
-				{/if}
-			</button>
+			{#if !isViewer}
+				<button
+					on:click={() => (showAssignNewUsers = !showAssignNewUsers)}
+					class:ml-auto={assigned?.length > 0}
+				>
+					{#if !showAssignNewUsers}
+						<UserAdd
+							className="h-10 w-10 stroke-accent-light border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+						/>
+					{:else}
+						<CloseMultiply
+							className="h-10 w-10 stroke-grey-700 dark:stroke-grey-300 border-dashed border border-grey-700 dark:border-grey-300 rounded-full"
+						/>
+					{/if}
+				</button>
+			{/if}
 		</div>
 
 		{#if showAssignNewUsers}
