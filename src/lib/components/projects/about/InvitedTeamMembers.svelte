@@ -34,7 +34,7 @@
 		{/if}
 	</header>
 
-	<div class="mt-md flex w-full flex-col items-start gap-lg lg:grid lg:grid-cols-2">
+	<div class="mt-md flex w-full flex-col items-start gap-lg">
 		{#each invited_people as { user_id, id, role }}
 			<TeamMember {user_id} dbId={id} {role} />
 		{/each}
