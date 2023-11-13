@@ -12,6 +12,7 @@
 	import toast from 'svelte-french-toast';
 	import ManageInvited from './ManageInvited.svelte';
 	import FileInput from '$lib/components/form/FileInput.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -24,6 +25,8 @@
 
 	project_name = $currentProject.project_name ?? '';
 	description = $currentProject.description ?? '';
+
+	let isViewer = $userRole === 'viewer';
 
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
@@ -158,16 +161,26 @@
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 			: ''} url({bannerURL});"
 	>
-		<h1
-			class="w-fit text-lg {bannerURL
-				? 'text-grey-200'
-				: 'text-grey-700 dark:text-grey-200'} truncate"
-			contenteditable
-			on:blur={updateProjectName}
-			bind:innerHTML={project_name}
-		>
-			{project_name}
-		</h1>
+		{#if isViewer}
+			<h1
+				class="w-fit text-lg {bannerURL
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate"
+			>
+				{project_name}
+			</h1>
+		{:else}
+			<h1
+				class="w-fit text-lg {bannerURL
+					? 'text-grey-200'
+					: 'text-grey-700 dark:text-grey-200'} truncate"
+				contenteditable
+				on:blur={updateProjectName}
+				bind:innerHTML={project_name}
+			>
+				{project_name}
+			</h1>
+		{/if}
 
 		<div class="relative mb-auto ml-auto flex items-center gap-md">
 			<button on:click={() => (shown = false)}>
@@ -183,36 +196,47 @@
 
 	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
 		<!-- TODO: Add proper input for tags -->
-		{#if $currentProject.description}
-			<p
-				class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300"
-				contenteditable="true"
-				bind:textContent={description}
-				on:blur={updateProjectDescription}
-			>
-				{$currentProject.description}
-			</p>
+
+		{#if isViewer}
+			{#if $currentProject.description}
+				<p class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300">
+					{$currentProject.description}
+				</p>
+			{/if}
+		{:else}
+			{#if $currentProject.description}
+				<p
+					class="my-sm text-sm font-medium text-grey-700 dark:text-grey-300"
+					contenteditable="true"
+					bind:textContent={description}
+					on:blur={updateProjectDescription}
+				>
+					{$currentProject.description}
+				</p>
+			{/if}
+
+			{#if $userTeams?.length > 0}
+				<TransferProjectToTeam
+					{teamName}
+					projectId={$currentProject.id}
+					team={$currentProject.team}
+				/>
+			{/if}
 		{/if}
 
-		{#if $userTeams?.length > 0}
-			<TransferProjectToTeam
-				{teamName}
-				projectId={$currentProject.id}
-				team={$currentProject.team}
-			/>
+		{#if !isViewer}
+			<section>
+				<header>
+					<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Project Appearance</h2>
+				</header>
+				<FileInput
+					bind:bannerURL
+					bind:newBanner
+					uploadBanner={updateProjectBanner}
+					postRemoveBannnerHandle={removeBanner}
+				/>
+			</section>
 		{/if}
-
-		<section>
-			<header>
-				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Project Appearance</h2>
-			</header>
-			<FileInput
-				bind:bannerURL
-				bind:newBanner
-				uploadBanner={updateProjectBanner}
-				postRemoveBannnerHandle={removeBanner}
-			/>
-		</section>
 
 		<InvitedTeamMembers
 			invited_people={$currentProject.invited_people}

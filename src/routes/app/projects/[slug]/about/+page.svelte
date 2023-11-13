@@ -9,6 +9,7 @@
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 	import FileInput from '$lib/components/form/FileInput.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let data: PageData;
 
@@ -19,6 +20,8 @@
 	let newBanner: FileList | null;
 
 	let teamName = '';
+
+	let isViewer = $userRole === 'viewer';
 
 	const getTeamName = async () => {
 		const { data: team } = await supabase
@@ -146,48 +149,65 @@
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
 		</a>
-		<h1
-			class="text-lg {bannerURL
-				? 'max-w-[calc(100%-80px)] text-grey-200'
-				: 'w-full text-grey-700 dark:text-grey-200'} truncate"
-			contenteditable
-			bind:innerHTML={project_name}
-			on:blur={updateProjectName}
-		>
-			{data.project?.project_name}
-		</h1>
+		{#if isViewer}
+			<h1
+				class="text-lg {bannerURL
+					? 'max-w-[calc(100%-80px)] text-grey-200'
+					: 'w-full text-grey-700 dark:text-grey-200'} truncate"
+			>
+				{data.project?.project_name}
+			</h1>
+		{:else}
+			<h1
+				class="text-lg {bannerURL
+					? 'max-w-[calc(100%-80px)] text-grey-200'
+					: 'w-full text-grey-700 dark:text-grey-200'} truncate"
+				contenteditable
+				bind:innerHTML={project_name}
+				on:blur={updateProjectName}
+			>
+				{data.project?.project_name}
+			</h1>
+		{/if}
 	</div>
 </header>
 
 <div class="relative {data.project?.banner ? '-top-3' : '-top-8'}">
 	<!-- TODO: Create new tag input -->
+	{#if isViewer}
+		{#if data.project?.description}
+			<p class="my-md font-medium text-grey-700 dark:text-grey-300">
+				{description}
+			</p>
+		{/if}
+	{:else}
+		{#if data.project?.description}
+			<p
+				class="my-md font-medium text-grey-700 dark:text-grey-300"
+				contenteditable="true"
+				bind:textContent={description}
+				on:blur={updateProjectDescription}
+			>
+				{description}
+			</p>
+		{/if}
 
-	{#if data.project?.description}
-		<p
-			class="my-md font-medium text-grey-700 dark:text-grey-300"
-			contenteditable="true"
-			bind:textContent={description}
-			on:blur={updateProjectDescription}
-		>
-			{description}
-		</p>
+		{#if data?.project.user_teams.length > 0}
+			<TransferProjectToTeam {teamName} team={data.project?.team} projectId={data.project?.id} />
+		{/if}
+
+		<section>
+			<header>
+				<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Project Appearance</h2>
+			</header>
+			<FileInput
+				bind:bannerURL
+				bind:newBanner
+				uploadBanner={updateProjectBanner}
+				postRemoveBannnerHandle={removeBanner}
+			/>
+		</section>
 	{/if}
-
-	{#if data?.project.user_teams.length > 0}
-		<TransferProjectToTeam {teamName} team={data.project?.team} projectId={data.project?.id} />
-	{/if}
-
-	<section>
-		<header>
-			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Project Appearance</h2>
-		</header>
-		<FileInput
-			bind:bannerURL
-			bind:newBanner
-			uploadBanner={updateProjectBanner}
-			postRemoveBannnerHandle={removeBanner}
-		/>
-	</section>
 
 	<InvitedTeamMembers invited_people={data.project?.invited_people} projectId={data.project?.id} />
 </div>
