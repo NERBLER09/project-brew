@@ -41,7 +41,7 @@
 	$dateFilter = data.project?.filter.date;
 	$priorityFilter = data.project?.filter.priority;
 
-	$sortOptions = data.project?.sort;
+	$sortOptions = data.project?.sort ?? {};
 
 	let showProjectDropdown = false;
 
