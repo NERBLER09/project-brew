@@ -1,5 +1,15 @@
 <script lang="ts">
-	import { currentProject, recentlyEdited, showProjectAside, userTeams } from '$lib/stores/project';
+	import {
+		currentProject,
+		dateFilter,
+		filterTags,
+		milestoneFilter,
+		priorityFilter,
+		recentlyEdited,
+		showProjectAside,
+		sortOptions,
+		userTeams
+	} from '$lib/stores/project';
 
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CircleInfo from '$lib/assets/Circle-Info.svelte';
@@ -26,6 +36,12 @@
 	$currentProject = $currentProject;
 	$userRole = data.role?.role;
 	$userTeams = data.userTeams ?? [];
+
+	$milestoneFilter = data.project?.filter.milestone;
+	$dateFilter = data.project?.filter.date;
+	$priorityFilter = data.project?.filter.priority;
+
+	$sortOptions = data.project?.sort;
 
 	let showProjectDropdown = false;
 

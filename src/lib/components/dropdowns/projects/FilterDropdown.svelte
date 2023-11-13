@@ -11,6 +11,7 @@
 		priorityFilter
 	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
+	import { update } from 'lodash';
 	import { onMount } from 'svelte';
 
 	let addFilter = false;
@@ -38,6 +39,19 @@
 		const { data } = await supabase.from('milestones').select().eq('project', $currentProject.id);
 		projectMilestones = data ?? [];
 	});
+
+	const updateFilterOnDB = async (date, milestone, priority) => {
+		console.log('test');
+		const { error } = await supabase
+			.from('projects')
+			.update({
+				filter: { date, milestone, priority }
+			})
+			.eq('id', $currentProject.id);
+		console.log(error);
+	};
+
+	$: updateFilterOnDB($dateFilter, $milestoneFilter, $priorityFilter);
 </script>
 
 <div class="dropdown--container right-0 z-50 min-w-[15.1875rem] md:top-6">
