@@ -33,12 +33,21 @@ export const load = (async (event) => {
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
 
+	const { data: role } = await supabaseClient
+		.from('project_members')
+		.select('role')
+		.eq('user_id', session.user.id)
+		.eq('project', projectId)
+		.limit(1)
+		.single();
+
 	if (project) {
 		return {
 			name: project?.project_name,
 			id: project.id,
 			description: project?.description,
 			banner: project?.banner,
+			role,
 			project: {
 				...project,
 				invite: {

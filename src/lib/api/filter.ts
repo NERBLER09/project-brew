@@ -87,7 +87,5 @@ export const handleFilter = (
 		});
 	}
 
-	console.log(filteredTasks);
-
 	return filteredTasks;
 };

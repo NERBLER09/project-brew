@@ -4,10 +4,10 @@
 	import User from '$lib/assets/User.svelte';
 	import ChangeStatus from '$lib/components/dropdowns/team/ChangeStatus.svelte';
 	import { currentProject } from '$lib/stores/project';
-	import { userRole } from '$lib/stores/team';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
+	import { userRole } from '$lib/stores/team';
 
 	export let user_id: string;
 	export let dbId: string;
@@ -18,6 +18,8 @@
 	let email: string;
 	let avatar: string;
 	let roleFormatted: string;
+
+	let isOwner = $userRole === 'owner';
 
 	const formateRole = () => {
 		switch (role) {
@@ -69,7 +71,7 @@
 		const newRole = event.detail.role;
 		showChangeStatus = false;
 
-		if ($userRole === 'owner' || $userRole === 'admin') {
+		if (isOwner) {
 			await supabase
 				.from('project_members')
 				.update({ role: newRole })
@@ -103,11 +105,11 @@
 			<div class="flex items-center gap-sm">
 				<span class="truncate font-bold text-grey-700 dark:text-grey-200">{name}</span>
 
-				{#if role === 'owner'}
+				{#if role === 'owner' || !isOwner}
 					<li
 						class="ml-md list-inside list-disc truncate text-sm font-medium text-grey-700 dark:text-grey-300 md:hidden md:text-base"
 					>
-						Owner
+						{roleFormatted}
 					</li>
 				{/if}
 			</div>
@@ -116,7 +118,7 @@
 	</div>
 
 	<div class="relative ml-auto mt-sm" bind:this={changeStatusContainer}>
-		{#if role !== 'owner'}
+		{#if isOwner && role !== 'owner'}
 			<button
 				on:click={() => (showChangeStatus = !showChangeStatus)}
 				class="flex items-center justify-center gap-sm rounded bg-grey-200 px-3 py-2 font-bold dark:bg-grey-700 md:px-2 md:py-1"
@@ -128,8 +130,10 @@
 			{#if showChangeStatus}
 				<ChangeStatus on:update={handleUpdateStatus} />
 			{/if}
-		{:else}
-			<span class="hidden font-medium text-grey-700 dark:text-grey-300 md:inline">Owner</span>
+		{:else if !isOwner || role === 'owner'}
+			<span class="hidden font-medium text-grey-700 dark:text-grey-300 md:inline"
+				>{roleFormatted}</span
+			>
 		{/if}
 	</div>
 </div>

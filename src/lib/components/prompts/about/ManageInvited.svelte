@@ -34,7 +34,7 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!$currentProject.banner
+		class="relative -left-8 -top-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!$currentProject.banner
 			? 'w-fit'
 			: 'h-[12.5rem]'}"
 		style="background-image: {$currentProject.banner

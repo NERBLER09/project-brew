@@ -18,12 +18,14 @@
 	import AboutProject from '$lib/components/prompts/about/AboutProject.svelte';
 	import { supabase } from '$lib/supabase';
 	import { invalidate } from '$app/navigation';
+	import { userRole } from '$lib/stores/team';
 
 	export let data: LayoutData;
-	currentProject.set(data.project);
+	$currentProject = data.project;
 	$currentProject.invited_people = data.invited_people ?? [];
 	$currentProject = $currentProject;
-	userTeams.set(data.userTeams ?? []);
+	$userRole = data.role?.role;
+	$userTeams = data.userTeams ?? [];
 
 	let showProjectDropdown = false;
 
