@@ -37,7 +37,7 @@
 
 		<TodayProgress today={data.dashboard?.today ?? []} {due} />
 	</section>
-	<section class="md:col-span-1 md:row-start-3 lg:col-span-2 lg:col-start-4 lg:row-start-1">
+	<section class="md:col-span-2 md:row-start-2 lg:col-span-2 lg:col-start-4 lg:row-start-1">
 		<header>
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Behind Tasks</h2>
 		</header>
@@ -59,7 +59,7 @@
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Task Workload</h2>
 		</header>
 
-		<div class="flex-wrap items-center lg:flex">
+		<div class="flex-wrap items-start gap-lg lg:flex">
 			<section>
 				<header>
 					<h4 class="my-sm font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
@@ -99,7 +99,7 @@
 	</section>
 
 	<section
-		class="row-start-3 overflow-hidden md:col-span-2 md:row-start-2 lg:col-span-3 lg:col-start-3 lg:row-start-2"
+		class="row-start-3 overflow-hidden md:col-span-2 md:row-start-4 lg:col-span-3 lg:col-start-3 lg:row-start-2 lg:row-start-2"
 	>
 		<header>
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200">Milestone Progress</h2>
