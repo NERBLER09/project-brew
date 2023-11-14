@@ -40,7 +40,7 @@
 
 	<form
 		method="POST"
-		action="/app/team/create?/join"
+		action="/app/team/join?/join"
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'failure') {

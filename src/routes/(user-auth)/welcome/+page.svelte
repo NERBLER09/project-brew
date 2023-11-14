@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import Back from '$lib/assets/Arrow/Back.svelte';
 	import Edit from '$lib/assets/Edit.svelte';
+	import Image from '$lib/assets/Image.svelte';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import User from '$lib/assets/User.svelte';
+	import DashboardPage from '$lib/assets/Landing-Page/Dashboard.svg';
 	import toast from 'svelte-french-toast';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
@@ -43,16 +48,14 @@
 	<title>Project Brew - Welcome</title>
 </svelte:head>
 
-<section class="p-6 text-center">
-	<header>
-		<h1 class="text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
-	</header>
-	<div class="mx-auto flex w-full max-w-xl flex-col items-center gap-md md:w-2/3">
-		<p class="text-grey-700 md:px-6">
-			Please take a few moments to setup your account details. You can always change and set these
-			in your account settings.
-		</p>
-		<div class="mx-auto h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700" />
+<div class="relative flex items-center gap-10 md:flex lg:gap-[10%]">
+	<div class="p-6 md:w-1/2 md:p-8 md:pr-0 lg:w-1/3">
+		<header>
+			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
+
+			<p class="font-medium text-grey-700">Please take a few moments to setup your account.</p>
+		</header>
+
 		<form
 			method="POST"
 			use:enhance={() => {
@@ -60,27 +63,64 @@
 					if (result.type === 'failure') {
 						toast.error(result?.data.message);
 					} else if (result.type === 'success') {
-						toast.success('Welcome to Project Brew!');
-						goto('/app/home');
+						goto('/welcome/project');
 					}
 				};
 			}}
-			class="w-full md:px-20"
+			class="mt-md w-full md:w-[31.025rem] md:min-w-[31.025rem]"
 		>
 			<section>
 				<header>
-					<h2 class="w-full text-start text-md font-semibold text-grey-700">About you</h2>
+					<h2 class="w-full text-start text-md font-semibold text-grey-700">Account Details</h2>
 				</header>
-				<div class="mb-md w-full">
+				<div class="mb-md mt-2 w-full">
 					<div class="flex items-center">
-						<label for="name-input" class="input--label mb-sm inline-block">Name</label>
+						<label for="name-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+							>Name</label
+						>
 						<input
 							type="text"
 							class="input--text w-full"
 							id="name-input"
 							name="name"
-							placeholder="What should people call you"
+							placeholder="Enter your name"
 							required
+						/>
+					</div>
+					<div class="my-sm flex items-center">
+						<label for="location-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+							>Location</label
+						>
+						<input
+							type="text"
+							class="input--text w-full"
+							id="location-input"
+							name="location"
+							placeholder="Enter your location"
+						/>
+					</div>
+					<div class="flex items-center">
+						<label for="company-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+							>Company</label
+						>
+						<input
+							type="text"
+							class="input--text w-full"
+							id="company-input"
+							name="company"
+							placeholder="Enter your company"
+						/>
+					</div>
+					<div class="mt-sm flex items-center">
+						<label for="pronouns-input" class="input--label mb-sm inline-block min-w-[4.6875rem]"
+							>Pronouns</label
+						>
+						<input
+							type="text"
+							class="input--text w-full"
+							id="pronouns-input"
+							name="pronouns"
+							placeholder="Enter your company"
 						/>
 					</div>
 					<div class="w-full">
@@ -97,62 +137,17 @@
 				</div>
 			</section>
 
-			<div
-				class="mx-auto my-sm h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
-			/>
-			<section class="mb-md">
+			<section>
 				<header>
-					<h2 class="w-full text-start text-md font-semibold text-grey-700">Profile Appearance</h2>
+					<h2 class="mb-sm w-full text-start text-md font-semibold text-grey-700">
+						Account Appearance
+					</h2>
 				</header>
 
-				<div>
-					<h3 class="text-start font-bold text-grey-700">Banner</h3>
-					<div class="mt-sm">
-						{#if bannerURL}
-							<img
-								src={bannerURL}
-								alt="selected user banner"
-								class="h-[12.5rem] w-full rounded object-cover"
-							/>
-						{:else}
-							<p class="my-sm text-start font-medium text-grey-700">Select a file to preview it.</p>
-						{/if}
-						<input
-							type="file"
-							name="banner"
-							class="hidden"
-							bind:this={bannerInputElement}
-							bind:files={newBanner}
-							accept="image/png, image/jpeg"
-						/>
-
-						<div class="mx-auto mt-md flex w-full gap-md">
-							<button
-								class="button--primary flex w-full items-center justify-center gap-md"
-								type="button"
-								on:click={() => bannerInputElement.click()}
-							>
-								<Edit className="stroke-grey-200 w-6 h-6" />
-								Select
-								<span class="sr-only">Select a banner from the file system</span>
-							</button>
-							{#if bannerURL}
-								<button
-									class="button--secondary flex w-full items-center justify-center gap-md md:w-1/2"
-									type="button"
-									on:click={removeBanner}
-								>
-									<Trash className="stroke-grey-700 w-6 h-6" />
-									Remove
-								</button>
-							{/if}
-						</div>
-					</div>
-				</div>
-
-				<div>
-					<h3 class="my-md text-start font-bold text-grey-700">Profile Picture</h3>
+				<div class="mb-md">
+					<label for="pfp-select" class="input--label mb-sm">Profile picture</label>
 					<input
+						id="pfp-select"
 						type="file"
 						class="hidden"
 						bind:this={profilePictureElement}
@@ -160,53 +155,62 @@
 						name="profile"
 						accept="image/png, image/jpeg"
 					/>
-					<div class="flex items-center gap-lg">
+					<div class="relative h-[9.375rem] w-[9.375rem]">
 						{#if pfpFileURL !== ''}
 							<img
 								src={pfpFileURL}
 								alt="user profile"
-								class="aspect-square h-20 w-20 rounded-full object-cover"
+								class="h-[9.375rem] w-[9.375rem] rounded-full border border-grey-600 bg-grey-100 stroke-grey-700 object-cover opacity-90 shadow"
 							/>
 						{:else}
-							<User className="w-20 h-20 stroke-grey-700 md:h-16 md:w-16" />
+							<User
+								className="h-[9.375rem] w-[9.375rem] rounded-full object-cover stroke-grey-700 bg-grey-100 opacity-90 border-grey-600 border shadow"
+							/>
 						{/if}
-
-						<div class="flex h-fit w-full flex-col gap-sm md:gap-md">
-							<button
-								class="button--primary flex w-full items-center justify-center gap-md"
-								type="button"
-								on:click={() => profilePictureElement.click()}
-							>
-								<Edit className="stroke-grey-200 w-6 h-6" />
-								Select
-							</button>
+						<div class="absolute right-0 top-0 flex h-full w-full items-end justify-between gap-lg">
 							{#if pfpFileURL}
-								<button
-									class="button--secondary flex w-full items-center justify-center gap-md"
-									type="button"
-									on:click={removeProfilePicture}
-								>
-									<Trash className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
-									Remove
+								<button type="button" class="rounded bg-grey-200" on:click={removeProfilePicture}>
+									<Trash className="h-12 w-12 stroke-grey-700" />
+									<span class="sr-only">Remove profile picture</span>
 								</button>
 							{/if}
+
+							<button
+								type="button"
+								class="relative ml-auto h-12 w-12 rounded-md bg-grey-200"
+								on:click={() => profilePictureElement.click()}
+							>
+								<PlusNew
+									className="h-12 w-12 stroke-grey-700 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+								/>
+								<span class="sr-only">Select a profile picture</span>
+							</button>
 						</div>
 					</div>
 				</div>
+
+				<div class="mb-md">
+					<label for="pfp-select" class="input--label mb-sm">Profile Banner</label>
+					<p class="my-sm font-medium text-grey-700">Spice up your profile by uploading a banner</p>
+
+					<FileInput bind:newBanner postRemoveBannnerHandle={removeBanner} />
+				</div>
 			</section>
 
-			<div
-				class="mx-auto my-0 mb-md h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
-			/>
-			<button class="button--primary w-full">Finish Setup</button>
-
-			<div
-				class="mx-auto my-sm h-[1px] w-8/12 rounded-full bg-grey-700 shadow-sm shadow-grey-700"
-			/>
-			<p class="mt-sm text-sm text-grey-700">
-				Note: What you have inputted will be publicly visible, so make sure you haven't inputted
-				anything private.
-			</p>
+			<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
+				Next
+				<Back className="h-8 w-8 stroke-grey-200 rotate-180" />
+			</button>
 		</form>
 	</div>
-</section>
+
+	<div
+		class="rouned-lg relative top-0 my-md hidden aspect-[77/47] shadow-md md:inline lg:h-[100vh-20px] lg:w-full"
+	>
+		<img
+			src={DashboardPage}
+			alt="dashboard page"
+			class="fixed top-0 aspect-auto h-[100vh] lg:h-[100vh-20px]"
+		/>
+	</div>
+</div>

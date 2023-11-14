@@ -19,9 +19,20 @@ export const load = (async (event) => {
     .eq('project', projectId)
     .order('position', { ascending: true });
 
+  const { data: tasks } = await supabaseClient
+    .from('tasks')
+    .select('*, sub_tasks(*), milestone(*)')
+    .eq('project', projectId);
+
+  const { project } = await event.parent();
+
   if (lists) {
     return {
-      lists: lists || []
+      lists: lists || [],
+      project: {
+        ...project,
+        tasks: tasks ?? []
+      }
     };
   }
 

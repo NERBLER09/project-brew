@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
 	import Check from '$lib/assets/Check.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -16,11 +16,9 @@
 	}
 
 	export let milestoneId: string | null;
-	export let taskId: number;
 	export let projectId: number;
 	export let shown = false;
-	export let positioning: string = '';
-	export let milestoneName: string = '';
+	export let selectedMilestone: object | null = {};
 
 	let search = '';
 
@@ -33,18 +31,15 @@
 		);
 	};
 
-	const updateMilestone = async (id: string, name: string) => {
-		await supabase.from('tasks').update({ milestone: id }).eq('id', taskId);
-		invalidate('project:list');
-		milestoneName = name;
+	const updateMilestone = async (id: string, milestone) => {
+		milestoneId = id;
+		selectedMilestone = milestone;
 		shown = false;
 	};
 
 	const handleRemoveMilestone = async () => {
-		await supabase.from('tasks').update({ milestone: null }).eq('id', taskId);
-		invalidate('project:list');
 		milestoneId = null;
-		milestoneName = null;
+		selectedMilestone = null;
 		shown = false;
 	};
 
@@ -55,10 +50,11 @@
 	});
 </script>
 
-<div class="dropdown--container z-50 {positioning}">
+<div class="dropdown--container right-0 z-50 md:top-6">
 	{#if milestoneId}
-		<button class="dropdown--item" on:click={handleRemoveMilestone}
-			><span class="dropdown--label">Remove milestone</span></button
+		<button class="dropdown--item" on:click={handleRemoveMilestone} type="button">
+			<Trash className="dropdown--icon" />
+			<span class="dropdown--label">Remove milestone</span></button
 		>
 	{/if}
 
@@ -71,7 +67,11 @@
 	/>
 
 	{#each searchedMilestones as milestone}
-		<button class="dropdown--item" on:click={() => updateMilestone(milestone.id, milestone.name)}>
+		<button
+			class="dropdown--item"
+			type="button"
+			on:click={() => updateMilestone(milestone.id, milestone)}
+		>
 			{#if milestone.id === milestoneId}
 				<Check className="dropdown--icon" />
 			{/if}

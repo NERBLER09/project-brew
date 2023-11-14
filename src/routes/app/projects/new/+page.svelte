@@ -14,29 +14,25 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import AddTeam from '$lib/components/projects/new/AddTeam.svelte';
 	import { supabase } from '$lib/supabase';
+	import UpdateBanner from '$lib/components/prompts/team/about/UpdateBanner.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	export let user: PageData;
 
 	let tags: string[] = [];
 
-	let files: any = '';
+	let newBanner: any = '';
 	let fileURL: string;
-
-	const getFileURL = (file: any) => {
-		if (!file) return;
-		fileURL = URL.createObjectURL(file);
-	};
-
-	$: if (files) getFileURL(files[0]);
 
 	let name = '';
 	let description = '';
 	let invitedMembers: string[];
 	let selectedTeam: string;
+	let useTemplate = false;
 
 	const handleSubmit = async (event) => {
 		const data = new FormData(this);
-		data.append('cover-url', files[0] ?? '');
+		data.append('cover-url', newBanner[0] ?? '');
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
@@ -50,16 +46,38 @@
 		});
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
+			if (useTemplate) {
+				const { data: user } = await supabase.auth.getUser();
+				const { error: err } = await supabase.from('lists').insert([
+					{
+						project: result.data.id,
+						position: 0,
+						list_name: 'To-Do',
+						status: 'todo',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 1,
+						list_name: 'Doing',
+						status: 'doing',
+						user_id: user.user?.id
+					},
+					{
+						project: result.data.id,
+						position: 2,
+						list_name: 'Done',
+						status: 'done',
+						user_id: user.user?.id
+					}
+				]);
+			}
+
 			toast.success('Created new project');
 			goto(`/app/projects/${result?.data.id}`);
 		} else {
 			toast.error(`Failed to create project: ${result?.data.message}`);
 		}
-	};
-
-	const resetImages = () => {
-		fileURL = '';
-		files = null;
 	};
 
 	let showTransferTeamDropdown = false;
@@ -92,7 +110,7 @@
 </svelte:head>
 
 <MobileSubPageLayout pageName="New Project" previousPage="/app/projects">
-	<p class="pt-sm pb-md font-medium text-grey-700 dark:text-grey-200">
+	<p class="pb-md pt-sm font-medium text-grey-700 dark:text-grey-200">
 		Chose what projects are displayed on top.
 	</p>
 
@@ -115,6 +133,31 @@
 					class="input--text h-36 w-full resize-none"
 					placeholder="Enter a brief description"
 					bind:value={description}
+				/>
+			</div>
+		</section>
+
+		<section>
+			<header>
+				<h2 class="mb-sm w-full text-start text-md font-semibold text-grey-700 dark:text-grey-300">
+					Project Appearance
+				</h2>
+			</header>
+
+			<div class="mb-md">
+				<label for="pfp-select" class="input--label mb-sm">Project Banner</label>
+				<p class="my-sm font-medium text-grey-700 dark:text-grey-300">
+					Spice up this project by uploading a banner
+				</p>
+				<FileInput
+					bind:bannerURL={fileURL}
+					bind:newBanner
+					uploadBanner={async () => {
+						return;
+					}}
+					postRemoveBannnerHandle={async () => {
+						return;
+					}}
 				/>
 			</div>
 		</section>
@@ -168,30 +211,9 @@
 
 		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
 
-		<section>
-			<header>
-				<h2 class="text-md font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
-			</header>
-			<div class="max-w-xl">
-				<label
-					class="flex h-32 w-full cursor-pointer appearance-none justify-center rounded-md border-2 border-dashed border-grey-800 bg-grey-100 px-4 transition hover:border-grey-600 focus:outline-none dark:bg-grey-800"
-				>
-					<span class="flex flex-col items-center justify-center space-x-2">
-						<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-						<span class="font-medium text-grey-700 dark:text-grey-200">Select a cover image</span>
-					</span>
-					<input type="file" name="cover-image" class="hidden" accept=".png, .jpg" bind:files />
-				</label>
-			</div>
+		<input type="checkbox" id="template" class="input--checkbox" bind:checked={useTemplate} />
+		<label for="template" class="input--label">Use basic project template</label>
 
-			{#if fileURL}
-				<h3 class="mt-md text-md font-semibold text-grey-700 dark:text-grey-200">Cover Preview</h3>
-				<img src={fileURL} alt="cover" class="max-h-52 rounded-md bg-center object-cover" />
-				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
-					>Clear cover</button
-				>
-			{/if}
-		</section>
 		<button class="button--circle absolute bottom-8 right-8" type="submit">
 			<Check className="h-8 w-8 stroke-grey-200" />
 			<span class="sr-only">Create project</span>

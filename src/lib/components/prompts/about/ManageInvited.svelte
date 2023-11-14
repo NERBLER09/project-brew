@@ -9,9 +9,12 @@
 	import { showManageInvitedPrompt } from '$lib/stores/ui';
 	import toast from 'svelte-french-toast';
 	import UserAdd from '$lib/assets/User-Add.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
+
+	let isOwner = $userRole === 'owner';
 
 	let emailSearch = '';
 	const handleModalStatus = (status: boolean) => {
@@ -34,7 +37,7 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class="relative -top-8 -left-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!$currentProject.banner
+		class="relative -left-8 -top-8 flex w-[calc(100%+64px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-6 font-semibold {!$currentProject.banner
 			? 'w-fit'
 			: 'h-[12.5rem]'}"
 		style="background-image: {$currentProject.banner
@@ -57,43 +60,45 @@
 		</button>
 	</header>
 
-	<form
-		action="about/team-management?/invite"
-		method="POST"
-		use:enhance={() => {
-			return async ({ result }) => {
-				if (result.type === 'success') {
-					toast.success(`Added ${emailSearch} to ${$currentProject.project_name}`);
-					invalidate('app:project');
-				} else if (result.data.notFound) {
-					toast.error(`A user with the email: ${emailSearch} doesn't exist`);
-				} else if (result.data.invited) {
-					toast.error(`${emailSearch} has already been invited to this team.`);
-				} else if (result.type === 'failure') {
-					toast.error(`Failed to add user: ${result.data.message}`);
-				}
-			};
-		}}
-	>
-		<div
-			class="input--text relative flex w-full items-center {!$currentProject.banner
-				? '-top-8'
-				: ''} "
+	{#if isOwner}
+		<form
+			action="about/team-management?/invite"
+			method="POST"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type === 'success') {
+						toast.success(`Added ${emailSearch} to ${$currentProject.project_name}`);
+						invalidate('app:project');
+					} else if (result.data.notFound) {
+						toast.error(`A user with the email: ${emailSearch} doesn't exist`);
+					} else if (result.data.invited) {
+						toast.error(`${emailSearch} has already been invited to this team.`);
+					} else if (result.type === 'failure') {
+						toast.error(`Failed to add user: ${result.data.message}`);
+					}
+				};
+			}}
 		>
-			<input
-				type="text"
-				placeholder="Search by email to invite people"
-				class="input--text m-0 w-full p-0"
-				bind:value={emailSearch}
-				name="invite_email"
-			/>
-			<button>
-				<UserAdd
-					className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+			<div
+				class="input--text relative flex w-full items-center {!$currentProject.banner
+					? '-top-8'
+					: ''} "
+			>
+				<input
+					type="text"
+					placeholder="Search by email to invite people"
+					class="input--text m-0 w-full p-0"
+					bind:value={emailSearch}
+					name="invite_email"
 				/>
-			</button>
-		</div>
-	</form>
+				<button>
+					<UserAdd
+						className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
+					/>
+				</button>
+			</div>
+		</form>
+	{/if}
 
 	<section class="relative mt-md {!$currentProject.banner ? '-top-8' : ''}">
 		<header>

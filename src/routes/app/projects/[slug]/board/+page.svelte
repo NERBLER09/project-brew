@@ -9,8 +9,11 @@
 	import type { PageData } from './$types';
 	import { supabase } from '$lib/supabase';
 	import { userData } from '$lib/stores/user';
+	import { invalidate } from '$app/navigation';
+	import { userRole } from '$lib/stores/team';
 
 	export let data: PageData;
+	console.log(data.project.tasks);
 
 	let createNewList = false;
 
@@ -28,6 +31,13 @@
 			})
 			.eq('id', event.detail.info.id);
 	};
+
+	supabase
+		.channel('any')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+			invalidate('project:board');
+		})
+		.subscribe();
 </script>
 
 <svelte:head>
@@ -35,15 +45,18 @@
 </svelte:head>
 
 <section
-	class="relative {!data.banner
-		? '-top-8'
-		: ''} flex flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:gap-2xl"
-	use:dndzone={{ items: data.lists, type: 'list', flipDurationMs: 300, dragDisabled: $disableDrag }}
+	class="relative flex h-[calc(100vh-400px)] flex-nowrap items-start gap-lg overflow-x-auto pb-4 md:h-[calc(100vh-270px)] md:gap-2xl"
+	use:dndzone={{
+		items: data.lists,
+		type: 'list',
+		flipDurationMs: 300,
+		dragDisabled: $disableDrag || $userRole === 'viewer'
+	}}
 	on:finalize={handleDnd}
 	on:consider={handleDnd}
 >
 	{#each data.lists as list (list.id)}
-		<List name={list.list_name} id={list.id} status={list.status} />
+		<List name={list.list_name} id={list.id} status={list.status} dbTasks={data.project.tasks} />
 	{/each}
 
 	<div

@@ -13,6 +13,9 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from './ConfirmDelete.svelte';
 	import Switch from '$lib/components/form/Switch.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
+	import { bind } from 'lodash';
+	import Copy from '$lib/assets/Copy.svelte';
 
 	export let shown = false;
 	export let teamMembers: TeamMembers[];
@@ -99,6 +102,45 @@
 		invalidate('app:team');
 	};
 
+	let newBannerFiles: FileList;
+	const handleUpdateBanner = async () => {
+		const banner = newBannerFiles[0];
+
+		const { data: user } = await supabase.auth.getUser();
+		const userId = user.user?.id;
+
+		if (banner.size !== 0 && banner.size < 5000000) {
+			const { error: uploadErr } = await supabase.storage
+				.from('teams')
+				.upload(`${userId}/${$currentTeam.name}`, banner, {
+					cacheControl: '3600',
+					upsert: true
+				});
+			if (uploadErr) {
+				toast.error(`Failed to upload new banner: ${uploadErr.message}`);
+				return;
+			}
+
+			const { data: url } = supabase.storage
+				.from('teams')
+				.getPublicUrl(`${userId}/${$currentTeam.name}`);
+
+			const { error } = await supabase
+				.from('teams')
+				.update({ banner: url.publicUrl })
+				.eq('id', $currentTeam.id);
+
+			if (!error) {
+				invalidate('app:team');
+				$currentTeam.banner = url.publicUrl;
+			} else {
+				toast.error(`Failed to update team banner: ${error.message}`);
+			}
+		} else if (banner.size !== 0 && banner.size > 5000000) {
+			toast.error('The selected file must be under 5mb in size');
+		}
+	};
+
 	$: handleUpdateDashboard(showMembers, showProjects, showProgress, showDueTasks);
 </script>
 
@@ -108,7 +150,7 @@
 	on:close={() => (shown = false)}
 >
 	<header
-		class=" -top-8 -left-8 flex items-end rounded-b-3xl bg-cover bg-center object-cover {!$currentTeam.banner
+		class=" -left-8 -top-8 flex items-end rounded-b-3xl bg-cover bg-center object-cover {!$currentTeam.banner
 			? 'static w-full'
 			: 'relative h-[12.5rem] w-[calc(100%+64px)] p-6'}"
 		style="background-image: {$currentTeam.banner
@@ -137,23 +179,9 @@
 		{/if}
 
 		<div class={$currentTeam.banner ? '' : 'ml-auto flex items-center'}>
-			{#if !isViewer}
-				<button
-					class="top-8 left-8 {$currentTeam.banner ? 'absolute' : 'static'}"
-					on:click={() => (showUpdateBannerDialog = true)}
-				>
-					<Edit
-						className="{$currentTeam.banner
-							? 'stroke-grey-200'
-							: 'stroke-grey-700 dark:stroke-grey-200'} w-8 h-8"
-					/>
-					<span class="sr-only">Modify team banner</span>
-				</button>
-			{/if}
-
 			<button
 				on:click={() => (shown = false)}
-				class="{$currentTeam.banner ? 'absolute' : 'static'} top-8 right-8"
+				class="{$currentTeam.banner ? 'absolute' : 'static'} right-8 top-8"
 			>
 				<CloseMultiply
 					className="{$currentTeam.banner
@@ -175,6 +203,12 @@
 			>
 				{$currentTeam.description}
 			</p>
+
+			<FileInput
+				bind:newBanner={newBannerFiles}
+				postRemoveBannnerHandle={() => {}}
+				uploadBanner={handleUpdateBanner}
+			/>
 		{:else}
 			<p class="my-md font-medium text-grey-700 dark:text-grey-300">
 				{$currentTeam.description}
@@ -182,11 +216,17 @@
 		{/if}
 
 		{#if $userRole === 'owner'}
-			<span class="mt-md mb-sm font-medium text-grey-700 dark:text-grey-200"
+			<span class="mb-sm mt-md font-medium text-grey-700 dark:text-grey-200"
 				>Team invite code:
-				<button class="button--text m-0 mb-md p-0 text-start font-medium" on:click={copyJoinCode}
-					>{$currentTeam.id}</button
+				<button
+					class="button--text m-0 mb-md flex items-center gap-md p-0 text-start font-medium"
+					on:click={copyJoinCode}
 				>
+					<Copy
+						className="w-6 h-6 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-300"
+					/>
+					{$currentTeam.id}
+				</button>
 			</span>
 		{/if}
 

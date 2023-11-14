@@ -4,6 +4,7 @@
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
 	import { goto } from '$app/navigation';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -86,34 +87,16 @@
 			<header>
 				<h2 class="my-md font-bold text-grey-700 dark:text-grey-200">Cover image</h2>
 			</header>
-			<div class="w-full">
-				<label
-					class="flex h-32 w-full cursor-pointer appearance-none justify-center rounded-md border-2 border-dashed border-grey-800 bg-grey-100 px-4 transition hover:border-grey-600 focus:outline-none dark:bg-grey-800"
-				>
-					<span class="flex flex-col items-center justify-center space-x-2">
-						<Image className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-						<span class="font-medium text-grey-700 dark:text-grey-200">Drag and drop</span>
-						<span class="font-medium text-grey-700 dark:text-grey-200">or</span>
-						<span class="font-medium text-grey-700 dark:text-grey-200">select a cover image</span>
-					</span>
-					<input
-						type="file"
-						name="cover"
-						class="hidden"
-						accept=".png, .jpg"
-						bind:files
-						bind:this={fileInput}
-					/>
-				</label>
-			</div>
 
-			{#if fileURL}
-				<h3 class="mt-md text-md font-semibold text-grey-700 dark:text-grey-200">Cover Preview</h3>
-				<img src={fileURL} alt="cover" class="max-h-52 w-full rounded-md bg-center object-cover" />
-				<button class="button--secondary mt-sm w-full" type="button" on:click={resetImages}
-					>Clear cover</button
-				>
-			{/if}
+			<p class="font-semibold text-grey-700 dark:text-grey-300">
+				Spice up your team by setting a team banner
+			</p>
+
+			<FileInput
+				bind:bannerURL={fileURL}
+				postRemoveBannnerHandle={() => {}}
+				bind:newBanner={files}
+			/>
 		</section>
 
 		<footer class="mx-auto mt-xl flex w-1/2 items-center justify-around">

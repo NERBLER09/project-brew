@@ -104,11 +104,5 @@
 			<LogOut className="stroke-grey-700 dark:stroke-grey-200 h-6 w-6" />
 			Log out
 		</button>
-		<div
-			class="mx-auto h-[2px] w-11/12 rounded-full border border-solid border-grey-600 drop-shadow-md"
-		/>
-		<div class="ml-md">
-			<Switch id="dark-mode" text="Dark Mode" bind:checked={$useDarkMode} />
-		</div>
 	</div>
 </section>

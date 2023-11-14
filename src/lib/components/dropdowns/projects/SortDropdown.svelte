@@ -6,12 +6,20 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { sortOptions as projectSort } from '$lib/stores/project';
+	import { currentProject, sortOptions as projectSort } from '$lib/stores/project';
+	import { supabase } from '$lib/supabase';
+	import { update } from 'lodash';
 
 	let addSort = false;
 
 	const sortOptions = $projectSort;
 	$: $projectSort = sortOptions;
+
+	const updateSort = async (sort) => {
+		await supabase.from('projects').update({ sort }).eq('id', $currentProject.id);
+	};
+
+	$: updateSort($projectSort);
 </script>
 
 <div class="dropdown--container right-0 z-50 md:top-6 md:min-w-[15.625rem]">

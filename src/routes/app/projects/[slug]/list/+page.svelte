@@ -8,14 +8,17 @@
 		dateFilter,
 		filterTags,
 		milestoneFilter,
+		priorityFilter,
 		searchQuery,
 		sortOptions
 	} from '$lib/stores/project';
 	import type { ActionResult } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
-	import { handleSortClear, handleSortingTasks } from '$lib/api/sort';
+	import { handleSortingTasks } from '$lib/api/sort';
 	import { handleFilter } from '$lib/api/filter';
+	import { supabase } from '$lib/supabase';
+	import { userRole } from '$lib/stores/team';
 	export let data: PageData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -23,9 +26,13 @@
 	let addNewTask = false;
 	let newTaskName = '';
 
+	let isViewer = $userRole === 'viewer';
+
 	const handleSearch = (query: string) => {
 		filteredTasks = data.project?.tasks ?? [];
-		filteredTasks = filteredTasks.filter((item) => item.name.toLowerCase().includes(query));
+		filteredTasks = filteredTasks.filter((item) =>
+			item.name.toLowerCase().includes(query.toLowerCase())
+		);
 		filteredTasks = [...filteredTasks];
 	};
 	$: handleSearch($searchQuery);
@@ -48,14 +55,21 @@
 		}
 	};
 
-	$: filteredTasks = handleSortingTasks(filteredTasks, $sortOptions);
-	$: filteredTasks = handleSortClear($sortOptions, data.project?.tasks ?? []);
+	$: filteredTasks = handleSortingTasks(data.project?.tasks, $sortOptions);
 	$: filteredTasks = handleFilter(
 		data.project?.tasks ?? [],
 		$dateFilter,
+		$priorityFilter,
 		$filterTags,
 		$milestoneFilter
 	);
+
+	supabase
+		.channel('any')
+		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+			invalidate('project:list');
+		})
+		.subscribe();
 </script>
 
 <svelte:head>
@@ -105,13 +119,17 @@
 				<span class="font-bold text-grey-700 dark:text-grey-300">Tags</span>
 			</div>
 
-			<div class="absolute left-0 -bottom-1 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
+			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
 		</div>
 	</div>
 
 	<div class="relative flex flex-col flex-nowrap items-start gap-md">
 		{#each filteredTasks as task}
 			<TaskItem {...task} projectId={data.project?.id} />
+		{:else}
+			<span class="font-medium text-grey-700 dark:text-grey-300"
+				>Click the button below to create your first task
+			</span>
 		{/each}
 	</div>
 
@@ -126,7 +144,6 @@
 				type="text"
 				class="input--text m-0 w-full p-0"
 				placeholder="Enter a task name"
-				autofocus
 				name="new-task-name"
 				required
 				on:blur={handleCreateNewTask}
@@ -143,15 +160,17 @@
 
 <div class="h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
 
-<button
-	class="button--secondary my-sm mx-0 flex w-full items-center gap-md border-0 p-sm md:w-fit"
-	on:click={() => (addNewTask = !addNewTask)}
->
-	{#if !addNewTask}
-		<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-		New Task
-	{:else}
-		<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-		Cancel
-	{/if}
-</button>
+{#if !isViewer}
+	<button
+		class="button--secondary mx-0 my-sm flex w-full items-center gap-md border-0 p-sm md:w-fit"
+		on:click={() => (addNewTask = !addNewTask)}
+	>
+		{#if !addNewTask}
+			<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+			New Task
+		{:else}
+			<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+			Cancel
+		{/if}
+	</button>
+{/if}

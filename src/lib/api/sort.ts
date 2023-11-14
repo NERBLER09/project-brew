@@ -2,24 +2,25 @@ import type { SortOptions } from '$lib/stores/project';
 import type { Task } from '$lib/types/projects';
 
 export const handleSortingTasks = (tasks: Task[], option: SortOptions): Task[] => {
+	if (!option.date && !option.status && !option.priority) return tasks;
 	const sortedTasks = tasks;
 
-	if (option.priority === 'ascending') {
+	if (option.priority === 'descending') {
 		sortedTasks.sort((item) => {
 			switch (item.priority_level) {
 				case 'none':
-					return 0;
+					return -1;
 				case 'low':
-					return 1;
-				case 'med':
-					return 2;
-				case 'high':
-					return 3;
-				default:
 					return 0;
+				case 'med':
+					return 1;
+				case 'high':
+					return 2;
+				default:
+					return -1;
 			}
 		});
-	} else if (option.priority === 'descending') {
+	} else if (option.priority === 'ascending') {
 		sortedTasks.sort((item) => {
 			switch (item.priority_level) {
 				case 'none':

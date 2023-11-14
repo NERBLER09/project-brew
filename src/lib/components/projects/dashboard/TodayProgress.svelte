@@ -10,11 +10,11 @@
 	let strokeArray = 380;
 	let totalAmountOfTasks = today.length ?? 0;
 	let completedTasks = today.filter((item) => item.status === 'done').length ?? 0;
-	let percentCompleted = (completedTasks / totalAmountOfTasks) * 100;
+	let percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100);
 </script>
 
-<div class="flex flex-row gap-xl">
-	<div class="mx-auto flex flex-col">
+<div class="flex flex-col gap-xl lg:flex-row">
+	<div class="mx-auto flex flex-row items-center lg:flex-col 2xl:flex-row">
 		<div
 			class="relative mx-auto mb-md flex aspect-square h-32 w-32 flex-col items-center justify-center gap-sm rounded-full"
 		>

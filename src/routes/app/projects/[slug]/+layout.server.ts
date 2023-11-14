@@ -16,17 +16,12 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select()
+		.select('*, project_members!inner(*)')
 		.eq('id', projectId)
 		.limit(1)
 		.single();
 
-	const { data: invited_people } = await supabaseClient
-		.from('project_members')
-		.select()
-		.eq('project', projectId);
-
-	const invitedUserIds = invited_people?.map((item) => item.user_id) ?? [];
+	const invitedUserIds = project?.project_members?.map((item) => item.user_id) ?? [];
 
 	const { data: users } = await supabaseClient
 		.from('profiles')
@@ -38,22 +33,30 @@ export const load = (async (event) => {
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
 
+	const { data: role } = await supabaseClient
+		.from('project_members')
+		.select('role')
+		.eq('user_id', session.user.id)
+		.eq('project', projectId)
+		.limit(1)
+		.single();
+
 	if (project) {
 		return {
 			name: project?.project_name,
 			id: project.id,
 			description: project?.description,
 			banner: project?.banner,
-			tags: JSON.parse(project?.tags ?? '[]'),
+			role,
 			project: {
 				...project,
 				invite: {
 					profiles: users ?? []
 				}
 			},
-			invited_people: invited_people || [],
+			invited_people: project.project_members || [],
 			team: project.team,
-			userTeams
+			userTeams: userTeams ?? []
 		};
 	}
 

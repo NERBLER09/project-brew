@@ -1,7 +1,6 @@
 <script lang="ts">
 	import User from '$lib/assets/User.svelte';
 	import { invitedTeamMembers } from '$lib/stores/user';
-	import { onMount } from 'svelte';
 	import TagItem from '../tags/TagItem.svelte';
 
 	export let id: number;
@@ -9,15 +8,11 @@
 	export let banner: string | null = '';
 	export let invited_people: string[] | null = [];
 	export let description: string | null = '';
-	export let tags: string = '';
-	let formattedTags: string[] = [];
+	export let tags: string[] = [];
+	tags = tags ?? [];
 
 	let invitedPeople = $invitedTeamMembers ?? [];
 	invitedPeople = invitedPeople.filter((item) => invited_people?.includes(item.id));
-
-	onMount(() => {
-		formattedTags = JSON.parse(tags);
-	});
 </script>
 
 <a href="/app/projects/{id}">
@@ -41,13 +36,13 @@
 			>
 				{description}
 			</p>
-
-			<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
-				{#each formattedTags as tag}
-					<TagItem {tag} sm={true} />
-				{/each}
-			</div>
-
+			{#if tags}
+				<div class="mt-sm flex flex-wrap items-center gap-md empty:hidden">
+					{#each tags as tag}
+						<TagItem {tag} sm={true} />
+					{/each}
+				</div>
+			{/if}
 			<div class="mt-md flex items-center empty:hidden">
 				{#each invitedPeople as { avatar_url }}
 					{#if avatar_url}

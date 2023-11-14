@@ -8,7 +8,7 @@ export const load = (async (event) => {
     throw redirect(303, '/');
   }
 
-  let params = event.params;
+  const params = event.params;
   const projectId = params.slug;
 
   event.depends('project:about');
@@ -35,7 +35,7 @@ export const load = (async (event) => {
     return {
       project: {
         ...project,
-        tags: JSON.parse(project?.tags ?? '[]') ?? [],
+        tags: project.tags ?? [],
         user_teams: userTeams ?? [],
         invited_people: invited_people ?? []
       }

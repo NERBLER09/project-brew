@@ -7,6 +7,7 @@
 	import Assinged from '../card/Assinged.svelte';
 	import PriorityLevel from '../card/priority/PriorityLevel.svelte';
 	import ChangeMilestone from './ChangeMilestone.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -24,6 +25,8 @@
 	let formattedDate = '';
 	let milestoneName = '';
 	let showChangeMilestone = false;
+
+	let isViewer = $userRole === 'viewer';
 
 	const getMilestoneName = async () => {
 		if (milestone) {
@@ -61,49 +64,68 @@
 </script>
 
 <div class="flex items-center">
-	<div class="relative mr-md min-w-[15.625rem]">
-		<span
-			class="font-bold text-grey-700 dark:text-grey-300"
-			contenteditable
-			bind:textContent={name}
-			on:blur={() => updateDetails(name, newDate)}>{name}</span
-		>
-	</div>
-	<button
-		class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
-		on:click={() => newDateInput.showPicker()}
-	>
-		<input
-			type="date"
-			class="hidden"
-			bind:this={newDateInput}
-			bind:value={newDate}
-			on:change={() => updateDetails(name, newDate)}
-		/>
-		{#if due_date}
-			<Calendar className="h-6 w-6 stroke-accent-light" />
-			<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+	<div class="relative mr-md min-w-[15.625rem] max-w-[15.625rem] truncate">
+		{#if isViewer}
+			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
-			<CalendarAdd className="h-6 w-6 stroke-accent-light" />
-			<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
+			<span
+				class="font-bold text-grey-700 dark:text-grey-300"
+				contenteditable
+				bind:textContent={name}
+				on:blur={() => updateDetails(name, newDate)}>{name}</span
+			>
 		{/if}
-	</button>
+	</div>
+	{#if isViewer}
+		<div
+			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 bg-none p-0"
+			style="background: none;"
+		>
+			{#if due_date}
+				<Calendar className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+			{:else}
+				<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">No due date</span>
+			{/if}
+		</div>
+	{:else}
+		<button
+			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
+			on:click={() => newDateInput.showPicker()}
+		>
+			<input
+				type="date"
+				class="hidden"
+				bind:this={newDateInput}
+				bind:value={newDate}
+				on:change={() => updateDetails(name, newDate)}
+			/>
+			{#if due_date}
+				<Calendar className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">{formattedDate}</span>
+			{:else}
+				<CalendarAdd className="h-6 w-6 stroke-accent-light" />
+				<span class="font-bold text-grey-700 dark:text-grey-300">Add due date</span>
+			{/if}
+		</button>
+	{/if}
 	<div class="relative mr-md min-w-[10.625rem]">
 		<div class="w-fit">
 			{#if status === 'done'}
-				<div class="rounded-full bg-emerald-400 py-1 px-4 dark:bg-emerald-500">
+				<div class="rounded-full bg-emerald-400 px-3 py-[0.125rem] dark:bg-emerald-500">
 					<span class="font-medium text-grey-100">Done</span>
 				</div>
 			{:else if status === 'doing'}
-				<div class="rounded-full bg-yellow-300 py-1 px-4 dark:bg-yellow-400">
+				<div class="rounded-full bg-yellow-300 px-3 py-[0.125rem] dark:bg-yellow-400">
 					<span class="font-medium text-grey-700">Doing</span>
 				</div>
 			{:else if status === 'todo'}
-				<div class="rounded-full bg-orange-400 py-1 px-4 dark:bg-orange-600">
+				<div class="rounded-full bg-orange-400 px-3 py-[0.125rem] dark:bg-orange-600">
 					<span class="font-medium text-grey-100">To-do</span>
 				</div>
 			{:else if status === 'other' || status === null}
-				<div class="rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+				<div class="rounded-full bg-grey-200 px-3 py-[0.125rem] dark:bg-grey-700">
 					<span class="font-medium text-grey-700 dark:text-grey-300">Other</span>
 				</div>
 			{/if}
@@ -123,14 +145,18 @@
 			</div>
 		{/if}
 	</div>
-	<div class="relative mr-md min-w-[10.625rem] max-w-[10.625rem]">
+	<div
+		class="relative mr-md min-w-[10.625rem] max-w-[10.625rem] overflow-visible whitespace-nowrap"
+	>
 		<button
-			class="button--secondary m-0 flex w-fit items-center gap-sm border-0 p-0"
+			class="button--secondary m-0 flex w-fit min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm border-0 p-0"
 			on:click={() => (showChangeMilestone = !showChangeMilestone)}
 		>
-			<Milestone className="h-6 w-6 stroke-accent-light" />
+			<Milestone className="min-h-6 min-w-6 w-6 h-6 stroke-accent-light" />
 			{#if milestoneName}
-				<span class="truncate font-bold text-grey-700 dark:text-grey-300">{milestoneName}</span>
+				<span class="max-w-[10ch] truncate font-bold text-grey-700 dark:text-grey-300"
+					>{milestoneName}</span
+				>
 			{:else}
 				<span class="truncate font-bold text-grey-700 dark:text-grey-300">No milestone</span>
 			{/if}
@@ -142,15 +168,17 @@
 				milestoneId={milestone}
 				taskId={id}
 				bind:shown={showChangeMilestone}
+				positioning="top-5"
+				bind:milestoneName
 			/>
 		{/if}
 	</div>
 	<div class="min-w-[10.625rem]">
 		{#if tags && tags.length > 0}
 			<span class="font-bold text-grey-700 dark:text-grey-300">
-				<div class="flex flex-wrap items-center gap-md pt-sm empty:hidden">
+				<div class="flex items-center gap-md pt-sm empty:hidden">
 					{#each tags as tag}
-						<div class="w-fit rounded-full bg-grey-200 py-1 px-4 dark:bg-grey-700">
+						<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
 							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
 						</div>
 					{/each}

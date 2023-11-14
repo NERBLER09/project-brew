@@ -110,7 +110,9 @@
 	{/if}
 </header>
 
-<div class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-2 md:gap-xl lg:grid-cols-5">
+<div
+	class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-[max-content] md:gap-xl lg:grid-cols-5"
+>
 	<YourActivity />
 
 	<ProjectStatistics pinned_projects={data.pinned} />
@@ -186,7 +188,7 @@
 			{:else}
 				<div class="mt-sm flex flex-col text-center">
 					<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span>
-					<span class="mt-md mb-sm text-md font-medium text-grey-700 dark:text-grey-200"
+					<span class="mb-sm mt-md text-md font-medium text-grey-700 dark:text-grey-200"
 						><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1
 							? 's'
 							: ''}</span

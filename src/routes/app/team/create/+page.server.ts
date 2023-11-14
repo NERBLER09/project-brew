@@ -11,7 +11,7 @@ export const actions = {
 		const form = await event.request.formData();
 		const name = form.get('name') as string;
 		const description = form.get('description') as string;
-		const cover = form.get('cover') as File;
+		const cover = form.get('banner') as File;
 		let cover_url = '';
 
 		if (cover.size !== 0 && cover.size < 5000000) {

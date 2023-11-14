@@ -132,7 +132,7 @@
 	<title>{data.milestone.name}</title>
 </svelte:head>
 
-<header class="flex items-center gap-md lg:px-80">
+<header class="flex items-center gap-md md:[padding:_0_clamp(2em,5vw,10em)]">
 	<a href="/app/projects/{data.project.id}/milestones">
 		<Back
 			className="w-8 h-8 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-200 md:h-10 md:w-10"
@@ -152,7 +152,9 @@
 	</button>
 </header>
 
-<div class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row lg:px-80">
+<div
+	class="mt-md flex flex-col-reverse items-start gap-lg md:mt-xl md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]"
+>
 	<div
 		class="w-full rounded-xl bg-grey-100 p-lg shadow shadow-grey-700 dark:bg-grey-800 dark:shadow-grey-600 md:w-fit"
 	>
@@ -273,7 +275,7 @@
 	</div>
 </div>
 
-<section class="mt-md md:mt-lg lg:px-80">
+<section class="mt-md md:mt-lg md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]">
 	<header class="mb-md flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
 
@@ -302,7 +304,7 @@
 	</div>
 </section>
 
-<section class="mt-md md:mt-lg lg:px-80">
+<section class="mt-md md:mt-lg md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]">
 	<header class="mb-md flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Roadmap</h2>
 

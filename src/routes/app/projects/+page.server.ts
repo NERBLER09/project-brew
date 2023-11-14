@@ -1,3 +1,4 @@
+import { supabase } from '$lib/supabase';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import lodash from 'lodash';
@@ -13,13 +14,8 @@ export const load = (async (event) => {
 
 	const { data, error: err } = await supabaseClient
 		.from('projects')
-		.select()
-		.eq('user_id', session.user.id);
-
-	const { data: invited, error: err2 } = await supabaseClient
-		.from('projects')
-		.select()
-		.contains('invited_people', [session.user.id]);
+		.select('*, project_members!inner(user_id)')
+		.eq('project_members.user_id', session.user.id);
 
 	const { data: userTeams } = await supabaseClient
 		.from('team_members')
@@ -30,8 +26,8 @@ export const load = (async (event) => {
 
 	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
 
-	if (data && invited) {
-		let allProjects = [...data, ...invited, ...(team ?? [])];
+	if (data) {
+		let allProjects = [...data, ...(team ?? [])];
 		allProjects = lodash.uniqBy(allProjects, 'id');
 		const pinned = data.filter((value) => value.pinned);
 		return { all: allProjects, pinned };
@@ -98,6 +94,8 @@ export const actions: Actions = {
 			}
 		}
 
+		console.log()
+
 		const { data: project, error: err } = await supabaseClient
 			.from('projects')
 			.insert({
@@ -107,15 +105,18 @@ export const actions: Actions = {
 				tags: tags ?? null,
 				banner: coverURL,
 				invited_people: invited,
-				team: team === '' ? null : team
+				team: team === undefined ? team : null
 			})
 			.select()
 			.limit(1)
 			.single();
 
-		console.log(err);
-
 		if (!err) {
+			await supabaseClient.from('project_members').insert({
+				user_id: session.user.id,
+				role: 'owner',
+				project: project.id
+			});
 			return { success: true, id: project.id };
 		} else {
 			return fail(400, { message: `Failed to create project: ${err.message}` });

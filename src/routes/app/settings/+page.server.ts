@@ -10,19 +10,19 @@ export const actions = {
 			// the user is not signed in
 			throw error(403, { message: 'Unauthorized' });
 		}
-
 		const data = await request.formData();
 		const name = data.get('name') as string;
 		const location = data.get('location') as string;
 		const bio = data.get('bio') as string;
-		const role = data.get('role') as string;
+		const role = data.get('company') as string;
 		const profile = data.get('profile') as File;
-		let avatar_url = data.get('avatar_url') as string;
-		const avatar_preview = data.get('avatar_preview') as string;
-
 		const banner = data.get('banner') as File;
-		let banner_url = data.get('banner_url') as string;
-		const banner_preview = data.get('banner_preview') as string;
+		const pronouns = data.get('pronouns') as string;
+		const set_avatar = data.get('set_avatar') as string;
+		const set_banner = data.get('set_banner') as string;
+
+		let avatar_url = set_avatar;
+		let banner_url = set_banner;
 
 		if (profile.size !== 0 && profile.size < 500000) {
 			await supabaseClient.storage
@@ -36,10 +36,7 @@ export const actions = {
 				.from('avatars')
 				.getPublicUrl(`${session.user.id}/avatar.png`);
 			avatar_url = url.publicUrl;
-		} else if (profile.size === 0 && avatar_url !== avatar_preview) {
-			await supabaseClient.storage.from('avatars').remove([`${session.user.id}/avatar.png`]);
-			avatar_url = '';
-		} else if (profile.size !== 0 && profile.size > 5000000 && avatar_url !== avatar_preview) {
+		} else if (profile.size !== 0 && profile.size > 5000000) {
 			return fail(400, { message: 'Profile picture is larger then 5mb.', fail: true });
 		}
 
@@ -53,22 +50,20 @@ export const actions = {
 				.from('avatars')
 				.getPublicUrl(`${session.user.id}/cover.png`);
 			banner_url = url.publicUrl;
-		} else if (banner.size === 0 && banner_url !== banner_preview) {
-			await supabaseClient.storage.from('avatars').remove([`${session.user.id}/cover.png`]);
-			banner_url = '';
-		} else if (banner.size > 5000000 && banner.size > 0 && banner_url !== banner_preview) {
+		} else if (banner.size > 5000000 && banner.size > 0) {
 			return fail(400, { message: 'Banner is larger then 5mb.', fail: true });
 		}
 
 		const { error: err } = await supabaseClient
 			.from('profiles')
-			.update({ name, location, bio, avatar_url, banner: banner_url, role })
+			.update({ name, location, bio, avatar_url, banner: banner_url, role, pronouns })
 			.eq('id', session.user.id);
 
 		if (err) {
 			throw error(403, err.message);
 		}
 	},
+
 	notifications: async (event) => {
 		const { request } = event;
 		const { session, supabaseClient } = await getSupabase(event);
@@ -78,14 +73,14 @@ export const actions = {
 		}
 
 		const data = await request.formData();
-		let pushInvited = data.get('project-invite') as string;
-		let pushAssigned = data.get('new-task') as string;
-		let pushDueTask = data.get('due-tasks') as string;
-		let pushFocusTimerUp = data.get('focus-timer-up') as string;
+		const pushInvited = data.get('project-invite') as string;
+		const pushAssigned = data.get('new-task') as string;
+		const pushDueTask = data.get('due-tasks') as string;
+		const pushFocusTimerUp = data.get('focus-timer-up') as string;
 
-		let emailInvited = data.get('email-project-invite') as string;
-		let emailAssigned = data.get('email-new-task') as string;
-		let emailDueTask = data.get('email-due-tasks') as string;
+		const emailInvited = data.get('email-project-invite') as string;
+		const emailAssigned = data.get('email-new-task') as string;
+		const emailDueTask = data.get('email-due-tasks') as string;
 
 		console.log(pushInvited);
 
@@ -110,6 +105,29 @@ export const actions = {
 
 		if (err) {
 			throw fail(403, { message: err.message });
+		}
+	},
+	resetPassword: async (event) => {
+		const { request } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
+
+		const form = await request.formData();
+		const newPassword = form.get('new-password') as string;
+		const confirmPassword = form.get('confirm-password') as string;
+
+		if (newPassword !== confirmPassword) {
+			return fail(403, { message: 'The passwords you have entered do not match.' });
+		}
+
+		const { error: err } = await supabaseClient.auth.updateUser({ password: newPassword });
+		if (err) {
+			return fail(403, { message: `Failed to change password: ${err.message}` });
+		} else {
+			return { success: true };
 		}
 	}
 } satisfies Actions;

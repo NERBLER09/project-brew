@@ -14,6 +14,8 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/team/about/ConfirmDelete.svelte';
 	import Switch from '$lib/components/form/Switch.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
+	import Copy from '$lib/assets/Copy.svelte';
 
 	export let data: PageData;
 
@@ -88,6 +90,45 @@
 	};
 
 	$: handleUpdateDashboard(showMembers, showProjects, showProgress, showDueTasks);
+
+	let newBannerFiles: FileList;
+	const handleUpdateBanner = async () => {
+		const banner = newBannerFiles[0];
+
+		const { data: user } = await supabase.auth.getUser();
+		const userId = user.user?.id;
+
+		if (banner.size !== 0 && banner.size < 5000000) {
+			const { error: uploadErr } = await supabase.storage
+				.from('teams')
+				.upload(`${userId}/${$currentTeam.name}`, banner, {
+					cacheControl: '3600',
+					upsert: true
+				});
+			if (uploadErr) {
+				toast.error(`Failed to upload new banner: ${uploadErr.message}`);
+				return;
+			}
+
+			const { data: url } = supabase.storage
+				.from('teams')
+				.getPublicUrl(`${userId}/${$currentTeam.name}`);
+
+			const { error } = await supabase
+				.from('teams')
+				.update({ banner: url.publicUrl })
+				.eq('id', $currentTeam.id);
+
+			if (!error) {
+				invalidate('app:team');
+				$currentTeam.banner = url.publicUrl;
+			} else {
+				toast.error(`Failed to update team banner: ${error.message}`);
+			}
+		} else if (banner.size !== 0 && banner.size > 5000000) {
+			toast.error('The selected file must be under 5mb in size');
+		}
+	};
 </script>
 
 <svelte:head>
@@ -95,7 +136,7 @@
 </svelte:head>
 
 <header
-	class=" -top-6 -left-6 flex  items-end rounded-b-3xl bg-cover bg-center object-cover  
+	class=" -left-6 -top-6 flex items-end rounded-b-3xl bg-cover bg-center object-cover
     {!data.team.banner ? 'static w-full' : 'relative h-[12.5rem] w-[calc(100%+48px)] p-6'}"
 	style="background-image: {data.team.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
@@ -133,16 +174,6 @@
 </header>
 
 {#if !isViewer}
-	<button
-		class="button--secondary mt-md flex w-full items-center justify-center gap-md"
-		on:click={() => (showUpdateBannerPrompt = true)}
-	>
-		<Image className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-		Modify Banner
-	</button>
-{/if}
-
-{#if !isViewer}
 	<p
 		class="my-md font-medium text-grey-700 dark:text-grey-300"
 		contenteditable="true"
@@ -151,6 +182,12 @@
 	>
 		{data.team.description}
 	</p>
+
+	<FileInput
+		bind:newBanner={newBannerFiles}
+		postRemoveBannnerHandle={() => {}}
+		uploadBanner={handleUpdateBanner}
+	/>
 {:else}
 	<p class="my-md font-medium text-grey-700 dark:text-grey-300">
 		{data.team.description}
@@ -158,10 +195,16 @@
 {/if}
 
 {#if data.role === 'owner'}
-	<span class="mt-md mb-sm font-medium text-grey-700 dark:text-grey-200"
+	<span class="mb-sm mt-md font-medium text-grey-700 dark:text-grey-200"
 		>Team invite code:
-		<button class="button--text m-0 mb-md p-0 text-start font-medium" on:click={copyJoinCode}
-			>{data.team.id}</button
+		<button
+			class="button--text m-0 mb-md flex items-center gap-md p-0 text-start font-medium"
+			on:click={copyJoinCode}
+		>
+			<Copy
+				className="w-6 h-6 min-w-[2rem] min-h-[2rem] aspect-square stroke-grey-700 dark:stroke-grey-300"
+			/>
+			{data.team.id}</button
 		>
 	</span>
 {/if}

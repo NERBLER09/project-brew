@@ -1,18 +1,18 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, type Actions, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
-	// if (!session) {
-	// 	throw redirect(303, '/');
-	// }
+	if (!session) {
+		throw redirect(303, '/');
+	}
 
-	// const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
+	const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
 
-	// if (profile) {
-	// 	throw redirect(303, '/app/home');
-	// }
+	if (profile) {
+		throw redirect(303, '/app/home');
+	}
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -27,9 +27,12 @@ export const actions = {
 
 		const data = await event.request.formData();
 		const name = data.get('name') as string;
+		const location = data.get('location') as string;
+		const company = data.get('company') as string;
 		const bio = data.get('bio') as string;
 		const banner = data.get('banner') as File;
 		const profile = data.get('profile') as File;
+		const pronouns = data.get('pronouns') as string;
 
 		let bannerURL = '';
 
@@ -65,9 +68,18 @@ export const actions = {
 			return fail(400, { message: 'Selected banner image is over 5mb is size.' });
 		}
 
-		const { error: err } = await supabaseClient
-			.from('profiles')
-			.insert({ id, name, email, bio, banner: bannerURL, avatar_url: profileURL });
+		const { error: err } = await supabaseClient.from('profiles').insert({
+			id,
+			name,
+			email,
+			location,
+			role: company,
+			bio,
+			banner: bannerURL,
+			avatar_url: profileURL,
+			pronouns
+		});
+
 		if (err) {
 			return fail(400, { message: err.message });
 		} else {
