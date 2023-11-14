@@ -25,6 +25,7 @@
 	let showConfirmDelete = false;
 
 	const dashboardSettings: object = data.team.dashboard_settings;
+
 	let showMembers = dashboardSettings?.members;
 	let showProjects = dashboardSettings?.projects;
 	let showProgress = dashboardSettings?.progress;

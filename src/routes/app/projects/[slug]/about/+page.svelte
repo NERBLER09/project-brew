@@ -127,6 +127,8 @@
 	};
 </script>
 
+<svelte:window on:click={handleAutoCloseDropdown} />
+
 <svelte:head>
 	<title>About {data.project?.project_name}</title>
 </svelte:head>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import InvitedTeamMembers from '$lib/components/projects/about/InvitedTeamMembers.svelte';
@@ -147,6 +148,8 @@
 		}
 	};
 </script>
+
+<svelte:window on:click={handleAutoCloseDropdown} />
 
 <dialog
 	bind:this={dialog}
