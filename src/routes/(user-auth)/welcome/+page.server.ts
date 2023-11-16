@@ -8,7 +8,12 @@ export const load = (async (event) => {
 		throw redirect(303, '/');
 	}
 
-	const { data: profile } = await supabaseClient.from('profiles').select().limit(1).single();
+	const { data: profile } = await supabaseClient
+		.from('profiles')
+		.select()
+		.eq('id', session.user.id)
+		.limit(1)
+		.single();
 
 	if (profile) {
 		throw redirect(303, '/app/home');
