@@ -24,7 +24,6 @@
 	let completed = 0;
 
 	const getSubTasks = async () => {
-		console.log(id);
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', id);
 		subTasks = tasks ?? [];
 		total = subTasks.length;
@@ -67,7 +66,7 @@
 			{#if assigned.profile}
 				<img
 					src={assigned.profile}
-					class="-ml-md aspect-square h-8 w-8 rounded-full border border-grey-100 object-cover first:border-0 last:ml-0  dark:border-grey-800"
+					class="-ml-md aspect-square h-8 w-8 rounded-full border border-grey-100 object-cover first:border-0 last:ml-0 dark:border-grey-800"
 					alt="{assigned.name} profile image"
 				/>
 			{:else}

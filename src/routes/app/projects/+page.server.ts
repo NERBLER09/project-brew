@@ -94,8 +94,6 @@ export const actions: Actions = {
 			}
 		}
 
-		console.log()
-
 		const { data: project, error: err } = await supabaseClient
 			.from('projects')
 			.insert({

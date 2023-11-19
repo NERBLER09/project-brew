@@ -91,7 +91,6 @@
 			.eq('id', id)
 			.eq('project', $focusProject?.id);
 
-		console.log(index);
 		if (!error) {
 			$tasksCompletedThisDay++;
 			$weeklyActivity[$weeklyActivity.length - 1].tasksCompleted++;

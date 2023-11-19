@@ -41,14 +41,12 @@
 	});
 
 	const updateFilterOnDB = async (date, milestone, priority) => {
-		console.log('test');
 		const { error } = await supabase
 			.from('projects')
 			.update({
 				filter: { date, milestone, priority }
 			})
 			.eq('id', $currentProject.id);
-		console.log(error);
 	};
 
 	$: updateFilterOnDB($dateFilter, $milestoneFilter, $priorityFilter);

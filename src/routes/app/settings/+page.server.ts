@@ -82,8 +82,6 @@ export const actions = {
 		const emailAssigned = data.get('email-new-task') as string;
 		const emailDueTask = data.get('email-due-tasks') as string;
 
-		console.log(pushInvited);
-
 		const notifications: NotficationSettings = {
 			push: {
 				invited: pushInvited === 'on',

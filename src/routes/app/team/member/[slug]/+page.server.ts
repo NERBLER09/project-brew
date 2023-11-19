@@ -17,8 +17,6 @@ export const load = (async (event) => {
 		.limit(1)
 		.single();
 
-	console.log(user);
-
 	if (user) {
 		return { ...user, currentUser: user_id === session.user.id };
 	}

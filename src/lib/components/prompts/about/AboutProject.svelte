@@ -147,6 +147,8 @@
 			toast.error(`Failed to update project details: ${error?.message}`);
 		}
 	};
+
+	const handleAutoCloseDropdown = () => (shown = false);
 </script>
 
 <svelte:window on:click={handleAutoCloseDropdown} />

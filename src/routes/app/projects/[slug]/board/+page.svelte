@@ -13,7 +13,6 @@
 	import { userRole } from '$lib/stores/team';
 
 	export let data: PageData;
-	console.log(data.project.tasks);
 
 	let createNewList = false;
 
