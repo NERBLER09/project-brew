@@ -123,7 +123,6 @@
 	// 				target_user: $userData.id,
 	// 				type: 'dueTask'
 	// 			});
-	// 			console.log(error);
 	// 		}
 	// 	}
 	// };
