@@ -58,7 +58,7 @@ export const actions: Actions = {
 				tags,
 				assigned,
 				priority_level,
-				milestone
+				milestone: !milestone ? milestone : null
 			})
 			.select();
 
