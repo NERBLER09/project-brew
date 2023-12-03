@@ -11,6 +11,7 @@
 	const handleCreateSubTask = async () => {
 		await supabase.from('sub_tasks').insert({ task, project, name: subTaskName });
 		getSubTasks();
+		subTaskName = '';
 	};
 </script>
 

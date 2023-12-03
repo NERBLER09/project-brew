@@ -73,19 +73,17 @@
 	<div
 		class="relative mr-md flex min-w-[15.625rem] max-w-[15.625rem] items-center gap-md overflow-y-visible truncate"
 	>
-		{#if sub_tasks.length > 0}
-			<button
-				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
-				on:click={() => (showSubTasks = !showSubTasks)}
-			>
-				{#if showSubTasks}
-					<Down className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-				{:else}
-					<Left className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-				{/if}
-				<span class="sr-only">Show sub tasks</span></button
-			>
-		{/if}
+		<button
+			class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
+			on:click={() => (showSubTasks = !showSubTasks)}
+		>
+			{#if showSubTasks}
+				<Down className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+			{:else}
+				<Left className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+			{/if}
+			<span class="sr-only">Show sub tasks</span></button
+		>
 		{#if isViewer}
 			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
@@ -211,5 +209,11 @@
 </div>
 
 {#if showSubTasks}
-	<SubTaskList subTasks={sub_tasks} showSubTasks={true} />
+	<SubTaskList
+		subTasks={sub_tasks}
+		showSubTasks={true}
+		showCreateSubTasks={true}
+		taskId={id}
+		project={projectId}
+	/>
 {/if}

@@ -19,7 +19,7 @@
 	let completed = 0;
 
 	export let showSubTasks = false;
-	let showCreateSubTasks = false;
+	export let showCreateSubTasks = false;
 
 	let isViewer = $userRole === 'viewer';
 
