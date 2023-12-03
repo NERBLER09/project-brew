@@ -8,6 +8,9 @@
 	import PriorityLevel from '../card/priority/PriorityLevel.svelte';
 	import ChangeMilestone from './ChangeMilestone.svelte';
 	import { userRole } from '$lib/stores/team';
+	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
+	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
+	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -18,6 +21,7 @@
 	export let milestone: string | null;
 	export let priority_level: string | null;
 	export let projectId: number;
+	export let sub_tasks: string[];
 
 	tags = tags ?? [];
 	assigned = assigned ?? [];
@@ -25,6 +29,8 @@
 	let formattedDate = '';
 	let milestoneName = '';
 	let showChangeMilestone = false;
+
+	let showSubTasks = false;
 
 	let isViewer = $userRole === 'viewer';
 
@@ -64,7 +70,22 @@
 </script>
 
 <div class="flex items-center">
-	<div class="relative mr-md min-w-[15.625rem] max-w-[15.625rem] truncate">
+	<div
+		class="relative mr-md flex min-w-[15.625rem] max-w-[15.625rem] items-center gap-md overflow-y-visible truncate"
+	>
+		{#if sub_tasks.length > 0}
+			<button
+				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
+				on:click={() => (showSubTasks = !showSubTasks)}
+			>
+				{#if showSubTasks}
+					<Down className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				{:else}
+					<Left className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				{/if}
+				<span class="sr-only">Show sub tasks</span></button
+			>
+		{/if}
 		{#if isViewer}
 			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
@@ -76,6 +97,7 @@
 			>
 		{/if}
 	</div>
+
 	{#if isViewer}
 		<div
 			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 bg-none p-0"
@@ -187,3 +209,7 @@
 		{/if}
 	</div>
 </div>
+
+{#if showSubTasks}
+	<SubTaskList subTasks={sub_tasks} showSubTasks={true} />
+{/if}

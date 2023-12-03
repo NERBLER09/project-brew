@@ -26,7 +26,19 @@
 	let addNewTask = false;
 	let newTaskName = '';
 
+	let taskContainer: HTMLElement;
+	let taskContainerHeight = 0;
+
+	$: taskContainerHeight = taskContainer ? taskContainer.clientHeight : 0;
 	let isViewer = $userRole === 'viewer';
+
+	const getRectHeight = (container) => {
+		if (!container) return 0;
+		const rect = taskContainer.getBoundingClientRect();
+		return rect.height;
+	};
+
+	$: taskContainerHeight = getRectHeight(taskContainer);
 
 	const handleSearch = (query: string) => {
 		filteredTasks = data.project?.tasks ?? [];
@@ -82,37 +94,43 @@
 			<div class="relative mr-md w-[15.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Name</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="relative mr-md w-[10.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Due Date</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="relative mr-md w-[10.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Status</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="relative mr-md w-[10.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Priority</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="relative mr-md w-[10.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Assigned</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="relative mr-md w-[10.625rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Milestone</span>
 				<div
-					class="absolute right-0 top-0 h-full w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
 			<div class="w-[170px]">
@@ -123,7 +141,7 @@
 		</div>
 	</div>
 
-	<div class="relative flex flex-col flex-nowrap items-start gap-md">
+	<div class="relative flex flex-col flex-nowrap items-start gap-md" bind:this={taskContainer}>
 		{#each filteredTasks as task}
 			<TaskItem {...task} projectId={data.project?.id} />
 		{:else}

@@ -18,7 +18,7 @@
 	let total = 0;
 	let completed = 0;
 
-	let showSubTasks = false;
+	export let showSubTasks = false;
 	let showCreateSubTasks = false;
 
 	let isViewer = $userRole === 'viewer';
@@ -38,7 +38,7 @@
 </script>
 
 {#if subTasks.length > 0}
-	<div class="mb-md flex w-full items-center gap-md">
+	<div class="mb-md flex w-full max-w-[400px] items-center gap-md">
 		<span class="font-bold text-grey-700 dark:text-grey-300">{completed}/{total}</span>
 		<span class="sr-only">{completed}/{total} of this task's sub tasks are completed</span>
 
