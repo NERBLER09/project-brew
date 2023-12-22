@@ -82,7 +82,7 @@
 	const updateMilestoneEndDate = async () => {
 		await supabase
 			.from('milestones')
-			.update({ start_date: new Date(updatedEndDate).toISOString() })
+			.update({ end_date: new Date(updatedEndDate).toISOString() })
 			.eq('id', data.milestone.id);
 
 		invalidate('milestone:open');
