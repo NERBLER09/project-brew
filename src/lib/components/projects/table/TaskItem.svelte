@@ -11,6 +11,7 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
+	import { startCase } from 'lodash';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -131,9 +132,9 @@
 				<div class="rounded-full bg-orange-400 px-3 py-[0.125rem] dark:bg-orange-600">
 					<span class="font-medium text-grey-100">To-do</span>
 				</div>
-			{:else if status === 'other' || status === null}
+			{:else}
 				<div class="rounded-full bg-grey-200 px-3 py-[0.125rem] dark:bg-grey-700">
-					<span class="font-medium text-grey-700 dark:text-grey-300">Other</span>
+					<span class="font-medium text-grey-700 dark:text-grey-300">{startCase(status)}</span>
 				</div>
 			{/if}
 		</div>
