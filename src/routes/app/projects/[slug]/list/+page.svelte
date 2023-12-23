@@ -42,12 +42,18 @@
 
 	const handleSearch = (query: string) => {
 		filteredTasks = data.project?.tasks ?? [];
+		filteredTasks = filteredTasks.filter((item) => {
+			if (item.milestone) {
+				return !item.milestone.completed;
+			} else {
+				return item;
+			}
+		});
 		filteredTasks = filteredTasks.filter((item) =>
 			item.name.toLowerCase().includes(query.toLowerCase())
 		);
 		filteredTasks = [...filteredTasks];
 	};
-	$: handleSearch($searchQuery);
 
 	const handleCreateNewTask = async (event) => {
 		const data = new FormData();
@@ -75,6 +81,8 @@
 		$filterTags,
 		$milestoneFilter
 	);
+
+	$: handleSearch($searchQuery);
 
 	supabase
 		.channel('any')

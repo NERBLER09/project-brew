@@ -34,19 +34,6 @@
 
 	let isViewer = $userRole === 'viewer';
 
-	const getMilestoneName = async () => {
-		if (milestone) {
-			const { data } = await supabase
-				.from('milestones')
-				.select('name')
-				.eq('id', milestone)
-				.limit(1)
-				.single();
-
-			milestoneName = data?.name ?? '';
-		}
-	};
-
 	let newDate: Date;
 	let newDateInput: HTMLInputElement;
 	const updateDetails = async (name: string, date: Date) => {
@@ -65,7 +52,7 @@
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-		getMilestoneName();
+		milestoneName = milestone?.name;
 	});
 </script>
 
