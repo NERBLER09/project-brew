@@ -51,6 +51,7 @@
 	onMount(async () => {
 		const { data } = await supabase.from('milestones').select().eq('project', projectId);
 		milestones = data ?? [];
+		milestones = milestones.filter((item) => !item.completed);
 		searchedMilestones = milestones;
 	});
 </script>

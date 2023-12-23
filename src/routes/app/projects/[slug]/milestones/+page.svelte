@@ -41,6 +41,8 @@
 				return new Date(item.end_date).getTime() - new Date().getTime();
 			});
 		}
+
+		milestones = milestones.sort((item) => item?.completed);
 	};
 
 	const handleAutoCloseSearch = (event: Event) => {
@@ -85,7 +87,7 @@
 			{#if showSearch}
 				<input
 					type="text"
-					class="input--text absolute top-8 right-0 z-50 md:top-6 lg:static lg:mr-md"
+					class="input--text absolute right-0 top-8 z-50 md:top-6 lg:static lg:mr-md"
 					bind:value={query}
 					placeholder="Search for a milestone"
 				/>

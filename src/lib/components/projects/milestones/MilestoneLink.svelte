@@ -5,6 +5,7 @@
 
 	export let name: string;
 	export let id: string;
+	export let completed: boolean = false;
 
 	let strokeArray = 380;
 
@@ -49,10 +50,14 @@
 					/>
 				</svg>
 			</div>
-			<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
-			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			{#if completed}
+				<span class="font-bold text-grey-700 dark:text-grey-200">Milestone Closed</span>
+			{:else}
+				<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
+				<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			{/if}
 		</div>
-		<header class="mt-sm">
+		<header class="mt-sm max-w-[10rem]">
 			<span class="text-start font-semibold text-grey-900 dark:text-grey-100 md:text-center">
 				{name}
 			</span>

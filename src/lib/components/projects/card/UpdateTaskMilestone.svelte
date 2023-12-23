@@ -24,6 +24,7 @@
 			.select()
 			.eq('project', $currentProject.id);
 		allMilestones = milestones ?? [];
+		allMilestones = allMilestones.filter((item) => !item.completed);
 	});
 
 	const updateProjectMilestone = async (id: string, newMilestone: object) => {
