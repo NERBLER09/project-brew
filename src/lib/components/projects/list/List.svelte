@@ -79,9 +79,9 @@
 		}
 	});
 
-	$: unsortedTasks = unsortedTasks.filter((item) => item.list === id);
+	$: unsortedTasks = unsortedTasks.filter((item) => item.status === status);
 
-	$: tasks = dbTasks.filter((item) => item.list === id);
+	$: tasks = dbTasks.filter((item) => item.status === status);
 
 	$: tasks = handleFilter(
 		unsortedTasks ?? [],

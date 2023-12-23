@@ -12,6 +12,7 @@
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
 	import { startCase } from 'lodash';
+	import ChangeStatus from './ChangeStatus.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -30,6 +31,7 @@
 	let formattedDate = '';
 	let milestoneName = '';
 	let showChangeMilestone = false;
+	let showChangeStatus = false;
 
 	let showSubTasks = false;
 
@@ -119,7 +121,7 @@
 		</button>
 	{/if}
 	<div class="relative mr-md min-w-[10.625rem]">
-		<div class="w-fit">
+		<button class="w-fit" on:click={() => (showChangeStatus = !showChangeStatus)}>
 			{#if status === 'done'}
 				<div class="rounded-full bg-emerald-400 px-3 py-[0.125rem] dark:bg-emerald-500">
 					<span class="font-medium text-grey-100">Done</span>
@@ -137,7 +139,11 @@
 					<span class="font-medium text-grey-700 dark:text-grey-300">{startCase(status)}</span>
 				</div>
 			{/if}
-		</div>
+		</button>
+
+		{#if showChangeStatus}
+			<ChangeStatus {projectId} taskId={id} bind:shown={showChangeStatus} />
+		{/if}
 	</div>
 	<div class="mr-md min-w-[10.625rem]">
 		<div class="w-fit">

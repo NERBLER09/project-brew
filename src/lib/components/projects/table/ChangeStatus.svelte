@@ -1,15 +1,29 @@
 <script lang="ts">
-	export let milestoneId: string | null;
+	import { supabase } from '$lib/supabase';
+	import { startCase } from 'lodash';
+	import { onMount } from 'svelte';
+
 	export let taskId: number;
 	export let projectId: number;
 	export let shown = false;
-	export let positioning: string = '';
-	export let milestoneName: string = '';
+
+	let listStatus = [];
+
+	const changeStatus = async (status: string) => {
+		await supabase.from('tasks').update({ status }).eq('id', taskId);
+		shown = false;
+	};
+
+	onMount(async () => {
+		const { data, error } = await supabase.from('lists').select('status').eq('project', projectId);
+		listStatus = data?.map((item) => item.status) ?? [];
+	});
 </script>
 
 <div class="dropdown--container top-0 z-50">
-	<div class="dropdown--item"><span class="dropdown--label">Done</span></div>
-	<div class="dropdown--item"><span class="dropdown--label">To-Do</span></div>
-	<div class="dropdown--item"><span class="dropdown--label">Doing</span></div>
-	<div class="dropdown--item"><span class="dropdown--label">Other</span></div>
+	{#each listStatus as status}
+		<button class="dropdown--item" on:click={() => changeStatus(status)}
+			><span class="dropdown--label">{startCase(status)}</span></button
+		>
+	{/each}
 </div>
