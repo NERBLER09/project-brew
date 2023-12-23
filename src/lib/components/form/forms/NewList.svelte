@@ -10,13 +10,13 @@
 
 	export let createNewList = false;
 	let newName = '';
-	let newStatus = 'other';
+	let newStatus = '';
 
 	const handleCreateNewList = async (event) => {
 		createNewList = false;
 		const form = new FormData(this);
 		form.append('list-name', newName);
-		form.append('list-status', newStatus);
+		form.append('list-status', newStatus.toLowerCase());
 		form.append('project-id', $currentProject.id);
 
 		const response = await fetch(`/app/projects/${$currentProject.id}?/newList`, {
@@ -72,23 +72,31 @@
 
 	<input
 		type="text"
-		class="input--text mt-md mb-sm w-full"
+		class="input--text mb-sm mt-md w-full"
 		placeholder="Enter a list name"
 		bind:value={newName}
 		required
 	/>
 
-	<div class="mt-sm mb-md">
-		<label for="status-input" class="input--label">Select a task status for this list:</label>
-		<select name="status-input" id="status-input" class="input--text w-full" bind:value={newStatus}>
+	<div class="mb-md mt-sm">
+		<label for="status-input" class="input--label">Enter a task status for this list:</label>
+		<!-- <select name="status-input" id="status-input" class="input--text w-full" bind:value={newStatus}>
 			<option value="todo">To-do</option>
 			<option value="doing">Doing</option>
 			<option value="done">Done</option>
 			<option value="other">Other</option>
-		</select>
-
+		</select> -->
+		<input
+			type="text"
+			class="input--text w-full"
+			placeholder="Enter a list status"
+			name="status-input"
+			bind:value={newStatus}
+			required
+		/>
+		<br />
 		<span class="text-sm font-medium text-grey-700 dark:text-grey-200"
-			>Selecting a special status can display tasks in a certain way relative to the status.</span
+			>What is the status of the tasks in this list?</span
 		>
 	</div>
 	<button class="button--primary flex w-full items-center justify-center gap-md" type="submit">
