@@ -10,6 +10,7 @@
 	import type { PageData } from './$types';
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
+	import { camelCase } from 'lodash';
 
 	export let data: PageData;
 
@@ -81,13 +82,18 @@
 	};
 
 	const updateProjectBanner = async () => {
-		if (newBanner.size !== 0 && newBanner.size < 5000000) {
-			await supabase.storage.from('avatars').upload(`${data.id}/cover.png`, newBanner, {
-				cacheControl: '3600',
-				upsert: true
-			});
+		if (newBanner[0].size !== 0 && newBanner[0].size < 5000000) {
+			await supabase.storage
+				.from('project-covers')
+				.upload(`${data.user.id}/${camelCase(data.project?.project_name)}.png`, newBanner[0], {
+					cacheControl: '3600',
+					upsert: true
+				});
 
-			const { data: url } = supabase.storage.from('avatars').getPublicUrl(`${data.id}/cover.png`);
+			const { data: url } = supabase.storage
+				.from('project-covers')
+				.getPublicUrl(`${data.user.id}/${camelCase(data.project?.project_name)}.png`);
+			console.log(url.publicUrl);
 			bannerURL = url.publicUrl;
 		} else if (newBanner.size > 5000000 && newBanner.size > 0) {
 			toast.error("Project banner can't be larger then 5mb");

@@ -14,6 +14,7 @@
 	import ManageInvited from './ManageInvited.svelte';
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
+	import { camelCase } from 'lodash';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -101,15 +102,18 @@
 
 	const updateProjectBanner = async () => {
 		const { data: user } = await supabase.auth.getUser();
-		if (newBanner.size !== 0 && newBanner.size < 5000000) {
-			await supabase.storage.from('avatars').upload(`${user?.user.id}/cover.png`, newBanner, {
-				cacheControl: '3600',
-				upsert: true
-			});
+
+		if (newBanner[0]?.size !== 0 && newBanner[0]?.size < 5000000) {
+			const { error } = await supabase.storage
+				.from('project-covers')
+				.upload(`${user?.user.id}/${camelCase($currentProject.project_name)}.png`, newBanner[0], {
+					cacheControl: '3600',
+					upsert: true
+				});
 
 			const { data: url } = supabase.storage
-				.from('avatars')
-				.getPublicUrl(`${user?.user.id}/cover.png`);
+				.from('project-covers')
+				.getPublicUrl(`${user?.user.id}/${camelCase($currentProject.project_name)}.png`);
 			bannerURL = url.publicUrl;
 		} else if (newBanner.size > 5000000 && newBanner.size > 0) {
 			toast.error("Project banner can't be larger then 5mb");
