@@ -97,59 +97,59 @@
 </svelte:head>
 
 <div class="overflow-x-auto">
-	<div class="relative flex flex-nowrap items-start gap-lg pb-4 md:gap-2xl">
+	<div class="flex flex-nowrap items-start pb-4 md:gap-2xl">
 		<div class="relative flex items-center">
-			<div class="relative mr-md w-[15.625rem]">
+			<div class="relative mr-md w-[18.75rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Name</span>
 				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
 					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
-			<div class="relative mr-md w-[10.625rem]">
+			<div class="relative mr-md w-[12.5rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Due Date</span>
 				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
 					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
-			<div class="relative mr-md w-[10.625rem]">
+			<div class="relative mr-md w-[12.5rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Status</span>
 				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
 					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
-			<div class="relative mr-md w-[10.625rem]">
+			<div class="relative mr-md w-[12.5rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Priority</span>
 				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
 					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
-			<div class="relative mr-md w-[10.625rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Assigned</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[10.625rem]">
+			<div class="relative mr-md w-[12.5rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Milestone</span>
 				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-700 dark:bg-grey-300"
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
 					style="height: {(taskContainerHeight + 40) / 16}rem;"
 				/>
 			</div>
-			<div class="w-[170px]">
+			<div class="relative mr-md w-[12.5rem]">
+				<span class="font-bold text-grey-700 dark:text-grey-300">Assigned</span>
+				<div
+					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+					style="height: {(taskContainerHeight + 40) / 16}rem;"
+				/>
+			</div>
+			<div class="w-[12.5px]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Tags</span>
 			</div>
 
-			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
+			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
 		</div>
 	</div>
 
-	<div class="relative flex flex-col flex-nowrap items-start gap-md" bind:this={taskContainer}>
+	<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
 		{#each filteredTasks as task}
 			<TaskItem {...task} projectId={data.project?.id} />
 		{:else}
@@ -184,7 +184,7 @@
 	{/if}
 </div>
 
-<div class="h-1 w-full rounded-full bg-grey-700 dark:bg-grey-300" />
+<div class="h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
 
 {#if !isViewer}
 	<button

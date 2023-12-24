@@ -59,9 +59,11 @@
 	});
 </script>
 
-<div class="flex items-center">
+<div
+	class="flex items-center border-b border-grey-700 py-2 first:pt-0 dark:border-grey-100 md:py-1"
+>
 	<div
-		class="relative mr-md flex min-w-[15.625rem] max-w-[15.625rem] items-center gap-md overflow-y-visible truncate"
+		class="relative mr-md flex min-w-[18.75rem] max-w-[18.75rem] items-center gap-md overflow-y-visible truncate"
 	>
 		<button
 			class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
@@ -88,7 +90,7 @@
 
 	{#if isViewer}
 		<div
-			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 bg-none p-0"
+			class="button--secondary relative m-0 mr-md flex min-w-[12.5rem] items-center gap-sm border-0 bg-none p-0"
 			style="background: none;"
 		>
 			{#if due_date}
@@ -101,7 +103,7 @@
 		</div>
 	{:else}
 		<button
-			class="button--secondary relative m-0 mr-md flex min-w-[10.625rem] items-center gap-sm border-0 p-0"
+			class="button--secondary relative m-0 mr-md flex min-w-[12.5rem] items-center gap-sm border-0 p-0"
 			on:click={() => newDateInput.showPicker()}
 		>
 			<input
@@ -120,7 +122,7 @@
 			{/if}
 		</button>
 	{/if}
-	<div class="relative mr-md min-w-[10.625rem]">
+	<div class="relative mr-md min-w-[12.5rem]">
 		<button class="w-fit" on:click={() => (showChangeStatus = !showChangeStatus)}>
 			{#if status === 'done'}
 				<div class="rounded-full bg-emerald-400 px-3 py-[0.125rem] dark:bg-emerald-500">
@@ -145,23 +147,12 @@
 			<ChangeStatus {projectId} taskId={id} bind:shown={showChangeStatus} />
 		{/if}
 	</div>
-	<div class="mr-md min-w-[10.625rem]">
+	<div class="mr-md min-w-[12.5rem]">
 		<div class="w-fit">
 			<PriorityLevel {priority_level} taskId={id} />
 		</div>
 	</div>
-	<div class="relative mr-md min-w-[10.625rem]">
-		{#if assigned}
-			<div class="relative mt-md flex items-center">
-				{#each assigned as id}
-					<Assinged {id} />
-				{/each}
-			</div>
-		{/if}
-	</div>
-	<div
-		class="relative mr-md min-w-[10.625rem] max-w-[10.625rem] overflow-visible whitespace-nowrap"
-	>
+	<div class="relative mr-md min-w-[12.5rem] max-w-[12.5rem] overflow-visible whitespace-nowrap">
 		<button
 			class="button--secondary m-0 flex w-fit min-w-[10.625rem] max-w-[10.625rem] items-center gap-sm border-0 p-0"
 			on:click={() => (showChangeMilestone = !showChangeMilestone)}
@@ -187,7 +178,17 @@
 			/>
 		{/if}
 	</div>
-	<div class="min-w-[10.625rem]">
+	<div class="relative mr-md min-w-[12.5rem]">
+		{#if assigned}
+			<div class="relative mt-md flex items-center">
+				{#each assigned as id}
+					<Assinged {id} />
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+	<div class="min-w-[12.5rem]">
 		{#if tags && tags.length > 0}
 			<span class="font-bold text-grey-700 dark:text-grey-300">
 				<div class="flex items-center gap-md pt-sm empty:hidden">
