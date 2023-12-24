@@ -11,6 +11,8 @@
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
 	import { camelCase } from 'lodash';
+	import TagList from '$lib/components/projects/tags/TagList.svelte';
+	import TagInput from '$lib/components/prompts/about/TagInput.svelte';
 
 	export let data: PageData;
 
@@ -180,6 +182,12 @@
 
 <div class="relative {data.project?.banner ? '-top-3' : '-top-8'}">
 	<!-- TODO: Create new tag input -->
+	{#if isViewer}
+		<TagList tags={data.project?.tags ?? []} />
+	{:else}
+		<TagInput newTags={data.project?.tags ?? []} projectId={data.project?.id} />
+	{/if}
+
 	{#if isViewer}
 		{#if data.project?.description}
 			<p class="my-md font-medium text-grey-700 dark:text-grey-300">

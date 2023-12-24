@@ -15,6 +15,8 @@
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
 	import { camelCase } from 'lodash';
+	import TagList from '$lib/components/projects/tags/TagList.svelte';
+	import TagInput from './TagInput.svelte';
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -200,7 +202,11 @@
 	</header>
 
 	<div class="relative {$currentProject.banner ? '-top-6' : '-top-8'}">
-		<!-- TODO: Add proper input for tags -->
+		{#if isViewer}
+			<TagList tags={$currentProject.tags ?? []} />
+		{:else}
+			<TagInput newTags={$currentProject.tags ?? []} projectId={$currentProject.id} />
+		{/if}
 
 		{#if isViewer}
 			{#if $currentProject.description}
