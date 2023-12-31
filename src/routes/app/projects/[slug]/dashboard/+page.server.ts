@@ -18,25 +18,19 @@ export const load = (async (event) => {
 		.select()
 		.eq('project', projectId);
 
-	const { data: today } = await supabaseClient
-		.from('tasks')
-		.select()
-		.eq('due_date', new Date().toISOString())
-		.eq('project', projectId);
-	// .neq("status", "done");
-
 	const { data: milestones } = await supabaseClient
 		.from('milestones')
 		.select('*, tasks!inner(*)')
 		.eq('project', projectId)
 		.eq('completed', false);
 
-	const { data: behind } = await supabaseClient
-		.from('tasks')
-		.select()
-		.eq('project', projectId)
-		.lt('due_date', new Date().toISOString())
-		.neq('status', 'done');
+	const today = tasks?.filter((item) => item.due_date === new Date().toISOString());
+
+	const behind = tasks?.filter((item) => {
+		return (
+			new Date(item.due_date).toISOString() < new Date().toISOString() && item.status !== 'done'
+		);
+	});
 
 	if (tasks) {
 		return {

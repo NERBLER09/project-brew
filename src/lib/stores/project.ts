@@ -31,3 +31,4 @@ export interface MilestoneFilter {
 	id: string;
 }
 export const milestoneFilter = writable<MilestoneFilter | null>();
+export let projectMilestones = writable<object[] | []>();

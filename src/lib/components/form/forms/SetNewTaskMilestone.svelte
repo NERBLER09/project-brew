@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Check from '$lib/assets/Check.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
+	import { projectMilestones } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -44,9 +45,7 @@
 	};
 
 	onMount(async () => {
-		const { data } = await supabase.from('milestones').select().eq('project', projectId);
-		milestones = data ?? [];
-		searchedMilestones = milestones;
+		searchedMilestones = $projectMilestones;
 	});
 </script>
 

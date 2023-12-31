@@ -16,7 +16,7 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(*)')
+		.select('*, project_members!inner(*), milestones(*)')
 		.eq('id', projectId)
 		.limit(1)
 		.single();

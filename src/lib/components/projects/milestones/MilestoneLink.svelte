@@ -6,6 +6,7 @@
 	export let name: string;
 	export let id: string;
 	export let completed: boolean = false;
+	export let tasks: object[] = [];
 
 	let strokeArray = 380;
 
@@ -14,9 +15,8 @@
 	let percentCompleted = 0;
 
 	onMount(async () => {
-		const { data } = await supabase.from('tasks').select().eq('milestone', id);
-		totalTasks = data?.length ?? 0;
-		completedTasks = data?.filter((item) => item.status === 'done').length!;
+		totalTasks = tasks?.length ?? 0;
+		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
 	});
 </script>

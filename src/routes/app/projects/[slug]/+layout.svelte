@@ -5,6 +5,7 @@
 		filterTags,
 		milestoneFilter,
 		priorityFilter,
+		projectMilestones,
 		recentlyEdited,
 		showProjectAside,
 		sortOptions,
@@ -36,6 +37,7 @@
 	$currentProject = $currentProject;
 	$userRole = data.role?.role;
 	$userTeams = data.userTeams ?? [];
+	$projectMilestones = data.project?.milestones ?? [];
 
 	$milestoneFilter = data.project?.filter.milestone;
 	$dateFilter = data.project?.filter.date;
