@@ -4,6 +4,8 @@
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import MilestoneLink from '$lib/components/projects/milestones/MilestoneLink.svelte';
 	import TeamCard from '$lib/components/team/TeamCard.svelte';
+	import SearchInput from '$lib/components/search/SearchInput.svelte';
+	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 
 	export let data: PageData;
 </script>
@@ -12,11 +14,22 @@
 	<title>Search - {data.search.query}</title>
 </svelte:head>
 
-<header>
+<MobileSubPageLayout
+	previousPage="/app/home"
+	pageName={data.search.query ? startCase(data.search.query) : 'Search'}
+/>
+
+<header class="md:shown hidden">
 	<h1 class="text-lg text-grey-800 dark:text-grey-200 md:text-2xl">
-		{startCase(data.search.query)}
+		{#if data.search.query}
+			{startCase(data.search.query)}
+		{:else}
+			Search
+		{/if}
 	</h1>
 </header>
+
+<SearchInput />
 
 <section class="my-md">
 	<header>
@@ -68,10 +81,4 @@
 			<p class="font-semibold text-grey-700 dark:text-grey-300 my-sm">No results</p>
 		{/each}
 	</div>
-</section>
-
-<section class="my-md">
-	<header>
-		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">Team Members</h2>
-	</header>
 </section>

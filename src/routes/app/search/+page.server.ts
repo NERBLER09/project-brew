@@ -1,9 +1,8 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-	const { request } = event;
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
 		// the user is not signed in
