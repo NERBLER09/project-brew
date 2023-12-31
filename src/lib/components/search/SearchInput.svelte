@@ -9,7 +9,7 @@
 </script>
 
 <!-- TODO: Implement app wide search -->
-<form on:submit|preventDefault={handleSearch} class="my-4">
+<form on:submit|preventDefault={handleSearch} class="mt-4">
 	<div class="input--search">
 		<Search className="stroke-grey-700 w-6 h-6" />
 		<input
