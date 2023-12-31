@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import MilestoneLink from '$lib/components/projects/milestones/MilestoneLink.svelte';
+	import TeamCard from '$lib/components/team/TeamCard.svelte';
 
 	export let data: PageData;
 </script>
@@ -49,6 +50,8 @@
 					>{milestone.projects.project_name}</span
 				>
 			</a>
+		{:else}
+			<p class="font-semibold text-grey-700 dark:text-grey-300 my-sm">No results</p>
 		{/each}
 	</div>
 </section>
@@ -57,6 +60,14 @@
 	<header>
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">Teams</h2>
 	</header>
+
+	<div class="mt-md flex flex-col gap-lg lg:grid lg:grid-cols-2 xl:grid-cols-3">
+		{#each data.search?.teams as team}
+			<TeamCard {...team} />
+		{:else}
+			<p class="font-semibold text-grey-700 dark:text-grey-300 my-sm">No results</p>
+		{/each}
+	</div>
 </section>
 
 <section class="my-md">

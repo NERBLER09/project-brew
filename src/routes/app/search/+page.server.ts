@@ -20,14 +20,19 @@ export const load = (async (event) => {
 	const { data: milestones } = await supabaseClient
 		.from('milestones')
 		.select('*, projects(project_name, id)')
-		.textSearch('name', `'${query}'`);
-	console.log(milestones);
+		.textSearch('all_milestone', `'${query}'`);
+
+	const { data: teams } = await supabaseClient
+		.from('teams')
+		.select()
+		.textSearch('all_team', `'${query}'`);
 
 	return {
 		search: {
 			query,
 			projects: projects ?? [],
-			milestones: milestones ?? []
+			milestones: milestones ?? [],
+			teams: teams ?? []
 		}
 	};
 }) satisfies PageServerLoad;
