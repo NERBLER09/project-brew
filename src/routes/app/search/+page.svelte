@@ -19,7 +19,7 @@
 	pageName={data.search.query ? startCase(data.search.query) : 'Search'}
 />
 
-<header class="md:shown hidden">
+<header class="hidden md:block">
 	<h1 class="text-lg text-grey-800 dark:text-grey-200 md:text-2xl">
 		{#if data.search.query}
 			{startCase(data.search.query)}
