@@ -82,8 +82,13 @@ export const handleFilter = (
 	}
 
 	if (milestone) {
+		console.log(
+			filteredTasks.filter((item) => {
+				return item.milestone?.id === milestone.id;
+			})
+		);
 		filteredTasks = filteredTasks.filter((item) => {
-			return item.milestone === milestone.id;
+			return item.milestone?.id === milestone.id;
 		});
 	}
 
