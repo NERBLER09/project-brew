@@ -21,11 +21,17 @@
 	export let showSubTasks = false;
 	export let showCreateSubTasks = false;
 
+	$: if (showCreateSubTasks) showSubTasks = true;
+
 	let isViewer = $userRole === 'viewer';
 
 	const getSubTasks = async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
 		subTasks = tasks ?? [];
+		subTasks = subTasks.sort((item) => {
+			if (item.completed) return 1;
+			else return 0;
+		});
 		total = subTasks.length;
 		completed = [...subTasks.filter((item) => item.completed)].length;
 	};
