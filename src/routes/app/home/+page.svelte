@@ -15,6 +15,7 @@
 	import { showNewProjectPrompt } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import Search from '$lib/assets/Search.svelte';
 
 	export let data: PageData;
 
@@ -74,6 +75,11 @@
 			<PlusNew className="h-5 w-5" />
 			New Project
 		</button>
+
+		<a href="search" class="md:hidden">
+			<Search className="stroke-grey-700 dark:stroke-grey-200 h-9 w-9 md:w-[2rem] md:h-[2rem]" />
+			<span class="sr-only">Search</span>
+		</a>
 
 		<a href="/app/notifications" class="md:hidden">
 			<Bell className="stroke-grey-700 dark:stroke-grey-200 h-9 w-9 md:w-[2rem] md:h-[2rem]" />

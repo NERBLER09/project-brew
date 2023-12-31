@@ -18,14 +18,20 @@
 	let total = 0;
 	let completed = 0;
 
-	let showSubTasks = false;
-	let showCreateSubTasks = false;
+	export let showSubTasks = false;
+	export let showCreateSubTasks = false;
+
+	$: if (showCreateSubTasks) showSubTasks = true;
 
 	let isViewer = $userRole === 'viewer';
 
 	const getSubTasks = async () => {
 		const { data: tasks } = await supabase.from('sub_tasks').select().eq('task', taskId);
 		subTasks = tasks ?? [];
+		subTasks = subTasks.sort((item) => {
+			if (item.completed) return 1;
+			else return 0;
+		});
 		total = subTasks.length;
 		completed = [...subTasks.filter((item) => item.completed)].length;
 	};
@@ -38,7 +44,7 @@
 </script>
 
 {#if subTasks.length > 0}
-	<div class="mb-md flex w-full items-center gap-md">
+	<div class="mb-md flex w-full max-w-[400px] items-center gap-md">
 		<span class="font-bold text-grey-700 dark:text-grey-300">{completed}/{total}</span>
 		<span class="sr-only">{completed}/{total} of this task's sub tasks are completed</span>
 

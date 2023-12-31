@@ -17,6 +17,10 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/projects/milestones/ConfirmDelete.svelte';
 	import AddLead from '$lib/components/projects/milestones/AddLead.svelte';
+	import CircleCheck from '$lib/assets/Fill/CircleCheck.svelte';
+	import Check from '$lib/assets/Check.svelte';
+	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
+	import { milestoneFilter } from '$lib/stores/project';
 
 	export let data: PageData;
 
@@ -82,7 +86,7 @@
 	const updateMilestoneEndDate = async () => {
 		await supabase
 			.from('milestones')
-			.update({ start_date: new Date(updatedEndDate).toISOString() })
+			.update({ end_date: new Date(updatedEndDate).toISOString() })
 			.eq('id', data.milestone.id);
 
 		invalidate('milestone:open');
@@ -121,6 +125,16 @@
 		});
 	});
 
+	const markMilestoneAsCompleted = async () => {
+		const { error } = await supabase
+			.from('milestones')
+			.update({ completed: !data.milestone.completed })
+			.eq('id', data.milestone.id);
+
+		invalidate('milestone:open');
+		console.log(error);
+	};
+
 	onDestroy(() => ($showMobileNav = true));
 
 	let showAddTaskDropdown = false;
@@ -147,6 +161,18 @@
 		{data.milestone.name}
 	</h1>
 
+	<button
+		class="button--secondary m-0 border-0 p-0"
+		on:click={markMilestoneAsCompleted}
+		title={data.milestone.completed ? 'Close milestone' : 'Re-open milestone'}
+	>
+		{#if !data.milestone.completed}
+			<Check className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+		{:else}
+			<CloseMultiply className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
+		{/if}
+		<span class="sr-only">Mark milestone as completed</span>
+	</button>
 	<button class="button--secondary m-0 border-0 p-0" on:click={() => (showDeleteWarning = true)}>
 		<Trash className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 	</button>

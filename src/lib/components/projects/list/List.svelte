@@ -70,8 +70,18 @@
 	};
 
 	export let dbTasks: Task[];
-	$: unsortedTasks = dbTasks.filter((item) => item.list === id);
-	$: tasks = dbTasks.filter((item) => item.list === id);
+
+	$: unsortedTasks = dbTasks.filter((item) => {
+		if (item.milestone) {
+			return !item.milestone.completed;
+		} else {
+			return item;
+		}
+	});
+
+	$: unsortedTasks = unsortedTasks.filter((item) => item.status === status);
+
+	$: tasks = dbTasks.filter((item) => item.status === status);
 
 	$: tasks = handleFilter(
 		unsortedTasks ?? [],

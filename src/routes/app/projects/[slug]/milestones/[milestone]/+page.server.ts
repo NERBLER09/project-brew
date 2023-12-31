@@ -5,7 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	event.depends('milestone:open');
@@ -69,7 +69,7 @@ export const load = (async (event) => {
 			}
 		};
 	}
-	throw error(404, `Failed to fetch milestone ${err.message}`);
+	error(404, `Failed to fetch milestone ${err.message}`);
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -78,7 +78,7 @@ export const actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 
 		const data = await request.formData();

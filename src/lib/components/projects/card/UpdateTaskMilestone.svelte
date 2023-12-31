@@ -2,7 +2,7 @@
 	import Check from '$lib/assets/Check.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, projectMilestones } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -19,11 +19,8 @@
 	);
 
 	onMount(async () => {
-		const { data: milestones } = await supabase
-			.from('milestones')
-			.select()
-			.eq('project', $currentProject.id);
-		allMilestones = milestones ?? [];
+		allMilestones = $projectMilestones ?? [];
+		allMilestones = allMilestones.filter((item) => !item.completed);
 	});
 
 	const updateProjectMilestone = async (id: string, newMilestone: object) => {

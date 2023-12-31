@@ -5,6 +5,8 @@
 
 	export let name: string;
 	export let id: string;
+	export let completed: boolean = false;
+	export let tasks: object[] = [];
 
 	let strokeArray = 380;
 
@@ -13,9 +15,8 @@
 	let percentCompleted = 0;
 
 	onMount(async () => {
-		const { data } = await supabase.from('tasks').select().eq('milestone', id);
-		totalTasks = data?.length ?? 0;
-		completedTasks = data?.filter((item) => item.status === 'done').length!;
+		totalTasks = tasks?.length ?? 0;
+		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalTasks) * 100) || 0;
 	});
 </script>
@@ -49,10 +50,14 @@
 					/>
 				</svg>
 			</div>
-			<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
-			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			{#if completed}
+				<span class="font-bold text-grey-700 dark:text-grey-200">Milestone Closed</span>
+			{:else}
+				<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
+				<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			{/if}
 		</div>
-		<header class="mt-sm">
+		<header class="mt-sm max-w-[10rem]">
 			<span class="text-start font-semibold text-grey-900 dark:text-grey-100 md:text-center">
 				{name}
 			</span>

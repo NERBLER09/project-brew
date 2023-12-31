@@ -5,7 +5,7 @@ export const actions = {
 	new: async (event) => {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
-			throw redirect(303, '/');
+			redirect(303, '/');
 		}
 
 		const form = await event.request.formData();

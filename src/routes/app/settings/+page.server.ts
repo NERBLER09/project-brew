@@ -8,7 +8,7 @@ export const actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 		const data = await request.formData();
 		const name = data.get('name') as string;
@@ -60,7 +60,7 @@ export const actions = {
 			.eq('id', session.user.id);
 
 		if (err) {
-			throw error(403, err.message);
+			error(403, err.message);
 		}
 	},
 
@@ -69,7 +69,7 @@ export const actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 
 		const data = await request.formData();
@@ -110,7 +110,7 @@ export const actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 
 		const form = await request.formData();

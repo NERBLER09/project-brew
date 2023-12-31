@@ -3,21 +3,21 @@ import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
-  const { session, supabaseClient } = await getSupabase(event);
-  if (!session) {
-    throw redirect(303, '/');
-  }
+	const { session, supabaseClient } = await getSupabase(event);
+	if (!session) {
+		redirect(303, '/');
+	}
 
-  event.depends('project:milestones');
+	event.depends('project:milestones');
 
-  const { data: milestones, error: err } = await supabaseClient
-    .from('milestones')
-    .select()
-    .eq('project', event.params.slug);
+	const { data: milestones, error: err } = await supabaseClient
+		.from('milestones')
+		.select('*, tasks(*)')
+		.eq('project', event.params.slug);
 
-  if (!err) {
-    return { milestones };
-  }
+	if (!err) {
+		return { milestones };
+	}
 
-  throw error(404, `Failed to fetch milestones ${err.message}`);
+	error(404, `Failed to fetch milestones ${err.message}`);
 }) satisfies PageServerLoad;

@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 
 	export let project_name: string | undefined;
-	export let id: number | undefined;
+	export let tasks: object[] | [];
 
 	let strokeArray = 380;
 
@@ -13,21 +13,13 @@
 	let percentCompleted = 0;
 
 	onMount(async () => {
-		const { data: user } = await supabase.auth.getUser();
-		const userId = user.user?.id;
-		const { data, error } = await supabase
-			.from('tasks')
-			.select()
-			.eq('user_id', userId)
-			.eq('project', id);
-
-		totalAmountOfTasks = data?.length!;
-		completedTasks = data?.filter((item) => item.status === 'done').length!;
+		totalAmountOfTasks = tasks?.length!;
+		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
 		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
 	});
 </script>
 
-<section class="flex min-w-[8rem] flex-col items-center text-center ">
+<section class="flex min-w-[8rem] flex-col items-center text-center">
 	<header>
 		<h3
 			class="mb-md text-start text-md font-semibold text-grey-700 dark:text-grey-200 md:text-center"

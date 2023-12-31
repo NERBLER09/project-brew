@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	const params = event.params;
@@ -13,7 +13,10 @@ export const load = (async (event) => {
 
 	event.depends('project:list');
 
-	const { data: tasks } = await supabaseClient.from('tasks').select().eq('project', projectId);
+	const { data: tasks } = await supabaseClient
+		.from('tasks')
+		.select('*, sub_tasks(*), milestone(*)')
+		.eq('project', projectId);
 
 	const { project } = await event.parent();
 

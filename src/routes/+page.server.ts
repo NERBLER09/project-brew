@@ -7,7 +7,7 @@ export const load = (async (event) => {
   const { session } = await getSupabase(event)
   if (session) {
     userId.set(session.user.id)
-    throw redirect(302, "/app/home")
+    redirect(302, "/app/home");
   }
 
   return {}

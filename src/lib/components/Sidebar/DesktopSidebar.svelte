@@ -7,36 +7,26 @@
 
 	import Home from '$lib/assets/Home.svelte';
 	import Logo from '$lib/assets/Logo/Logo.svelte';
-	import Search from '$lib/assets/Search.svelte';
 	import Settings from '$lib/assets/Settings.svelte';
 	import User from '$lib/assets/User.svelte';
-	import { useDarkMode } from '$lib/stores/ui';
-	import Switch from '../form/Switch.svelte';
-
-	const handleSearch = () => {
-		console.log('Handle search');
-	};
+	import SearchInput from '../search/SearchInput.svelte';
 </script>
 
 <section
 	class="hidden h-screen w-[16.625rem] flex-col bg-grey-100 px-md py-[1rem] dark:bg-grey-800 md:flex"
 >
 	<header class="ml-md flex items-center gap-md">
-		<Logo className="h-xl w-xl rounded-lg bg-grey-300" />
+		<Logo className="h-2xl w-2xl rounded-lg bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800 dark:text-grey-200">Project Brew</span>
 	</header>
+
 	<div
-		class="mx-auto mt-lg h-[2px] w-11/12 rounded-full border border-solid border-grey-600 drop-shadow-md"
+		class="mx-auto mt-4 h-[2px] w-11/12 rounded-full border border-solid border-grey-600 drop-shadow-md"
 	/>
-	<!-- TODO: Implement app wide search -->
-	<!-- <form on:submit|preventDefault={handleSearch}>
-		<div class="input--search my-lg p-md">
-			<Search className="stroke-grey-700 w-6 h-6" />
-			<input type="text" placeholder="Search" class="bg-grey-200 border-none w-full p-0" />
-		</div>
-	</form>
- -->
-	<nav class="mt-lg flex flex-col gap-lg">
+
+	<SearchInput />
+
+	<nav class="mt-4 flex flex-col gap-lg">
 		<a
 			href="/app/home"
 			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(

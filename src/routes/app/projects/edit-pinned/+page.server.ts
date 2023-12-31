@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types";
 export const load = (async (event) => {
   const { session, supabaseClient } = await getSupabase(event)
   if (!session) {
-    throw redirect(303, "/")
+    redirect(303, "/");
   }
 
   const { data, error: err } = await supabaseClient.from('projects').select().eq('user_id', session.user.id);
@@ -13,6 +13,6 @@ export const load = (async (event) => {
     return { all: data }
   }
 
-  throw error(404, err.message)
+  error(404, err.message);
 
 }) satisfies PageServerLoad

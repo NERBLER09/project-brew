@@ -5,7 +5,7 @@ import type { LayoutServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	const params = event.params;
@@ -16,7 +16,7 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(*)')
+		.select('*, project_members!inner(*), milestones(*)')
 		.eq('id', projectId)
 		.limit(1)
 		.single();
@@ -61,6 +61,6 @@ export const load = (async (event) => {
 	}
 
 	if (errProject) {
-		throw redirect(303, '/app/projects/not-invited');
+		redirect(303, '/app/projects/not-invited');
 	}
 }) satisfies LayoutServerLoad;
