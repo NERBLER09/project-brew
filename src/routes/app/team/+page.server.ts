@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	event.depends('app:team-members');
@@ -21,5 +21,5 @@ export const load = (async (event) => {
 		};
 	}
 
-	throw error(404, err?.message);
+	error(404, err?.message);
 }) satisfies PageServerLoad;

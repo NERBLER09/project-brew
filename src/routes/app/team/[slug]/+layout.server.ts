@@ -5,7 +5,7 @@ import type { LayoutServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	const params = event.params;
@@ -46,5 +46,5 @@ export const load = (async (event) => {
 		};
 	}
 
-	throw error(400, err.message);
+	error(400, err.message);
 }) satisfies LayoutServerLoad;

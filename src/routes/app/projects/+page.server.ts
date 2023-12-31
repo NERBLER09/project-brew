@@ -7,7 +7,7 @@ import type { PageServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	event.depends('app:all-projects');
@@ -33,7 +33,7 @@ export const load = (async (event) => {
 		return { all: allProjects, pinned };
 	}
 	if (err) {
-		throw error(404, err.message);
+		error(404, err.message);
 	}
 }) satisfies PageServerLoad;
 
@@ -43,7 +43,7 @@ export const actions: Actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 
 		const data = await request.formData();

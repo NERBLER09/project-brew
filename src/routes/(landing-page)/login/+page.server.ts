@@ -14,7 +14,7 @@ export const actions = {
       return fail(403, { message: err.message, fail: true })
     }
     else {
-      throw redirect(303, "/app/home")
+      redirect(303, "/app/home");
     }
   }
 } satisfies Actions

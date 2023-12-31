@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
 	if (!session) {
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 
 	const { data: profile } = await supabaseClient
@@ -16,7 +16,7 @@ export const load = (async (event) => {
 		.single();
 
 	if (profile) {
-		throw redirect(303, '/app/home');
+		redirect(303, '/app/home');
 	}
 }) satisfies PageServerLoad;
 

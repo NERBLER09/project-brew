@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 export const load = (async (event) => {
   const { session, supabaseClient } = await getSupabase(event);
   if (!session) {
-    throw redirect(303, '/');
+    redirect(303, '/');
   }
 
   event.depends('project:milestones');
@@ -19,5 +19,5 @@ export const load = (async (event) => {
     return { milestones };
   }
 
-  throw error(404, `Failed to fetch milestones ${err.message}`);
+  error(404, `Failed to fetch milestones ${err.message}`);
 }) satisfies PageServerLoad;

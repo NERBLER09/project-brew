@@ -8,7 +8,7 @@ export const actions: Actions = {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
+			error(403, { message: 'Unauthorized' });
 		}
 
 		const data = await request.formData();

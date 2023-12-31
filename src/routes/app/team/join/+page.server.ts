@@ -5,7 +5,7 @@ export const actions: Actions = {
 	join: async (event) => {
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
-			throw redirect(303, '/');
+			redirect(303, '/');
 		}
 
 		const data = await event.request.formData();
