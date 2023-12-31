@@ -11,17 +11,23 @@ export const load = (async (event) => {
 	}
 
 	const query = event.url.searchParams.get('query')?.toLocaleLowerCase();
-	console.log(query);
 
 	const { data: projects } = await supabaseClient
 		.from('projects')
 		.select()
 		.textSearch('all_project_new', `'${query}'`);
 
+	const { data: milestones } = await supabaseClient
+		.from('milestones')
+		.select('*, projects(project_name, id)')
+		.textSearch('name', `'${query}'`);
+	console.log(milestones);
+
 	return {
 		search: {
 			query,
-			projects: projects ?? []
+			projects: projects ?? [],
+			milestones: milestones ?? []
 		}
 	};
 }) satisfies PageServerLoad;

@@ -2,6 +2,7 @@
 	import { startCase } from 'lodash';
 	import type { PageData } from './$types';
 	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
+	import MilestoneLink from '$lib/components/projects/milestones/MilestoneLink.svelte';
 
 	export let data: PageData;
 </script>
@@ -35,6 +36,21 @@
 			Project Milestones
 		</h2>
 	</header>
+
+	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
+		{#each data.search.milestones as milestone}
+			<a
+				href="/app/projects/{milestone.projects.id}/milestones/{milestone.id}"
+				class="flex w-fit flex-col items-center gap-sm rounded-md bg-grey-100 p-md dark:bg-grey-800"
+			>
+				<span class="text-md font-bold text-grey-700 dark:text-grey-300">{milestone.name}</span>
+
+				<span class="font-semibold text-grey-700 dark:text-grey-300"
+					>{milestone.projects.project_name}</span
+				>
+			</a>
+		{/each}
+	</div>
 </section>
 
 <section class="my-md">
