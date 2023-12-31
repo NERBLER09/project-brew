@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { search } from '$lib/api/search';
 	import Search from '$lib/assets/Search.svelte';
 
-	const handleSearch = () => {
-		console.log('Handle search');
+	const handleSearch = async () => {
+		await goto(`/app/search?query=${$search}`);
 	};
 </script>
 
