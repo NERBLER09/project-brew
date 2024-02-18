@@ -6,16 +6,14 @@
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
 	import YourActivity from '$lib/components/home/activity/YourActivity.svelte';
 	import ProjectStatistics from '$lib/components/home/project-statistics/ProjectStatistics.svelte';
-	import TeamActivity from '$lib/components/home/TeamActivity.svelte';
 	import DesktopNotifications from '$lib/components/notifications/DesktopNotifications.svelte';
-	import ProjectCard from '$lib/components/projects/links/ProjectCard.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
-	import { recentlyEdited } from '$lib/stores/project';
 	import { showNewProjectPrompt } from '$lib/stores/ui';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import Search from '$lib/assets/Search.svelte';
+	import Project from '$lib/components/home/Project.svelte';
 
 	export let data: PageData;
 
@@ -125,7 +123,7 @@
 
 	<!-- <TeamActivity /> -->
 
-	<div class="col-span-2">
+	<div class="col-span-4">
 		<section>
 			<header class="flex items-center">
 				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
@@ -155,32 +153,32 @@
 					</p>
 				{/if}
 				{#each data.pinned as project}
-					<ProjectCard {...project} />
+					<Project {...project} />
 				{/each}
 			</div>
 		</section>
 	</div>
 
-	<section class="col-span-2">
-		<header>
-			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
-				Jump Back Into
-			</h2>
-			<p class="font-medium text-grey-700 dark:text-grey-200">
-				Resume working on recently edited projects
-			</p>
-		</header>
-
-		<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
-			{#each $recentlyEdited as project}
-				<ProjectCard {...project} />
-			{:else}
-				<p class="font-medium text-grey-700 dark:text-grey-200">
-					Projects you have recently viewed will show up here
-				</p>
-			{/each}
-		</div>
-	</section>
+	<!-- <section class="col-span-2"> -->
+	<!-- 	<header> -->
+	<!-- 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg"> -->
+	<!-- 			Jump Back Into -->
+	<!-- 		</h2> -->
+	<!-- 		<p class="font-medium text-grey-700 dark:text-grey-200"> -->
+	<!-- 			Resume working on recently edited projects -->
+	<!-- 		</p> -->
+	<!-- 	</header> -->
+	<!---->
+	<!-- 	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap"> -->
+	<!-- 		{#each $recentlyEdited as project} -->
+	<!-- 			<ProjectCard {...project} /> -->
+	<!-- 		{:else} -->
+	<!-- 			<p class="font-medium text-grey-700 dark:text-grey-200"> -->
+	<!-- 				Projects you have recently viewed will show up here -->
+	<!-- 			</p> -->
+	<!-- 		{/each} -->
+	<!-- 	</div> -->
+	<!-- </section> -->
 
 	<section class="col-span-1 hidden w-fit md:inline">
 		<header>
