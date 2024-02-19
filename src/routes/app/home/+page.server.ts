@@ -1,6 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { supabase } from '$lib/supabase';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);
@@ -19,6 +20,14 @@ export const load = (async (event) => {
 		.from('profiles')
 		.select()
 		.eq('id', session.user.id);
+
+	const { data: tasks, error: err2 } = await supabaseClient
+		.from('tasks')
+		.select("*, projects(user_id)")
+		.eq('projects.user_id', session.user.id);
+
+	console.log(err2);
+
 	if (user && !projectsErr) {
 		if (user?.length === 0) redirect(303, '/welcome');
 
@@ -29,7 +38,8 @@ export const load = (async (event) => {
 			avatar_url: user[0].avatar_url,
 			all: projects,
 			pinned,
-			user: user[0]
+			user: user[0],
+			tasks
 		};
 	}
 

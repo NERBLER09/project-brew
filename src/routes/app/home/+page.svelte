@@ -5,7 +5,6 @@
 	import User from '$lib/assets/User.svelte';
 	import UserDropdown from '$lib/components/dropdowns/UserDropdown.svelte';
 	import YourActivity from '$lib/components/home/activity/YourActivity.svelte';
-	import ProjectStatistics from '$lib/components/home/project-statistics/ProjectStatistics.svelte';
 	import DesktopNotifications from '$lib/components/notifications/DesktopNotifications.svelte';
 	import EditPinPrompt from '$lib/components/prompts/projects/EditPinPrompt.svelte';
 	import NewProjectPrompt from '$lib/components/prompts/projects/NewProjectPrompt.svelte';
@@ -41,8 +40,18 @@
 		}
 	};
 
+	let strokeArray = 875;
+
+	let totalAmountOfTasks = 0;
+	let completedTasks = 0;
+	let percentCompleted = 0;
+
 	onMount(() => {
 		totalFocusTime = parseInt(localStorage.getItem('focusTime') || '0');
+		totalAmountOfTasks = data?.tasks?.length!;
+		completedTasks = data?.tasks?.filter((item) => item.status === 'done').length!;
+		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
+		// percentCompleted = 100;
 	});
 </script>
 
@@ -117,34 +126,64 @@
 <div
 	class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-[max-content] md:gap-xl lg:grid-cols-5"
 >
+	<div
+		class="relative col-span-2 mx-auto flex aspect-square h-[18.75rem] w-[18.75rem] flex-col items-center justify-center gap-sm rounded-full md:mx-0"
+	>
+		<div class="absolute">
+			<svg class="h-[18.75rem] w-[18.75rem]">
+				<circle
+					cx="150"
+					cy="150"
+					class="fill-none stroke-grey-200 dark:stroke-grey-700"
+					stroke-width="18"
+					r="140"
+				/>
+				<circle
+					cx="150"
+					cy="150"
+					r="140"
+					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
+					stroke-dashoffset={strokeArray - (strokeArray * percentCompleted) / 100}
+					stroke-dasharray={strokeArray}
+					stroke-linecap="round"
+					stroke-width="18"
+					transform="rotate(0 64 64)"
+				/>
+			</svg>
+		</div>
+		<span class="text-xl font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
+		<span class="text-md font-medium text-grey-700 dark:text-grey-300">Your daily progress</span>
+	</div>
+
 	<YourActivity />
 
-	<ProjectStatistics pinned_projects={data.pinned} />
+	<!-- <ProjectStatistics pinned_projects={data.pinned} /> -->
 
 	<!-- <TeamActivity /> -->
 
 	<div class="col-span-4">
 		<section>
 			<header class="flex items-center">
-				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
-					Pinned Projects
-				</h2>
-				<!-- Shown on mobile -->
 				<a
 					href="/app/projects/edit-pinned"
-					class="button--text ml-auto flex items-center gap-md p-0 md:hidden"
+					class="button--text mr-md flex items-center gap-md p-0 md:hidden"
 				>
 					<Edit className="stroke-grey-700 w-8 h-8 dark:stroke-grey-200" />
 					<span class="sr-only">Edit Pinned projects</span>
 				</a>
 				<!-- Shown on desktop -->
 				<button
-					class="button--text ml-auto hidden items-center gap-md p-0 md:flex"
+					class="button--text mr-md hidden items-center gap-md p-0 md:flex"
 					on:click={handleShowEditPinsPrompt}
 				>
 					<Edit className="stroke-grey-700 dark:stroke-grey-200 w-8 h-8" />
-					<span class="hidden xl:inline">Edit pinned <span class="sr-only">projects</span></span>
+					<span class="sr-only">Edit pinned projects</span>
 				</button>
+
+				<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">
+					Pinned Projects
+				</h2>
+				<!-- Shown on mobile -->
 			</header>
 			<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
 				{#if data.pinned.length === 0}
@@ -158,27 +197,6 @@
 			</div>
 		</section>
 	</div>
-
-	<!-- <section class="col-span-2"> -->
-	<!-- 	<header> -->
-	<!-- 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg"> -->
-	<!-- 			Jump Back Into -->
-	<!-- 		</h2> -->
-	<!-- 		<p class="font-medium text-grey-700 dark:text-grey-200"> -->
-	<!-- 			Resume working on recently edited projects -->
-	<!-- 		</p> -->
-	<!-- 	</header> -->
-	<!---->
-	<!-- 	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap"> -->
-	<!-- 		{#each $recentlyEdited as project} -->
-	<!-- 			<ProjectCard {...project} /> -->
-	<!-- 		{:else} -->
-	<!-- 			<p class="font-medium text-grey-700 dark:text-grey-200"> -->
-	<!-- 				Projects you have recently viewed will show up here -->
-	<!-- 			</p> -->
-	<!-- 		{/each} -->
-	<!-- 	</div> -->
-	<!-- </section> -->
 
 	<section class="col-span-1 hidden w-fit md:inline">
 		<header>
