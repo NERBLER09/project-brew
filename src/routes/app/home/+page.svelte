@@ -13,6 +13,7 @@
 	import type { PageData } from './$types';
 	import Search from '$lib/assets/Search.svelte';
 	import Project from '$lib/components/home/Project.svelte';
+	import DailyActivity from '$lib/components/home/daily-activity/DailyActivity.svelte';
 
 	export let data: PageData;
 
@@ -40,18 +41,8 @@
 		}
 	};
 
-	let strokeArray = 875;
-
-	let totalAmountOfTasks = 0;
-	let completedTasks = 0;
-	let percentCompleted = 0;
-
 	onMount(() => {
 		totalFocusTime = parseInt(localStorage.getItem('focusTime') || '0');
-		totalAmountOfTasks = data?.tasks?.length!;
-		completedTasks = data?.tasks?.filter((item) => item.status === 'done').length!;
-		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
-		// percentCompleted = 100;
 	});
 </script>
 
@@ -126,34 +117,7 @@
 <div
 	class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-[max-content] md:gap-xl lg:grid-cols-5"
 >
-	<div
-		class="relative col-span-2 mx-auto flex aspect-square h-[18.75rem] w-[18.75rem] flex-col items-center justify-center gap-sm rounded-full md:mx-0"
-	>
-		<div class="absolute">
-			<svg class="h-[18.75rem] w-[18.75rem]">
-				<circle
-					cx="150"
-					cy="150"
-					class="fill-none stroke-grey-200 dark:stroke-grey-700"
-					stroke-width="18"
-					r="140"
-				/>
-				<circle
-					cx="150"
-					cy="150"
-					r="140"
-					class="fill-none stroke-accent-light transition-all duration-300 ease-in"
-					stroke-dashoffset={strokeArray - (strokeArray * percentCompleted) / 100}
-					stroke-dasharray={strokeArray}
-					stroke-linecap="round"
-					stroke-width="18"
-					transform="rotate(0 64 64)"
-				/>
-			</svg>
-		</div>
-		<span class="text-xl font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
-		<span class="text-md font-medium text-grey-700 dark:text-grey-300">Your daily progress</span>
-	</div>
+	<DailyActivity bind:tasks={data.tasks} />
 
 	<YourActivity />
 
@@ -161,7 +125,7 @@
 
 	<!-- <TeamActivity /> -->
 
-	<div class="col-span-4">
+	<div class="col-span-5">
 		<section>
 			<header class="flex items-center">
 				<a
@@ -198,29 +162,29 @@
 		</section>
 	</div>
 
-	<section class="col-span-1 hidden w-fit md:inline">
-		<header>
-			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2>
-		</header>
-		<div>
-			{#if totalFocusTime === 0}
-				<p class="font-medium text-grey-700 dark:text-grey-200">
-					Your focus time will display here after you complete a focus session
-				</p>
-			{:else}
-				<div class="mt-sm flex flex-col text-center">
-					<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span>
-					<span class="mb-sm mt-md text-md font-medium text-grey-700 dark:text-grey-200"
-						><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1
-							? 's'
-							: ''}</span
-					>
-					<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span>
-					<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span>
-				</div>
-			{/if}
-		</div>
-	</section>
+	<!-- <section class="col-span-1 hidden w-fit md:inline"> -->
+	<!-- 	<header> -->
+	<!-- 		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2> -->
+	<!-- 	</header> -->
+	<!-- 	<div> -->
+	<!-- 		{#if totalFocusTime === 0} -->
+	<!-- 			<p class="font-medium text-grey-700 dark:text-grey-200"> -->
+	<!-- 				Your focus time will display here after you complete a focus session -->
+	<!-- 			</p> -->
+	<!-- 		{:else} -->
+	<!-- 			<div class="mt-sm flex flex-col text-center"> -->
+	<!-- 				<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span> -->
+	<!-- 				<span class="mb-sm mt-md text-md font-medium text-grey-700 dark:text-grey-200" -->
+	<!-- 					><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1 -->
+	<!-- 						? 's' -->
+	<!-- 						: ''}</span -->
+	<!-- 				> -->
+	<!-- 				<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span> -->
+	<!-- 				<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span> -->
+	<!-- 			</div> -->
+	<!-- 		{/if} -->
+	<!-- 	</div> -->
+	<!-- </section> -->
 </div>
 
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
