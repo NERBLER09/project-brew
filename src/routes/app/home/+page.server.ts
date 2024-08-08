@@ -22,10 +22,8 @@ export const load = (async (event) => {
 
 	const { data: tasks, error: err2 } = await supabaseClient
 		.from('tasks')
-		.select("*, projects(user_id)")
+		.select('*, projects(user_id)')
 		.eq('projects.user_id', session.user.id);
-
-	console.log(err2);
 
 	if (user && !projectsErr) {
 		if (user?.length === 0) redirect(303, '/welcome');

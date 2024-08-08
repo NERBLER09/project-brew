@@ -14,6 +14,7 @@
 	import Search from '$lib/assets/Search.svelte';
 	import Project from '$lib/components/home/Project.svelte';
 	import DailyActivity from '$lib/components/home/daily-activity/DailyActivity.svelte';
+	import DueTasks from '$lib/components/home/daily-activity/DueTasks.svelte';
 
 	export let data: PageData;
 
@@ -118,6 +119,8 @@
 	class="mt-md grid grid-cols-1 gap-md md:grid-cols-2 md:grid-rows-[max-content] md:gap-xl lg:grid-cols-5"
 >
 	<DailyActivity bind:tasks={data.tasks} />
+
+	<DueTasks bind:tasks={data.tasks} />
 
 	<YourActivity />
 

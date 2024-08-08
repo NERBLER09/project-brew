@@ -17,7 +17,7 @@
 </script>
 
 <div
-	class="relative col-span-2 mx-auto flex aspect-square h-[18.75rem] w-[18.75rem] flex-col items-center justify-center gap-sm rounded-full md:mx-0"
+	class="relative col-span-4 col-start-1 row-start-1 mx-auto flex aspect-square h-[18.75rem] w-[18.75rem] flex-col items-center justify-center gap-sm rounded-full md:mx-0 lg:col-span-3"
 >
 	<div class="absolute">
 		<svg class="h-[18.75rem] w-[18.75rem]">
