@@ -164,30 +164,6 @@
 			</div>
 		</section>
 	</div>
-
-	<!-- <section class="col-span-1 hidden w-fit md:inline"> -->
-	<!-- 	<header> -->
-	<!-- 		<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-100">Focus Minutes</h2> -->
-	<!-- 	</header> -->
-	<!-- 	<div> -->
-	<!-- 		{#if totalFocusTime === 0} -->
-	<!-- 			<p class="font-medium text-grey-700 dark:text-grey-200"> -->
-	<!-- 				Your focus time will display here after you complete a focus session -->
-	<!-- 			</p> -->
-	<!-- 		{:else} -->
-	<!-- 			<div class="mt-sm flex flex-col text-center"> -->
-	<!-- 				<span class="font-medium text-grey-700 dark:text-grey-200">You've been focusing for</span> -->
-	<!-- 				<span class="mb-sm mt-md text-md font-medium text-grey-700 dark:text-grey-200" -->
-	<!-- 					><span class="font-semibold">{totalFocusTime}</span> minute{totalFocusTime > 1 -->
-	<!-- 						? 's' -->
-	<!-- 						: ''}</span -->
-	<!-- 				> -->
-	<!-- 				<span class="mb-md font-medium text-grey-700 dark:text-grey-200">today</span> -->
-	<!-- 				<span class="font-medium text-grey-700 dark:text-grey-200">Keep up the great work</span> -->
-	<!-- 			</div> -->
-	<!-- 		{/if} -->
-	<!-- 	</div> -->
-	<!-- </section> -->
 </div>
 
 <NewProjectPrompt bind:shown={$showNewProjectPrompt} />
