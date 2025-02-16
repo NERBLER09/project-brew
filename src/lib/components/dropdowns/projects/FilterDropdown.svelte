@@ -11,7 +11,6 @@
 		priorityFilter
 	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
-	import { update } from 'lodash';
 	import { onMount } from 'svelte';
 
 	let addFilter = false;

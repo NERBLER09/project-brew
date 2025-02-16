@@ -8,7 +8,6 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import { currentProject, sortOptions as projectSort } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
-	import { update } from 'lodash';
 
 	let addSort = false;
 
