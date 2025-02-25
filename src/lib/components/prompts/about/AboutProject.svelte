@@ -18,7 +18,7 @@
 	import TagInput from './TagInput.svelte';
 
 	import pkg from 'lodash';
-	const {cameLCase} = pkg;
+	const {camelCase} = pkg;
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
