@@ -113,7 +113,7 @@
 
 <svelte:window on:click={handleClickOutside} />
 
-<section class="w-[15.625rem] md:relative md:w-[18.75rem] lg:w-[25rem]">
+<section class="w-[15.625rem] md:relative md:w-[18.75rem] lg:w-[25rem] touch-none">
 	<header class="flex w-[15.625rem] items-center md:w-[18.75rem] lg:w-[25rem]">
 		<div class="mb-md flex items-center gap-md md:mb-lg">
 			<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100 md:text-lg">{name}</h2>

@@ -47,6 +47,26 @@
 
 	let showProjectDropdown = false;
 
+	let mainElement: HTMLElement = document.getElementById("main")
+	let isHorizontalScroll = false
+	let previousScrollTop = 0
+	let previousScrollLeft = 0
+
+	const horizontalScroll = () => {
+		const currentScrollLeft = mainElement.scrollLeft
+		const currentScrollTop = mainElement.scrollTop
+
+		if (currentScrollLeft > previousScrollLeft || currentScrollLeft < previousScrollLeft) {
+			isHorizontalScroll = true
+		}
+		if(currentScrollTop > previousScrollTop || previousScrollTop < previousScrollTop) {
+			isHorizontalScroll = false
+		}
+
+		previousScrollTop = currentScrollTop
+		previousScrollLeft = currentScrollLeft
+	}
+
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
 		if (!$recentlyEdited.find((item) => item.id === data.id)) {
@@ -56,6 +76,13 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
+
+		mainElement = document.getElementById("main")
+		mainElement.addEventListener("scroll", () => {
+			if(mainElement) {
+				horizontalScroll()
+			}
+		})
 	});
 
 	let projectDropdownContainer: HTMLElement;
@@ -80,8 +107,10 @@
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
+<svelte:body on:scroll={horizontalScroll}/>
+
 <header
-	class="relative -left-6 -top-6 {data.banner
+	class=" {isHorizontalScroll ? 'sticky -left-6 float-right float-top -translate-y-[2.1rem]' : 'relative -top-6 -left-6'}  {data.banner
 		? 'h-[18.75rem]'
 		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner
@@ -173,7 +202,7 @@
 	</div>
 </header>
 
-<div class="-top-6 mb-md flex w-full items-center md:relative">
+<div class=" mb-md flex w-full items-center  {isHorizontalScroll ? 'md:sticky -left-6 float-right  -translate-y-[2.1rem]' : 'md:relative -top-6 -left-6'}">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />

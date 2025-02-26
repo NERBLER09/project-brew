@@ -116,6 +116,8 @@
 		class="h-full w-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes('settings')
 			? ''
 			: 'p-6 md:p-8'}"
+
+		id="main"
 	>
 		<slot />
 	</main>
