@@ -57,7 +57,7 @@
 	$: if(currentPage === "board" && mainElement) {
 		mainElement.classList.remove("overflow-x-hidden")
 		mainElement.classList.add("overflow-x-auto")
-	} else {
+	} else if(currentPage !== "board" && mainElement) {
 		mainElement.classList.add("overflow-x-hidden")
 		mainElement.classList.remove("overflow-x-auto")
 	}
