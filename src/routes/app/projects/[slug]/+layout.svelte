@@ -46,36 +46,34 @@
 	$sortOptions = data.project?.sort ?? {};
 	let showProjectDropdown = false;
 
-
-
-	let mainElement: HTMLElement = document.getElementById("main")
-	let isHorizontalScroll = false
-	let previousScrollTop = 0
-	let previousScrollLeft = 0
+	let mainElement: HTMLElement = document.getElementById('main');
+	let isHorizontalScroll = false;
+	let previousScrollTop = 0;
+	let previousScrollLeft = 0;
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
-	$: if(currentPage === "board" && mainElement) {
-		mainElement.classList.remove("overflow-x-hidden")
-		mainElement.classList.add("overflow-x-auto")
-	} else if(currentPage !== "board" && mainElement) {
-		mainElement.classList.add("overflow-x-hidden")
-		mainElement.classList.remove("overflow-x-auto")
+	$: if (currentPage === 'board' && mainElement) {
+		mainElement.classList.remove('overflow-x-hidden');
+		mainElement.classList.add('overflow-x-auto');
+	} else if (currentPage !== 'board' && mainElement) {
+		mainElement.classList.add('overflow-x-hidden');
+		mainElement.classList.remove('overflow-x-auto');
 	}
 
 	const horizontalScroll = () => {
-		const currentScrollLeft = mainElement.scrollLeft
-		const currentScrollTop = mainElement.scrollTop
+		const currentScrollLeft = mainElement.scrollLeft;
+		const currentScrollTop = mainElement.scrollTop;
 
 		if (currentScrollLeft > previousScrollLeft || currentScrollLeft < previousScrollLeft) {
-			isHorizontalScroll = true
+			isHorizontalScroll = true;
 		}
-		if(currentScrollTop > previousScrollTop || previousScrollTop < previousScrollTop) {
-			isHorizontalScroll = false
+		if (currentScrollTop > previousScrollTop || previousScrollTop < previousScrollTop) {
+			isHorizontalScroll = false;
 		}
 
-		previousScrollTop = currentScrollTop
-		previousScrollLeft = currentScrollLeft
-	}
+		previousScrollTop = currentScrollTop;
+		previousScrollLeft = currentScrollLeft;
+	};
 
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
@@ -87,12 +85,12 @@
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
 
-		mainElement = document.getElementById("main")
-		mainElement.addEventListener("scroll", () => {
-			if(mainElement) {
-				horizontalScroll()
+		mainElement = document.getElementById('main');
+		mainElement.addEventListener('scroll', () => {
+			if (mainElement) {
+				horizontalScroll();
 			}
-		})
+		});
 	});
 
 	let projectDropdownContainer: HTMLElement;
@@ -117,12 +115,12 @@
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
-<svelte:body on:scroll={horizontalScroll}/>
-
+<!-- <svelte:body on:scroll={horizontalScroll} /> -->
+<!-- {isHorizontalScroll ? 'sticky -left-6 float-right float-top -translate-y-[2.1rem]' : 'relative -top-6 -left-6'} -->
 <header
-	class=" {isHorizontalScroll ? 'sticky -left-6 float-right float-top -translate-y-[2.1rem]' : 'relative -top-6 -left-6'}  {data.banner
+	class="sticky -left-8 -translate-x-8 -translate-y-8 {data.banner
 		? 'h-[18.75rem]'
-		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8 {currentPage === 'board' ? 'overflow-x-hidden' : ''}"
+		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.banner});"
@@ -212,7 +210,7 @@
 	</div>
 </header>
 
-<div class=" mb-md flex w-full items-center  {isHorizontalScroll ? 'md:sticky -left-6 float-right  -translate-y-[2.1rem]' : 'md:relative -top-6 -left-6'}">
+<div class="sticky -left-6 mb-md flex w-full -translate-y-[2.1rem] items-center">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />
