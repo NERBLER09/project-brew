@@ -21,15 +21,17 @@
 		}
 	};
 
-	page.subscribe(() => {
-		showPageSwitcher = false;
+	page.subscribe((page) => {
+		if (page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '') !== currentPage) {
+			showPageSwitcher = false;
+		}
 	});
 </script>
 
 <svelte:window on:click={handleAutoClose} />
 
 <div
-	class="flex items-start gap-sm overflow-x-auto overflow-y-hidden {$showProjectAside
+	class="z-50 flex items-start gap-sm overflow-x-auto overflow-y-hidden {$showProjectAside
 		? 'md:w-[calc(100%-12.3125rem)]'
 		: 'w-full'}"
 	bind:this={navContainer}
