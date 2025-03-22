@@ -3,7 +3,6 @@
 
 	export let tasks;
 	const date = new Date();
-	date.setDate(date.getMonth(), date.getDay() - 1);
 	const today = date.toISOString().split('T')[0];
 	const dueTasks = tasks.filter((item) => {
 		return item.due_date === today;

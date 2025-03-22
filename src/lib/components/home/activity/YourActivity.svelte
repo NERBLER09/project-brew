@@ -4,7 +4,7 @@
 </script>
 
 <section
-	class="col-span-2 row-span-1 row-start-3 hidden md:block lg:col-span-5 lg:col-start-1 lg:row-start-2"
+	class="col-span-2 row-span-1 row-start-3 hidden md:block lg:col-span-5 lg:col-start-1 lg:row-start-2 xl:col-start-3"
 >
 	<header>
 		<h2 class="font-semibold text-grey-800 dark:text-grey-100 md:text-lg">Your Activity</h2>

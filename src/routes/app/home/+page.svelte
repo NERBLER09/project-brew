@@ -128,7 +128,7 @@
 
 	<!-- <TeamActivity /> -->
 
-	<div class="col-span-5">
+	<div class="col-span-5 xl:col-start-1 xl:col-span-2 xl:row-start-2">
 		<section>
 			<header class="flex items-center">
 				<a
