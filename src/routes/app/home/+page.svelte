@@ -57,7 +57,7 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <div
-	class="bg-cover bg-center bg-origin-border object-cover p-6 md:h-full md:p-8"
+	class="h-fit min-h-full bg-cover bg-center bg-no-repeat bg-origin-border object-cover p-6 md:p-8"
 	style="background: {!$useDarkMode
 		? 'linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6))'
 		: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'}, url('{background}') "
