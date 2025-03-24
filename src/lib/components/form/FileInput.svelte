@@ -43,11 +43,11 @@
 		style="background-image: url({bannerURL}); background-color: rgba(0, 0, 0, .15);"
 	>
 		<div class="flex items-center gap-md rounded-md p-2">
-			<button class="hover:bg-grey-700" on:click={removeBanner}>
+			<button class="hover:bg-grey-700" on:click={removeBanner} type="button">
 				<Trash className="h-8 w-8 stroke-grey-200" />
 				<span class="sr-only">Remove banner</span>
 			</button>
-			<button class="hover:bg-grey-700" on:click={() => bannerInputElement.click()}>
+			<button class="hover:bg-grey-700" on:click={() => bannerInputElement.click()} type="button">
 				<Edit className="h-8 w-8 stroke-grey-200" />
 				<span class="sr-only">Change banner</span>
 			</button>

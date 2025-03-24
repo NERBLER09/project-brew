@@ -8,11 +8,27 @@
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
+	import FileInput from '$lib/components/form/FileInput.svelte';
+	import { enhance } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 
 	let selectedTheme: Theme = $perferedTheme;
 
+	let bannerInputElement: HTMLInputElement;
+	let newBanner: FileList | null;
+	let bannerURL = data.dashboard_bg ?? '';
+
+	const getBannerPreview = (file: any) => {
+		if (!file) return;
+		bannerURL = URL.createObjectURL(file);
+	};
+
+	const removeBanner = () => {
+		bannerURL = '';
+		newBanner = null;
+	};
 	const handleUpdateTheme = () => {
 		$perferedTheme = selectedTheme;
 
@@ -45,58 +61,83 @@
 		<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Theme</h2>
 	</header>
 
-	<div class="mt-md flex flex-wrap gap-6">
-		<button class="relative text-start" on:click={() => (selectedTheme = 'light')}>
-			{#if selectedTheme === 'light'}
-				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-			{/if}
-			<div
-				class="p-sm {selectedTheme === 'light'
-					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-			>
-				<Light />
-			</div>
-			<span
-				class="{selectedTheme === 'light'
-					? 'text-accent-light'
-					: 'text-grey-700 dark:text-grey-200'} font-bold">Light</span
-			>
-		</button>
-		<button class="relative text-start" on:click={() => (selectedTheme = 'dark')}>
-			{#if selectedTheme === 'dark'}
-				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-			{/if}
-			<div
-				class="p-sm {selectedTheme === 'dark'
-					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-			>
-				<Dark />
-			</div>
-			<span
-				class="{selectedTheme === 'dark'
-					? 'text-accent-light'
-					: 'text-grey-700 dark:text-grey-200'} font-bold">Dark</span
-			>
-		</button>
-		<button class="relative text-start" on:click={() => (selectedTheme = 'system')}>
-			{#if selectedTheme === 'system'}
-				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-			{/if}
-			<div
-				class="p-sm {selectedTheme === 'system'
-					? 'border-accent-light'
-					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-			>
-				<System />
-			</div>
-			<span
-				class="{selectedTheme === 'system'
-					? 'text-accent-light'
-					: 'text-grey-700 dark:text-grey-200'} font-bold">System</span
-			>
-		</button>
+	<form
+		method="POST"
+		action="/app/settings?/appearance"
+		enctype="multipart/form-data"
+		use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					toast.error(result?.data.message);
+				} else if (result.type === 'success') {
+					toast.success('Updated account settings');
+					invalidate('app:user-info');
+				}
+			};
+		}}
+	>
+		<div class="mt-md flex flex-wrap gap-6">
+			<button class="relative text-start" on:click={() => (selectedTheme = 'light')} type="button">
+				{#if selectedTheme === 'light'}
+					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+				{/if}
+				<div
+					class="p-sm {selectedTheme === 'light'
+						? 'border-accent-light'
+						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+				>
+					<Light />
+				</div>
+				<span
+					class="{selectedTheme === 'light'
+						? 'text-accent-light'
+						: 'text-grey-700 dark:text-grey-200'} font-bold">Light</span
+				>
+			</button>
+			<button class="relative text-start" on:click={() => (selectedTheme = 'dark')} type="button">
+				{#if selectedTheme === 'dark'}
+					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+				{/if}
+				<div
+					class="p-sm {selectedTheme === 'dark'
+						? 'border-accent-light'
+						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+				>
+					<Dark />
+				</div>
+				<span
+					class="{selectedTheme === 'dark'
+						? 'text-accent-light'
+						: 'text-grey-700 dark:text-grey-200'} font-bold">Dark</span
+				>
+			</button>
+			<button class="relative text-start" on:click={() => (selectedTheme = 'system')} type="button">
+				{#if selectedTheme === 'system'}
+					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+				{/if}
+				<div
+					class="p-sm {selectedTheme === 'system'
+						? 'border-accent-light'
+						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+				>
+					<System />
+				</div>
+				<span
+					class="{selectedTheme === 'system'
+						? 'text-accent-light'
+						: 'text-grey-700 dark:text-grey-200'} font-bold">System</span
+				>
+			</button>
+		</div>
+		<div class="mb-md">
+			<h3 class="input--label mb-sm text-md">Dashboard Background</h3>
+			<p class="my-sm font-medium text-grey-700 dark:text-grey-300">
+				Make your dashboard more unique by uploading a background image
+			</p>
+
+			<input type="text" class="hidden" value={bannerURL} name="set_banner" />
+			<FileInput bind:bannerURL bind:newBanner postRemoveBannnerHandle={removeBanner} />
+		</div>
 
 		<button
 			class="button--circle fixed bottom-32 right-8 z-50 md:hidden"
@@ -108,10 +149,10 @@
 		<button
 			class="button--primary z-50 hidden md:block {!data.banner
 				? 'mx-auto mt-md'
-				: 'absolute right-0 -top-36'}"
+				: 'absolute -top-36 right-0'}"
 			on:click={handleUpdateTheme}
 		>
 			<span>Save changes</span>
 		</button>
-	</div>
+	</form>
 </section>

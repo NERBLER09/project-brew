@@ -33,6 +33,7 @@ export const load = (async (event) => {
 		return {
 			name: user[0]?.name,
 			avatar_url: user[0].avatar_url,
+			background: user[0].dashboard_bg,
 			all: projects,
 			pinned,
 			user: user[0],

@@ -127,5 +127,41 @@ export const actions = {
 		} else {
 			return { success: true };
 		}
+	},
+	appearance: async (event) => {
+		const { request } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+
+		if (!session) {
+			// the user is not signed in
+			error(403, { message: 'Unauthorized' });
+		}
+
+		const data = await request.formData();
+		const banner = data.get('banner') as File;
+		const set_banner = data.get('set_banner') as string;
+
+		let banner_url = set_banner;
+
+		if (banner.size !== 0 && banner.size < 5000000) {
+			const { error: err2 } = await supabaseClient.storage
+				.from('avatars')
+				.upload(`${session.user.id}/background.png`, banner, {
+					cacheControl: '3600',
+					upsert: true
+				});
+
+			const { data: url } = supabaseClient.storage
+				.from('avatars')
+				.getPublicUrl(`${session.user.id}/background.png`);
+			banner_url = url.publicUrl;
+		} else if (banner.size > 5000000 && banner.size > 0) {
+			return fail(400, { message: 'Banner is larger then 5mb.', fail: true });
+		}
+
+		const { error: err } = await supabaseClient
+			.from('profiles')
+			.update({ dashboard_bg: banner_url })
+			.eq('id', session?.user.id);
 	}
 } satisfies Actions;
