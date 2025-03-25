@@ -38,7 +38,7 @@
 		<TodayProgress today={data.dashboard?.today ?? []} {due} />
 	</section>
 	<section
-		class="hidden md:col-span-2 md:row-start-2 md:block lg:col-span-2 lg:col-start-3 lg:row-start-1 overflow-none"
+		class="overflow-none hidden md:col-span-2 md:row-start-2 md:block lg:col-span-2 lg:col-start-3 lg:row-start-1"
 	>
 		<header class="mb-md">
 			<h2 class="text-lg font-semibold text-grey-800 dark:text-grey-200">Behind Tasks</h2>
@@ -79,24 +79,17 @@
 						</div>
 					{/if}
 				</section>
-			<section class="max-w-1/2">
-				<header>
-					<h4 class="my-md text-md font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
-				</header>
-				{#if data.dashboard?.tasks}
+				<section class="max-w-1/2">
+					<header>
+						<h4 class="my-md text-md font-semibold text-grey-700 dark:text-grey-300">Tags</h4>
+					</header>
 					<div class="inline dark:hidden">
 						<Tags tasks={data.dashboard?.tasks} />
 					</div>
 					<div class="hidden dark:inline">
 						<TagsDark tasks={data.dashboard?.tasks} />
 					</div>
-				{:else}
-					<p class="font-medium text-grey-800 dark:text-grey-200">
-						Create tasks with tags to view what tags are being used.
-					</p>
-				{/if}
-			</section>
-
+				</section>
 			{/if}
 		</div>
 	</section>

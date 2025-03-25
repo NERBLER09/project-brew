@@ -68,7 +68,6 @@
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
 	});
-	});
 
 	let projectDropdownContainer: HTMLElement;
 
