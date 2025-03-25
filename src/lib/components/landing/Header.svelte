@@ -8,7 +8,7 @@
 
 <header class="relative flex h-20 items-center bg-grey-100 px-lg md:px-28 lg:px-52">
 	<div class="flex items-center gap-md">
-		<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
+		<Logo className="h-12 w-12 rounded-lg" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
 	<nav class="ml-auto hidden items-center gap-md md:flex">
@@ -30,7 +30,7 @@
 			{/if}
 		</button>
 		<nav
-			class="fixed top-0 right-0 ml-auto flex h-screen w-7/12 flex-col items-start justify-end gap-md bg-grey-100 p-6 
+			class="fixed right-0 top-0 ml-auto flex h-screen w-7/12 flex-col items-start justify-end gap-md bg-grey-100 p-6
 			{showMobileNav ? 'translate-x-0' : 'translate-x-full'} transition-all duration-300 ease-out"
 		>
 			<a class="button--primary w-full text-center" href="/login">Log in</a>

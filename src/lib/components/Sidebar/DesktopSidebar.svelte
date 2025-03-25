@@ -16,7 +16,7 @@
 	class="hidden h-screen w-[16.625rem] flex-col bg-grey-100 px-md py-[1rem] dark:bg-grey-800 md:flex"
 >
 	<header class="ml-md flex items-center gap-md">
-		<Logo className="h-2xl w-2xl rounded-lg bg-grey-300" />
+		<Logo className="h-2xl w-2xl rounded-lg dark:bg-grey-300" />
 		<span class="text-md font-semibold text-grey-800 dark:text-grey-200">Project Brew</span>
 	</header>
 
