@@ -5,7 +5,7 @@
 	const date = new Date();
 	const today = date.toISOString().split('T')[0];
 	const dueTasks = tasks.filter((item) => {
-		return item.due_date === today;
+		return item.due_date === today && item.status !== 'done';
 	});
 </script>
 
