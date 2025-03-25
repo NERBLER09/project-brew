@@ -53,7 +53,7 @@
 		mainElement.classList.remove('overflow-x-hidden');
 		mainElement.classList.add('overflow-x-auto');
 	} else if (currentPage !== 'board' && mainElement) {
-		mainElement.scroll(0, 0)
+		mainElement.scroll(0, 0);
 		mainElement.classList.add('overflow-x-hidden');
 		mainElement.classList.remove('overflow-x-auto');
 	}
@@ -198,4 +198,5 @@
 	bind:shown={$showAboutProjectPrompt}
 	project_name={data.project?.project_name}
 	description={data.project?.description}
+	banner={data.banner}
 />

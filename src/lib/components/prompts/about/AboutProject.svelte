@@ -50,8 +50,10 @@
 
 	$: handleModalStatus(shown);
 
-	let bannerURL = banner;
+	$: bannerURL = banner;
 	let newBanner: FileList | null;
+
+	console.log(bannerURL);
 
 	let teamName = '';
 
@@ -174,7 +176,7 @@
 			: 'h-[12.5rem]'}"
 		style="background-image: {bannerURL
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
-			: ''} url({bannerURL});"
+			: ''} url('{bannerURL}');"
 	>
 		{#if isViewer}
 			<h1
