@@ -47,33 +47,16 @@
 	let showProjectDropdown = false;
 
 	let mainElement: HTMLElement = document.getElementById('main');
-	let isHorizontalScroll = false;
-	let previousScrollTop = 0;
-	let previousScrollLeft = 0;
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
 	$: if (currentPage === 'board' && mainElement) {
 		mainElement.classList.remove('overflow-x-hidden');
 		mainElement.classList.add('overflow-x-auto');
 	} else if (currentPage !== 'board' && mainElement) {
+		mainElement.scroll(0, 0)
 		mainElement.classList.add('overflow-x-hidden');
 		mainElement.classList.remove('overflow-x-auto');
 	}
-
-	const horizontalScroll = () => {
-		const currentScrollLeft = mainElement.scrollLeft;
-		const currentScrollTop = mainElement.scrollTop;
-
-		if (currentScrollLeft > previousScrollLeft || currentScrollLeft < previousScrollLeft) {
-			isHorizontalScroll = true;
-		}
-		if (currentScrollTop > previousScrollTop || previousScrollTop < previousScrollTop) {
-			isHorizontalScroll = false;
-		}
-
-		previousScrollTop = currentScrollTop;
-		previousScrollLeft = currentScrollLeft;
-	};
 
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
@@ -84,13 +67,7 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
-
-		mainElement = document.getElementById('main');
-		mainElement.addEventListener('scroll', () => {
-			if (mainElement) {
-				horizontalScroll();
-			}
-		});
+	});
 	});
 
 	let projectDropdownContainer: HTMLElement;
@@ -116,7 +93,6 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <!-- <svelte:body on:scroll={horizontalScroll} /> -->
-<!-- {isHorizontalScroll ? 'sticky -left-6 float-right float-top -translate-y-[2.1rem]' : 'relative -top-6 -left-6'} -->
 <header
 	class="sticky -left-8 -translate-x-8 -translate-y-8 {data.banner
 		? 'h-[10.75rem] md:h-[18.75rem]'
