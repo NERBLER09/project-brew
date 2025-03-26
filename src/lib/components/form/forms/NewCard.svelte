@@ -158,6 +158,7 @@
 					on:click={() => {
 						changePriorityDropdown = !changePriorityDropdown;
 					}}
+					type="button"
 				>
 					<span class="sr-only">Click to change the priority</span>
 					{#if newTaskPriorityLevel === 'high'}
@@ -192,6 +193,7 @@
 								newTaskPriorityLevel = 'high';
 								changePriorityDropdown = false;
 							}}
+							type="button"
 						>
 							{#if newTaskPriorityLevel === 'high'}
 								<Check className="dropdown--icon" />
@@ -209,6 +211,7 @@
 
 								changePriorityDropdown = false;
 							}}
+							type="button"
 						>
 							{#if newTaskPriorityLevel === 'med'}
 								<Check className="dropdown--icon" />
@@ -220,9 +223,10 @@
 						<button
 							class="dropdown--item"
 							on:click={() => {
-								newTaskPriorityLevel = 'med';
+								newTaskPriorityLevel = 'low';
 								shown = true;
 							}}
+							type="button"
 						>
 							{#if newTaskPriorityLevel === 'low'}
 								<Check className="dropdown--icon" />
@@ -238,6 +242,7 @@
 								newTaskPriorityLevel = 'none';
 								shown = true;
 							}}
+							type="button"
 						>
 							{#if newTaskPriorityLevel === 'none'}
 								<Check className="dropdown--icon" />
@@ -249,33 +254,6 @@
 						</button>
 					</div>
 				{/if}
-				<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
-
-				<!-- <div class="relative" bind:this={milestoneDropdownElement}>
-				<button
-					class="flex items-center md:gap-sm"
-					on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
-				>
-					<Milestone className="h-6 w-6 stroke-accent-light" />
-					<a
-						class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
-						href="milestones/{milestone?.id}">{milestone?.name}</a
-					>
-					<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-						>Add to milestone
-					</span>
-				</button>
-
-				{#if updateTaskMilestone}
-					<UpdateTaskMilestone
-						bind:currentMilestone={milestone}
-						bind:shown={updateTaskMilestone}
-						taskId={id}
-						bind:milestone
-					/>
-				{/if}
-			</div>
-		</div> -->
 			</div>
 		</div>
 		<div class="mb-md">
