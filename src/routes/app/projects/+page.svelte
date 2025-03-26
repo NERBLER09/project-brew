@@ -13,6 +13,7 @@
 	import type { Projects } from '$lib/types/projects';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import Project from '$lib/components/home/Project.svelte';
 
 	export let data: PageData;
 
@@ -103,14 +104,14 @@
 			<span class="sr-only md:not-sr-only">Edit Pinned <span class="sr-only">Projects</span></span>
 		</button>
 	</header>
-	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto md:flex-wrap">
+	<div class="mt-md flex w-full flex-nowrap items-center gap-lg overflow-x-auto">
 		{#if data.pinned.length === 0}
 			<p class="font-medium text-grey-700 dark:text-grey-200">
 				To pin a project click on the edit button.
 			</p>
 		{/if}
 		{#each data.pinned as project}
-			<ProjectCard {...project} />
+			<Project {...project} />
 		{/each}
 	</div>
 </section>
@@ -119,7 +120,7 @@
 	<header class="flex items-center">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-100 md:text-lg">All Projects</h2>
 	</header>
-	<div class="mt-md mb-4 flex items-center">
+	<div class="mb-4 mt-md flex items-center">
 		<div class="input--search w-full max-w-[15.625rem] lg:max-w-sm">
 			<Search className="stroke-grey-700 w-6 h-6" />
 			<input
@@ -145,7 +146,7 @@
 			</button>
 			<!-- Only shown on desktop -->
 			<button
-				class="button--secondary hidden items-center gap-md  md:flex"
+				class="button--secondary hidden items-center gap-md md:flex"
 				on:click={() => ($showProjectsSort = !$showProjectsSort)}
 			>
 				<Down className="stroke-grey-700 dark:stroke-grey-200 w-lg h-lg" />

@@ -19,6 +19,12 @@ export const load = (async (event) => {
 		.from('profiles')
 		.select()
 		.eq('id', session.user.id);
+
+	const { data: tasks, error: err2 } = await supabaseClient
+		.from('tasks')
+		.select('*, projects(user_id)')
+		.eq('projects.user_id', session.user.id);
+
 	if (user && !projectsErr) {
 		if (user?.length === 0) redirect(303, '/welcome');
 
@@ -27,9 +33,11 @@ export const load = (async (event) => {
 		return {
 			name: user[0]?.name,
 			avatar_url: user[0].avatar_url,
+			background: user[0].dashboard_bg,
 			all: projects,
 			pinned,
-			user: user[0]
+			user: user[0],
+			tasks
 		};
 	}
 

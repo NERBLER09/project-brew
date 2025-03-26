@@ -14,9 +14,11 @@
 	import ManageInvited from './ManageInvited.svelte';
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
-	import { camelCase } from 'lodash';
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import TagInput from './TagInput.svelte';
+
+	import pkg from 'lodash';
+	const { camelCase } = pkg;
 
 	export let shown = false;
 	let dialog: HTMLDialogElement;
@@ -29,6 +31,9 @@
 
 	project_name = $currentProject.project_name ?? '';
 	description = $currentProject.description ?? '';
+
+	let original_name = project_name;
+	let original_description = description;
 
 	let isViewer = $userRole === 'viewer';
 
@@ -45,8 +50,10 @@
 
 	$: handleModalStatus(shown);
 
-	let bannerURL = banner;
+	$: bannerURL = banner;
 	let newBanner: FileList | null;
+
+	console.log(bannerURL);
 
 	let teamName = '';
 
@@ -69,6 +76,8 @@
 	});
 
 	const updateProjectName = async () => {
+		if (project_name === original_name) return;
+		toast.success('Updated name');
 		const { error } = await supabase
 			.from('projects')
 			.update({
@@ -86,6 +95,7 @@
 	};
 
 	const updateProjectDescription = async () => {
+		if (description !== original_description) return;
 		const { error } = await supabase
 			.from('projects')
 			.update({
@@ -166,7 +176,7 @@
 			: 'h-[12.5rem]'}"
 		style="background-image: {bannerURL
 			? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
-			: ''} url({bannerURL});"
+			: ''} url('{bannerURL}');"
 	>
 		{#if isViewer}
 			<h1

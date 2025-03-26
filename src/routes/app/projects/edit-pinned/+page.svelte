@@ -17,9 +17,16 @@
 	};
 
 	const handleUpdatePins = async () => {
+		let updatedProjects = [];
+		for (const project of projects) {
+			const temp = project;
+			delete temp.tasks;
+			delete temp.project_members;
+			updatedProjects.push(temp);
+		}
 		const { error } = await supabase
 			.from('projects')
-			.upsert([...projects])
+			.upsert([...updatedProjects])
 			.select();
 
 		if (error) {
@@ -35,15 +42,15 @@
 </svelte:head>
 
 <MobileSubPageLayout pageName="Edit Pinned Projects" previousPage="/app/projects">
-	<p class="font-medium text-grey-700 dark:text-grey-200 pt-sm">
+	<p class="pt-sm font-medium text-grey-700 dark:text-grey-200">
 		Chose what projects are displayed on top.
 	</p>
-	<div class="my-md p-md input--search">
+	<div class="input--search my-md p-md">
 		<Search className="stroke-grey-700 w-6 h-6" />
 		<input
 			type="text"
 			placeholder="Search by name"
-			class="bg-grey-200 border-none w-full p-0"
+			class="w-full border-none bg-grey-200 p-0"
 			bind:value={query}
 			on:keyup={handleSearch}
 		/>
@@ -62,7 +69,7 @@
 		{/each}
 	</div>
 
-	<button class="button--circle bottom-8 right-8 absolute" on:click={handleUpdatePins}>
+	<button class="button--circle absolute bottom-8 right-8" on:click={handleUpdatePins}>
 		<Check className="h-8 w-8 stroke-grey-200" />
 		<span class="sr-only">Update pinned projects</span>
 	</button>

@@ -113,9 +113,12 @@
 	</aside>
 
 	<main
-		class="h-full w-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes('settings')
+		class="relative h-full w-full overflow-y-auto dark:bg-grey-900 {$page.url.href.includes(
+			'settings'
+		) || $page.url.pathname === '/app/home'
 			? ''
 			: 'p-6 md:p-8'}"
+		id="main"
 	>
 		<slot />
 	</main>

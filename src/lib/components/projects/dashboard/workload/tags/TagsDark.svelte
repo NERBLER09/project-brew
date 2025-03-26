@@ -6,8 +6,13 @@
 	import { Doughnut } from 'svelte-chartjs';
 
 	export let tasks: Task[];
-	let allTags: string[][] | string[] = tasks.map((item) => item.tags ?? []);
+	let allTags: string[][] | string[] = tasks.map((item) => {
+		if (item.status !== 'done' && item.tags) {
+			return item.tags ?? [];
+		}
+	});
 	allTags = [...flattenDepth(allTags)];
+	allTags = allTags.filter((item) => item !== undefined);
 	let tagsAmount = values(countBy(allTags));
 
 	const data = {
@@ -31,17 +36,23 @@
 	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 </script>
 
-<Doughnut
-	{data}
-	options={{
-		responsive: false,
-		font: { size: 16, family: "'Inter', sans-serif", weight: '500' },
-		color: '#DEE2E6',
-		plugins: {
-			legend: {
-				position: 'bottom'
-			}
-		},
-		borderColor: '#212529'
-	}}
-/>
+{#if tagsAmount.length > 0}
+	<Doughnut
+		{data}
+		options={{
+			responsive: false,
+			font: { size: 16, family: "'Inter', sans-serif", weight: '500' },
+			color: '#DEE2E6',
+			plugins: {
+				legend: {
+					position: 'bottom'
+				}
+			},
+			borderColor: '#212529'
+		}}
+	/>
+{:else}
+	<p class="font-medium text-grey-800 dark:text-grey-200">
+		Create tasks with tags to view what tags are being used.
+	</p>
+{/if}

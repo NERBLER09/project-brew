@@ -11,7 +11,7 @@
 
 <section>
 	<header class="mb-md flex items-start gap-lg">
-		<Logo className="mb-sm h-20 w-20 rounded-xl dark:bg-grey-800 bg-grey-100" />
+		<Logo className="mb-sm h-20 w-20 rounded-xl dark:bg-grey-100" />
 		<div>
 			<h2 class="text-lg font-semibold text-grey-900 dark:text-grey-100">Project Brew</h2>
 			<p class="mt-sm font-medium text-grey-700 dark:text-grey-200">Version {env.PUBLIC_VERSION}</p>

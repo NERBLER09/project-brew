@@ -14,7 +14,7 @@ export const load = (async (event) => {
 
 	const { data, error: err } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(user_id)')
+		.select('*, project_members!inner(user_id), tasks(*)')
 		.eq('project_members.user_id', session.user.id);
 
 	const { data: userTeams } = await supabaseClient

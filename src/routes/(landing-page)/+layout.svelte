@@ -5,7 +5,7 @@
 
 <header class="absolute z-50 p-lg">
 	<a class="hidden items-center gap-md md:flex" href="/">
-		<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
+		<Logo className="h-12 w-12 rounded-lg" />
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</a>
 

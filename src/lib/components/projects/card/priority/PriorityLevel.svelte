@@ -22,7 +22,7 @@
 	bind:this={priorityContainer}
 	class="{!isViewer
 		? 'hover:bg-grey-200 hover:dark:bg-grey-700'
-		: ''} rounded md:relative {changePriorityDropdown ? 'bg-grey-200 dark:bg-grey-700' : ''}"
+		: ''} rounded md:relative {changePriorityDropdown ? 'bg-grey-200 dark:bg-grey-700' : ''} max-w-fit col-start-4"
 >
 	<button
 		on:click={() => {

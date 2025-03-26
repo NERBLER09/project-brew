@@ -47,22 +47,26 @@
 </script>
 
 <div
-	class="flex w-full items-center justify-between rounded bg-grey-100 dark:bg-grey-800 {location ===
+	class="grid {assignedUsers
+		? 'grid-cols-4'
+		: 'grid-cols-5'} gap-auto max-h-[2.75rem] w-full grid-rows-1 items-center justify-between rounded bg-grey-100 dark:bg-grey-800 {location ===
 	'milestones'
 		? ''
 		: 'p-2'}"
 >
 	<span class="max-w-[15ch] truncate font-bold text-grey-700 dark:text-grey-300">{name}</span>
-	<div class="flex gap-sm">
-		<Calendar className="h-6 w-6 stroke-accent-light" />
-		<span
-			class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
-			>{formattedDate}</span
-		>
-	</div>
+	{#if formattedDate}
+		<div class="flex gap-sm">
+			<Calendar className="h-6 w-6 stroke-accent-light" />
+			<span
+				class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
+				>{formattedDate}</span
+			>
+		</div>
+	{/if}
 
 	{#if milestone}
-		<div class="gap-sm {location === 'milestones' ? 'hidden' : 'hidden lg:flex'}">
+		<div class="gap-sm {location === 'milestones' ? 'hidden' : 'hidden lg:flex'} col-start-3">
 			<Milestone className="h-6 w-6 stroke-accent-light" />
 			<span
 				class="whitespace-nowrap break-normal text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
@@ -73,22 +77,24 @@
 
 	<PriorityLevel bind:priority_level taskId={id} />
 
-	<div class="relative flex items-center">
-		{#each assignedUsers as { avatar_url, name }}
-			{#if avatar_url}
-				<img
-					src={avatar_url}
-					alt="User profile"
-					class="border-1 aspect-square h-6 w-6 rounded-full border-solid border-grey-100 object-cover first:border-0 dark:border-grey-800"
-				/>
-			{:else}
-				<User
-					className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full border-1 border-solid border-grey-100 first:border-0 dark:border-grey-800"
-				/>
-			{/if}
-			<span class="sr-only">
-				{name}'s profile
-			</span>
-		{/each}
+	<div class="col-start-4">
+		<div class="relative flex items-center">
+			{#each assignedUsers as { avatar_url, name }}
+				{#if avatar_url}
+					<img
+						src={avatar_url}
+						alt="User profile"
+						class="border-1 aspect-square h-6 w-6 rounded-full border-solid border-grey-100 object-cover first:border-0 dark:border-grey-800"
+					/>
+				{:else}
+					<User
+						className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full border-1 border-solid border-grey-100 first:border-0 dark:border-grey-800"
+					/>
+				{/if}
+				<span class="sr-only">
+					{name}'s profile
+				</span>
+			{/each}
+		</div>
 	</div>
 </div>

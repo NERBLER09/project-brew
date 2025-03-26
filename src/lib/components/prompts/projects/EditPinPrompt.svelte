@@ -29,9 +29,16 @@
 	$: handleModalStatus(shown);
 
 	const handleUpdatePins = async () => {
+		let updatedProjects = [];
+		for (const project of projects) {
+			const temp = project;
+			delete temp.tasks;
+			delete temp.project_members;
+			updatedProjects.push(temp);
+		}
 		const { error } = await supabase
 			.from('projects')
-			.upsert([...projects])
+			.upsert([...updatedProjects])
 			.select();
 
 		if (error) {

@@ -30,6 +30,7 @@
 	import { supabase } from '$lib/supabase';
 	import { invalidate } from '$app/navigation';
 	import { userRole } from '$lib/stores/team';
+	import { page } from '$app/stores';
 
 	export let data: LayoutData;
 	$currentProject = data.project;
@@ -42,10 +43,20 @@
 	$milestoneFilter = data.project?.filter.milestone;
 	$dateFilter = data.project?.filter.date;
 	$priorityFilter = data.project?.filter.priority;
-
 	$sortOptions = data.project?.sort ?? {};
-
 	let showProjectDropdown = false;
+
+	let mainElement: HTMLElement = document.getElementById('main');
+
+	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
+	$: if (currentPage === 'board' && mainElement) {
+		mainElement.classList.remove('overflow-x-hidden');
+		mainElement.classList.add('overflow-x-auto');
+	} else if (currentPage !== 'board' && mainElement) {
+		mainElement.scroll(0, 0);
+		mainElement.classList.add('overflow-x-hidden');
+		mainElement.classList.remove('overflow-x-auto');
+	}
 
 	onMount(async () => {
 		if ($recentlyEdited.length >= 4) $recentlyEdited.pop();
@@ -80,10 +91,11 @@
 
 <svelte:window on:click={handleAutoCloseDropdown} />
 
+<!-- <svelte:body on:scroll={horizontalScroll} /> -->
 <header
-	class="relative -left-6 -top-6 {data.banner
-		? 'h-[18.75rem]'
-		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:-left-8 md:-top-8 md:w-[calc(100%+64px)] md:p-8"
+	class="sticky -left-8 -translate-x-8 -translate-y-8 {data.banner
+		? 'h-[10.75rem] md:h-[18.75rem]'
+		: 'h-fit'} w-[calc(100%+48px)] rounded-b-3xl bg-cover bg-center bg-origin-border object-cover p-6 md:w-[calc(100%+64px)] md:p-8"
 	style="background-image: {data.banner
 		? 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 115.18%),'
 		: ''} url({data.banner});"
@@ -173,7 +185,7 @@
 	</div>
 </header>
 
-<div class="-top-6 mb-md flex w-full items-center md:relative">
+<div class="sticky -left-6 mb-md flex w-full -translate-y-[2.1rem] items-center">
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />
@@ -186,4 +198,5 @@
 	bind:shown={$showAboutProjectPrompt}
 	project_name={data.project?.project_name}
 	description={data.project?.description}
+	banner={data.banner}
 />

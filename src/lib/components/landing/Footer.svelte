@@ -7,7 +7,7 @@
 >
 	<div>
 		<div class="flex items-center gap-md">
-			<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
+			<Logo className="h-12 w-12 rounded-lg" />
 			<span class="text-md font-semibold text-grey-800">Project Brew</span>
 		</div>
 		<p class="mt-md font-medium text-grey-700">Created by Noah Beaudin</p>

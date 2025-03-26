@@ -6,7 +6,7 @@
 <div class="h-screen overflow-y-auto">
 	<header class="relative z-50 px-lg py-lg md:px-28 lg:px-52">
 		<a class="hidden items-center gap-md md:flex" href="/">
-			<Logo className="h-12 w-12 rounded-lg bg-grey-300" />
+			<Logo className="h-12 w-12 rounded-lg" />
 			<span class="text-md font-semibold text-grey-800">Project Brew</span>
 		</a>
 
