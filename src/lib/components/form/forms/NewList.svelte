@@ -10,7 +10,7 @@
 
 	export let createNewList = false;
 	let newName = '';
-	let newStatus = '';
+	let newStatus = 'todo';
 
 	const handleCreateNewList = async (event) => {
 		createNewList = false;
@@ -40,21 +40,6 @@
 	onDestroy(() => {
 		$disableDrag = false;
 	});
-
-	$: switch (newStatus) {
-		case 'todo':
-			newName = 'To-do';
-			break;
-		case 'doing':
-			newName = 'Doing';
-			break;
-		case 'done':
-			newName = 'Done';
-			break;
-		default:
-			newName = '';
-			break;
-	}
 </script>
 
 <form
@@ -80,24 +65,28 @@
 
 	<div class="mb-md mt-sm">
 		<label for="status-input" class="input--label">Enter a task status for this list:</label>
-		<!-- <select name="status-input" id="status-input" class="input--text w-full" bind:value={newStatus}>
+		<select
+			name="status-input"
+			id="status-input"
+			class="input--text w-full"
+			bind:value={newStatus}
+			required
+		>
 			<option value="todo">To-do</option>
 			<option value="doing">Doing</option>
 			<option value="done">Done</option>
 			<option value="other">Other</option>
-		</select> -->
-		<input
-			type="text"
-			class="input--text w-full"
-			placeholder="Enter a list status"
-			name="status-input"
-			bind:value={newStatus}
-			required
-		/>
-		<br />
-		<span class="text-sm font-medium text-grey-700 dark:text-grey-200"
-			>What is the status of the tasks in this list?</span
-		>
+		</select>
+		{#if newStatus === 'other' && newStatus}
+			<input
+				type="text"
+				class="input--text mt-md w-full"
+				placeholder="Enter a list status"
+				name="status-input"
+				bind:value={newStatus}
+				required
+			/>
+		{/if}
 	</div>
 	<button class="button--primary flex w-full items-center justify-center gap-md" type="submit">
 		<PlusNew className="w-6 h-6 stroke-grey-200" />

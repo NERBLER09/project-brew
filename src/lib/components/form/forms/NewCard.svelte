@@ -100,7 +100,7 @@
 
 <form method="POST" on:submit|preventDefault={handleCreateNewTask} class="relative">
 	<button class="absolute right-6 top-6" type="submit">
-		<Check className="w-8 h-8 stroke-grey-100" />
+		<Check className="w-8 h-8 dark:stroke-grey-100 stroke-grey-700" />
 		<span class="sr-only">Create new task</span>
 	</button>
 
