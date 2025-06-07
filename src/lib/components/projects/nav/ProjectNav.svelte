@@ -13,8 +13,6 @@
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
 	let showPageSwitcher = true;
 
-	let screenHeight = window.innerHeight;
-
 	let navContainer: HTMLElement;
 	const handleAutoClose = (event: Event) => {
 		if (!navContainer) return;
@@ -65,10 +63,7 @@
 			<span class="sr-only">Switch project view</span>
 		</button>
 		{#if showPageSwitcher}
-			<div
-				class="dropdown--container z-50 -translate-x-[24px]"
-				style="transform: translate(-24px, calc({screenHeight}px - 178px));"
-			>
+			<div class="dropdown--container z-50 -translate-x-[24px] translate-y-[calc(100vh-178px)]">
 				<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
 				<Item name="Milestones" page="milestones" icon={Milestone} />
 				<Item name="Board" page="board" icon={Stack} />
