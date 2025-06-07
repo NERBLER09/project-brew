@@ -90,7 +90,9 @@
 			</h1>
 
 			{#if data.pronouns}
-				<p class="text-base text-grey-700 dark:text-grey-300">{data.pronouns}</p>
+				<p class="text-base {data.banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}">
+					{data.pronouns}
+				</p>
 			{/if}
 
 			{#if !data.currentUser}
