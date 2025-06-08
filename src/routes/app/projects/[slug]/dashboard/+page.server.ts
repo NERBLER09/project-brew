@@ -27,9 +27,11 @@ export const load = (async (event) => {
 	const today = tasks?.filter((item) => item.due_date === new Date().toISOString());
 
 	const behind = tasks?.filter((item) => {
-		return (
-			new Date(item.due_date).toISOString() < new Date().toISOString() && item.status !== 'done'
-		);
+		if (item.due_date) {
+			return (
+				new Date(item.due_date).toISOString() < new Date().toISOString() && item.status !== 'done'
+			);
+		}
 	});
 
 	if (tasks) {

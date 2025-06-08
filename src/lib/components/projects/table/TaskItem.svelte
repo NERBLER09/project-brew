@@ -72,7 +72,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="flex min-h-12 items-center py-2 md:py-1"
+	class="flex max-h-12 items-center py-2 md:py-1"
 	on:mouseenter={() => (showDelete = true)}
 	on:mouseleave={() => (showDelete = false)}
 >

@@ -30,6 +30,7 @@
 	let taskContainerHeight = 0;
 
 	$: taskContainerHeight = taskContainer ? taskContainer.clientHeight : 0;
+	$: taskContainerWidth = taskContainer ? taskContainer.clientHeight : 0;
 	let isViewer = $userRole === 'viewer';
 
 	const getRectHeight = (container) => {
@@ -148,7 +149,7 @@
 
 	<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
 		{#each filteredTasks as task}
-			<div class="border-b border-grey-700 dark:border-grey-100">
+			<div class="border-b border-grey-700 first:mt-1 dark:border-grey-100">
 				<TaskItem {...task} projectId={data.project?.id} />
 			</div>
 		{:else}
@@ -183,7 +184,10 @@
 	{/if}
 </div>
 
-<div class="h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
+<div
+	class="h-1 rounded-full bg-grey-300 dark:bg-grey-600"
+	style="width: calc({taskContainerWidth});"
+/>
 
 {#if !isViewer}
 	<button
