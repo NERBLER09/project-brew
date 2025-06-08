@@ -153,7 +153,7 @@
 				<span>Sort: {$projectSort}</span>
 			</button>
 			{#if $showProjectsSort}
-				<div class="absolute right-0 z-40">
+				<div class="absolute right-0">
 					<SortDropdown />
 				</div>
 			{/if}
