@@ -51,7 +51,6 @@
 	$: updateFilterOnDB($dateFilter, $milestoneFilter, $priorityFilter);
 </script>
 
-<!-- style="transform: translate(-24px, {translateY}px);" -->
 <div
 	class="dropdown--container right-0 z-50 min-w-[15.1875rem] -translate-x-[24px] translate-y-[calc(100vh-178px)] md:top-6 md:translate-x-0 md:translate-y-0"
 >

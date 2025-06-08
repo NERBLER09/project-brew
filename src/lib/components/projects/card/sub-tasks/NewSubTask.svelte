@@ -16,11 +16,11 @@
 </script>
 
 <form on:submit|preventDefault={handleCreateSubTask}>
-	<div class="input--text relative flex w-full items-center">
+	<div class="input--text relative flex w-full max-w-[400px] items-center">
 		<span class="sr-only">Enter a name for this new sub task</span>
 		<input
 			type="text"
-			placeholder="Enter a name"
+			placeholder="New sub-task"
 			class="input--text m-0 w-full p-0"
 			bind:value={subTaskName}
 			name="invite_email"

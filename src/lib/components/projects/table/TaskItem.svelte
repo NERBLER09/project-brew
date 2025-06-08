@@ -11,8 +11,10 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
-	import { startCase } from 'lodash';
 	import ChangeStatus from './ChangeStatus.svelte';
+	import pkg from 'lodash';
+	import SubTasksTablePage from '../card/sub-tasks/SubTasksTablePage.svelte';
+	const { startCase } = pkg;
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -59,9 +61,7 @@
 	});
 </script>
 
-<div
-	class="flex items-center border-b border-grey-700 py-2 first:pt-0 dark:border-grey-100 md:py-1"
->
+<div class="flex min-h-12 items-center py-2 md:py-1">
 	<div
 		class="relative mr-md flex min-w-[18.75rem] max-w-[18.75rem] items-center gap-md overflow-y-visible truncate"
 	>
@@ -80,7 +80,7 @@
 			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
 			<span
-				class="font-bold text-grey-700 dark:text-grey-300"
+				class="max-w-[20ch] truncate font-bold text-grey-700 dark:text-grey-300"
 				contenteditable
 				bind:textContent={name}
 				on:blur={() => updateDetails(name, newDate)}>{name}</span
@@ -180,35 +180,23 @@
 	</div>
 	<div class="relative mr-md min-w-[12.5rem]">
 		{#if assigned}
-			<div class="relative mt-md flex items-center">
+			<div class="relative flex items-center">
 				{#each assigned as id}
 					<Assinged {id} />
 				{/each}
 			</div>
 		{/if}
 	</div>
-
-	<div class="min-w-[12.5rem]">
-		{#if tags && tags.length > 0}
-			<span class="font-bold text-grey-700 dark:text-grey-300">
-				<div class="flex items-center gap-md pt-sm empty:hidden">
-					{#each tags as tag}
-						<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
-						</div>
-					{/each}
-				</div>
-			</span>
-		{/if}
-	</div>
 </div>
 
 {#if showSubTasks}
-	<SubTaskList
-		subTasks={sub_tasks}
-		showSubTasks={true}
-		showCreateSubTasks={true}
-		taskId={id}
-		project={projectId}
-	/>
+	<div class="ml-[2.5rem]">
+		<SubTasksTablePage
+			subTasks={sub_tasks}
+			showSubTasks={true}
+			showCreateSubTasks={true}
+			taskId={id}
+			project={projectId}
+		/>
+	</div>
 {/if}

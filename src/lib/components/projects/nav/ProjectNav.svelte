@@ -31,7 +31,7 @@
 <svelte:window on:click={handleAutoClose} />
 
 <div
-	class="z-50 flex items-start gap-sm overflow-x-auto overflow-y-clip{$showProjectAside
+	class="z-50 flex items-start gap-sm overflow-x-auto overflow-y-clip {$showProjectAside
 		? 'md:w-[calc(100%-12.3125rem)]'
 		: 'w-full'}"
 	bind:this={navContainer}

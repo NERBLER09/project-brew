@@ -97,7 +97,7 @@
 </svelte:head>
 
 <div class="overflow-x-auto">
-	<div class="flex flex-nowrap items-start pb-4 md:gap-2xl">
+	<div class="flex flex-nowrap items-start md:gap-2xl">
 		<div class="relative flex items-center">
 			<div class="relative mr-md w-[18.75rem]">
 				<span class="font-bold text-grey-700 dark:text-grey-300">Name</span>
@@ -142,7 +142,7 @@
 				/>
 			</div>
 			<div class="w-[12.5px]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Tags</span>
+				<span class="font-bold text-grey-700 dark:text-grey-300">Progress</span>
 			</div>
 
 			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
@@ -151,7 +151,9 @@
 
 	<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
 		{#each filteredTasks as task}
-			<TaskItem {...task} projectId={data.project?.id} />
+			<div class="border-b border-grey-700 dark:border-grey-100">
+				<TaskItem {...task} projectId={data.project?.id} />
+			</div>
 		{:else}
 			<span class="font-medium text-grey-700 dark:text-grey-300"
 				>Click the button below to create your first task
