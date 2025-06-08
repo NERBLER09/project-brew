@@ -55,7 +55,7 @@
 
 	<div bind:this={mobileAddContainer}>
 		<button
-			class="button--circle absolute bottom-32 right-8 z-10 md:hidden"
+			class="button--circle fixed bottom-32 right-8 z-10 md:hidden"
 			on:click={() => (showAddTeamDropdown = true)}
 		>
 			<UserAdd className="h-8 w-8 stroke-grey-200" />
@@ -68,8 +68,8 @@
 </header>
 
 <div class="mt-md flex flex-col gap-lg lg:grid lg:grid-cols-2 xl:grid-cols-3">
-	{#each data.teams as team}
-		<TeamCard {...team} />
+	{#each data?.teams as team}
+		<TeamCard id={team.id} name={team.name} banner={team.banner} description={team.description} />
 	{/each}
 </div>
 

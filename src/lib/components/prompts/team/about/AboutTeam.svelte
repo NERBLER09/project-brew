@@ -14,7 +14,6 @@
 	import ConfirmDelete from './ConfirmDelete.svelte';
 	import Switch from '$lib/components/form/Switch.svelte';
 	import FileInput from '$lib/components/form/FileInput.svelte';
-	import { bind } from 'lodash';
 	import Copy from '$lib/assets/Copy.svelte';
 
 	export let shown = false;

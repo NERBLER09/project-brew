@@ -57,7 +57,6 @@
 		method="POST"
 		action="/app/team/create?/new"
 		enctype="multipart/form-data"
-		`
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'failure') {
