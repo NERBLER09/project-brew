@@ -66,7 +66,7 @@
 
 <svelte:head><title>Project Brew - Projects</title></svelte:head>
 
-<header class="flex items-center">
+<header class="items-center md:flex">
 	<h1 class="text-lg text-grey-800 dark:text-grey-200 md:text-2xl">Projects</h1>
 	<button
 		class="button--primary ml-auto hidden items-center gap-md md:flex"
@@ -76,7 +76,7 @@
 		<span>New project</span>
 	</button>
 
-	<a class="button--circle absolute bottom-32 right-8 z-50 md:hidden" href="/app/projects/new">
+	<a class="button--circle fixed bottom-32 right-8 z-50 md:hidden" href="/app/projects/new">
 		<PlusNew className="h-8 w-8 stroke-grey-200" />
 		<span class="sr-only">Create a new project</span>
 	</a>
