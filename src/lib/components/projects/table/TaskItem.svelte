@@ -14,6 +14,8 @@
 	import ChangeStatus from './ChangeStatus.svelte';
 	import pkg from 'lodash';
 	import SubTasksTablePage from '../card/sub-tasks/SubTasksTablePage.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
+	import { invalidate } from '$app/navigation';
 	const { startCase } = pkg;
 
 	export let name: string;
@@ -41,6 +43,13 @@
 
 	let newDate: Date;
 	let newDateInput: HTMLInputElement;
+
+	let showDelete = false;
+	const handleTaskDelete = async () => {
+		await supabase.from('tasks').delete().eq('id', id);
+		invalidate('app:project');
+	};
+
 	const updateDetails = async (name: string, date: Date) => {
 		await supabase
 			.from('tasks')
@@ -61,10 +70,24 @@
 	});
 </script>
 
-<div class="flex min-h-12 items-center py-2 md:py-1">
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div
+	class="flex min-h-12 items-center py-2 md:py-1"
+	on:mouseenter={() => (showDelete = true)}
+	on:mouseleave={() => (showDelete = false)}
+>
 	<div
 		class="relative mr-md flex min-w-[18.75rem] max-w-[18.75rem] items-center gap-md overflow-y-visible truncate"
 	>
+		{#if showDelete}
+			<button
+				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
+				on:click={handleTaskDelete}
+			>
+				<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Delete this task</span></button
+			>
+		{/if}
 		<button
 			class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
 			on:click={() => (showSubTasks = !showSubTasks)}
