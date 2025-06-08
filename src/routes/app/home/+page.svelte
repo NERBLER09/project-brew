@@ -30,8 +30,6 @@
 		showEditPinPrompt = true;
 	};
 
-	let totalFocusTime = 0;
-
 	let userDropdownContainer: HTMLElement;
 	let notificationsContainer: HTMLElement;
 
@@ -44,10 +42,6 @@
 			showNotificationsDropdown = false;
 		}
 	};
-
-	onMount(() => {
-		totalFocusTime = parseInt(localStorage.getItem('focusTime') || '0');
-	});
 </script>
 
 <svelte:head>
@@ -57,8 +51,8 @@
 <svelte:window on:click={handleAutoCloseDropdown} />
 
 <div
-	class="h-fit min-h-full bg-cover bg-center bg-no-repeat bg-origin-border object-cover p-6 md:p-8"
-	style="background: {!$useDarkMode
+	class="h-fit min-h-full bg-cover bg-center bg-no-repeat bg-origin-border p-6 md:p-8"
+	style="background-image: {!$useDarkMode
 		? 'linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6))'
 		: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'}, url('{background}') "
 >
@@ -132,10 +126,6 @@
 		<DueTasks bind:tasks={data.tasks} />
 
 		<YourActivity />
-
-		<!-- <ProjectStatistics pinned_projects={data.pinned} /> -->
-
-		<!-- <TeamActivity /> -->
 
 		<div class="col-span-5 xl:col-span-2 xl:col-start-1 xl:row-start-2">
 			<section>

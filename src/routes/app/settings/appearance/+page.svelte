@@ -16,19 +16,14 @@
 
 	let selectedTheme: Theme = $perferedTheme;
 
-	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
 	let bannerURL = data.dashboard_bg ?? '';
-
-	const getBannerPreview = (file: any) => {
-		if (!file) return;
-		bannerURL = URL.createObjectURL(file);
-	};
 
 	const removeBanner = () => {
 		bannerURL = '';
 		newBanner = null;
 	};
+
 	const handleUpdateTheme = () => {
 		$perferedTheme = selectedTheme;
 
@@ -67,7 +62,7 @@
 		enctype="multipart/form-data"
 		use:enhance={() => {
 			return async ({ result }) => {
-				if (result.type === 'failure') {
+				if (result.type === 'failure' && result.status === 400) {
 					toast.error(result?.data.message);
 				} else if (result.type === 'success') {
 					toast.success('Updated account settings');

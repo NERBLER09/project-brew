@@ -76,7 +76,7 @@
 	</nav>
 	<div class="mt-auto flex flex-col gap-lg">
 		<a
-			href="/app/settings"
+			href="/app/settings/account"
 			class="button--text flex w-full items-start gap-md rounded p-md text-grey-700 hover:bg-gradient-to-r hover:from-grey-200 hover:text-grey-700 hover:no-underline dark:text-grey-200 dark:hover:from-grey-600 {$page.url.pathname.includes(
 				'settings'
 			)
