@@ -27,9 +27,10 @@
 			...assignedTaskAmount
 		];
 	}
-	if (!invitedUserIds.includes('Unassinged')) {
+	if (!invitedUserNames.includes('Unassigned')) {
 		assignedTaskAmount.push(unassignedTasks);
-		invitedUserNames.push('Unassinged');
+		invitedUserNames.push('Unassigned');
+		invitedUserNames.pop();
 	}
 
 	const data = {
