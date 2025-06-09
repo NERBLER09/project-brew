@@ -20,6 +20,8 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { onMount } from 'svelte';
 	import { userRole } from '$lib/stores/team';
+	import { invalidate } from '$app/navigation';
+	import Trash from '$lib/assets/Trash.svelte';
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -48,6 +50,11 @@
 	let updateTaskMilestone = false;
 
 	let isViewer = $userRole === 'viewer';
+
+	const handleTaskDelete = async () => {
+		const { error } = await supabase.from('tasks').delete().eq('id', id);
+		invalidate('app:project');
+	};
 
 	const updateTaskName = async () => {
 		if (newName === name || !newName) {
@@ -153,6 +160,7 @@
 
 <svelte:window on:click={handleClickOutside} />
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="md:relative" style="visibility: visible !important;">
 	<section class="w-full rounded-lg bg-grey-100 p-6 dark:bg-grey-800">
 		<header class="mb-md flex h-fit items-center">
@@ -183,17 +191,11 @@
 			</div>
 
 			{#if !isViewer}
-				<div class="ml-auto flex h-8 w-8 items-center gap-md">
-					<div bind:this={cardDropdownElement}>
-						<button on:click={() => (showCardDropdown = !showCardDropdown)}>
-							<MoreHorizontal className="h-8 w-8 stroke-grey-700 dark:stroke-grey-200" />
-						</button>
-
-						{#if showCardDropdown}
-							<CardDropdown bind:visibility={showCardDropdown} {id} />
-						{/if}
-					</div>
-				</div>
+				<button class="button--secondary ml-auto border-0 p-0" on:click={handleTaskDelete}>
+					<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+					<span class="sr-only">Delete {name}</span>
+					<span class="sr-only">Delete this task</span>
+				</button>
 			{/if}
 		</header>
 
