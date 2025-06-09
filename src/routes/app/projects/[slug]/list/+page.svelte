@@ -98,91 +98,87 @@
 	<title>{data.project?.project_name} - List</title>
 </svelte:head>
 
-<div class="overflow-x-auto">
-	<div class="flex flex-nowrap items-start md:gap-2xl">
-		<div class="relative flex items-center">
-			<div class="relative mr-md w-[18.75rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Name</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[12.5rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Due Date</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[12.5rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Status</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[12.5rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Priority</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[12.5rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Milestone</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="relative mr-md w-[12.5rem]">
-				<span class="font-bold text-grey-700 dark:text-grey-300">Assigned</span>
-				<div
-					class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
-					style="height: {(taskContainerHeight + 40) / 16}rem;"
-				/>
-			</div>
-			<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
-		</div>
-	</div>
-
-	<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
-		{#each filteredTasks as task}
-			<div class="border-b border-grey-700 first:mt-1 dark:border-grey-100">
-				<TaskItem {...task} projectId={data.project?.id} />
-			</div>
-		{:else}
-			<span class="font-medium text-grey-700 dark:text-grey-300"
-				>Click the button below to create your first task
-			</span>
-		{/each}
-	</div>
-
-	{#if addNewTask}
-		<form
-			action="?new"
-			method="POST"
-			class="input--text flex w-[15.625rem] items-center"
-			on:submit|preventDefault={handleCreateNewTask}
-		>
-			<input
-				type="text"
-				class="input--text m-0 w-full p-0"
-				placeholder="Enter a task name"
-				name="new-task-name"
-				required
-				on:blur={handleCreateNewTask}
-				bind:value={newTaskName}
+<div class="flex flex-nowrap items-start md:gap-2xl">
+	<div class="relative flex items-center">
+		<div class="relative mr-md w-[18.75rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Name</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
 			/>
-			<button>
-				<PlusNew
-					className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
-				/>
-			</button>
-		</form>
-	{/if}
+		</div>
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Due Date</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
+			/>
+		</div>
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Status</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
+			/>
+		</div>
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Priority</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
+			/>
+		</div>
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Milestone</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
+			/>
+		</div>
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Assigned</span>
+			<div
+				class="absolute right-0 top-0 w-1 rounded-t-full bg-grey-300 dark:bg-grey-600"
+				style="height: {(taskContainerHeight + 40) / 16}rem;"
+			/>
+		</div>
+		<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
+	</div>
 </div>
+
+<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
+	{#each filteredTasks as task}
+		<div class="border-b border-grey-700 first:mt-1 dark:border-grey-100">
+			<TaskItem {...task} projectId={data.project?.id} />
+		</div>
+	{:else}
+		<span class="font-medium text-grey-700 dark:text-grey-300"
+			>Click the button below to create your first task
+		</span>
+	{/each}
+</div>
+
+{#if addNewTask}
+	<form
+		action="?new"
+		method="POST"
+		class="input--text flex w-[15.625rem] items-center"
+		on:submit|preventDefault={handleCreateNewTask}
+	>
+		<input
+			type="text"
+			class="input--text m-0 w-full p-0"
+			placeholder="Enter a task name"
+			name="new-task-name"
+			required
+			on:blur={handleCreateNewTask}
+			bind:value={newTaskName}
+		/>
+		<button>
+			<PlusNew className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto" />
+		</button>
+	</form>
+{/if}
 
 <div
 	class="h-1 rounded-full bg-grey-300 dark:bg-grey-600"

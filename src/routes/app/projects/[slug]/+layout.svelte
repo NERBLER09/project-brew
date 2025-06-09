@@ -49,10 +49,10 @@
 	let mainElement: HTMLElement = document.getElementById('main');
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
-	$: if (currentPage === 'board' && mainElement) {
+	$: if (currentPage === 'board' || (currentPage === 'list' && mainElement)) {
 		mainElement.classList.remove('overflow-x-hidden');
 		mainElement.classList.add('overflow-x-auto');
-	} else if (currentPage !== 'board' && mainElement) {
+	} else if (currentPage !== 'board' || (currentPage !== 'list' && mainElement)) {
 		mainElement.scroll(0, 0);
 		mainElement.classList.add('overflow-x-hidden');
 		mainElement.classList.remove('overflow-x-auto');
