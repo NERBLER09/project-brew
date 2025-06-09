@@ -19,6 +19,13 @@
 </script>
 
 <div class="display flex max-w-[400px] flex-row gap-md">
+	<button
+		class="button--secondary flex items-center gap-md border-0 p-0 text-start"
+		on:click={handleDelete}
+	>
+		<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+		<span class="sr-only">Delete {name}</span>
+	</button>
 	<input
 		type="checkbox"
 		class="input--checkbox"
@@ -32,11 +39,4 @@
 			? 'text-emerald-600 line-through dark:text-emerald-500'
 			: ''}">{name}</label
 	>
-	<button
-		class="button--secondary ml-auto flex items-center gap-md border-0 p-0 text-start"
-		on:click={handleDelete}
-	>
-		<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-		<span class="sr-only">Delete {name}</span>
-	</button>
 </div>

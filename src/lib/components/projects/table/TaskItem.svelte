@@ -79,15 +79,6 @@
 	<div
 		class="relative mr-md flex min-w-[18.75rem] max-w-[18.75rem] items-center gap-md overflow-y-visible truncate"
 	>
-		{#if showDelete}
-			<button
-				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
-				on:click={handleTaskDelete}
-			>
-				<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-				<span class="sr-only">Delete this task</span></button
-			>
-		{/if}
 		<button
 			class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
 			on:click={() => (showSubTasks = !showSubTasks)}
@@ -99,6 +90,15 @@
 			{/if}
 			<span class="sr-only">Show sub tasks</span></button
 		>
+		{#if showDelete && !isViewer}
+			<button
+				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
+				on:click={handleTaskDelete}
+			>
+				<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Delete this task</span></button
+			>
+		{/if}
 		{#if isViewer}
 			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
