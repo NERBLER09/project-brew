@@ -6,8 +6,7 @@
 	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import UserAdd from '$lib/assets/User-Add.svelte';
-	import CardDropdown from '$lib/components/dropdowns/projects/CardDropdown.svelte';
-	import { currentProject } from '$lib/stores/project';
+	import { currentProject, projectMilestones } from '$lib/stores/project';
 	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
 	import type { SubTask, Task } from '$lib/types/projects';
@@ -35,7 +34,6 @@
 	export let sub_tasks: SubTask[] = [];
 	export let priority_level: string | null;
 
-	let showCardDropdown = false;
 	let formattedDate = '';
 
 	let newName = name;
@@ -145,20 +143,8 @@
 		// checkIfTaskIsDueToday();
 	});
 
-	let cardDropdownElement: HTMLElement;
 	let milestoneDropdownElement: HTMLElement;
-	const handleClickOutside = (event: Event) => {
-		if (!cardDropdownElement.contains(event.target)) {
-			showCardDropdown = false;
-		}
-
-		if (!milestoneDropdownElement.contains(event.target)) {
-			updateTaskMilestone = false;
-		}
-	};
 </script>
-
-<svelte:window on:click={handleClickOutside} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="md:relative" style="visibility: visible !important;">
@@ -249,10 +235,12 @@
 
 			<PriorityLevel bind:priority_level taskId={id} />
 
-			<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
+			{#if $projectMilestones.length > 0}
+				<div class="hidden h-[5px] w-[5px] rounded-full bg-grey-700 dark:bg-grey-300 lg:inline" />
+			{/if}
 
 			<div class="relative" bind:this={milestoneDropdownElement}>
-				{#if isViewer}
+				{#if isViewer && $projectMilestones.length > 0}
 					<div class="flex items-center md:gap-sm">
 						<Milestone className="h-6 w-6 stroke-accent-light" />
 						{#if milestone?.name}
@@ -266,7 +254,7 @@
 							</span>
 						{/if}
 					</div>
-				{:else}
+				{:else if !isViewer && $projectMilestones.length > 0}
 					<button
 						class="flex items-center md:gap-sm"
 						on:click={() => (updateTaskMilestone = !updateTaskMilestone)}
