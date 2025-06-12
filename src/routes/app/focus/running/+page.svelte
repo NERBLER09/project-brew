@@ -11,7 +11,8 @@
 	import { showMobileNav } from '$lib/stores/ui';
 	import { supabase } from '$lib/supabase';
 	import type { Task } from '$lib/types/projects';
-	import { parseInt } from 'lodash';
+	import pkg from 'lodash';
+	const { parseInt } = pkg;
 	import { onMount } from 'svelte';
 	import { userData } from '$lib/stores/user';
 	import type { PageData } from './$types';
