@@ -19,7 +19,8 @@
 	import { handleFilter } from '$lib/api/filter';
 	import { supabase } from '$lib/supabase';
 	import { userRole } from '$lib/stores/team';
-	export let data: PageData;
+	import type { LayoutData } from '../$types';
+	export let data: LayoutData;
 
 	let filteredTasks = data.project?.tasks ?? [];
 
@@ -66,7 +67,7 @@
 
 		const result: ActionResult = deserialize(await response.text());
 		if (result.type === 'success') {
-			await invalidate('project:list');
+			await invalidate('app:project');
 			addNewTask = false;
 			toast.success('Created new task');
 			newTaskName = '';
@@ -89,7 +90,7 @@
 	supabase
 		.channel('any')
 		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
-			invalidate('project:list');
+			invalidate('app:project');
 		})
 		.subscribe();
 </script>

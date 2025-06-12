@@ -1,36 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-
-export const load = (async (event) => {
-	const { session, supabaseClient } = await getSupabase(event);
-	if (!session) {
-		redirect(303, '/');
-	}
-
-	const params = event.params;
-	const projectId = params.slug;
-
-	event.depends('project:list');
-
-	const { data: tasks } = await supabaseClient
-		.from('tasks')
-		.select('*, sub_tasks(*), milestone(*)')
-		.eq('project', projectId);
-
-	const { project } = await event.parent();
-
-	if (tasks) {
-		return {
-			project: {
-				...project,
-				tasks: tasks || []
-			}
-		};
-	}
-
-	return error(404, 'Failed to fetch project board lists');
-}) satisfies PageServerLoad;
+import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions = {
 	new: async (event) => {

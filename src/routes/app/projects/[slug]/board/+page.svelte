@@ -11,8 +11,9 @@
 	import { userData } from '$lib/stores/user';
 	import { invalidate } from '$app/navigation';
 	import { userRole } from '$lib/stores/team';
+	import type { LayoutData } from '../$types';
 
-	export let data: PageData;
+	export let data: LayoutData;
 
 	let createNewList = false;
 
@@ -34,7 +35,7 @@
 	supabase
 		.channel('any')
 		.on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
-			invalidate('project:board');
+			invalidate('app:project');
 		})
 		.subscribe();
 </script>

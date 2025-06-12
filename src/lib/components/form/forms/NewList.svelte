@@ -27,7 +27,7 @@
 		const result = deserialize(await response.text());
 
 		if (result?.type === 'success') {
-			invalidate('project:board');
+			invalidate('app:project');
 		} else if (result.type === 'failure') {
 			toast.error(result?.data.message);
 		}
