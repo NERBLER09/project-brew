@@ -140,7 +140,7 @@
 </svelte:head>
 
 <header
-	class="relative -left-6 -top-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {!newBanner
+	class="relative -left-6 -top-6 flex w-[calc(100%+48px)] items-end rounded-b-3xl bg-cover bg-center object-cover p-4 {newBanner
 		? 'static w-[calc(100%+48px)]'
 		: 'h-[12.5rem]'}"
 	style="background-image: {bannerURL
