@@ -5,6 +5,7 @@
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
 	import {
+		currentProject,
 		dateFilter,
 		filterTags,
 		milestoneFilter,
@@ -20,6 +21,7 @@
 	import { supabase } from '$lib/supabase';
 	import { userRole } from '$lib/stores/team';
 	import type { LayoutData } from '../$types';
+	import { userData } from '$lib/stores/user';
 	export let data: LayoutData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -58,21 +60,22 @@
 	};
 
 	const handleCreateNewTask = async (event) => {
-		const data = new FormData();
-		data.append('new-task-name', newTaskName);
-		const response = await fetch('list?/new', {
+		const form = new FormData(this);
+		form.append('name', 'New Task');
+		form.append('priority_level', 'none');
+		form.append('status', 'other');
+
+		const response = await fetch(`?/new`, {
 			method: 'POST',
-			body: data
+			body: form
 		});
 
-		const result: ActionResult = deserialize(await response.text());
-		if (result.type === 'success') {
-			await invalidate('app:project');
-			addNewTask = false;
-			toast.success('Created new task');
-			newTaskName = '';
-		} else {
-			toast.error(`Failed to create new task: ${result.data.message}`);
+		const result = deserialize(await response.text());
+
+		if (result?.type === 'success') {
+			invalidate('app:project');
+		} else if (result.type === 'failure') {
+			toast.error(result?.data.message);
 		}
 	};
 
@@ -189,14 +192,9 @@
 {#if !isViewer}
 	<button
 		class="button--secondary mx-0 my-sm flex w-full items-center gap-md border-0 p-sm md:w-fit"
-		on:click={() => (addNewTask = !addNewTask)}
+		on:click={handleCreateNewTask}
 	>
-		{#if !addNewTask}
-			<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-			New Task
-		{:else}
-			<CloseMultiply className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
-			Cancel
-		{/if}
+		<PlusNew className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+		New Task
 	</button>
 {/if}

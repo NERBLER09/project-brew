@@ -11,7 +11,9 @@ export const actions = {
 		}
 
 		const data = await request.formData();
-		const name = data.get('new-task-name') as string;
+		const name = data.get('name') as string;
+		const priority_level = data.get('priority_level') as string;
+		const status = data.get('status') as string;
 
 		const projectId = params.slug;
 
@@ -25,7 +27,14 @@ export const actions = {
 
 		const { error } = await supabaseClient
 			.from('tasks')
-			.insert({ project: parseInt(projectId), user_id: session.user.id, list: listId?.id, name });
+			.insert({
+				project: parseInt(projectId),
+				user_id: session.user.id,
+				list: listId?.id,
+				name,
+				priority_level,
+				status
+			});
 
 		if (!error) {
 			return { success: true };

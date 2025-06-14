@@ -49,9 +49,10 @@ export const load = (async (event) => {
 
 	const { data: tasks } = await supabaseClient
 		.from('tasks')
-		.select('*, sub_tasks(*), milestone!inner(*)')
-		.eq('milestone.completed', false)
+		.select('*, sub_tasks(*), milestone(*)')
+		.abortSignal(AbortSignal.timeout(1000))
 		.eq('project', projectId);
+
 
 	if (project) {
 		return {

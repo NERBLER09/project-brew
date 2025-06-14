@@ -7,8 +7,8 @@
 	import { onMount } from 'svelte';
 	import { dndzone } from 'svelte-dnd-action';
 	import { userData } from '$lib/stores/user';
-	import NewCard from '$lib/components/form/forms/NewCard.svelte';
 	import {
+		currentProject,
 		dateFilter,
 		filterTags,
 		milestoneFilter,
@@ -25,6 +25,9 @@
 	import { handleSortingTasks } from '$lib/api/sort';
 	import { handleFilter } from '$lib/api/filter';
 	import { userRole } from '$lib/stores/team';
+	import toast from 'svelte-french-toast';
+	import { invalidate } from '$app/navigation';
+	import { deserialize } from '$app/forms';
 
 	export let name: string;
 	export let id: number;
@@ -79,6 +82,28 @@
 		}
 	});
 
+	const handleCreateNewTask = async (event) => {
+		const form = new FormData(this);
+		form.append('name', 'New Task');
+		form.append('priority_level', 'none');
+		form.append('status', 'other');
+		form.append('list-id', id);
+		form.append('list-status', status);
+
+		const response = await fetch(`/app/projects/${$currentProject.id}?/newTask`, {
+			method: 'POST',
+			body: form
+		});
+
+		const result = deserialize(await response.text());
+
+		if (result?.type === 'success') {
+			invalidate('app:project');
+		} else if (result.type === 'failure') {
+			toast.error(result?.data.message);
+		}
+	};
+
 	$: unsortedTasks = unsortedTasks.filter((item) => item.status === status);
 
 	$: tasks = dbTasks.filter((item) => item.status === status);
@@ -113,7 +138,7 @@
 
 <svelte:window on:click={handleClickOutside} />
 
-<section class="w-[15.625rem] md:relative md:w-[18.75rem] lg:w-[25rem] touch-none">
+<section class="w-[15.625rem] touch-none md:relative md:w-[18.75rem] lg:w-[25rem]">
 	<header class="flex w-[15.625rem] items-center md:w-[18.75rem] lg:w-[25rem]">
 		<div class="mb-md flex items-center gap-md md:mb-lg">
 			<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100 md:text-lg">{name}</h2>
@@ -135,17 +160,13 @@
 	</header>
 
 	{#if $userRole !== 'viewer'}
-		{#if showCreateTask}
-			<NewCard bind:showCreateTask bind:tasks listId={id} listStatus={status} />
-		{:else}
-			<button
-				class="button--secondary flex w-full items-center justify-center gap-md"
-				on:click={() => (showCreateTask = true)}
-			>
-				<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
-				New task
-			</button>
-		{/if}
+		<button
+			class="button--secondary flex w-full items-center justify-center gap-md"
+			on:click={handleCreateNewTask}
+		>
+			<PlusNew className="w-6 h-6 stroke-grey-700 dark:stroke-grey-200" />
+			New task
+		</button>
 	{/if}
 
 	<div
