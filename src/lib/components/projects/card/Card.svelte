@@ -305,53 +305,51 @@
 		{/if}
 	</div>
 
-	<div>
-		{#if tags}
-			<div class="md:relative">
-				<button
-					class="mb-4 flex w-full appearance-none flex-wrap items-center gap-md pt-sm empty:hidden"
-					on:click={() => (addNewTags = !addNewTags)}
-				>
-					{#each tags as tag}
-						<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
-						</div>
-					{/each}
-				</button>
-				{#if addNewTags}
-					<TagSelect
-						bind:taskTags={tags}
-						taskId={id}
-						projectId={$currentProject.id}
-						bind:shown={addNewTags}
-					/>
+	{#if tags}
+		<div class="md:relative">
+			<button
+				class="mb-4 flex w-full appearance-none flex-wrap items-center gap-md pt-sm empty:hidden"
+				on:click={() => (addNewTags = !addNewTags)}
+			>
+				{#each tags as tag}
+					<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
+					</div>
+				{/each}
+			</button>
+			{#if addNewTags}
+				<TagSelect
+					bind:taskTags={tags}
+					taskId={id}
+					projectId={$currentProject.id}
+					bind:shown={addNewTags}
+				/>
+			{/if}
+		</div>
+	{:else}
+		<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative">
+			<button
+				class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300"
+				on:click={() => (addNewTags = !addNewTags)}
+			>
+				{#if !addNewTags}
+					Add new tags
+					<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
+				{:else}
+					Update tags
+					<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
 				{/if}
-			</div>
-		{:else}
-			<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative">
-				<button
-					class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300"
-					on:click={() => (addNewTags = !addNewTags)}
-				>
-					{#if !addNewTags}
-						Add new tags
-						<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
-					{:else}
-						Update tags
-						<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
-					{/if}
-				</button>
-				{#if addNewTags}
-					<TagSelect
-						bind:taskTags={tags}
-						taskId={id}
-						projectId={$currentProject.id}
-						bind:shown={addNewTags}
-					/>
-				{/if}
-			</div>
-		{/if}
-	</div>
+			</button>
+			{#if addNewTags}
+				<TagSelect
+					bind:taskTags={tags}
+					taskId={id}
+					projectId={$currentProject.id}
+					bind:shown={addNewTags}
+				/>
+			{/if}
+		</div>
+	{/if}
 	<SubTaskList taskId={id} {list} project={$currentProject.id} subTasks={sub_tasks} />
 
 	<div class=" z-40 mt-md flex items-center">

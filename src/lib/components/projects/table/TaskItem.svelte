@@ -16,6 +16,10 @@
 	import SubTasksTablePage from '../card/sub-tasks/SubTasksTablePage.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import { invalidate } from '$app/navigation';
+	import TagSelect from '../tags/TagSelect.svelte';
+	import { currentProject } from '$lib/stores/project';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Check from '$lib/assets/Check.svelte';
 	const { startCase } = pkg;
 
 	export let name: string;
@@ -36,6 +40,7 @@
 	let milestoneName = '';
 	let showChangeMilestone = false;
 	let showChangeStatus = false;
+	let addNewTags = false;
 
 	let showSubTasks = false;
 
@@ -210,6 +215,55 @@
 			</div>
 		{/if}
 	</div>
+	<!-- {#if tags} -->
+	<div class="mr-md w-full min-w-[12.5rem] md:relative">
+		<button
+			class="flex-no-wrap z-40 flex min-h-[10px] w-full appearance-none items-center gap-md"
+			on:click={() => (addNewTags = !addNewTags)}
+		>
+			{#if tags}
+				{#each tags as tag}
+					<div class="rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
+						<span class="text-nowrap text-sm font-medium text-grey-700 dark:text-grey-300"
+							>{tag}</span
+						>
+					</div>
+				{/each}
+			{/if}
+		</button>
+		{#if addNewTags}
+			<TagSelect
+				bind:taskTags={tags}
+				taskId={id}
+				projectId={$currentProject.id}
+				bind:shown={addNewTags}
+			/>
+		{/if}
+	</div>
+	<!-- {:else} -->
+	<!-- <div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative"> -->
+	<!-- 	<button -->
+	<!-- 		class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300" -->
+	<!-- 		on:click={() => (addNewTags = !addNewTags)} -->
+	<!-- 	> -->
+	<!-- {#if !addNewTags} -->
+	<!-- 	Add new tags -->
+	<!-- 	<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
+	<!-- {:else} -->
+	<!-- 	Update tags -->
+	<!-- 	<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
+	<!-- {/if} -->
+	<!-- 		</button> -->
+	<!-- 		{#if addNewTags} -->
+	<!-- 			<TagSelect -->
+	<!-- 				bind:taskTags={tags} -->
+	<!-- 				taskId={id} -->
+	<!-- 				projectId={$currentProject.id} -->
+	<!-- 				bind:shown={addNewTags} -->
+	<!-- 			/> -->
+	<!-- 		{/if} -->
+	<!-- 	</div> -->
+	<!-- {/if} -->
 </div>
 
 {#if showSubTasks}

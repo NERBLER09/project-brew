@@ -147,6 +147,10 @@
 			/>
 		</div>
 		<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
+		<div class="relative mr-md w-[12.5rem]">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Tags</span>
+		</div>
+		<div class="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-grey-300 dark:bg-grey-600" />
 	</div>
 </div>
 
