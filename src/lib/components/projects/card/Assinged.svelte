@@ -24,7 +24,7 @@
 	});
 </script>
 
-<div class="group relative -ml-md first:ml-0">
+<div class="group -ml-md first:ml-0">
 	{#if avatar_url}
 		<img
 			src={avatar_url}
