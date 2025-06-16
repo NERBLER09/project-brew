@@ -20,10 +20,11 @@ export const load = (async (event) => {
 		.select()
 		.eq('id', session.user.id);
 
+	const projectIds = projects?.map((item) => item.id) ?? [];
 	const { data: tasks, error: err2 } = await supabaseClient
 		.from('tasks')
-		.select('*, projects(user_id)')
-		.eq('projects.user_id', session.user.id);
+		.select()
+		.in('project', projectIds);
 
 	if (user && !projectsErr) {
 		if (user?.length === 0) redirect(303, '/welcome');

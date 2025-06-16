@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabase';
-	import { startCase } from 'lodash';
+	import pkg from 'lodash';
+	const { startCase } = pkg;
 	import { onMount } from 'svelte';
 
 	export let taskId: number;

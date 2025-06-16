@@ -11,7 +11,7 @@
 	import Item from './Item.svelte';
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
-	let showPageSwitcher = false;
+	let showPageSwitcher = true;
 
 	let navContainer: HTMLElement;
 	const handleAutoClose = (event: Event) => {
@@ -31,7 +31,7 @@
 <svelte:window on:click={handleAutoClose} />
 
 <div
-	class="z-50 flex items-start gap-sm overflow-x-auto overflow-y-hidden {$showProjectAside
+	class="flex items-start gap-sm overflow-x-auto overflow-y-clip {$showProjectAside
 		? 'md:w-[calc(100%-12.3125rem)]'
 		: 'w-full'}"
 	bind:this={navContainer}
@@ -63,7 +63,7 @@
 			<span class="sr-only">Switch project view</span>
 		</button>
 		{#if showPageSwitcher}
-			<div class="dropdown--container z-50">
+			<div class="dropdown--container z-50 -translate-x-[24px] translate-y-[calc(100vh-178px)]">
 				<Item name="Dashboard" page="dashboard" icon={DashboardHome} />
 				<Item name="Milestones" page="milestones" icon={Milestone} />
 				<Item name="Board" page="board" icon={Stack} />

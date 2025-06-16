@@ -11,8 +11,16 @@
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
 	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
-	import { startCase } from 'lodash';
 	import ChangeStatus from './ChangeStatus.svelte';
+	import pkg from 'lodash';
+	import SubTasksTablePage from '../card/sub-tasks/SubTasksTablePage.svelte';
+	import Trash from '$lib/assets/Trash.svelte';
+	import { invalidate } from '$app/navigation';
+	import TagSelect from '../tags/TagSelect.svelte';
+	import { currentProject } from '$lib/stores/project';
+	import PlusNew from '$lib/assets/Plus-New.svelte';
+	import Check from '$lib/assets/Check.svelte';
+	const { startCase } = pkg;
 
 	export let name: string;
 	export let tags: string[] = [];
@@ -32,6 +40,7 @@
 	let milestoneName = '';
 	let showChangeMilestone = false;
 	let showChangeStatus = false;
+	let addNewTags = false;
 
 	let showSubTasks = false;
 
@@ -39,6 +48,13 @@
 
 	let newDate: Date;
 	let newDateInput: HTMLInputElement;
+
+	let showDelete = false;
+	const handleTaskDelete = async () => {
+		await supabase.from('tasks').delete().eq('id', id);
+		invalidate('app:project');
+	};
+
 	const updateDetails = async (name: string, date: Date) => {
 		await supabase
 			.from('tasks')
@@ -59,8 +75,11 @@
 	});
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="flex items-center border-b border-grey-700 py-2 first:pt-0 dark:border-grey-100 md:py-1"
+	class="flex max-h-12 items-center py-2 md:py-1"
+	on:mouseenter={() => (showDelete = true)}
+	on:mouseleave={() => (showDelete = false)}
 >
 	<div
 		class="relative mr-md flex min-w-[18.75rem] max-w-[18.75rem] items-center gap-md overflow-y-visible truncate"
@@ -76,11 +95,20 @@
 			{/if}
 			<span class="sr-only">Show sub tasks</span></button
 		>
+		{#if showDelete && !isViewer}
+			<button
+				class="button--secondary relative m-0 flex items-center gap-sm border-0 p-0"
+				on:click={handleTaskDelete}
+			>
+				<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+				<span class="sr-only">Delete this task</span></button
+			>
+		{/if}
 		{#if isViewer}
 			<span class="font-bold text-grey-700 dark:text-grey-300">{name}</span>
 		{:else}
 			<span
-				class="font-bold text-grey-700 dark:text-grey-300"
+				class="max-w-[20ch] truncate font-bold text-grey-700 dark:text-grey-300"
 				contenteditable
 				bind:textContent={name}
 				on:blur={() => updateDetails(name, newDate)}>{name}</span
@@ -180,35 +208,72 @@
 	</div>
 	<div class="relative mr-md min-w-[12.5rem]">
 		{#if assigned}
-			<div class="relative mt-md flex items-center">
+			<div class="relative flex items-center">
 				{#each assigned as id}
 					<Assinged {id} />
 				{/each}
 			</div>
 		{/if}
 	</div>
-
-	<div class="min-w-[12.5rem]">
-		{#if tags && tags.length > 0}
-			<span class="font-bold text-grey-700 dark:text-grey-300">
-				<div class="flex items-center gap-md pt-sm empty:hidden">
-					{#each tags as tag}
-						<div class="w-fit rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
-							<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
-						</div>
-					{/each}
-				</div>
-			</span>
+	<!-- {#if tags} -->
+	<div class="mr-md w-full min-w-[12.5rem] md:relative">
+		<button
+			class="flex-no-wrap z-40 flex min-h-[10px] w-full appearance-none items-center gap-md"
+			on:click={() => (addNewTags = !addNewTags)}
+		>
+			{#if tags}
+				{#each tags as tag}
+					<div class="rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700">
+						<span class="text-nowrap text-sm font-medium text-grey-700 dark:text-grey-300"
+							>{tag}</span
+						>
+					</div>
+				{/each}
+			{/if}
+		</button>
+		{#if addNewTags}
+			<TagSelect
+				bind:taskTags={tags}
+				taskId={id}
+				projectId={$currentProject.id}
+				bind:shown={addNewTags}
+			/>
 		{/if}
 	</div>
+	<!-- {:else} -->
+	<!-- <div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative"> -->
+	<!-- 	<button -->
+	<!-- 		class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300" -->
+	<!-- 		on:click={() => (addNewTags = !addNewTags)} -->
+	<!-- 	> -->
+	<!-- {#if !addNewTags} -->
+	<!-- 	Add new tags -->
+	<!-- 	<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
+	<!-- {:else} -->
+	<!-- 	Update tags -->
+	<!-- 	<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
+	<!-- {/if} -->
+	<!-- 		</button> -->
+	<!-- 		{#if addNewTags} -->
+	<!-- 			<TagSelect -->
+	<!-- 				bind:taskTags={tags} -->
+	<!-- 				taskId={id} -->
+	<!-- 				projectId={$currentProject.id} -->
+	<!-- 				bind:shown={addNewTags} -->
+	<!-- 			/> -->
+	<!-- 		{/if} -->
+	<!-- 	</div> -->
+	<!-- {/if} -->
 </div>
 
 {#if showSubTasks}
-	<SubTaskList
-		subTasks={sub_tasks}
-		showSubTasks={true}
-		showCreateSubTasks={true}
-		taskId={id}
-		project={projectId}
-	/>
+	<div class="ml-[2.5rem]">
+		<SubTasksTablePage
+			subTasks={sub_tasks}
+			showSubTasks={true}
+			showCreateSubTasks={true}
+			taskId={id}
+			project={projectId}
+		/>
+	</div>
 {/if}

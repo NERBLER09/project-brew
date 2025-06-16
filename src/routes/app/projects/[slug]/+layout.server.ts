@@ -41,6 +41,19 @@ export const load = (async (event) => {
 		.limit(1)
 		.single();
 
+	const { data: lists } = await supabaseClient
+		.from('lists')
+		.select()
+		.eq('project', projectId)
+		.order('position', { ascending: true });
+
+	const { data: tasks } = await supabaseClient
+		.from('tasks')
+		.select('*, sub_tasks(*), milestone(*)')
+		.abortSignal(AbortSignal.timeout(1000))
+		.eq('project', projectId);
+
+
 	if (project) {
 		return {
 			name: project?.project_name,
@@ -48,8 +61,11 @@ export const load = (async (event) => {
 			description: project?.description,
 			banner: project?.banner,
 			role,
+			lists: lists || [],
 			project: {
 				...project,
+
+				tasks: tasks ?? [],
 				invite: {
 					profiles: users ?? []
 				}

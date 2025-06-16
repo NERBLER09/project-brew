@@ -1,36 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-
-export const load = (async (event) => {
-	const { session, supabaseClient } = await getSupabase(event);
-	if (!session) {
-		redirect(303, '/');
-	}
-
-	const params = event.params;
-	const projectId = params.slug;
-
-	event.depends('project:list');
-
-	const { data: tasks } = await supabaseClient
-		.from('tasks')
-		.select('*, sub_tasks(*), milestone(*)')
-		.eq('project', projectId);
-
-	const { project } = await event.parent();
-
-	if (tasks) {
-		return {
-			project: {
-				...project,
-				tasks: tasks || []
-			}
-		};
-	}
-
-	return error(404, 'Failed to fetch project board lists');
-}) satisfies PageServerLoad;
+import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions = {
 	new: async (event) => {
@@ -42,7 +11,9 @@ export const actions = {
 		}
 
 		const data = await request.formData();
-		const name = data.get('new-task-name') as string;
+		const name = data.get('name') as string;
+		const priority_level = data.get('priority_level') as string;
+		const status = data.get('status') as string;
 
 		const projectId = params.slug;
 
@@ -56,7 +27,14 @@ export const actions = {
 
 		const { error } = await supabaseClient
 			.from('tasks')
-			.insert({ project: parseInt(projectId), user_id: session.user.id, list: listId?.id, name });
+			.insert({
+				project: parseInt(projectId),
+				user_id: session.user.id,
+				list: listId?.id,
+				name,
+				priority_level,
+				status
+			});
 
 		if (!error) {
 			return { success: true };

@@ -12,39 +12,39 @@
 
 @layer components {
 	.button--primary {
-		@apply bg-accent-light text-grey-200 stroke-grey-200 rounded-md font-bold px-xl py-md hover:bg-accent-light-hover active:bg-accent-light-disabled active:text-accent-light-disabled-text focus:stroke-accent-light-disabled-text w-fit;
+		@apply w-fit rounded-md bg-accent-light stroke-grey-200 px-xl py-md font-bold text-grey-200 hover:bg-accent-light-hover focus:stroke-accent-light-disabled-text active:bg-accent-light-disabled active:text-accent-light-disabled-text;
 	}
 	.button--secondary {
-		@apply rounded-md font-bold px-xl py-md border-2 border-grey-700 dark:border-grey-200 text-grey-700 dark:text-grey-200 box-border hover:border-grey-300 dark:hover:border-grey-800 hover:bg-grey-300 dark:hover:bg-grey-800 active:bg-grey-200 dark:active:bg-grey-700 dark:active:border-grey-700 active:border-grey-200 w-fit;
+		@apply box-border w-fit rounded-md border-2 border-grey-700 px-xl py-md font-bold text-grey-700 hover:border-grey-300 hover:bg-grey-300 active:border-grey-200 active:bg-grey-200 dark:border-grey-200 dark:text-grey-200 dark:hover:border-grey-800 dark:hover:bg-grey-800 dark:active:border-grey-700 dark:active:bg-grey-700;
 	}
 	.button--circle {
-		@apply button--primary rounded-full p-md w-fit;
+		@apply button--primary w-fit rounded-full p-md;
 	}
 	.button--text {
-		@apply rounded-md font-bold px-xl py-md text-grey-700 dark:text-grey-200 box-border hover:underline active:bg-grey-200 active:text-grey-500 dark:active:bg-grey-700 w-fit;
+		@apply box-border w-fit rounded-md px-xl py-md font-bold text-grey-700 hover:underline active:bg-grey-200 active:text-grey-500 dark:text-grey-200 dark:active:bg-grey-700;
 	}
 	.input--label {
-		@apply text-base font-bold text-grey-700 dark:text-grey-300 mr-[0.875rem];
+		@apply mr-[0.875rem] text-base font-bold text-grey-700 dark:text-grey-300;
 	}
 	.input--text {
-		@apply border-none bg-grey-200 dark:bg-grey-700 dark:border-grey-200 text-grey-700 dark:text-grey-200 py-[0.675rem] px-3 rounded-lg text-sm font-medium placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none;
+		@apply rounded-lg border-none bg-grey-200 px-3 py-[0.675rem] text-sm font-medium text-grey-700 placeholder:text-grey-700 focus:outline-none dark:border-grey-200 dark:bg-grey-700 dark:text-grey-200 dark:placeholder:text-grey-200;
 	}
 	.input--search {
-		@apply font-bold border-2 border-grey-600 border-solid box-border bg-grey-200 text-grey-700 py-[0.675rem] px-3 rounded-lg text-sm placeholder:text-grey-700 dark:placeholder:text-grey-200 focus:outline-none flex items-center gap-md ;
+		@apply box-border flex items-center gap-md rounded-lg border-2 border-solid border-grey-600 bg-grey-200 px-3 py-[0.675rem] text-sm font-bold text-grey-700 placeholder:text-grey-700 focus:outline-none dark:placeholder:text-grey-200;
 	}
 	.input--checkbox {
-		@apply checked:bg-accent-light focus:checked:bg-accent-light hover:checked:bg-accent-light hover:bg-grey-100 focus:ring-0 p-md rounded;
+		@apply rounded p-md checked:bg-accent-light hover:bg-grey-100 hover:checked:bg-accent-light focus:ring-0 focus:checked:bg-accent-light;
 	}
 	.dropdown--container {
-		@apply md:w-fit md:top-[128px] md:rounded-2xl md:p-md md:right-xl md:left-auto bg-grey-100 dark:bg-grey-800 w-screen h-fit absolute bottom-0 left-0 px-6 py-lg rounded-t-3xl flex flex-col gap-4;
+		@apply absolute bottom-0 left-0 flex h-fit min-h-[6.25rem] w-screen flex-col gap-4 rounded-t-3xl border border-b-0 border-grey-700 bg-grey-100 px-6 py-lg dark:border-grey-300 dark:bg-grey-800 md:left-auto md:right-xl md:top-[128px] md:min-h-min md:w-fit md:rounded-2xl md:border-b md:p-md;
 	}
 	.dropdown--item {
-		@apply flex items-center justify-start gap-md px-md py-sm hover:bg-grey-200 dark:hover:bg-grey-700 rounded-lg;
+		@apply flex items-center justify-start gap-md rounded-lg px-md py-sm hover:bg-grey-200 dark:hover:bg-grey-700;
 	}
 	.dropdown--label {
 		@apply font-bold text-grey-700 dark:text-grey-200;
 	}
 	.dropdown--icon {
-		@apply w-8 h-8 stroke-grey-700 dark:stroke-grey-200;
+		@apply h-8 w-8 stroke-grey-700 dark:stroke-grey-200;
 	}
 }

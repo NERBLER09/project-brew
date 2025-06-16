@@ -49,10 +49,10 @@
 	let mainElement: HTMLElement = document.getElementById('main');
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
-	$: if (currentPage === 'board' && mainElement) {
+	$: if ((currentPage === 'board' && mainElement) || (currentPage === 'list' && mainElement)) {
 		mainElement.classList.remove('overflow-x-hidden');
 		mainElement.classList.add('overflow-x-auto');
-	} else if (currentPage !== 'board' && mainElement) {
+	} else if ((currentPage !== 'board' && mainElement) || (currentPage !== 'list' && mainElement)) {
 		mainElement.scroll(0, 0);
 		mainElement.classList.add('overflow-x-hidden');
 		mainElement.classList.remove('overflow-x-auto');
@@ -77,16 +77,18 @@
 		}
 	};
 
-	supabase
-		.channel('any')
-		.on(
-			'postgres_changes',
-			{ event: '*', schema: 'public', table: 'tasks', filter: `id=eq.${data.id}` },
-			async () => {
-				invalidate('app:project');
-			}
-		)
-		.subscribe();
+	if (data.invited_people) {
+		supabase
+			.channel('any')
+			.on(
+				'postgres_changes',
+				{ event: '*', schema: 'public', table: 'tasks', filter: `id=eq.${data.id}` },
+				async () => {
+					invalidate('app:project');
+				}
+			)
+			.subscribe();
+	}
 </script>
 
 <svelte:window on:click={handleAutoCloseDropdown} />
@@ -185,7 +187,9 @@
 	</div>
 </header>
 
-<div class="sticky -left-6 mb-md flex w-full -translate-y-[2.1rem] items-center">
+<div
+	class="sticky -left-6 mb-md flex w-full -translate-y-[1rem] items-center md:-translate-y-[2.1rem]"
+>
 	<ProjectNav />
 	{#if $showProjectAside}
 		<Aside />

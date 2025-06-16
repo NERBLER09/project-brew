@@ -12,6 +12,7 @@
 	onMount(() => {
 		totalAmountOfTasks = tasks?.length!;
 		completedTasks = tasks?.filter((item) => item.status === 'done').length!;
+		console.log(totalAmountOfTasks);
 		percentCompleted = Math.round((completedTasks / totalAmountOfTasks) * 100) || 0;
 	});
 </script>

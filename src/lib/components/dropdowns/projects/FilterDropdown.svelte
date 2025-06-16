@@ -51,7 +51,9 @@
 	$: updateFilterOnDB($dateFilter, $milestoneFilter, $priorityFilter);
 </script>
 
-<div class="dropdown--container right-0 z-50 min-w-[15.1875rem] md:top-6">
+<div
+	class="dropdown--container right-0 z-50 min-w-[15.1875rem] -translate-x-[24px] translate-y-[calc(100vh-178px)] md:top-6 md:translate-x-0 md:translate-y-0"
+>
 	<button class="dropdown--item" on:click={clearFilters}>
 		<Trash className="dropdown--icon" />
 		<span class="dropdown--label">Clear Filters</span>

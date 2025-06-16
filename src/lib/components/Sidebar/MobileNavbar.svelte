@@ -8,7 +8,7 @@
 </script>
 
 <nav
-	class="flex h-[6.25rem] w-screen items-center justify-evenly gap-md bg-grey-100 p-6 dark:bg-grey-800 md:hidden"
+	class="z-40 flex h-[6.25rem] w-screen items-center justify-evenly gap-md bg-grey-100 p-6 dark:bg-grey-800 md:hidden"
 >
 	<a href="/app/home" class="flex flex-col items-center">
 		<span class="sr-only">Home</span>

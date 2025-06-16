@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Trash from '$lib/assets/Trash.svelte';
 	import { supabase } from '$lib/supabase';
 
 	export let completed: boolean;
@@ -11,9 +12,20 @@
 		await supabase.from('sub_tasks').update({ completed }).eq('id', id);
 		getSubTasks();
 	};
+	const handleDelete = async () => {
+		await supabase.from('sub_tasks').delete().eq('id', id);
+		getSubTasks();
+	};
 </script>
 
-<div>
+<div class="display flex max-w-[400px] flex-row gap-md">
+	<button
+		class="button--secondary flex items-center gap-md border-0 p-0 text-start"
+		on:click={handleDelete}
+	>
+		<Trash className="h-6 w-6 stroke-grey-700 dark:stroke-grey-300" />
+		<span class="sr-only">Delete {name}</span>
+	</button>
 	<input
 		type="checkbox"
 		class="input--checkbox"

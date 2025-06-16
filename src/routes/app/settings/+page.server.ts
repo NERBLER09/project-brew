@@ -143,6 +143,11 @@ export const actions = {
 
 		let banner_url = set_banner;
 
+		if (banner.size === 0) {
+			console.log('New new banner selected');
+			return fail(406, { message: 'No new banner selected' });
+		}
+
 		if (banner.size !== 0 && banner.size < 5000000) {
 			const { error: err2 } = await supabaseClient.storage
 				.from('avatars')

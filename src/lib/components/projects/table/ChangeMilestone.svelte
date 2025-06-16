@@ -35,14 +35,14 @@
 
 	const updateMilestone = async (id: string, name: string) => {
 		await supabase.from('tasks').update({ milestone: id }).eq('id', taskId);
-		invalidate('project:list');
+		invalidate('app:project');
 		milestoneName = name;
 		shown = false;
 	};
 
 	const handleRemoveMilestone = async () => {
 		await supabase.from('tasks').update({ milestone: null }).eq('id', taskId);
-		invalidate('project:list');
+		invalidate('app:project');
 		milestoneId = null;
 		milestoneName = null;
 		shown = false;
