@@ -108,6 +108,6 @@
 	</button>
 {/if}
 
-{#if showCreateSubTasks}
+{#if showCreateSubTasks && showSubTasks}
 	<NewSubTask task={taskId} {list} {project} {getSubTasks} />
 {/if}
