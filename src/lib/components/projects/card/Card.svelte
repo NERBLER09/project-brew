@@ -241,9 +241,9 @@
 				<div class="flex items-center md:gap-sm">
 					<Milestone className="h-6 w-6 stroke-accent-light" />
 					{#if milestone?.name}
-						<a
+						<span
 							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
-							href="milestones/{milestone?.id}">{milestone?.name}</a
+							>{milestone?.name}</span
 						>
 					{:else}
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
@@ -258,9 +258,9 @@
 				>
 					<Milestone className="h-6 w-6 stroke-accent-light" />
 					{#if milestone?.name}
-						<a
+						<span
 							class="truncate text-sm font-medium text-grey-700 dark:text-grey-200 md:max-w-[18ch] md:text-base"
-							href="milestones/{milestone?.id}">{milestone?.name}</a
+							>{milestone?.name}</span
 						>
 					{:else}
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-200 md:text-base"
