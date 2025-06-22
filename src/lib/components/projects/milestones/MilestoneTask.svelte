@@ -41,7 +41,7 @@
 
 <div class="flex items-center">
 	<span
-		class="font-bold text-grey-700 dark:text-grey-200 {status === 'done'
+		class="text-grey-700 dark:text-grey-200 md:font-bold {status === 'done'
 			? 'text-emerald-600 line-through dark:text-emerald-500'
 			: ''}">{name}</span
 	>

@@ -12,6 +12,13 @@ export const load = (async (event) => {
 
 	const milestoneId = event.params.milestone;
 
+	const { data: lists } = await supabaseClient
+		.from('lists')
+		.select("status")
+		.eq('project', event.params.slug)
+		.order('position', { ascending: true });
+
+
 	const { data: milestone, error: err } = await supabaseClient
 		.from('milestones')
 		.select()
@@ -66,7 +73,8 @@ export const load = (async (event) => {
 			project: {
 				invited_people: users ?? [],
 				id: event.params.slug
-			}
+			},
+			lists
 		};
 	}
 	error(404, `Failed to fetch milestone ${err.message}`);

@@ -17,12 +17,11 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/projects/milestones/ConfirmDelete.svelte';
 	import AddLead from '$lib/components/projects/milestones/AddLead.svelte';
-	import CircleCheck from '$lib/assets/Fill/CircleCheck.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
-	import { milestoneFilter } from '$lib/stores/project';
-
 	export let data: PageData;
+
+	import { capitalize } from 'lodash';
 
 	let tasks = data.milestone.tasks.sort((item) => {
 		if (item.status === 'done') return 1;
@@ -140,6 +139,25 @@
 	let showAddTaskDropdown = false;
 	let showCreateRoadmapItem = false;
 	let showDeleteWarning = false;
+
+	const status = data.lists?.map((item) => {
+		return capitalize(item.status);
+	});
+	let milestoneTasksStatus = [];
+	for (const itemStatus of status) {
+		let taskStatus = itemStatus.toLowerCase();
+		let list = [];
+		console.log(itemStatus);
+		list = tasks.filter((item) => item.status === taskStatus);
+
+		const statusItem = {
+			status: itemStatus,
+			tasks: list
+		};
+
+		milestoneTasksStatus.push(statusItem);
+		milestoneTasksStatus = milestoneTasksStatus;
+	}
 </script>
 
 <svelte:head>
@@ -320,19 +338,26 @@
 			? 'rounded-xl bg-none md:bg-grey-100 md:p-lg md:dark:bg-grey-800'
 			: ''}"
 	>
-		{#each tasks as task}
-			<MilestoneTask {...task} />
-		{:else}
-			<p class="font-semibold text-grey-700 dark:text-grey-300">
-				There are no tasks associated with this milestone.
-			</p>
+		{#each milestoneTasksStatus as milestoneTasks}
+			<header>
+				<h2 class="font-semibold text-grey-800 dark:text-grey-200 md:text-md">
+					{milestoneTasks.status}
+				</h2>
+			</header>
+			{#each milestoneTasks.tasks as task}
+				<MilestoneTask {...task} />
+			{:else}
+				<p class="font-semibold text-grey-700 dark:text-grey-300">
+					There are no tasks associated with this milestone.
+				</p>
+			{/each}
 		{/each}
 	</div>
 </section>
 
 <section class="mt-md md:mt-lg md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]">
 	<header class="mb-md flex items-center">
-		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Roadmap</h2>
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Goal Posts</h2>
 
 		<button class="ml-auto" on:click={() => (showCreateRoadmapItem = !showCreateRoadmapItem)}>
 			<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
