@@ -44,6 +44,7 @@
 		"chart.js": "^4.4.0",
 		"lodash": "^4.17.21",
 		"svelte-chartjs": "^3.1.2",
-		"svelte-french-toast": "^1.0.3"
+		"svelte-french-toast": "^1.0.3",
+		"svelte-vertical-timeline": "^1.0.2"
 	}
 }
