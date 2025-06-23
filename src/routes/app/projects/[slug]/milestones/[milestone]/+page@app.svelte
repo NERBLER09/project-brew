@@ -336,8 +336,10 @@
 	</div>
 </div>
 
-<div class="md:[padding:_0_clamp(2em,5vw,10em)]">
-	<section class="mt-md md:mt-lg md:flex-row">
+<div
+	class="md:[padding:_0_clamp(2em,5vw,10em)] lg:grid lg:grid-cols-5 lg:grid-rows-2 lg:gap-lg 2xl:grid-cols-3"
+>
+	<section class="row-span-1 row-start-1 mt-md md:mt-lg md:flex-row lg:col-span-3 2xl:col-span-2">
 		<header class="mb-md flex items-center">
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
 
@@ -373,7 +375,7 @@
 		</div>
 	</section>
 
-	<section class="mt-md md:mt-lg md:flex-row">
+	<section class="row-span-1 row-start-2 mt-md md:mt-lg md:flex-row lg:col-span-3 2xl:col-span-2">
 		<header class="mb-md flex items-center">
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Goal Posts</h2>
 
@@ -441,7 +443,7 @@
 		</div>
 	</section>
 
-	<section class="mt-md md:mt-lg md:flex-row">
+	<section class="row-span-1 row-start-1 mt-md md:mt-lg md:flex-row lg:col-span-2 2xl:col-span-1">
 		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">
 			Milestone Timeline
 		</h2>
