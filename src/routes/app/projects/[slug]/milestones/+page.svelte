@@ -9,6 +9,7 @@
 	import { currentProject, showProjectAside } from '$lib/stores/project';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import GanttChartMilestones from '$lib/components/projects/milestones/GanttChartMilestones.svelte';
 
 	export let data: PageData;
 
@@ -119,6 +120,8 @@
 		</button>
 	</div>
 </header>
+
+<GanttChartMilestones {milestones} />
 
 <div class="flex flex-wrap gap-lg">
 	{#each milestones as milestone}
