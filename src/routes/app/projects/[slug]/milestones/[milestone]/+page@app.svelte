@@ -467,6 +467,7 @@
 						<h3 class="font-bold text-grey-700 dark:text-grey-300">
 							{task.name}
 						</h3>
+						<p class="text-grey-700 dark:text-grey-300">{capitalize(task.status)}</p>
 					</TimelineContent>
 				</TimelineItem>
 			{/each}
