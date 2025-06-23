@@ -146,7 +146,6 @@
 
 	onDestroy(() => ($showMobileNav = true));
 
-	let showAddTaskDropdown = false;
 	let showCreateRoadmapItem = false;
 	let showDeleteWarning = false;
 
@@ -340,17 +339,8 @@
 	class="md:[padding:_0_clamp(2em,5vw,10em)] lg:grid lg:grid-cols-5 lg:grid-rows-2 lg:gap-lg 2xl:grid-cols-3"
 >
 	<section class="row-span-1 row-start-1 mt-md md:mt-lg md:flex-row lg:col-span-3 2xl:col-span-2">
-		<header class="mb-md flex items-center">
+		<header class="mb-md">
 			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
-
-			<div class="relative ml-auto">
-				<button on:click={() => (showAddTaskDropdown = true)}>
-					<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
-				</button>
-				{#if showAddTaskDropdown}
-					<AddTask milestoneId={data.milestone.id} bind:show={showAddTaskDropdown} />
-				{/if}
-			</div>
 		</header>
 
 		<div
