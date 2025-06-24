@@ -36,13 +36,13 @@
 
 <svelte:window on:click={autoCloseDropdowns} />
 
-<div class="ml-auto flex items-center gap-md">
+<div class="relative ml-auto flex items-center gap-md">
 	<div class="relative h-8 md:h-6" bind:this={searchInput}>
 		{#if search}
 			<input
 				type="text"
 				placeholder="Search for a task"
-				class="input--text absolute right-0 top-8 md:top-0 md:right-8"
+				class="input--text absolute right-0 top-8 md:right-8 md:top-0"
 				bind:value={$searchQuery}
 			/>
 		{/if}
