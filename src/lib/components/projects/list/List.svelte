@@ -138,7 +138,7 @@
 
 <svelte:window on:click={handleClickOutside} />
 
-<section class="w-[15.625rem] touch-none md:relative md:w-[18.75rem] lg:w-[25rem]">
+<section class="w-[15.625rem] touch-none md:w-[18.75rem] lg:w-[25rem]">
 	<header class="flex w-[15.625rem] items-center md:w-[18.75rem] lg:w-[25rem]">
 		<div class="mb-md flex items-center gap-md md:mb-lg">
 			<h2 class="text-md font-semibold text-grey-900 dark:text-grey-100 md:text-lg">{name}</h2>
@@ -147,7 +147,7 @@
 			</p>
 		</div>
 		{#if $userRole !== 'viewer'}
-			<div bind:this={listDropdownElement} class="ml-auto">
+			<div bind:this={listDropdownElement} class="relative ml-auto">
 				<button on:click={() => (showListDropdown = !showListDropdown)}>
 					<MoreHorizontal className="stroke-grey-700 dark:stroke-grey-200 h-8 w-8" />
 

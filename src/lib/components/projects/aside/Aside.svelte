@@ -36,7 +36,7 @@
 
 <svelte:window on:click={autoCloseDropdowns} />
 
-<div class="relative ml-auto flex items-center gap-md">
+<div class="relative z-50 ml-auto flex items-center gap-md">
 	<div class="relative h-8 md:h-6" bind:this={searchInput}>
 		{#if search}
 			<input

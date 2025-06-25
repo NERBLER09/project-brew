@@ -154,7 +154,7 @@
 	</div>
 </div>
 
-<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
+<div class="flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
 	{#each filteredTasks as task}
 		<div class="border-b border-grey-700 first:mt-1 dark:border-grey-100">
 			<TaskItem {...task} projectId={data.project?.id} />

@@ -22,7 +22,7 @@
 </script>
 
 <div
-	class="dropdown--container right-0 z-50 -translate-x-[24px] translate-y-[calc(100vh-178px)] md:top-6 md:min-w-[15.625rem] md:translate-x-0 md:translate-y-0"
+	class="dropdown--container right-0 z-50 -translate-x-[274px] translate-y-[calc(100vh-178px)] md:top-6 md:min-w-[15.625rem] md:translate-x-0 md:translate-y-0"
 >
 	<button class="dropdown--item" on:click={() => (addSort = !addSort)}>
 		<PlusNew className="dropdown--icon" />
