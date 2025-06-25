@@ -12,7 +12,7 @@ export const load = (async (event) => {
 
 	const { data: milestones, error: err } = await supabaseClient
 		.from('milestones')
-		.select('*, tasks(*)')
+		.select('*, tasks(*), roadmap(*)')
 		.eq('project', event.params.slug);
 
 	if (!err) {
