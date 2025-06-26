@@ -279,19 +279,19 @@
 				</button>
 			</div>
 
-			<div class="md:ml-auto">
+			<div class="md-sm md:ml-auto">
 				{#if data.milestone.leader}
 					<!--TODO: Display milestone lead profile picture  -->
 					<div class="flex items-center gap-md">
 						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone lead</span>
 						{#if data.milestone.leader_profile}
 							<img
-								class="h-8 w-8 rounded-full object-cover"
+								class="mb-sm h-8 w-8 rounded-full object-cover"
 								src={data.milestone.leader_profile}
 								alt="Milestone leader"
 							/>
 						{:else}
-							<User className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300" />
+							<User className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300 mb-sm" />
 						{/if}
 					</div>
 				{:else}
@@ -328,8 +328,8 @@
 			<textarea
 				bind:value={updatedDescription}
 				on:blur={updateMilestoneDescription}
-				placeholder="Enter a description"
-				class="border-1 m-0 h-36 w-full resize-none rounded-md border-dashed border-grey-700 bg-white p-2 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-900 dark:text-grey-300 dark:placeholder:text-grey-300"
+				placeholder="What is the goal of this milestone?"
+				class="border-1 m-0 h-[8.5rem] w-full resize-none rounded-md border-dashed border-grey-700 bg-white p-2 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-900 dark:text-grey-300 dark:placeholder:text-grey-300"
 			/>
 		{/if}
 	</div>
