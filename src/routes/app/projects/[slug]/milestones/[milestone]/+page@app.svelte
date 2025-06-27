@@ -244,7 +244,7 @@
 				</svg>
 			</div>
 			<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
-			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			<span class="text-center font-medium text-grey-700 dark:text-grey-200">Completed</span>
 		</div>
 	</div>
 	<div class="w-full">
@@ -357,7 +357,7 @@
 				{#each milestoneTasks.tasks as task}
 					<MilestoneTask {...task} />
 				{:else}
-					<p class="font-semibold text-grey-700 dark:text-grey-300">
+					<p class="text-grey-700 dark:text-grey-300">
 						There are no tasks associated with this milestone.
 					</p>
 				{/each}

@@ -39,29 +39,23 @@
 	});
 </script>
 
-<div class="flex items-center">
+<div class="grid w-full grid-cols-3 items-center">
 	<span
-		class="text-grey-700 dark:text-grey-200 md:font-bold {status === 'done'
+		class="col-span-1 col-start-1 w-fit truncate text-grey-700 dark:text-grey-200 md:font-bold {status ===
+		'done'
 			? 'text-emerald-600 line-through dark:text-emerald-500'
-			: ''}">{name}</span
+			: ''} {assignedUserProfiles && subTasks.length === 0 ? 'col-span-2' : 'col-span-1'}"
+		>{name}</span
 	>
 
 	{#if subTasks.length > 0}
-		<div class="ml-2xl hidden w-full max-w-[18.75rem] items-center gap-md md:flex">
-			<span class="font-bold text-grey-700 dark:text-grey-300">{completed}/{total}</span>
+		<div class="col-span-1 col-start-2 w-fit max-w-[16ch] items-center gap-md whitespace-nowrap">
+			<span class="font-bold text-grey-700 dark:text-grey-300">Sub tasks: {completed}/{total}</span>
 			<span class="sr-only">{completed}/{total} of this task's sub tasks are completed</span>
-
-			<div class="relative w-full">
-				<div
-					class="absolute h-1 rounded-full bg-grey-700 dark:bg-grey-300"
-					style="width: {(completed / total) * 100}%"
-				/>
-				<div class="h-1 w-full rounded-full bg-grey-300 dark:bg-grey-700" />
-			</div>
 		</div>
 	{/if}
 
-	<div class="ml-auto flex w-fit flex-row-reverse items-center">
+	<div class="col-span-1 col-start-3 ml-auto flex w-fit flex-row-reverse items-center">
 		{#each assignedUserProfiles as assigned}
 			{#if assigned.profile}
 				<img
