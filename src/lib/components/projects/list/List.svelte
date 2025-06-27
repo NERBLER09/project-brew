@@ -74,14 +74,6 @@
 
 	export let dbTasks: Task[];
 
-	$: unsortedTasks = dbTasks.filter((item) => {
-		if (item.milestone) {
-			return !item.milestone.completed;
-		} else {
-			return item;
-		}
-	});
-
 	const handleCreateNewTask = async (event) => {
 		const form = new FormData(this);
 		form.append('name', 'New Task');
@@ -104,6 +96,14 @@
 		}
 	};
 
+	$: unsortedTasks = dbTasks.filter((item) => {
+		if (item.milestone) {
+			return !item.milestone.completed;
+		} else {
+			return item;
+		}
+	});
+
 	$: unsortedTasks = unsortedTasks.filter((item) => item.status === status);
 
 	$: tasks = dbTasks.filter((item) => item.status === status);
@@ -117,6 +117,11 @@
 	);
 
 	$: tasks = handleSortingTasks(tasks, $sortOptions) ?? [];
+	$: tasks = tasks.sort((a, b) => {
+		if (a.name === 'New Task' && b.name !== 'New Task') return -1;
+		else if (a.name !== 'New Task' && b.name !== 'New Task') return 1;
+		else return 0;
+	});
 
 	onMount(async () => {
 		tasks = unsortedTasks;
