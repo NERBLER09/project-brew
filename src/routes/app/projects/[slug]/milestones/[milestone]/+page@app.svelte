@@ -17,10 +17,19 @@
 	import Trash from '$lib/assets/Trash.svelte';
 	import ConfirmDelete from '$lib/components/prompts/projects/milestones/ConfirmDelete.svelte';
 	import AddLead from '$lib/components/projects/milestones/AddLead.svelte';
-	import CircleCheck from '$lib/assets/Fill/CircleCheck.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
-	import { milestoneFilter } from '$lib/stores/project';
+	import pkg from 'lodash';
+	const { capitalize } = pkg;
+	import {
+		Timeline,
+		TimelineItem,
+		TimelineSeparator,
+		TimelineDot,
+		TimelineConnector,
+		TimelineContent,
+		TimelineOppositeContent
+	} from 'svelte-vertical-timeline';
 
 	export let data: PageData;
 
@@ -137,9 +146,34 @@
 
 	onDestroy(() => ($showMobileNav = true));
 
-	let showAddTaskDropdown = false;
 	let showCreateRoadmapItem = false;
 	let showDeleteWarning = false;
+
+	const sortTasksByDueDate = () => {
+		const dueTasks = tasks.filter((item) => item.due_date !== null);
+		return dueTasks.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+	};
+	let chronologicalDates = sortTasksByDueDate();
+
+	const status = data.lists?.map((item) => {
+		return capitalize(item.status);
+	});
+
+	let milestoneTasksStatus = [];
+	for (const itemStatus of status) {
+		let taskStatus = itemStatus.toLowerCase();
+		let list = [];
+		console.log(itemStatus);
+		list = tasks.filter((item) => item.status === taskStatus);
+
+		const statusItem = {
+			status: itemStatus,
+			tasks: list
+		};
+
+		milestoneTasksStatus.push(statusItem);
+		milestoneTasksStatus = milestoneTasksStatus;
+	}
 </script>
 
 <svelte:head>
@@ -210,7 +244,7 @@
 				</svg>
 			</div>
 			<span class="font-bold text-grey-700 dark:text-grey-200">{percentCompleted}%</span>
-			<span class="font-medium text-grey-700 dark:text-grey-200">Completed</span>
+			<span class="text-center font-medium text-grey-700 dark:text-grey-200">Completed</span>
 		</div>
 	</div>
 	<div class="w-full">
@@ -245,19 +279,19 @@
 				</button>
 			</div>
 
-			<div class="md:ml-auto">
+			<div class="md-sm md:ml-auto">
 				{#if data.milestone.leader}
 					<!--TODO: Display milestone lead profile picture  -->
 					<div class="flex items-center gap-md">
 						<span class="font-medium text-grey-700 dark:text-grey-300">Milestone lead</span>
 						{#if data.milestone.leader_profile}
 							<img
-								class="h-8 w-8 rounded-full object-cover"
+								class="mb-sm h-8 w-8 rounded-full object-cover"
 								src={data.milestone.leader_profile}
 								alt="Milestone leader"
 							/>
 						{:else}
-							<User className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300" />
+							<User className="h-8 w-8 stroke-grey-700 dark:stroke-grey-300 mb-sm" />
 						{/if}
 					</div>
 				{:else}
@@ -294,106 +328,164 @@
 			<textarea
 				bind:value={updatedDescription}
 				on:blur={updateMilestoneDescription}
-				placeholder="Enter a description"
-				class="border-1 m-0 h-36 w-full resize-none rounded-md border-dashed border-grey-700 bg-white p-2 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-900 dark:text-grey-300 dark:placeholder:text-grey-300"
+				placeholder="What is the goal of this milestone?"
+				class="border-1 m-0 h-[8.5rem] w-full resize-none rounded-md border-dashed border-grey-700 bg-white p-2 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-900 dark:text-grey-300 dark:placeholder:text-grey-300"
 			/>
 		{/if}
 	</div>
 </div>
 
-<section class="mt-md md:mt-lg md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]">
-	<header class="mb-md flex items-center">
-		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
+<div
+	class="md:[padding:_0_clamp(2em,5vw,10em)] lg:grid lg:grid-cols-5 lg:grid-rows-2 lg:gap-lg 2xl:grid-cols-3"
+>
+	<section class="row-span-1 row-start-1 mt-md md:mt-lg md:flex-row lg:col-span-3 2xl:col-span-2">
+		<header class="mb-md">
+			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Tasks</h2>
+		</header>
 
-		<div class="relative ml-auto">
-			<button on:click={() => (showAddTaskDropdown = true)}>
+		<div
+			class="flex flex-col gap-md {data.milestone.tasks
+				? 'rounded-xl bg-none md:bg-grey-100 md:p-lg md:dark:bg-grey-800'
+				: ''}"
+		>
+			{#each milestoneTasksStatus as milestoneTasks}
+				<header>
+					<h2 class="font-semibold text-grey-800 dark:text-grey-200 md:text-md">
+						{milestoneTasks.status}
+					</h2>
+				</header>
+				{#each milestoneTasks.tasks as task}
+					<MilestoneTask {...task} />
+				{:else}
+					<p class="text-grey-700 dark:text-grey-300">
+						There are no tasks associated with this milestone.
+					</p>
+				{/each}
+			{/each}
+		</div>
+	</section>
+
+	<section class="row-span-1 row-start-2 mt-md md:mt-lg md:flex-row lg:col-span-3 2xl:col-span-2">
+		<header class="mb-md flex items-center">
+			<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Goal Posts</h2>
+
+			<button class="ml-auto" on:click={() => (showCreateRoadmapItem = !showCreateRoadmapItem)}>
 				<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
 			</button>
-			{#if showAddTaskDropdown}
-				<AddTask milestoneId={data.milestone.id} bind:show={showAddTaskDropdown} />
-			{/if}
+		</header>
+
+		{#if showCreateRoadmapItem}
+			<section class="mb-lg">
+				<header class="mb-sm">
+					<h3 class="font-semibold text-grey-800 dark:text-grey-200 md:text-md">
+						Create a new item
+					</h3>
+				</header>
+				<form
+					method="POST"
+					use:enhance={() => {
+						return async ({ result }) => {
+							if (result.type === 'failure') {
+								toast.error(`Failed to create new item: ${result.data.errMsg}`);
+							} else if (result.type === 'success') {
+								toast.success('Successfully created roadmap item');
+								invalidate('milestone:open');
+							}
+						};
+					}}
+				>
+					<input
+						type="text"
+						class="input--text w-full md:w-1/2"
+						placeholder="What should happen on this date?"
+						name="name"
+					/>
+					<textarea
+						name="description"
+						id="description-input"
+						class="input--text mt-sm h-36 w-full resize-none"
+						placeholder="Write a simple description on what needs to happen."
+					/>
+
+					<label for="target-date-input" class="input--label mt-sm">What is the target?</label>
+					<input type="date" id="target-date-input" class="input--text mt-sm" name="target-date" />
+
+					<div class="mt-md flex w-full items-center justify-center gap-md">
+						<button class="button--primary">Create</button>
+						<button
+							class="button--secondary"
+							type="button"
+							on:click={() => (showCreateRoadmapItem = false)}>Cancel</button
+						>
+					</div>
+				</form>
+			</section>
+		{/if}
+
+		<div class="flex flex-col gap-sm">
+			{#each data.milestone.roadmap as item}
+				<RoadmapItem {...item} />
+			{:else}
+				<p class="font-semibold text-grey-700 dark:text-grey-300">
+					There are not important dates for this milestone.
+				</p>
+			{/each}
 		</div>
-	</header>
+	</section>
 
-	<div
-		class="flex flex-col gap-md {data.milestone.tasks
-			? 'rounded-xl bg-none md:bg-grey-100 md:p-lg md:dark:bg-grey-800'
-			: ''}"
-	>
-		{#each tasks as task}
-			<MilestoneTask {...task} />
-		{:else}
-			<p class="font-semibold text-grey-700 dark:text-grey-300">
-				There are no tasks associated with this milestone.
-			</p>
-		{/each}
-	</div>
-</section>
+	<section class="row-span-1 row-start-1 mt-md md:mt-lg md:flex-row lg:col-span-2 2xl:col-span-1">
+		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">
+			Milestone Timeline
+		</h2>
 
-<section class="mt-md md:mt-lg md:flex-row md:[padding:_0_clamp(2em,5vw,10em)]">
-	<header class="mb-md flex items-center">
-		<h2 class="text-md font-semibold text-grey-800 dark:text-grey-200 md:text-lg">Roadmap</h2>
+		<Timeline position="alternate">
+			<TimelineItem>
+				<TimelineOppositeContent slot="opposite-content">
+					<h3 class="font-bold text-grey-700 dark:text-grey-300">
+						Start of {data.milestone.name}
+					</h3>
+				</TimelineOppositeContent>
+				<TimelineSeparator>
+					<TimelineDot />
+					<TimelineConnector />
+				</TimelineSeparator>
+				<TimelineContent>
+					<p class="text-grey-700 dark:text-grey-300">{formattedStartDate}</p>
+				</TimelineContent>
+			</TimelineItem>
 
-		<button class="ml-auto" on:click={() => (showCreateRoadmapItem = !showCreateRoadmapItem)}>
-			<PlusNew className="w-8 h-8 stroke-grey-700 dark:stroke-grey-200" />
-		</button>
-	</header>
-
-	{#if showCreateRoadmapItem}
-		<section class="mb-lg">
-			<header class="mb-sm">
-				<h3 class="font-semibold text-grey-800 dark:text-grey-200 md:text-md">Create a new item</h3>
-			</header>
-			<form
-				method="POST"
-				use:enhance={() => {
-					return async ({ result }) => {
-						if (result.type === 'failure') {
-							toast.error(`Failed to create new item: ${result.data.errMsg}`);
-						} else if (result.type === 'success') {
-							toast.success('Successfully created roadmap item');
-							invalidate('milestone:open');
-						}
-					};
-				}}
-			>
-				<input
-					type="text"
-					class="input--text w-full md:w-1/2"
-					placeholder="What should happen on this date?"
-					name="name"
-				/>
-				<textarea
-					name="description"
-					id="description-input"
-					class="input--text mt-sm h-36 w-full resize-none"
-					placeholder="Write a simple description on what needs to happen."
-				/>
-
-				<label for="target-date-input" class="input--label mt-sm">What is the target?</label>
-				<input type="date" id="target-date-input" class="input--text mt-sm" name="target-date" />
-
-				<div class="mt-md flex w-full items-center justify-center gap-md">
-					<button class="button--primary">Create</button>
-					<button
-						class="button--secondary"
-						type="button"
-						on:click={() => (showCreateRoadmapItem = false)}>Cancel</button
-					>
-				</div>
-			</form>
-		</section>
-	{/if}
-
-	<div class="flex flex-col gap-sm">
-		{#each data.milestone.roadmap as item}
-			<RoadmapItem {...item} />
-		{:else}
-			<p class="font-semibold text-grey-700 dark:text-grey-300">
-				There are not important dates for this milestone.
-			</p>
-		{/each}
-	</div>
-</section>
+			{#each chronologicalDates as task}
+				<TimelineItem>
+					<TimelineOppositeContent slot="opposite-content">
+						<p class="text-grey-700 dark:text-grey-300">{task.due_date}</p>
+					</TimelineOppositeContent>
+					<TimelineSeparator>
+						<TimelineDot />
+						<TimelineConnector />
+					</TimelineSeparator>
+					<TimelineContent>
+						<h3 class="font-bold text-grey-700 dark:text-grey-300">
+							{task.name}
+						</h3>
+						<p class="text-grey-700 dark:text-grey-300">{capitalize(task.status)}</p>
+					</TimelineContent>
+				</TimelineItem>
+			{/each}
+			<TimelineItem>
+				<TimelineOppositeContent slot="opposite-content">
+					<h3 class="font-bold text-grey-700 dark:text-grey-300">
+						End of {data.milestone.name}
+					</h3>
+				</TimelineOppositeContent>
+				<TimelineSeparator>
+					<TimelineDot />
+				</TimelineSeparator>
+				<TimelineContent>
+					<p class="text-grey-700 dark:text-grey-300">{formattedEndDate}</p>
+				</TimelineContent>
+			</TimelineItem>
+		</Timeline>
+	</section>
+</div>
 
 <ConfirmDelete bind:shown={showDeleteWarning} name={data.milestone.name} id={data.milestone.id} />

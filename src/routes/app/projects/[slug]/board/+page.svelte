@@ -45,7 +45,7 @@
 </svelte:head>
 
 <section
-	class="relative flex flex-nowrap items-start gap-lg pb-4 md:gap-2xl"
+	class="flex flex-nowrap items-start gap-lg pb-4 md:gap-2xl"
 	use:dndzone={{
 		items: data.lists,
 		type: 'list',

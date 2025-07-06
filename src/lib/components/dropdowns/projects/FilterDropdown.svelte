@@ -52,7 +52,7 @@
 </script>
 
 <div
-	class="dropdown--container right-0 z-50 min-w-[15.1875rem] -translate-x-[24px] translate-y-[calc(100vh-178px)] md:top-6 md:translate-x-0 md:translate-y-0"
+	class="dropdown--container z-50 min-w-[15.1875rem] -translate-x-[274px] translate-y-[calc(100vh-178px)] md:right-0 md:top-6 md:translate-x-0 md:translate-y-0"
 >
 	<button class="dropdown--item" on:click={clearFilters}>
 		<Trash className="dropdown--icon" />

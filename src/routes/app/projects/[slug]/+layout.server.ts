@@ -53,7 +53,6 @@ export const load = (async (event) => {
 		.abortSignal(AbortSignal.timeout(1000))
 		.eq('project', projectId);
 
-
 	if (project) {
 		return {
 			name: project?.project_name,

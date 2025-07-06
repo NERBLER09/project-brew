@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
-	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import TaskItem from '$lib/components/projects/table/TaskItem.svelte';
 	import {
-		currentProject,
 		dateFilter,
 		filterTags,
 		milestoneFilter,
@@ -13,15 +11,12 @@
 		searchQuery,
 		sortOptions
 	} from '$lib/stores/project';
-	import type { ActionResult } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
-	import type { PageData } from './$types';
 	import { handleSortingTasks } from '$lib/api/sort';
 	import { handleFilter } from '$lib/api/filter';
 	import { supabase } from '$lib/supabase';
 	import { userRole } from '$lib/stores/team';
 	import type { LayoutData } from '../$types';
-	import { userData } from '$lib/stores/user';
 	export let data: LayoutData;
 
 	let filteredTasks = data.project?.tasks ?? [];
@@ -87,6 +82,12 @@
 		$filterTags,
 		$milestoneFilter
 	);
+
+	$: filteredTasks = filteredTasks.sort((a, b) => {
+		if (a.name === 'New Task' && b.name !== 'New Task') return 1;
+		else if (a.name !== 'New Task' && b.name !== 'New Task') return -1;
+		else return 0;
+	});
 
 	$: handleSearch($searchQuery);
 
@@ -154,7 +155,7 @@
 	</div>
 </div>
 
-<div class="relative flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
+<div class="flex flex-col flex-nowrap items-start" bind:this={taskContainer}>
 	{#each filteredTasks as task}
 		<div class="border-b border-grey-700 first:mt-1 dark:border-grey-100">
 			<TaskItem {...task} projectId={data.project?.id} />
