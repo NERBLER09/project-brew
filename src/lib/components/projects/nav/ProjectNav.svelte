@@ -7,6 +7,7 @@
 	import Milestone from '$lib/assets/Milestone.svelte';
 	import Roadmap from '$lib/assets/Roadmap.svelte';
 	import Stack from '$lib/assets/Stack.svelte';
+	import File from '$lib/assets/File.svelte';
 	import { currentProject, showProjectAside } from '$lib/stores/project';
 	import Item from './Item.svelte';
 
@@ -51,8 +52,8 @@
 				<Item name="Board" page="board" icon={Stack} showFavorite={false} />
 			{:else if currentPage === 'list'}
 				<Item name="Table" page="list" icon={List} showFavorite={false} />
-				<!-- {:else if currentPage === 'roadmap'} -->
-				<!-- 	<Item name="Roadmap" page="roadmap" icon={Roadmap} showFavorite={false} /> -->
+			{:else if currentPage === 'pages'}
+				<Item name="Pages" page="pages" icon={File} showFavorite={false} />
 			{/if}
 
 			{#if !showPageSwitcher}
@@ -68,6 +69,7 @@
 				<Item name="Milestones" page="milestones" icon={Milestone} />
 				<Item name="Board" page="board" icon={Stack} />
 				<Item name="Table" page="list" icon={List} />
+				<Item name="Pages" page="pages" icon={File} />
 				<!-- <Item name="Roadmap" page="roadmap" icon={Roadmap} /> -->
 			</div>
 		{/if}
@@ -81,6 +83,7 @@
 		<Item name="Milestones" page="milestones" icon={Milestone} />
 		<Item name="Board" page="board" icon={Stack} />
 		<Item name="Table" page="list" icon={List} />
+		<Item name="Pages" page="pages" icon={File} />
 		<!-- <Item name="Roadmap" page="roadmap" icon={Roadmap} /> -->
 	</nav>
 </div>
