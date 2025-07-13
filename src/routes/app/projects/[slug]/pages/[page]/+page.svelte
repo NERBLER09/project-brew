@@ -3,10 +3,14 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { slide } from 'svelte/transition';
+
+	let viewMode = 'edit';
+
+	let mdText = "What's on your mind?";
 </script>
 
 <div
-	class="absolute left-0 top-0 z-50 h-full w-screen bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
+	class="absolute left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
 	transition:slide
 >
 	<header class="block md:hidden">
@@ -23,5 +27,31 @@
 		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg">Sample Page</h2>
 	</div>
 
-	<hr />
+	<div class="mx-lg my-md h-[1px] bg-grey-700 dark:bg-grey-300" />
+
+	<div class="mt-lg flex items-center">
+		<button
+			class="group flex w-fit items-center gap-md rounded px-md py-sm font-bold text-grey-700 hover:bg-grey-100 dark:text-grey-200 hover:dark:bg-grey-800
+			{viewMode === 'edit' ? 'border-2 border-grey-700 dark:border-grey-200' : ''}"
+			on:click={() => (viewMode = 'edit')}
+		>
+			Edit Mode
+		</button>
+		<button
+			class="group flex w-fit items-center gap-md rounded px-md py-sm font-bold text-grey-700 hover:bg-grey-100 dark:text-grey-200 hover:dark:bg-grey-800
+			{viewMode === 'view' ? 'border-2 border-grey-700 dark:border-grey-200' : ''}"
+			on:click={() => (viewMode = 'view')}
+		>
+			View Mode
+		</button>
+	</div>
+	{#if viewMode === 'edit'}
+		<div class="mt-lg h-full">
+			<textarea
+				name="raw-markdown"
+				bind:value={mdText}
+				class="h-full w-full resize-none border-none bg-grey-100 text-sm text-grey-700 transition-all duration-300 ease-in focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
+			/>
+		</div>
+	{/if}
 </div>
