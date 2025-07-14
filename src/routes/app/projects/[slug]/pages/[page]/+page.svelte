@@ -6,26 +6,52 @@
 
 	let viewMode = 'edit';
 
-	let mdText = "What's on your mind?";
+	let pageName = 'Sample Page';
+	let pageDescription = 'What is this page going to be about?';
+
+	let mdText = '';
 </script>
 
 <div
 	class="absolute left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
 	transition:slide
 >
+	<!-- Mobile Only	 -->
 	<header class="block md:hidden">
 		<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}/pages">
 			<Back className="w-8 h-8 aspect-square stroke-grey-800 dark:stroke-grey-200" />
-			<h1 class="w-fit truncate text-lg text-grey-900 dark:text-grey-200">Sample Page</h1>
+			<h2
+				class="w-fit truncate text-lg text-grey-900 dark:text-grey-200"
+				contenteditable="true"
+				bind:innerText={pageName}
+			>
+				{pageName}
+			</h2>
 		</a>
 	</header>
-	<div class="hidden items-center gap-sm md:flex">
+
+	<!-- Desktop Only	 -->
+	<header class="hidden items-center gap-sm md:flex">
 		<a href="/app/projects/{$currentProject.id}/pages">
 			<span class="sr-only">Close this page</span>
 			<CloseMultiply className="w-8 h-8 aspect-square stroke-grey-800 dark:stroke-grey-200" />
 		</a>
-		<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg">Sample Page</h2>
-	</div>
+		<h2
+			class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg"
+			contenteditable="true"
+			bind:innerText={pageName}
+		>
+			Sample Page
+		</h2>
+	</header>
+
+	<span
+		class="content-['What is this page going to be about'] my-md font-semibold text-grey-700 dark:text-grey-200"
+		bind:innerText={pageDescription}
+		contenteditable="true"
+	>
+		{pageDescription}
+	</span>
 
 	<div class="mx-lg my-md h-[1px] bg-grey-700 dark:bg-grey-300" />
 
@@ -50,7 +76,8 @@
 			<textarea
 				name="raw-markdown"
 				bind:value={mdText}
-				class="h-full w-full resize-none border-none bg-grey-100 text-sm text-grey-700 transition-all duration-300 ease-in focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
+				placeholder="What is on your mind?"
+				class="h-full w-full resize-none border-0 bg-grey-100 text-grey-700 focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
 			/>
 		</div>
 	{/if}
