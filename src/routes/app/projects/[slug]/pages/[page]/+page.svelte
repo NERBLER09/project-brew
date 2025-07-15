@@ -3,13 +3,27 @@
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { slide } from 'svelte/transition';
-
+	import { compile } from 'mdsvex';
 	let viewMode = 'edit';
 
 	let pageName = 'Sample Page';
 	let pageDescription = 'What is this page going to be about?';
 
 	let mdText = '';
+	const convertTextToMD = async (text, view) => {
+		// Now you can compile it if you wish
+		if (viewMode === 'view') {
+			const compiled = await compile(text);
+			handleProcessText(compiled);
+		}
+	};
+
+	const handleProcessText = async (compiled) => {
+		processedMarkdownText = compiled.code;
+	};
+
+	$: processedMarkdownText = convertTextToMD(mdText, viewMode);
+	$: console.log(processedMarkdownText);
 </script>
 
 <div
@@ -55,7 +69,7 @@
 
 	<div class="mx-lg my-md h-[1px] bg-grey-700 dark:bg-grey-300" />
 
-	<div class="mt-lg flex items-center">
+	<div class="mt-md flex items-center">
 		<button
 			class="group flex w-fit items-center gap-md rounded px-md py-sm font-bold text-grey-700 hover:bg-grey-100 dark:text-grey-200 hover:dark:bg-grey-800
 			{viewMode === 'edit' ? 'border-2 border-grey-700 dark:border-grey-200' : ''}"
@@ -77,8 +91,10 @@
 				name="raw-markdown"
 				bind:value={mdText}
 				placeholder="What is on your mind?"
-				class="h-full w-full resize-none border-0 bg-grey-100 text-grey-700 focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
+				class="h-full w-full resize-none border-0 bg-grey-100 p-0 text-grey-700 focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
 			/>
 		</div>
+	{:else if viewMode === 'view'}
+		<div class="mt-lg">{@html processedMarkdownText}</div>
 	{/if}
 </div>
