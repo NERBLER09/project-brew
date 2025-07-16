@@ -4,6 +4,7 @@
 	import { currentProject } from '$lib/stores/project';
 	import { slide } from 'svelte/transition';
 	import { compile } from 'mdsvex';
+	import ProcessedMarkdown from '$lib/components/projects/pages/ProcessedMarkdown.svelte';
 	let viewMode = 'edit';
 
 	let pageName = 'Sample Page';
@@ -23,7 +24,6 @@
 	};
 
 	$: processedMarkdownText = convertTextToMD(mdText, viewMode);
-	$: console.log(processedMarkdownText);
 </script>
 
 <div
@@ -95,6 +95,6 @@
 			/>
 		</div>
 	{:else if viewMode === 'view'}
-		<div class="mt-lg">{@html processedMarkdownText}</div>
+		<ProcessedMarkdown bind:mdText />
 	{/if}
 </div>
