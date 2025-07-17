@@ -1,5 +1,10 @@
 <script lang="ts">
 	import PageLink from '$lib/components/projects/pages/PageLink.svelte';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
+
+	console.log(data);
 
 	// TODO:: Replace with actuall db data
 	const sampleData = [
@@ -23,7 +28,7 @@
 </header>
 
 <div class="flex flex-col gap-lg md:flex-row md:flex-wrap">
-	{#each sampleData as page}
+	{#each data.pages as page}
 		<PageLink {...page} />
 	{/each}
 </div>
