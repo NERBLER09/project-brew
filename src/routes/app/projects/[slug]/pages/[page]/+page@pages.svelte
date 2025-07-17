@@ -45,6 +45,7 @@
 			.from('pages')
 			.update({ name: pageName, description: pageDescription, text_contents: mdText })
 			.eq('id', page.id);
+		invalidate('project:pages');
 		lastedUpateMdText = lastedUpateMdText;
 		lastedUpatePageDescription = pageDescription;
 		lastedUpatePageName = pageName;
