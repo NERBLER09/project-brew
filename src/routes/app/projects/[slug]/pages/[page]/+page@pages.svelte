@@ -7,6 +7,8 @@
 	import ProcessedMarkdown from '$lib/components/projects/pages/ProcessedMarkdown.svelte';
 	import { supabase } from '$lib/supabase';
 	import { page as svpage } from '$app/stores';
+	import Trash from '$lib/assets/Trash.svelte';
+	import { goto, invalidate } from '$app/navigation';
 
 	let viewMode = 'edit';
 
@@ -42,21 +44,28 @@
 		await supabase
 			.from('pages')
 			.update({ name: pageName, description: pageDescription, text_contents: mdText })
-			.eq('id', data.page.id);
+			.eq('id', page.id);
 		lastedUpateMdText = lastedUpateMdText;
 		lastedUpatePageDescription = pageDescription;
 		lastedUpatePageName = pageName;
 	};
 
 	$: processedMarkdownText = convertTextToMD(mdText, viewMode);
+
+	const handleDelete = async () => {
+		await supabase.from('pages').delete().eq('id', page.id);
+		invalidate('project:pages');
+		const projectId = $currentProject.id;
+		goto(`/app/projects/${projectId}/pages`);
+	};
 </script>
 
 <div
-	class="absolute left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
+	class="fixed left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
 	transition:slide
 >
 	<!-- Mobile Only	 -->
-	<header class="block md:hidden">
+	<header class="flex md:hidden">
 		<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}/pages">
 			<Back className="w-8 h-8 aspect-square stroke-grey-800 dark:stroke-grey-200" />
 			<h2
@@ -68,6 +77,14 @@
 				{pageName}
 			</h2>
 		</a>
+		<button on:click={handleDelete} class="ml-auto">
+			<Trash
+				className="w-8 h-8 {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+			<span class="sr-only">View project info</span>
+		</button>
 	</header>
 
 	<!-- Desktop Only	 -->
@@ -84,6 +101,14 @@
 		>
 			Sample Page
 		</h2>
+		<button on:click={handleDelete} class="ml-auto">
+			<Trash
+				className="w-8 h-8 {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+			<span class="sr-only">View project info</span>
+		</button>
 	</header>
 
 	<span
