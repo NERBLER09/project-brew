@@ -1,16 +1,19 @@
-<script>
+<script lang="ts">
 	import Back from '$lib/assets/Arrow/Back.svelte';
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import { currentProject } from '$lib/stores/project';
 	import { slide } from 'svelte/transition';
 	import { compile } from 'mdsvex';
 	import ProcessedMarkdown from '$lib/components/projects/pages/ProcessedMarkdown.svelte';
+	import type { PageData } from './$types';
 	let viewMode = 'edit';
 
-	let pageName = 'Sample Page';
-	let pageDescription = 'What is this page going to be about?';
+	export let data: PageData;
+	console.log(data);
+	let pageName = data.page.name;
+	let pageDescription = data.page.description;
 
-	let mdText = '';
+	let mdText = data.page.text_contents;
 	const convertTextToMD = async (text, view) => {
 		// Now you can compile it if you wish
 		if (viewMode === 'view') {
