@@ -1,11 +1,8 @@
 <script lang="ts">
-	import User from '$lib/assets/User.svelte';
 	import { currentProject } from '$lib/stores/project';
-	import { invitedTeamMembers } from '$lib/stores/user';
-	import TagItem from '../tags/TagItem.svelte';
 
 	export let id: string = 'sample-page';
-	export let page_name: string = 'New Page';
+	export let name: string = 'New Page';
 	export let description: string | null = '';
 	export let banner: string = '';
 </script>
@@ -20,7 +17,7 @@
 		<header>
 			<span
 				class="text-md font-medium {banner ? 'text-grey-200' : 'text-grey-700 dark:text-grey-200'}"
-				>{page_name}</span
+				>{name}</span
 			>
 		</header>
 		<p
