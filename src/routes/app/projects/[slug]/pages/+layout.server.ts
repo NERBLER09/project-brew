@@ -11,6 +11,8 @@ export const load = (async (event) => {
   const params = event.params;
   const projectId = params.slug;
 
+  event.depends("project:pages")
+
   const { data: pages, error: err } = await supabaseClient.from('pages')
     .select("*")
     .eq('project', projectId);
