@@ -6,10 +6,10 @@
 	import { compile } from 'mdsvex';
 	import ProcessedMarkdown from '$lib/components/projects/pages/ProcessedMarkdown.svelte';
 	import type { PageData } from './$types';
+	import { supabase } from '$lib/supabase';
 	let viewMode = 'edit';
 
 	export let data: PageData;
-	console.log(data);
 	let pageName = data.page.name;
 	let pageDescription = data.page.description;
 
@@ -24,6 +24,26 @@
 
 	const handleProcessText = async (compiled) => {
 		processedMarkdownText = compiled.code;
+	};
+
+	let lastedUpateMdText = mdText;
+	let lastedUpatePageName = pageName;
+	let lastedUpatePageDescription = pageDescription;
+
+	const handleUpdateTextOnBlur = async () => {
+		if (
+			lastedUpateMdText === mdText &&
+			lastedUpatePageName === pageName &&
+			lastedUpatePageDescription === pageDescription
+		)
+			return;
+		await supabase
+			.from('pages')
+			.update({ name: pageName, description: pageDescription, text_contents: mdText })
+			.eq('id', data.page.id);
+		lastedUpateMdText = lastedUpateMdText;
+		lastedUpatePageDescription = pageDescription;
+		lastedUpatePageName = pageName;
 	};
 
 	$: processedMarkdownText = convertTextToMD(mdText, viewMode);
@@ -41,6 +61,7 @@
 				class="w-fit truncate text-lg text-grey-900 dark:text-grey-200"
 				contenteditable="true"
 				bind:innerText={pageName}
+				on:blur={handleUpdateTextOnBlur}
 			>
 				{pageName}
 			</h2>
@@ -57,6 +78,7 @@
 			class="text-md font-semibold text-grey-700 dark:text-grey-200 md:text-lg"
 			contenteditable="true"
 			bind:innerText={pageName}
+			on:blur={handleUpdateTextOnBlur}
 		>
 			Sample Page
 		</h2>
@@ -66,6 +88,7 @@
 		class="content-['What is this page going to be about'] my-md font-semibold text-grey-700 dark:text-grey-200"
 		bind:innerText={pageDescription}
 		contenteditable="true"
+		on:blur={handleUpdateTextOnBlur}
 	>
 		{pageDescription}
 	</span>
@@ -95,6 +118,7 @@
 				bind:value={mdText}
 				placeholder="What is on your mind?"
 				class="h-full w-full resize-none border-0 bg-grey-100 p-0 text-grey-700 focus:outline-0 dark:bg-grey-800 dark:text-grey-200"
+				on:blur={handleUpdateTextOnBlur}
 			/>
 		</div>
 	{:else if viewMode === 'view'}
