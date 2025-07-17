@@ -188,7 +188,7 @@
 </header>
 
 <div
-	class="sticky -left-6 mb-md flex w-full -translate-y-[1rem] items-center md:-translate-y-[2.1rem]"
+	class="sticky -left-6 mb-md flex w-full -translate-y-[1rem] items-center md:-translate-y-[1rem]"
 >
 	<ProjectNav />
 	{#if $showProjectAside}
