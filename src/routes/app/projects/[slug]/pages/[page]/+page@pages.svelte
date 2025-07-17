@@ -5,17 +5,19 @@
 	import { slide } from 'svelte/transition';
 	import { compile } from 'mdsvex';
 	import ProcessedMarkdown from '$lib/components/projects/pages/ProcessedMarkdown.svelte';
-	import type { PageData } from './$types';
 	import { supabase } from '$lib/supabase';
+	import { page as svpage } from '$app/stores';
+
 	let viewMode = 'edit';
 
-	export let data: PageData;
-	let pageName = data.page.name;
-	let pageDescription = data.page.description;
+	let data = $svpage.data.pages ?? [];
+	const pageId = $svpage.params.page;
+	const page = data.find((item) => item.id === pageId);
+	let pageName = page.name;
+	let pageDescription = page.description;
 
-	let mdText = data.page.text_contents;
+	let mdText = page.text_contents;
 	const convertTextToMD = async (text, view) => {
-		// Now you can compile it if you wish
 		if (viewMode === 'view') {
 			const compiled = await compile(text);
 			handleProcessText(compiled);

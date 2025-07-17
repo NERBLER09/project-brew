@@ -17,6 +17,7 @@ export const load = (async (event) => {
     .select("*")
     .eq('project', projectId);
 
+
   return {
     pages
   }

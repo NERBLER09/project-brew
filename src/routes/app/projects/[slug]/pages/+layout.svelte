@@ -37,4 +37,4 @@
 	{/each}
 </div>
 
-<slot />
+<slot data={data.pages} />
