@@ -10,7 +10,8 @@
 	import type { PageData } from './$types';
 	import FileInput from '$lib/components/form/FileInput.svelte';
 	import { userRole } from '$lib/stores/team';
-	import { camelCase } from 'lodash';
+	import pkg from 'lodash';
+	const { camelCase } = pkg;
 	import TagList from '$lib/components/projects/tags/TagList.svelte';
 	import TagInput from '$lib/components/prompts/about/TagInput.svelte';
 

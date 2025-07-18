@@ -57,22 +57,22 @@
 
 	let teamName = '';
 
-	const getTeamName = async () => {
-		const { data: team } = await supabase
-			.from('teams')
-			.select()
-			.eq('id', $currentProject.team)
-			.limit(1)
-			.single();
-		if (team) {
-			teamName = team.name;
-		}
-	};
+	// const getTeamName = async () => {
+	// 	const { data: team } = await supabase
+	// 		.from('teams')
+	// 		.select()
+	// 		.eq('id', $currentProject.team)
+	// 		.limit(1)
+	// 		.single();
+	// 	if (team) {
+	// 		teamName = team.name;
+	// 	}
+	// };
 
-	$: if ($currentProject.team) getTeamName();
+	// $: if ($currentProject.team) getTeamName();
 
 	onMount(async () => {
-		getTeamName();
+		// getTeamName();
 	});
 
 	const updateProjectName = async () => {

@@ -198,9 +198,13 @@
 
 <slot />
 
-<AboutProject
-	bind:shown={$showAboutProjectPrompt}
-	project_name={data.project?.project_name}
-	description={data.project?.description}
-	banner={data.banner}
-/>
+<div>
+	{#if $showAboutProjectPrompt}
+		<AboutProject
+			bind:shown={$showAboutProjectPrompt}
+			project_name={data.project?.project_name}
+			description={data.project?.description}
+			banner={data.banner}
+		/>
+	{/if}
+</div>
