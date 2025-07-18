@@ -35,7 +35,6 @@
 	name="banner"
 	accept="image/png, image/jpeg"
 	on:change={uploadBanner}
-	enctype="multipart/form-data"
 />
 {#if bannerURL}
 	<div

@@ -58,6 +58,7 @@
 
 		<form
 			method="POST"
+			enctype="multipart/form-data"
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'failure') {
