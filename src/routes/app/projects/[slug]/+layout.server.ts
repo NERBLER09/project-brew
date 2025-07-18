@@ -16,9 +16,8 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(*), milestones(*)')
+		.select('*, project_members!inner(*, profiles(*)), milestones(*)')
 		.eq('id', projectId)
-		.limit(1)
 		.single();
 
 	const invitedUserIds = project?.project_members?.map((item) => item.user_id) ?? [];
