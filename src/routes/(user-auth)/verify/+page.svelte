@@ -1,5 +1,9 @@
 <script>
 	import { signUpEmail } from '$lib/stores/user';
+	import { onMount } from 'svelte';
+	onMount(() => {
+		$signUpEmail = localStorage.getItem('email');
+	});
 </script>
 
 <section class="mx-6 grid h-screen place-content-center text-center">
