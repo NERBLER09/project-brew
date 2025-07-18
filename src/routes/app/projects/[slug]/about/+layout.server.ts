@@ -11,20 +11,14 @@ export const load = (async (event) => {
   const params = event.params;
   const projectId = params.slug;
 
+  const { project } = await event.parent()
+  const project_name = project.project_name
+  const description = project.description
+  const id = project.id
+  const banner = project.banner
+  const project_members = project.project_members
+
   event.depends('project:about');
-
-  // Grabs project info
-  const { data: project, error: errProject } = await supabaseClient
-    .from('projects')
-    .select()
-    .eq('id', projectId)
-    .limit(1)
-    .single();
-
-  const { data: invited_people } = await supabaseClient
-    .from('project_members')
-    .select()
-    .eq('project', projectId);
 
   const { data: userTeams } = await supabaseClient
     .from('teams')
@@ -34,10 +28,13 @@ export const load = (async (event) => {
   if (project) {
     return {
       project: {
-        ...project,
+        project_name,
+        id,
+        banner,
+        description,
         tags: project.tags ?? [],
         user_teams: userTeams ?? [],
-        invited_people: invited_people ?? []
+        invited_people: project_members ?? []
       }
     };
   }
