@@ -10,10 +10,10 @@ export const load = (async (event) => {
 
 	event.depends('app:data');
 
-	const { data: notifications, error: err } = await supabaseClient
-		.from('notifications')
-		.select()
-		.eq('target_user', session.user.id);
+	// const { data: notifications, error: err } = await supabaseClient
+	// 	.from('notifications')
+	// 	.select()
+	// 	.eq('target_user', session.user.id);
 	const { data: user } = await supabaseClient
 		.from('profiles')
 		.select()
@@ -23,12 +23,14 @@ export const load = (async (event) => {
 
 	if (user) {
 		return {
-			notifications,
+			// notifications,
 			...user,
 			user
 		};
-	} else if (!user) {
+	} else if (!user && session.user.aud) {
 		redirect(303, '/welcome');
+	} else if (!user && !session.user.aud) {
+		redirect(303, '/verify');
 	}
 
 	error(404, err?.message);
