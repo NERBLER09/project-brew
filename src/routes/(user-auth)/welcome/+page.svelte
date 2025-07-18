@@ -84,7 +84,7 @@
 							class="input--text w-full"
 							id="name-input"
 							name="name"
-							placeholder="Enter your name"
+							placeholder="What do you go by?"
 							required
 						/>
 					</div>
@@ -97,7 +97,7 @@
 							class="input--text w-full"
 							id="location-input"
 							name="location"
-							placeholder="Enter your location"
+							placeholder="Where are you located?"
 						/>
 					</div>
 					<div class="flex items-center">
@@ -109,7 +109,7 @@
 							class="input--text w-full"
 							id="company-input"
 							name="company"
-							placeholder="Enter your company"
+							placeholder="Who do you work for?"
 						/>
 					</div>
 					<div class="mt-sm flex items-center">
@@ -121,7 +121,7 @@
 							class="input--text w-full"
 							id="pronouns-input"
 							name="pronouns"
-							placeholder="Enter your company"
+							placeholder="What pronouns do you go by?"
 						/>
 					</div>
 					<div class="w-full">
@@ -198,21 +198,11 @@
 				</div>
 			</section>
 
-			<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
+			<button class="button--primary flex w-full items-center justify-center gap-md md:w-fit">
 				Next
 				<Back className="h-8 w-8 stroke-grey-200 rotate-180" />
 			</button>
 		</form>
 	</div>
-
-	<!-- <div -->
-	<!-- 	class="rouned-lg ld:top-0 my-md w-screen shadow-md md:inline lg:relative lg:aspect-[77/47] lg:h-[100vh-20px]" -->
-	<!-- > -->
-	<!-- 	<img -->
-	<!-- 		src={DashboardPage} -->
-	<!-- 		alt="dashboard page" -->
-	<!-- 		class="aspect-auto object-scale-down lg:fixed lg:top-0 lg:float-left lg:h-[100vh] lg:object-cover" -->
-	<!-- 	/> -->
-	<!-- </div> -->
 	<img src={DashboardPage} alt="dashboard page" class="w-fit object-cover md:h-screen" />
 </div>
