@@ -204,5 +204,9 @@
 			</button>
 		</form>
 	</div>
-	<img src={DashboardPage} alt="dashboard page" class="w-fit object-cover md:h-screen" />
+	<img
+		src={DashboardPage}
+		alt="dashboard page"
+		class="hidden w-fit object-cover md:block md:h-screen"
+	/>
 </div>
