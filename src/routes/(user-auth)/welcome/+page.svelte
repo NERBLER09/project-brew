@@ -48,8 +48,8 @@
 	<title>Project Brew - Welcome</title>
 </svelte:head>
 
-<div class="relative flex items-center gap-10 md:flex lg:gap-[10%]">
-	<div class="p-6 md:w-1/2 md:p-8 md:pr-0 lg:w-1/3">
+<div class="relative flex flex-col-reverse items-center md:flex-row md:gap-10 xl:gap-[10%]">
+	<div class="w-full p-6 md:p-8 md:pr-0 lg:w-2/3 xl:w-1/2">
 		<header>
 			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
 
@@ -205,13 +205,14 @@
 		</form>
 	</div>
 
-	<div
-		class="rouned-lg relative top-0 my-md hidden aspect-[77/47] shadow-md md:inline lg:h-[100vh-20px] lg:w-full"
-	>
-		<img
-			src={DashboardPage}
-			alt="dashboard page"
-			class="fixed top-0 aspect-auto h-[100vh] lg:h-[100vh-20px]"
-		/>
-	</div>
+	<!-- <div -->
+	<!-- 	class="rouned-lg ld:top-0 my-md w-screen shadow-md md:inline lg:relative lg:aspect-[77/47] lg:h-[100vh-20px]" -->
+	<!-- > -->
+	<!-- 	<img -->
+	<!-- 		src={DashboardPage} -->
+	<!-- 		alt="dashboard page" -->
+	<!-- 		class="aspect-auto object-scale-down lg:fixed lg:top-0 lg:float-left lg:h-[100vh] lg:object-cover" -->
+	<!-- 	/> -->
+	<!-- </div> -->
+	<img src={DashboardPage} alt="dashboard page" class="w-fit object-cover md:h-screen" />
 </div>
