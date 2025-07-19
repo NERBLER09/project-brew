@@ -13,10 +13,11 @@
 	export let dbId: string;
 	export let projectId: number;
 	export let role: 'owner' | 'admin' | 'editor' | 'viewer';
+	export let profiles;
 
-	let name: string;
-	let email: string;
-	let avatar: string;
+	let name: string = profiles?.name;
+	let email: string = profiles?.email;
+	let avatar: string = profiles?.avatar_url;
 	let roleFormatted: string;
 
 	let isOwner = $userRole === 'owner';
@@ -39,19 +40,6 @@
 	};
 
 	onMount(async () => {
-		const { data: profile, error } = await supabase
-			.from('profiles')
-			.select()
-			.eq('id', user_id)
-			.limit(1)
-			.single();
-
-		if (profile) {
-			name = profile.name;
-			email = profile.email;
-			avatar = profile.avatar_url ?? '';
-		}
-
 		formateRole();
 	});
 
