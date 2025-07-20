@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import { userRole } from '$lib/stores/team';
+	import { page } from '$app/stores';
 
 	export let user_id: string;
 	export let dbId: string;
@@ -63,8 +64,8 @@
 			await supabase
 				.from('project_members')
 				.update({ role: newRole })
-				.eq('user_id', dbId)
-				.eq('project', $currentProject.id);
+				.eq('id', dbId)
+				.eq('project', $page.params.slug);
 
 			role = newRole;
 			formateRole();
