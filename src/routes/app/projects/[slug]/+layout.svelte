@@ -46,7 +46,7 @@
 	$sortOptions = data.project?.sort ?? {};
 	let showProjectDropdown = false;
 
-	let mainElement: HTMLElement = document.getElementById('main');
+	let mainElement: HTMLElement;
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
 	$: if ((currentPage === 'board' && mainElement) || (currentPage === 'list' && mainElement)) {
@@ -67,6 +67,7 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
+		mainElement = document.getElementById('main');
 	});
 
 	let projectDropdownContainer: HTMLElement;
