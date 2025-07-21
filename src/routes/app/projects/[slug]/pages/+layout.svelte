@@ -3,10 +3,13 @@
 	import { page } from '$app/stores';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import PageLink from '$lib/components/projects/pages/PageLink.svelte';
+	import { showProjectAside } from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
+
+	$showProjectAside = false;
 
 	const createNewPage = async () => {
 		const { data: result } = await supabase
