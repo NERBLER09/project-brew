@@ -9,6 +9,7 @@
 	import { page as svpage } from '$app/stores';
 	import Trash from '$lib/assets/Trash.svelte';
 	import { goto, invalidate } from '$app/navigation';
+	import OpenShare from '$lib/assets/Open-Share.svelte';
 
 	let viewMode = 'edit';
 
@@ -17,6 +18,8 @@
 	const page = data.find((item) => item.id === pageId);
 	let pageName = page.name;
 	let pageDescription = page.description;
+
+	let pageFullScreen = true;
 
 	let mdText = page.text_contents;
 	const convertTextToMD = async (text, view) => {
@@ -62,7 +65,9 @@
 </script>
 
 <div
-	class="fixed left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:left-auto md:right-0 md:w-3/5 md:border-l md:border-l-grey-700 md:dark:border-l-grey-300 lg:w-1/2"
+	class="fixed left-0 top-0 z-50 h-full w-screen overflow-hidden bg-grey-100 p-lg dark:bg-grey-800 md:border-l md:border-l-grey-700 md:transition-all md:duration-500 md:dark:border-l-grey-300 {pageFullScreen
+		? 'md:left-auto md:right-0  md:w-[calc(100vw-16.625rem)]'
+		: 'md:left-auto  md:right-0 md:w-3/5 lg:w-1/2'}"
 	transition:slide
 >
 	<!-- Mobile Only	 -->
@@ -70,7 +75,7 @@
 		<a class="flex items-center gap-md" href="/app/projects/{$currentProject.id}/pages">
 			<Back className="w-8 h-8 aspect-square stroke-grey-800 dark:stroke-grey-200" />
 			<h2
-				class="w-fit truncate text-lg text-grey-900 dark:text-grey-200"
+				class="truncate text-lg text-grey-900 dark:text-grey-200"
 				contenteditable="true"
 				bind:innerText={pageName}
 				on:blur={handleUpdateTextOnBlur}
@@ -84,7 +89,7 @@
 					? 'stroke-grey-200'
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
-			<span class="sr-only">View project info</span>
+			<span class="sr-only">Delete page</span>
 		</button>
 	</header>
 
@@ -102,13 +107,26 @@
 		>
 			Sample Page
 		</h2>
-		<button on:click={handleDelete} class="ml-auto">
+		<button
+			on:click={() => {
+				pageFullScreen = !pageFullScreen;
+			}}
+			class="ml-auto"
+		>
+			<OpenShare
+				className="w-8 h-8 {data.banner
+					? 'stroke-grey-200'
+					: 'stroke-grey-700 dark:stroke-grey-200'}"
+			/>
+			<span class="sr-only">Full screen</span>
+		</button>
+		<button on:click={handleDelete}>
 			<Trash
 				className="w-8 h-8 {data.banner
 					? 'stroke-grey-200'
 					: 'stroke-grey-700 dark:stroke-grey-200'}"
 			/>
-			<span class="sr-only">View project info</span>
+			<span class="sr-only">Delete page</span>
 		</button>
 	</header>
 
