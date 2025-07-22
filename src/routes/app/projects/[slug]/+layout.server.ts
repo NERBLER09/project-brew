@@ -1,7 +1,6 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { list } from 'postcss';
 
 export const load = (async (event) => {
 	const { session, supabaseClient } = await getSupabase(event);

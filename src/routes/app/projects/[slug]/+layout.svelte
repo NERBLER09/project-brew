@@ -36,7 +36,7 @@
 	$currentProject = data.project;
 	$currentProject.invited_people = data.invited_people ?? [];
 	$currentProject = $currentProject;
-	$userRole = data.role?.role;
+	$userRole = data.role;
 	$userTeams = data.userTeams ?? [];
 	$projectMilestones = data.project?.milestones ?? [];
 
@@ -73,7 +73,7 @@
 	let projectDropdownContainer: HTMLElement;
 
 	const handleAutoCloseDropdown = (event: Event) => {
-		if (!projectDropdownContainer.contains(event.target)) {
+		if (projectDropdownContainer && !projectDropdownContainer.contains(event.target)) {
 			showProjectDropdown = false;
 		}
 	};
