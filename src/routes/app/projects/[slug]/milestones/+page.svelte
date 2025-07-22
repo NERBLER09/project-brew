@@ -10,6 +10,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import GanttChartMilestones from '$lib/components/projects/milestones/GanttChartMilestones.svelte';
+	import { userRole } from '$lib/stores/team';
 
 	export let data: PageData;
 
@@ -111,13 +112,15 @@
 				<MilestonePageSorting bind:milestoneSorting />
 			{/if}
 		</div>
-		<button
-			class="lg:button--primary button--circle hidden items-center gap-md md:flex"
-			on:click={() => (showNewMilestonePrompt = true)}
-		>
-			<PlusNew className="h-6 w-6 stroke-grey-200" />
-			<span class="md:sr-only lg:not-sr-only"> New Milestone </span>
-		</button>
+		{#if data.role !== 'viewer'}
+			<button
+				class="lg:button--primary button--circle hidden items-center gap-md md:flex"
+				on:click={() => (showNewMilestonePrompt = true)}
+			>
+				<PlusNew className="h-6 w-6 stroke-grey-200" />
+				<span class="md:sr-only lg:not-sr-only"> New Milestone </span>
+			</button>
+		{/if}
 	</div>
 </header>
 
