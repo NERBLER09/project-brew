@@ -93,7 +93,7 @@
 	};
 
 	const updateProjectDescription = async () => {
-		if (description !== original_description) return;
+		if (description === original_description) return;
 		const { error } = await supabase
 			.from('projects')
 			.update({

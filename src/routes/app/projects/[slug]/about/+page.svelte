@@ -50,7 +50,12 @@
 		$showMobileNav = true;
 	});
 
+	let original_name = project_name;
+	let original_description = description;
+
 	const updateProjectName = async () => {
+		if (project_name === original_name) return;
+
 		const { error } = await supabase
 			.from('projects')
 			.update({
@@ -68,6 +73,8 @@
 	};
 
 	const updateProjectDescription = async () => {
+		if (description === original_description) return;
+
 		const { error } = await supabase
 			.from('projects')
 			.update({
