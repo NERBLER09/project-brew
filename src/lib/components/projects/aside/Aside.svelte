@@ -16,13 +16,9 @@
 	let sortContainer: HTMLElement;
 
 	const autoCloseDropdowns = (event: Event) => {
-		if (!searchInput.contains(event.target)) {
-			search = false;
+		if (!filterContainer.contains(event.target)) {
+			filter = false;
 		}
-
-		// if (!filterContainer.contains(event.target)) {
-		// 	filter = false;
-		// }
 
 		if (!sortContainer.contains(event.target)) {
 			sort = false;
@@ -34,7 +30,7 @@
 	}
 </script>
 
-<svelte:window on:click={autoCloseDropdowns} />
+<svelte:window on:click={autoCloseDropdowns} on:dblclick={() => (search = false)} />
 
 <div class="relative z-50 ml-auto flex items-center gap-md">
 	<div class="relative h-8 md:h-6" bind:this={searchInput}>
