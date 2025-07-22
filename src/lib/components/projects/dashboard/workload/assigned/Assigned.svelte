@@ -11,13 +11,13 @@
 
 	let assignedTaskAmount: number[] = [];
 	let tasksWithAssignedUsers = tasks.map((item) => {
-		if (item.assigned) {
+		if (item.assigned?.length > 0) {
 			return item.assigned;
-		}
+		} else return [];
 	});
 	tasksWithAssignedUsers = flattenDepth(tasksWithAssignedUsers);
 
-	let unassignedTasks: number = tasksWithAssignedUsers.filter((item) => {
+	let unassignedTasks: number = tasks.filter((item) => {
 		if (!item?.assigned) return [];
 	}).length;
 
@@ -30,7 +30,6 @@
 	if (!invitedUserNames.includes('Unassigned')) {
 		assignedTaskAmount.push(unassignedTasks);
 		invitedUserNames.push('Unassigned');
-		invitedUserNames.pop();
 	}
 
 	const data = {
