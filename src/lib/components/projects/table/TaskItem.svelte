@@ -231,7 +231,7 @@
 				{/each}
 			{/if}
 		</button>
-		{#if addNewTags}
+		{#if addNewTags && !isViewer}
 			<TagSelect
 				bind:taskTags={tags}
 				taskId={id}
@@ -240,30 +240,6 @@
 			/>
 		{/if}
 	</div>
-	<!-- {:else} -->
-	<!-- <div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative"> -->
-	<!-- 	<button -->
-	<!-- 		class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300" -->
-	<!-- 		on:click={() => (addNewTags = !addNewTags)} -->
-	<!-- 	> -->
-	<!-- {#if !addNewTags} -->
-	<!-- 	Add new tags -->
-	<!-- 	<PlusNew className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
-	<!-- {:else} -->
-	<!-- 	Update tags -->
-	<!-- 	<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" /> -->
-	<!-- {/if} -->
-	<!-- 		</button> -->
-	<!-- 		{#if addNewTags} -->
-	<!-- 			<TagSelect -->
-	<!-- 				bind:taskTags={tags} -->
-	<!-- 				taskId={id} -->
-	<!-- 				projectId={$currentProject.id} -->
-	<!-- 				bind:shown={addNewTags} -->
-	<!-- 			/> -->
-	<!-- 		{/if} -->
-	<!-- 	</div> -->
-	<!-- {/if} -->
 </div>
 
 {#if showSubTasks}
