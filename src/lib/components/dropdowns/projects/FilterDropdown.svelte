@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
+	import Check from '$lib/assets/Check.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import {
@@ -11,6 +12,7 @@
 		priorityFilter
 	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
+	import { findIndex, includes } from 'lodash';
 
 	let addFilter = false;
 	let showMilestonesFilter = false;
@@ -95,7 +97,7 @@
 		</div>
 		<section>
 			<header class="flex items-center">
-				<h4 class="dropdown--label px-md py-sm text-md">Milestones</h4>
+				<h4 class="dropdown--label px-md py-sm text-md md:text-base">Milestones</h4>
 				<button
 					class="button--secondary m-0 ml-auto border-0 p-0"
 					on:click={() => {
@@ -128,32 +130,37 @@
 
 		<section>
 			<header>
-				<h4 class="dropdown--label px-md py-sm text-md">Tags</h4>
+				<h4 class="dropdown--label px-md py-sm text-md md:text-base">Tags</h4>
 			</header>
 
-			<form
-				on:submit|preventDefault={() => {
-					tags = [tagName, ...tags];
-					tagName = '';
-				}}
+			<div
+				class="mb-4 flex w-full flex-col flex-wrap items-center justify-items-start gap-md pt-sm empty:hidden"
 			>
-				<div class="input--text flex w-full items-center">
-					<input
-						type="text"
-						placeholder="Enter the tag name"
-						class="input--text m-0 w-full p-0"
-						bind:value={tagName}
-						name="invite_email"
-						required
-					/>
-					<button type="submit">
-						<PlusNew
-							className="stroke-grey-700 dark:stroke-grey-200 w-[1.125rem] h-[1.125rem] ml-auto"
-						/>
-						<span class="add entered tag to by filter" />
+				{#each $currentProject.project_tags as tag}
+					<button
+						class="dropdown--item mr-auto w-full"
+						on:click={() => {
+							if (!tags.includes(tag)) tags = [tag, ...tags];
+							else {
+								const index = tags.indexOf(tag);
+								tags.splice(index, 1);
+								tags = tags;
+							}
+						}}
+					>
+						<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
+						{#if !tags.includes(tag)}
+							<PlusNew
+								className="h-8 w-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300 ml-auto"
+							/>
+						{:else}
+							<Trash
+								className="h-8 w-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300 ml-auto"
+							/>
+						{/if}
 					</button>
-				</div>
-			</form>
+				{/each}
+			</div>
 		</section>
 	{/if}
 
@@ -208,22 +215,4 @@
 			<span class="dropdown--label truncate">{$milestoneFilter.name}</span>
 		</button>
 	{/if}
-
-	<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden">
-		{#each $filterTags as tag}
-			<div
-				class="flex w-fit items-center gap-sm rounded-full bg-grey-200 px-4 py-1 dark:bg-grey-700"
-			>
-				<span class="text-sm font-medium text-grey-700 dark:text-grey-300">{tag}</span>
-				<button
-					on:click={() => {
-						const index = $filterTags.indexOf(tag);
-						$filterTags.splice(index, 1);
-					}}
-				>
-					<Trash className="w-8 h-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300" />
-				</button>
-			</div>
-		{/each}
-	</div>
 </div>
