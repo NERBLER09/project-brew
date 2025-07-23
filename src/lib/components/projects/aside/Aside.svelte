@@ -16,11 +16,11 @@
 	let sortContainer: HTMLElement;
 
 	const autoCloseDropdowns = (event: Event) => {
-		if (!filterContainer.contains(event.target)) {
+		if (!filterContainer.contains(event.currentTarget)) {
 			filter = false;
 		}
 
-		if (!sortContainer.contains(event.target)) {
+		if (!sortContainer.contains(event.currentTarget)) {
 			sort = false;
 		}
 	};

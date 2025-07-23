@@ -11,7 +11,6 @@
 		priorityFilter
 	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
-	import { onMount } from 'svelte';
 
 	let addFilter = false;
 	let showMilestonesFilter = false;
@@ -28,19 +27,17 @@
 		addFilter = false;
 	};
 
-	let projectMilestones: any[] = [];
+	let projectMilestones: any[] = $currentProject.milestones.filter((item) => {
+		if (!item.completed) return item;
+	});
+
 	const setMilestoneFilter = (name: string, id: string) => {
 		$milestoneFilter = { name, id };
 		addFilter = false;
 	};
 
-	onMount(async () => {
-		const { data } = await supabase.from('milestones').select().eq('project', $currentProject.id);
-		projectMilestones = data ?? [];
-	});
-
 	const updateFilterOnDB = async (date, milestone, priority) => {
-		const { error } = await supabase
+		await supabase
 			.from('projects')
 			.update({
 				filter: { date, milestone, priority }
@@ -101,7 +98,10 @@
 				<h4 class="dropdown--label px-md py-sm text-md">Milestones</h4>
 				<button
 					class="button--secondary m-0 ml-auto border-0 p-0"
-					on:click={() => (showMilestonesFilter = !showMilestonesFilter)}
+					on:click={() => {
+						showMilestonesFilter = !showMilestonesFilter;
+						addFilter = true;
+					}}
 				>
 					{#if showMilestonesFilter}
 						<Up className="h-8 w-8 md:h-6 md:w-6 stroke-grey-700 dark:stroke-grey-300" />
@@ -120,7 +120,7 @@
 						on:click={() => setMilestoneFilter(milestone.name, milestone.id)}
 					>
 						<PlusNew className="dropdown--icon" />
-						<span class="dropdown--label">{milestone.name}</span>
+						<span class="dropdown--label truncate">{milestone.name}</span>
 					</button>
 				{/each}
 			{/if}
@@ -205,7 +205,7 @@
 	{#if $milestoneFilter}
 		<button class="dropdown--item w-full" on:click={() => ($milestoneFilter = null)}>
 			<Trash className="dropdown--icon" />
-			<span class="dropdown--label">{$milestoneFilter.name}</span>
+			<span class="dropdown--label truncate">{$milestoneFilter.name}</span>
 		</button>
 	{/if}
 
