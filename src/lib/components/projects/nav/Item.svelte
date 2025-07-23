@@ -27,7 +27,7 @@
 	<svelte:component this={icon} className="stroke-grey-700 dark:stroke-grey-200 w-6 h-6" />
 	{name}
 
-	{#if showFavorite}
+	{#if showFavorite && $window.data.role === 'owner'}
 		<div class="ml-auto h-6 w-6 group-hover:block md:ml-0 md:hidden">
 			{#if $currentProject.default_view === page}
 				<Favorited className="fill-grey-700 dark:fill-grey-200 w-6 h-6" />
