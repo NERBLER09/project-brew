@@ -53,25 +53,7 @@
 	$: bannerURL = $currentProject.banner;
 	let newBanner: FileList | null;
 
-	let teamName = '';
-
-	// const getTeamName = async () => {
-	// 	const { data: team } = await supabase
-	// 		.from('teams')
-	// 		.select()
-	// 		.eq('id', $currentProject.team)
-	// 		.limit(1)
-	// 		.single();
-	// 	if (team) {
-	// 		teamName = team.name;
-	// 	}
-	// };
-
-	// $: if ($currentProject.team) getTeamName();
-
-	onMount(async () => {
-		// getTeamName();
-	});
+	let teamName = $currentProject.team_name;
 
 	const updateProjectName = async () => {
 		if (project_name === original_name) return;

@@ -17,6 +17,7 @@ export const load = (async (event) => {
   const id = project.id
   const banner = project.banner
   const project_members = project.project_members
+  const team_name = project.team_name
 
   event.depends('project:about');
 
@@ -35,7 +36,8 @@ export const load = (async (event) => {
         tags: project.tags ?? [],
         user_teams: userTeams ?? [],
         invited_people: project_members ?? []
-      }
+      },
+      team_name
     };
   }
 

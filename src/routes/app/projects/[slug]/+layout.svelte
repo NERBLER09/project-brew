@@ -36,6 +36,7 @@
 	$currentProject = data.project;
 	$currentProject.invited_people = data.invited_people ?? [];
 	$currentProject = $currentProject;
+	$currentProject.team_name = data.team_name;
 	$userRole = data.role;
 	$userTeams = data.userTeams ?? [];
 	$projectMilestones = data.project?.milestones ?? [];

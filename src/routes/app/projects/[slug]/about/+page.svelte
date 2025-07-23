@@ -23,27 +23,12 @@
 	let bannerURL = data.project?.banner;
 	let newBanner: FileList | null;
 
-	let teamName = '';
-
 	let isViewer = $userRole === 'viewer';
 
-	const getTeamName = async () => {
-		const { data: team } = await supabase
-			.from('teams')
-			.select()
-			.eq('id', data.project?.team)
-			.limit(1)
-			.single();
-		if (team) {
-			teamName = team.name;
-		}
-	};
-
-	$: if (data.project?.team) getTeamName();
+	let teamName = data.team_name;
 
 	onMount(async () => {
 		$showMobileNav = false;
-		getTeamName();
 	});
 
 	onDestroy(() => {

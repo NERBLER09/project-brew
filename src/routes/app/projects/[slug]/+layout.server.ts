@@ -29,6 +29,14 @@ export const load = (async (event) => {
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
 
+	const { data: team } = await supabaseClient
+		.from('teams')
+		.select()
+		.eq('id', project.team)
+		.limit(1)
+		.single();
+	const team_name = team.name
+
 	const currentProfile = project.project_members.find((item) => item.user_id === session.user.id)
 	const role = currentProfile.role
 	let tasks = project.lists.map(item => item.tasks)
@@ -41,6 +49,7 @@ export const load = (async (event) => {
 			description: project?.description,
 			banner: project?.banner,
 			role,
+			team_name,
 			lists: lists || [],
 			project: {
 				...project,
