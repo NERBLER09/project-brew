@@ -19,7 +19,7 @@
 	let pageName = page.name;
 	let pageDescription = page.description;
 
-	let pageFullScreen = true;
+	let pageFullScreen = false;
 
 	let mdText = page.text_contents;
 	const convertTextToMD = async (text, view) => {
