@@ -3,9 +3,8 @@
 	import { page } from '$app/stores';
 	import { tasksCompletedThisDay } from '$lib/stores/project';
 	import { perferedTheme, showMobileNav, useDarkMode } from '$lib/stores/ui';
-	import { currentUsers, invitedTeamMembers, userData } from '$lib/stores/user';
+	import { currentUsers, userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
-	import type { User } from '$lib/types/projects';
 	import { onDestroy, onMount } from 'svelte';
 	import { addNewDay, weeklyActivity } from '$lib/api/activity';
 
@@ -47,17 +46,6 @@
 		});
 	};
 
-	const getInvitedTeamMembers = async (team_members: string[]): Promise<User[]> => {
-		let invitedUserData: User[] = [];
-		for (const item of team_members) {
-			const { data } = await supabase.from('profiles').select().eq('id', item).limit(1).single();
-			if (data) {
-				invitedUserData = [data, ...invitedUserData];
-			}
-		}
-		return invitedUserData;
-	};
-
 	onMount(async () => {
 		if (data.user) $userData = data.user;
 
@@ -68,10 +56,6 @@
 		if ($weeklyActivity.length >= 7) $weeklyActivity.splice(0, 1);
 
 		handleTheme();
-
-		if (data?.team_members) {
-			$invitedTeamMembers = await getInvitedTeamMembers(data?.team_members);
-		}
 
 		const userChannel = supabase.channel('online', {
 			config: {

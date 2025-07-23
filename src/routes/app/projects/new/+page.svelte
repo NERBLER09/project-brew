@@ -209,8 +209,6 @@
 			</div>
 		</section>
 
-		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
-
 		<input type="checkbox" id="template" class="input--checkbox" bind:checked={useTemplate} />
 		<label for="template" class="input--label">Use basic project template</label>
 
