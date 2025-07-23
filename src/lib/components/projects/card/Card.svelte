@@ -30,6 +30,7 @@
 	export let list: number;
 	export let sub_tasks: SubTask[] = [];
 	export let priority_level: string | null;
+	let invitedPeopleProfiles = $currentProject.invited_people?.map((item) => item.profiles);
 
 	let formattedDate = '';
 
@@ -317,7 +318,7 @@
 	<div class=" z-40 mt-md flex items-center">
 		{#if assigned}
 			{#each assigned as id}
-				<Assinged {id} />
+				<Assinged {id} profiles={invitedPeopleProfiles} />
 			{/each}
 		{/if}
 		{#if !isViewer}

@@ -10,7 +10,6 @@
 	import { userRole } from '$lib/stores/team';
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Left from '$lib/assets/Arrow/Chevron/Left.svelte';
-	import SubTaskList from '../card/sub-tasks/SubTaskList.svelte';
 	import ChangeStatus from './ChangeStatus.svelte';
 	import pkg from 'lodash';
 	import SubTasksTablePage from '../card/sub-tasks/SubTasksTablePage.svelte';
@@ -18,8 +17,6 @@
 	import { invalidate } from '$app/navigation';
 	import TagSelect from '../tags/TagSelect.svelte';
 	import { currentProject } from '$lib/stores/project';
-	import PlusNew from '$lib/assets/Plus-New.svelte';
-	import Check from '$lib/assets/Check.svelte';
 	const { startCase } = pkg;
 
 	export let name: string;
@@ -32,6 +29,7 @@
 	export let priority_level: string | null;
 	export let projectId: number;
 	export let sub_tasks: string[];
+	let invitedPeopleProfiles = $currentProject.invited_people?.map((item) => item.profiles);
 
 	tags = tags ?? [];
 	assigned = assigned ?? [];
@@ -210,7 +208,7 @@
 		{#if assigned}
 			<div class="relative flex items-center">
 				{#each assigned as id}
-					<Assinged {id} />
+					<Assinged {id} profiles={invitedPeopleProfiles} />
 				{/each}
 			</div>
 		{/if}
