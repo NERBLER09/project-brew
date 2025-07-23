@@ -79,16 +79,6 @@
 		showAssignNewUsers = false;
 	};
 
-	const updateTaskTags = async () => {
-		if (!tags) {
-			newTags = tags;
-			return;
-		}
-		await supabase.from('tasks').update({ tags: newTags }).eq('id', id);
-		addNewTags = false;
-		tags = newTags;
-	};
-
 	const updateTaskDate = async () => {
 		await supabase
 			.from('tasks')
@@ -340,6 +330,6 @@
 	</div>
 
 	{#if showAssignNewUsers}
-		<AssignPerson bind:assingedUserIds={assigned} {assignTask} />
+		<AssignPerson bind:assingedUserIds={assigned} {assignTask} profiles={invitedPeopleProfiles} />
 	{/if}
 </section>
