@@ -17,14 +17,7 @@ export const load = (async (event) => {
 		.select('*, project_members!inner(*), tasks(*)')
 		.eq('project_members.user_id', session.user.id);
 
-	const { data: userTeams } = await supabaseClient
-		.from('team_members')
-		.select()
-		.eq('user_id', session.user.id)
-		.limit(1)
-		.single();
-
-	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
+	const { data: team } = await supabaseClient.from('projects').select().eq('team', session.user.id);
 
 	if (data) {
 		let allProjects = [...data, ...(team ?? [])];
