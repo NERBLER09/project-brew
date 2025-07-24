@@ -14,7 +14,7 @@ export const load = (async (event) => {
 
 	const { data, error: err } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(user_id), tasks(*)')
+		.select('*, project_members!inner(*), tasks(*)')
 		.eq('project_members.user_id', session.user.id);
 
 	const { data: userTeams } = await supabaseClient
@@ -29,7 +29,10 @@ export const load = (async (event) => {
 	if (data) {
 		let allProjects = [...data, ...(team ?? [])];
 		allProjects = lodash.uniqBy(allProjects, 'id');
-		const pinned = data.filter((value) => value.pinned);
+		const pinned = data.filter((value) => {
+			const item = value.project_members.find((item) => item.project === value.id)
+			if (item.pinned) return value
+		});
 		return { all: allProjects, pinned };
 	}
 	if (err) {

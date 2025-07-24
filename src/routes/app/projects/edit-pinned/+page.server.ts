@@ -8,7 +8,11 @@ export const load = (async (event) => {
     redirect(303, "/");
   }
 
-  const { data, error: err } = await supabaseClient.from('projects').select().eq('user_id', session.user.id);
+  const { data, error: err } = await supabaseClient
+    .from('projects')
+    .select('*, project_members!inner(*), tasks(*)')
+    .eq('project_members.user_id', session.user.id);
+
   if (data) {
     return { all: data }
   }

@@ -9,6 +9,10 @@
 	export let projects: any[];
 	let dialog: HTMLDialogElement;
 
+	const memberedProjects = projects.map((value) => {
+		return value.project_members.find((item) => item.project === value.id);
+	});
+
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
 		if (status) {
@@ -29,24 +33,19 @@
 	$: handleModalStatus(shown);
 
 	const handleUpdatePins = async () => {
-		let updatedProjects = [];
+		const updatedTeamMember = [];
 		for (const project of projects) {
-			const temp = project;
-			delete temp.tasks;
-			delete temp.project_members;
-			updatedProjects.push(temp);
+			const member = memberedProjects.filter((item) => item.project === project.id)[0];
+			member.pinned = project.pinned;
+			updatedTeamMember.push(member);
 		}
 		const { error } = await supabase
-			.from('projects')
-			.upsert([...updatedProjects])
+			.from('project_members')
+			.upsert([...updatedTeamMember])
 			.select();
 
-		if (error) {
-			console.error(error.message);
-		} else {
-			invalidate('app:all-projects');
-			shown = false;
-		}
+		invalidate('app:all-projects');
+		shown = false;
 	};
 </script>
 
