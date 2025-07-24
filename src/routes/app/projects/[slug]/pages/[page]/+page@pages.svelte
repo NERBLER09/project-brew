@@ -57,10 +57,10 @@
 	$: processedMarkdownText = convertTextToMD(mdText, viewMode);
 
 	const handleDelete = async () => {
-		await supabase.from('pages').delete().eq('id', page.id);
-		invalidate('project:pages');
 		const projectId = $currentProject.id;
 		goto(`/app/projects/${projectId}/pages`);
+		await supabase.from('pages').delete().eq('id', page.id);
+		invalidate('project:pages');
 	};
 </script>
 

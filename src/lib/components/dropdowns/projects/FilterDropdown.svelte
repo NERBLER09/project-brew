@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Down from '$lib/assets/Arrow/Chevron/Down.svelte';
 	import Up from '$lib/assets/Arrow/Chevron/Up.svelte';
-	import Check from '$lib/assets/Check.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import Trash from '$lib/assets/Trash.svelte';
 	import {
@@ -12,7 +11,6 @@
 		priorityFilter
 	} from '$lib/stores/project';
 	import { supabase } from '$lib/supabase';
-	import { findIndex, includes } from 'lodash';
 
 	let addFilter = false;
 	let showMilestonesFilter = false;

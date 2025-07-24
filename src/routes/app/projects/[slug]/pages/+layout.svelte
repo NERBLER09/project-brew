@@ -16,9 +16,9 @@
 			.from('pages')
 			.insert({ project: data.project.id })
 			.select();
-		const url = $page.url.href;
-		goto(`${url}/${result[0].id}`);
 		invalidate('project:pages');
+
+		goto(`/app/projects/${data.id}/pages/${result[0].id}`);
 	};
 </script>
 
