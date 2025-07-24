@@ -14,6 +14,13 @@
 		return value.project_members.find((item) => item.project === value.id);
 	});
 
+	projects = projects.map((item) => {
+		const member = memberedProjects.find((project) => item.id === project.project);
+		item.pinned = member.pinned;
+		return item;
+	});
+	projects = [...projects];
+
 	let unfilteredList = projects;
 	let query = '';
 	const handleSearch = () => {
@@ -27,7 +34,8 @@
 			member.pinned = project.pinned;
 			updatedTeamMember.push(member);
 		}
-		const { error } = await supabase
+
+		await supabase
 			.from('project_members')
 			.upsert([...updatedTeamMember])
 			.select();

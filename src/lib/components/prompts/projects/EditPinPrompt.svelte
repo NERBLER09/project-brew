@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import { supabase } from '$lib/supabase';
@@ -12,6 +11,13 @@
 	const memberedProjects = projects.map((value) => {
 		return value.project_members.find((item) => item.project === value.id);
 	});
+
+	projects = projects.map((item) => {
+		const member = memberedProjects.find((project) => item.id === project.project);
+		item.pinned = member.pinned;
+		return item;
+	});
+	projects = [...projects];
 
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
@@ -39,7 +45,8 @@
 			member.pinned = project.pinned;
 			updatedTeamMember.push(member);
 		}
-		const { error } = await supabase
+
+		await supabase
 			.from('project_members')
 			.upsert([...updatedTeamMember])
 			.select();
