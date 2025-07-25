@@ -26,7 +26,6 @@
 
 	let name = '';
 	let description = '';
-	let invitedMembers: string[];
 	let selectedTeam: string;
 	let useTemplate = false;
 
@@ -36,7 +35,6 @@
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
-		data.append('invited', invitedMembers.toString());
 		data.append('user', JSON.stringify($currentUsers));
 		data.append('team', selectedTeam);
 

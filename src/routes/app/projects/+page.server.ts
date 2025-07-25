@@ -48,12 +48,7 @@ export const actions: Actions = {
 		const formTags = data.get('tags') as string;
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
-		const user = data.get('user') as string;
 		const team = data.get('team') as string;
-
-		const invitedString = data.get('invited') as string;
-		let invited = invitedString.split(',') || null;
-		invited = invited[0] === '' ? [] : invited;
 
 		let coverURL = null;
 
@@ -79,17 +74,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Cover is larger then 5mb' });
 		}
 
-		if (invited) {
-			for (const id of invited) {
-				await supabaseClient.from('notifications').insert({
-					message: `Has invited you to ${project_name}`,
-					target_user: id,
-					sentBy: JSON.parse(user),
-					type: 'invite'
-				});
-			}
-		}
-
 		const { data: project, error: err } = await supabaseClient
 			.from('projects')
 			.insert({
@@ -98,12 +82,13 @@ export const actions: Actions = {
 				user_id: session.user.id,
 				tags: tags ?? null,
 				banner: coverURL,
-				invited_people: invited,
 				team: team === undefined ? team : null
 			})
 			.select()
 			.limit(1)
 			.single();
+
+		await supabaseClient.from("project_members").insert({ userid: session.user.id, project: project.id });
 
 		if (!err) {
 			await supabaseClient.from('project_members').insert({

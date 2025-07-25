@@ -16,11 +16,12 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(*, profiles(*)), milestones(*), lists!inner(*, tasks(*, sub_tasks(*), milestone(*)))')
+		.select('*, project_members!inner(*, profiles(*)), milestones(*), lists(*, tasks(*, sub_tasks(*), milestone(*)))')
 		.eq('id', projectId)
 		.single();
 
-	const lists = project.lists.sort((a, b) => a.position - b.position);
+	const lists = project.lists?.sort((a, b) => a.position - b.position) ?? [];
+	console.log(project)
 	const userProfiles = project.project_members.map(item => item.profiles)
 	const users = userProfiles.flat(Infinity)
 
@@ -35,11 +36,11 @@ export const load = (async (event) => {
 		.eq('id', project.team)
 		.limit(1)
 		.single();
-	const team_name = team.name
+	const team_name = team?.name ?? null
 
 	const currentProfile = project.project_members.find((item) => item.user_id === session.user.id)
 	const role = currentProfile.role
-	let tasks = project.lists.map(item => item.tasks)
+	let tasks = project.lists?.map(item => item.tasks)
 	tasks = tasks.flat(Infinity)
 
 	if (project) {
