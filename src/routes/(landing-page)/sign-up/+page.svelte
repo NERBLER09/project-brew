@@ -40,7 +40,7 @@
 			required
 			bind:value={password}
 		/>
-		<button class="button--primary" type="submit">Create account</button>
+		<button class="button--primary w-full" type="submit">Create account</button>
 		<span>or</span>
 		<button
 			class="button--secondary flex items-center justify-center gap-md"
@@ -48,7 +48,9 @@
 			on:click={handleGoogleAuth}><Google className="h-lg w-lg" /> Continue with Google</button
 		>
 		<p class="px-6 text-sm font-medium text-grey-700 md:w-72">
-			By signing up with email+password you agree to our privacy policy
+			By signing you are agreeing with the Project Brew <a href="/privacy-policy" class="underline"
+				>privacy policy</a
+			>.
 		</p>
 	</form>
 </section>

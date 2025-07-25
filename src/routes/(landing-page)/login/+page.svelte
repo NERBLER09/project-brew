@@ -40,7 +40,7 @@
 			<p class="my-sm font-medium text-red-600">{form?.message}</p>
 		{/if}
 
-		<button class="button--primary" type="submit">Log in</button>
+		<button class="button--primary w-full" type="submit">Log in</button>
 		<span>or</span>
 		<button
 			class="button--secondary flex items-center justify-center gap-md"
@@ -48,7 +48,7 @@
 			on:click={handleGoogleAuth}><Google className="h-lg w-lg" /> Continue with Google</button
 		>
 		<p class="px-6 text-sm text-grey-700 md:w-72">
-			By signing up with email+password you agree to our privacy policy
+			New to Project Brew? Create your account <a href="/sign-up" class="underline">here</a>
 		</p>
 	</form>
 </section>
