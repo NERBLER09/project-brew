@@ -12,8 +12,8 @@
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
 	<nav class="ml-auto hidden items-center gap-md md:flex">
-		<a class="button--secondary max-h-11 w-full text-center" href="/login">Signup</a>
-		<a class="button--primary w-full" href="/sign-up">Log in</a>
+		<a class="button--secondary max-h-11 w-full text-center" href="/login">Log in</a>
+		<a class="button--primary w-full" href="/sign-up">Signup</a>
 	</nav>
 
 	<div class="ml-auto block items-center md:hidden">
