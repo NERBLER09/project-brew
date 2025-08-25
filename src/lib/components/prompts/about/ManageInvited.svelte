@@ -105,8 +105,8 @@
 			<h2 class="text-md font-semibold text-grey-700 dark:text-grey-200">Invited team members</h2>
 		</header>
 		<div class="mt-md flex flex-col gap-md">
-			{#each $currentProject.invited_people as { user_id, id, role }}
-				<TeamMember {user_id} dbId={id} {role} />
+			{#each $currentProject.invited_people as { user_id, id, role, profiles }}
+				<TeamMember {user_id} dbId={id} {role} {profiles} />
 			{:else}
 				<p class="text-grey-700 dark:text-grey-200 font-medium">
 					No one has been invited to this project.

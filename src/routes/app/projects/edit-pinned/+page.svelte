@@ -4,36 +4,43 @@
 	import MobileSubPageLayout from '$lib/components/layouts/MobileSubPageLayout.svelte';
 
 	import { supabase } from '$lib/supabase';
-	import { goto } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 	let projects = data.all;
 
-	let unfilteredList = data.all;
+	const memberedProjects = projects.map((value) => {
+		return value.project_members.find((item) => item.project === value.id);
+	});
+
+	projects = projects.map((item) => {
+		const member = memberedProjects.find((project) => item.id === project.project);
+		item.pinned = member.pinned;
+		return item;
+	});
+	projects = [...projects];
+
+	let unfilteredList = projects;
 	let query = '';
 	const handleSearch = () => {
-		data.all = unfilteredList.filter((value) => value.project_name.includes(query));
+		projects = unfilteredList.filter((value) => value.project_name.includes(query));
 	};
 
 	const handleUpdatePins = async () => {
-		let updatedProjects = [];
+		const updatedTeamMember = [];
 		for (const project of projects) {
-			const temp = project;
-			delete temp.tasks;
-			delete temp.project_members;
-			updatedProjects.push(temp);
+			const member = memberedProjects.filter((item) => item.project === project.id)[0];
+			member.pinned = project.pinned;
+			updatedTeamMember.push(member);
 		}
-		const { error } = await supabase
-			.from('projects')
-			.upsert([...updatedProjects])
+
+		await supabase
+			.from('project_members')
+			.upsert([...updatedTeamMember])
 			.select();
 
-		if (error) {
-			console.error(error.message);
-		} else {
-			goto('/app/projects');
-		}
+		invalidate('app:all-projects');
 	};
 </script>
 

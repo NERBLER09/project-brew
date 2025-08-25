@@ -6,34 +6,26 @@ export const handleSortingTasks = (tasks: Task[], option: SortOptions): Task[] =
 	const sortedTasks = tasks;
 
 	if (option.priority === 'descending') {
-		sortedTasks.sort((item) => {
-			switch (item.priority_level) {
-				case 'none':
-					return -1;
-				case 'low':
-					return 0;
-				case 'med':
-					return 1;
-				case 'high':
-					return 2;
-				default:
-					return -1;
+		sortedTasks.sort((a, b) => {
+			const getPriority = (item) => {
+				if (item.priority_level === "none") return 0
+				else if (item.priority_level === "low") return 1
+				else if (item.priority_level === "med") return 2
+				else if (item.priority_level === "high") return 3
+				else return 0
 			}
+			return getPriority(a) - getPriority(b)
 		});
 	} else if (option.priority === 'ascending') {
-		sortedTasks.sort((item) => {
-			switch (item.priority_level) {
-				case 'none':
-					return 3;
-				case 'low':
-					return 2;
-				case 'med':
-					return 1;
-				case 'high':
-					return 0;
-				default:
-					return 3;
+		sortedTasks.sort((a, b) => {
+			const getPriority = (item) => {
+				if (item.priority_level === "none") return 3
+				else if (item.priority_level === "low") return 2
+				else if (item.priority_level === "med") return 1
+				else if (item.priority_level === "high") return 0
+				else return 3
 			}
+			return getPriority(a) - getPriority(b)
 		});
 	}
 

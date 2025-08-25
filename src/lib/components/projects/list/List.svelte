@@ -38,7 +38,6 @@
 	let showListDropdown = false;
 	let listDropdownElement: HTMLElement;
 
-	let showCreateTask = false;
 	const handleDnd = (e) => {
 		tasks = e.detail.items;
 	};

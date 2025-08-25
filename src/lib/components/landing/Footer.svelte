@@ -10,8 +10,10 @@
 			<Logo className="h-12 w-12 rounded-lg" />
 			<span class="text-md font-semibold text-grey-800">Project Brew</span>
 		</div>
-		<p class="mt-md font-medium text-grey-700">Created by Noah Beaudin</p>
-		<p class="mt-md font-medium text-grey-700">&#169; 2023 Noah Beaudin</p>
+		<p class="mt-md font-medium text-grey-700">Created by Finneagn Beaudin</p>
+		<p class="mt-md font-medium text-grey-700">
+			&#169; {new Date().getFullYear()} Finneagn Beaudin
+		</p>
 	</div>
 	<nav class="mt-lg flex flex-col gap-md text-center md:text-start">
 		<a

@@ -26,7 +26,7 @@
 	export let project_name: string | null;
 	export let description: string | null = '';
 	export let tags: string[] | null = [];
-	export let banner: string | null = '';
+	export let banner: string;
 	tags = tags ?? [];
 
 	project_name = $currentProject.project_name ?? '';
@@ -50,30 +50,10 @@
 
 	$: handleModalStatus(shown);
 
-	$: bannerURL = banner;
+	$: bannerURL = $currentProject.banner;
 	let newBanner: FileList | null;
 
-	console.log(bannerURL);
-
-	let teamName = '';
-
-	const getTeamName = async () => {
-		const { data: team } = await supabase
-			.from('teams')
-			.select()
-			.eq('id', $currentProject.team)
-			.limit(1)
-			.single();
-		if (team) {
-			teamName = team.name;
-		}
-	};
-
-	$: if ($currentProject.team) getTeamName();
-
-	onMount(async () => {
-		getTeamName();
-	});
+	let teamName = $currentProject.team_name;
 
 	const updateProjectName = async () => {
 		if (project_name === original_name) return;
@@ -95,7 +75,7 @@
 	};
 
 	const updateProjectDescription = async () => {
-		if (description !== original_description) return;
+		if (description === original_description) return;
 		const { error } = await supabase
 			.from('projects')
 			.update({
@@ -140,7 +120,6 @@
 
 		if (!error) {
 			invalidate('app:project');
-			invalidate('project:about');
 			toast.success('Updated project details');
 		} else {
 			toast.error(`Failed to update project details: ${error?.message}`);

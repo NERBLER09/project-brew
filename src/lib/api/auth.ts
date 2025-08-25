@@ -22,6 +22,7 @@ const handleUserSignUp = async (email: string, password: string) => {
 
 	if (error) return new Error(`Failed to sign up user: ${error.message}`);
 	else {
+		localStorage.setItem("email", email)
 		signUpEmail.set(email);
 		goto('/verify');
 	}

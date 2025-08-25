@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-
 	import CloseMultiply from '$lib/assets/Close-Multiply.svelte';
 	import Search from '$lib/assets/Search.svelte';
 	import { supabase } from '$lib/supabase';
@@ -8,6 +7,17 @@
 	export let shown = false;
 	export let projects: any[];
 	let dialog: HTMLDialogElement;
+
+	const memberedProjects = projects.map((value) => {
+		return value.project_members.find((item) => item.project === value.id);
+	});
+
+	projects = projects.map((item) => {
+		const member = memberedProjects.find((project) => item.id === project.project);
+		item.pinned = member.pinned;
+		return item;
+	});
+	projects = [...projects];
 
 	const handleModalStatus = (status: boolean) => {
 		if (!dialog) return;
@@ -29,24 +39,20 @@
 	$: handleModalStatus(shown);
 
 	const handleUpdatePins = async () => {
-		let updatedProjects = [];
+		const updatedTeamMember = [];
 		for (const project of projects) {
-			const temp = project;
-			delete temp.tasks;
-			delete temp.project_members;
-			updatedProjects.push(temp);
+			const member = memberedProjects.filter((item) => item.project === project.id)[0];
+			member.pinned = project.pinned;
+			updatedTeamMember.push(member);
 		}
-		const { error } = await supabase
-			.from('projects')
-			.upsert([...updatedProjects])
+
+		await supabase
+			.from('project_members')
+			.upsert([...updatedTeamMember])
 			.select();
 
-		if (error) {
-			console.error(error.message);
-		} else {
-			invalidate('app:all-projects');
-			shown = false;
-		}
+		invalidate('app:all-projects');
+		shown = false;
 	};
 </script>
 

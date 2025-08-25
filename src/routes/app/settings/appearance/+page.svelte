@@ -24,8 +24,9 @@
 		newBanner = null;
 	};
 
-	const handleUpdateTheme = () => {
-		$perferedTheme = selectedTheme;
+	$: handleUpdateTheme(selectedTheme);
+	const handleUpdateTheme = (theme: 'light' | 'dark' | 'system') => {
+		$perferedTheme = theme;
 
 		switch ($perferedTheme) {
 			case 'light':
@@ -43,7 +44,6 @@
 		}
 
 		localStorage.setItem('theme', selectedTheme);
-		toast.success('Update theme preference.');
 	};
 
 	onMount(() => {
@@ -55,6 +55,60 @@
 	<header>
 		<h2 class="text-lg font-semibold text-grey-700 dark:text-grey-200">Theme</h2>
 	</header>
+
+	<div class="mt-md flex flex-wrap gap-6">
+		<button class="relative text-start" on:click={() => (selectedTheme = 'light')} type="button">
+			{#if selectedTheme === 'light'}
+				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+			{/if}
+			<div
+				class="p-sm {selectedTheme === 'light'
+					? 'border-accent-light'
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+			>
+				<Light />
+			</div>
+			<span
+				class="{selectedTheme === 'light'
+					? 'text-accent-light'
+					: 'text-grey-700 dark:text-grey-200'} font-bold">Light</span
+			>
+		</button>
+		<button class="relative text-start" on:click={() => (selectedTheme = 'dark')} type="button">
+			{#if selectedTheme === 'dark'}
+				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+			{/if}
+			<div
+				class="p-sm {selectedTheme === 'dark'
+					? 'border-accent-light'
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+			>
+				<Dark />
+			</div>
+			<span
+				class="{selectedTheme === 'dark'
+					? 'text-accent-light'
+					: 'text-grey-700 dark:text-grey-200'} font-bold">Dark</span
+			>
+		</button>
+		<button class="relative text-start" on:click={() => (selectedTheme = 'system')} type="button">
+			{#if selectedTheme === 'system'}
+				<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
+			{/if}
+			<div
+				class="p-sm {selectedTheme === 'system'
+					? 'border-accent-light'
+					: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
+			>
+				<System />
+			</div>
+			<span
+				class="{selectedTheme === 'system'
+					? 'text-accent-light'
+					: 'text-grey-700 dark:text-grey-200'} font-bold">System</span
+			>
+		</button>
+	</div>
 
 	<form
 		method="POST"
@@ -71,59 +125,6 @@
 			};
 		}}
 	>
-		<div class="mt-md flex flex-wrap gap-6">
-			<button class="relative text-start" on:click={() => (selectedTheme = 'light')} type="button">
-				{#if selectedTheme === 'light'}
-					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-				{/if}
-				<div
-					class="p-sm {selectedTheme === 'light'
-						? 'border-accent-light'
-						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-				>
-					<Light />
-				</div>
-				<span
-					class="{selectedTheme === 'light'
-						? 'text-accent-light'
-						: 'text-grey-700 dark:text-grey-200'} font-bold">Light</span
-				>
-			</button>
-			<button class="relative text-start" on:click={() => (selectedTheme = 'dark')} type="button">
-				{#if selectedTheme === 'dark'}
-					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-				{/if}
-				<div
-					class="p-sm {selectedTheme === 'dark'
-						? 'border-accent-light'
-						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-				>
-					<Dark />
-				</div>
-				<span
-					class="{selectedTheme === 'dark'
-						? 'text-accent-light'
-						: 'text-grey-700 dark:text-grey-200'} font-bold">Dark</span
-				>
-			</button>
-			<button class="relative text-start" on:click={() => (selectedTheme = 'system')} type="button">
-				{#if selectedTheme === 'system'}
-					<CircleCheck className="fill-accent-light w-8 h-8 absolute -top-4 -right-4" />
-				{/if}
-				<div
-					class="p-sm {selectedTheme === 'system'
-						? 'border-accent-light'
-						: 'border-grey-700 dark:border-grey-200'} mb-md rounded-lg border-2"
-				>
-					<System />
-				</div>
-				<span
-					class="{selectedTheme === 'system'
-						? 'text-accent-light'
-						: 'text-grey-700 dark:text-grey-200'} font-bold">System</span
-				>
-			</button>
-		</div>
 		<div class="mb-md">
 			<h3 class="input--label mb-sm text-md">Dashboard Background</h3>
 			<p class="my-sm font-medium text-grey-700 dark:text-grey-300">

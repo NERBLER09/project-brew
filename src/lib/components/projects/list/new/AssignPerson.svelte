@@ -1,17 +1,18 @@
 <script lang="ts">
+	import User from '$lib/assets/User.svelte';
 	import { invitedTeamMembers } from '$lib/stores/project';
 	import { userData } from '$lib/stores/user';
 
 	export let assingedUserIds: string[] = [];
 	export let assignTask: (id: string) => Promise<void>;
+	export let profiles;
 
 	let query = '';
-	let filteredList = $invitedTeamMembers ?? [];
-	filteredList = [...($invitedTeamMembers ?? []), $userData];
+	let filteredList = profiles ?? [];
+	assingedUserIds = assingedUserIds ?? [];
 
 	const handleSearch = () => {
-		filteredList = $invitedTeamMembers ?? [];
-		filteredList = [...($invitedTeamMembers ?? []), $userData];
+		filteredList = profiles ?? [];
 
 		filteredList = filteredList.filter((item) => item.email.includes(query));
 		filteredList = filteredList.filter((item) => !assingedUserIds.includes(item.id));
@@ -42,14 +43,21 @@
 			{#if !assingedUserIds.includes(user.id)}
 				<button
 					class="flex items-center gap-md rounded p-2 hover:bg-grey-200 hover:dark:bg-grey-700"
-					on:click={() => handleAddItem(user.id, user)}
+					on:click={() => handleAddItem(user.id)}
 					type="button"
 				>
-					<img
-						src={user.avatar_url}
-						alt=""
-						class="aspect-square h-10 w-10 rounded-full object-cover"
-					/>
+					{#if user.avatar_url}
+						<img
+							src={user.avatar_url}
+							alt=""
+							class="aspect-square h-10 w-10 rounded-full object-cover"
+						/>
+					{:else}
+						<User
+							className="w-10 h-10 stroke-grey-700 dark:stroke-grey-200 bg-grey-200 dark:bg-grey-700 rounded-full border-1 border-solid border-grey-100 first:border-0 dark:border-grey-800"
+						/>
+					{/if}
+
 					<div class="flex flex-col items-start gap-sm">
 						<span class="font-bold text-grey-700 dark:text-grey-200">{user.name}</span>
 						<span class="text-sm font-medium text-grey-700 dark:text-grey-200">{user.email}</span>

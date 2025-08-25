@@ -8,6 +8,7 @@
 	import TeamPage from '$lib/assets/Landing-Page/TeamPage.png';
 	import toast from 'svelte-french-toast';
 	import Check from '$lib/assets/Check.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
 
 	let bannerInputElement: HTMLInputElement;
 	let newBanner: FileList | null;
@@ -127,7 +128,7 @@
 		<img
 			src={TeamPage}
 			alt="project page"
-			class="fixed top-0 aspect-auto h-[100vh] lg:h-[100vh-20px]"
+			class="fixed top-0 aspect-auto h-[100vh] object-cover lg:h-[100vh-20px]"
 		/>
 	</div>
 </div>

@@ -6,9 +6,15 @@
 	import { Doughnut } from 'svelte-chartjs';
 
 	export let tasks: Task[];
-	let allTags: string[][] | string[] = tasks.map((item) => { if(item.status !== "done" && item.tags) {return item.tags ?? []}});
+	let allTags: string[][] | string[] = tasks.map((item) => {
+		if (item.status !== 'done' && item.tags) {
+			return item.tags ?? [];
+		}
+	});
+
 	allTags = [...flattenDepth(allTags)];
-	allTags = allTags.filter(item => item !== undefined)
+	allTags = allTags.filter((item) => item !== undefined);
+
 	let tagsAmount = values(countBy(allTags));
 
 	const data = {

@@ -5,7 +5,7 @@
 	import type { ProjectMember } from '$lib/types/projects';
 
 	export let invited_people: ProjectMember[];
-	export let projectId: string;
+	export let projectId: string = '';
 </script>
 
 <section class="mt-md w-full">
@@ -35,8 +35,8 @@
 	</header>
 
 	<div class="mt-md flex w-full flex-col items-start gap-lg">
-		{#each invited_people as { user_id, id, role }}
-			<TeamMember {user_id} dbId={id} {role} />
+		{#each invited_people as { user_id, id, role, profiles }}
+			<TeamMember {user_id} dbId={id} {role} {profiles} />
 		{/each}
 	</div>
 </section>

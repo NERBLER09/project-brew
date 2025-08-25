@@ -5,22 +5,17 @@
 	import { onMount } from 'svelte';
 
 	export let id: string | undefined;
+	export let profiles;
 	let name: string;
 	let avatar_url: string | null;
-	let email: string;
 
 	onMount(async () => {
-		const { data: member, error } = await supabase
-			.from('profiles')
-			.select()
-			.eq('id', id)
-			.limit(1)
-			.single();
-		if (member) {
-			name = member.name;
-			email = member.email;
-			avatar_url = member.avatar_url;
-		}
+		const profile = profiles.find((item) => {
+			if (item.id == id) return item;
+		});
+
+		name = profile.name;
+		avatar_url = profile.avatar_url;
 	});
 </script>
 

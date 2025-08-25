@@ -26,7 +26,6 @@
 
 	let name = '';
 	let description = '';
-	let invitedMembers: string[];
 	let selectedTeam: string;
 	let useTemplate = false;
 
@@ -36,7 +35,6 @@
 		data.append('name', name);
 		data.append('description', description);
 		data.append('tags', tags.toString() ?? null);
-		data.append('invited', invitedMembers.toString());
 		data.append('user', JSON.stringify($currentUsers));
 		data.append('team', selectedTeam);
 
@@ -208,8 +206,6 @@
 				{/if}
 			</div>
 		</section>
-
-		<InviteTeamMember allTeamMembers={$invitedTeamMembers} bind:invitedUserIds={invitedMembers} />
 
 		<input type="checkbox" id="template" class="input--checkbox" bind:checked={useTemplate} />
 		<label for="template" class="input--label">Use basic project template</label>

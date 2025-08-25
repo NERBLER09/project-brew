@@ -12,7 +12,8 @@
 		<span class="text-md font-semibold text-grey-800">Project Brew</span>
 	</div>
 	<nav class="ml-auto hidden items-center gap-md md:flex">
-		<a class="button--primary" href="/login">Log in</a>
+		<a class="button--secondary max-h-11 w-full text-center" href="/login">Log in</a>
+		<a class="button--primary w-full" href="/sign-up">Signup</a>
 	</nav>
 
 	<div class="ml-auto block items-center md:hidden">
@@ -33,6 +34,7 @@
 			class="fixed right-0 top-0 ml-auto flex h-screen w-7/12 flex-col items-start justify-end gap-md bg-grey-100 p-6
 			{showMobileNav ? 'translate-x-0' : 'translate-x-full'} transition-all duration-300 ease-out"
 		>
+			<a class="button--secondary max-h-11 w-full text-center" href="/sign-up">Signup</a>
 			<a class="button--primary w-full text-center" href="/login">Log in</a>
 		</nav>
 	</div>

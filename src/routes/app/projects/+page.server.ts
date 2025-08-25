@@ -14,22 +14,18 @@ export const load = (async (event) => {
 
 	const { data, error: err } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(user_id), tasks(*)')
+		.select('*, project_members!inner(*), tasks(*)')
 		.eq('project_members.user_id', session.user.id);
 
-	const { data: userTeams } = await supabaseClient
-		.from('team_members')
-		.select()
-		.eq('user_id', session.user.id)
-		.limit(1)
-		.single();
-
-	const { data: team } = await supabaseClient.from('projects').select().eq('team', userTeams?.team);
+	const { data: team } = await supabaseClient.from('projects').select().eq('team', session.user.id);
 
 	if (data) {
 		let allProjects = [...data, ...(team ?? [])];
 		allProjects = lodash.uniqBy(allProjects, 'id');
-		const pinned = data.filter((value) => value.pinned);
+		const pinned = data.filter((value) => {
+			const item = value.project_members.find((item) => item.project === value.id)
+			if (item.pinned) return value
+		});
 		return { all: allProjects, pinned };
 	}
 	if (err) {
@@ -52,12 +48,7 @@ export const actions: Actions = {
 		const formTags = data.get('tags') as string;
 		let tags = formTags?.split(',') || null;
 		const cover = data.get('cover-url') as File;
-		const user = data.get('user') as string;
 		const team = data.get('team') as string;
-
-		const invitedString = data.get('invited') as string;
-		let invited = invitedString.split(',') || null;
-		invited = invited[0] === '' ? [] : invited;
 
 		let coverURL = null;
 
@@ -83,17 +74,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Cover is larger then 5mb' });
 		}
 
-		if (invited) {
-			for (const id of invited) {
-				await supabaseClient.from('notifications').insert({
-					message: `Has invited you to ${project_name}`,
-					target_user: id,
-					sentBy: JSON.parse(user),
-					type: 'invite'
-				});
-			}
-		}
-
 		const { data: project, error: err } = await supabaseClient
 			.from('projects')
 			.insert({
@@ -102,12 +82,13 @@ export const actions: Actions = {
 				user_id: session.user.id,
 				tags: tags ?? null,
 				banner: coverURL,
-				invited_people: invited,
 				team: team === undefined ? team : null
 			})
 			.select()
 			.limit(1)
 			.single();
+
+		await supabaseClient.from("project_members").insert({ userid: session.user.id, project: project.id });
 
 		if (!err) {
 			await supabaseClient.from('project_members').insert({

@@ -1,16 +1,12 @@
 <script lang="ts">
 	import Calendar from '$lib/assets/Calendar.svelte';
-	import CalendarAdd from '$lib/assets/CalendarAdd.svelte';
 	import Check from '$lib/assets/Check.svelte';
 	import Milestone from '$lib/assets/Milestone.svelte';
-	import MoreHorizontal from '$lib/assets/More Horizontal.svelte';
 	import PlusNew from '$lib/assets/Plus-New.svelte';
 	import UserAdd from '$lib/assets/User-Add.svelte';
 	import { currentProject, projectMilestones } from '$lib/stores/project';
-	import { userData } from '$lib/stores/user';
 	import { supabase } from '$lib/supabase';
 	import type { SubTask, Task } from '$lib/types/projects';
-	import NewTagsInput from '../edit/NewTagsInput.svelte';
 	import AssignPerson from '../list/new/AssignPerson.svelte';
 	import Assinged from './Assinged.svelte';
 	import PriorityLevel from './priority/PriorityLevel.svelte';
@@ -34,6 +30,7 @@
 	export let list: number;
 	export let sub_tasks: SubTask[] = [];
 	export let priority_level: string | null;
+	let invitedPeopleProfiles = $currentProject.invited_people?.map((item) => item.profiles);
 
 	let formattedDate = '';
 
@@ -82,16 +79,6 @@
 		showAssignNewUsers = false;
 	};
 
-	const updateTaskTags = async () => {
-		if (!tags) {
-			newTags = tags;
-			return;
-		}
-		await supabase.from('tasks').update({ tags: newTags }).eq('id', id);
-		addNewTags = false;
-		tags = newTags;
-	};
-
 	const updateTaskDate = async () => {
 		await supabase
 			.from('tasks')
@@ -103,45 +90,12 @@
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 	};
 
-	// const checkIfTaskIsDueToday = async () => {
-	// 	if (!due_date) return;
-	// 	const date = new Date(due_date);
-	// 	const today = new Date();
-	//
-	// 	date.setDate(date.getDate() + 1);
-	//
-	// 	const taskDueToday =
-	// 		date.getDate() === today.getDate() &&
-	// 		date.getMonth() === today.getMonth() &&
-	// 		date.getFullYear() === today.getFullYear();
-	//
-	// 	if (taskDueToday) {
-	// 		const { data: notifications } = await supabase
-	// 			.from('notifications')
-	// 			.select()
-	// 			.eq('target_user', $userData.id)
-	// 			.eq('message', `${name} in ${$currentProject.project_name} is due today`);
-	//
-	// 		if (notifications?.length === 0) {
-	// 			const { error } = await supabase.from('notifications').insert({
-	// 				title: $currentProject.project_name,
-	// 				message: `${name} in ${$currentProject.project_name} is due today`,
-	// 				target_user: $userData.id,
-	// 				type: 'dueTask'
-	// 			});
-	// 		}
-	// 	}
-	// };
-	//
-
 	onMount(() => {
 		if (!due_date) return '';
 
 		const tempDueDate = new Date(due_date);
 		tempDueDate.setDate(tempDueDate.getDate() + 1);
 		formattedDate = tempDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-		// checkIfTaskIsDueToday();
 	});
 
 	let milestoneDropdownElement: HTMLElement;
@@ -295,17 +249,16 @@
 				{description}
 			</p>
 		{:else if !description && !isViewer}
-			<input
-				type="text"
+			<textarea
 				bind:value={newDescription}
 				on:blur={updateTaskDescription}
 				placeholder="Enter a description"
-				class="border-1 m-0 w-full rounded-md border-dashed border-grey-700 bg-grey-100 p-1 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-800 dark:text-grey-300 dark:placeholder:text-grey-300"
+				class="border-1 m-0 h-fit w-full rounded-md border-dashed border-grey-700 bg-grey-100 p-1 text-sm font-medium text-grey-700 dark:border-grey-300 dark:bg-grey-800 dark:text-grey-300 dark:placeholder:text-grey-300"
 			/>
 		{/if}
 	</div>
 
-	{#if tags}
+	{#if tags && !isViewer}
 		<div class="md:relative">
 			<button
 				class="mb-4 flex w-full appearance-none flex-wrap items-center gap-md pt-sm empty:hidden"
@@ -317,7 +270,7 @@
 					</div>
 				{/each}
 			</button>
-			{#if addNewTags}
+			{#if addNewTags && !isViewer}
 				<TagSelect
 					bind:taskTags={tags}
 					taskId={id}
@@ -326,7 +279,7 @@
 				/>
 			{/if}
 		</div>
-	{:else}
+	{:else if !tags && !isViewer}
 		<div class="mb-4 flex flex-wrap items-center gap-md pt-sm empty:hidden md:relative">
 			<button
 				class="m-0 flex items-center gap-sm p-0 font-medium text-grey-700 dark:text-grey-300"
@@ -340,7 +293,7 @@
 					<Check className="h-8 w-8 md:w-6 md:h-6 stroke-grey-700 dark:stroke-grey-300" />
 				{/if}
 			</button>
-			{#if addNewTags}
+			{#if addNewTags && !isViewer}
 				<TagSelect
 					bind:taskTags={tags}
 					taskId={id}
@@ -355,7 +308,7 @@
 	<div class=" z-40 mt-md flex items-center">
 		{#if assigned}
 			{#each assigned as id}
-				<Assinged {id} />
+				<Assinged {id} profiles={invitedPeopleProfiles} />
 			{/each}
 		{/if}
 		{#if !isViewer}
@@ -377,6 +330,6 @@
 	</div>
 
 	{#if showAssignNewUsers}
-		<AssignPerson bind:assingedUserIds={assigned} {assignTask} />
+		<AssignPerson bind:assingedUserIds={assigned} {assignTask} profiles={invitedPeopleProfiles} />
 	{/if}
 </section>

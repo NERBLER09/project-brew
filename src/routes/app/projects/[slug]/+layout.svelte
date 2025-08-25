@@ -36,7 +36,8 @@
 	$currentProject = data.project;
 	$currentProject.invited_people = data.invited_people ?? [];
 	$currentProject = $currentProject;
-	$userRole = data.role?.role;
+	$currentProject.team_name = data.team_name;
+	$userRole = data.role;
 	$userTeams = data.userTeams ?? [];
 	$projectMilestones = data.project?.milestones ?? [];
 
@@ -46,7 +47,7 @@
 	$sortOptions = data.project?.sort ?? {};
 	let showProjectDropdown = false;
 
-	let mainElement: HTMLElement = document.getElementById('main');
+	let mainElement: HTMLElement;
 
 	$: currentPage = $page.url.pathname.replace(`/app/projects/${$currentProject.id}/`, '');
 	$: if ((currentPage === 'board' && mainElement) || (currentPage === 'list' && mainElement)) {
@@ -67,12 +68,13 @@
 			$recentlyEdited.splice(index, 1);
 			$recentlyEdited = [data.project, ...$recentlyEdited];
 		}
+		mainElement = document.getElementById('main');
 	});
 
 	let projectDropdownContainer: HTMLElement;
 
 	const handleAutoCloseDropdown = (event: Event) => {
-		if (!projectDropdownContainer.contains(event.target)) {
+		if (projectDropdownContainer && !projectDropdownContainer.contains(event.target)) {
 			showProjectDropdown = false;
 		}
 	};
@@ -188,7 +190,7 @@
 </header>
 
 <div
-	class="sticky -left-6 mb-md flex w-full -translate-y-[1rem] items-center md:-translate-y-[2.1rem]"
+	class="sticky -left-6 mb-md flex w-full -translate-y-[1rem] items-center md:-translate-y-[1rem]"
 >
 	<ProjectNav />
 	{#if $showProjectAside}
@@ -198,9 +200,13 @@
 
 <slot />
 
-<AboutProject
-	bind:shown={$showAboutProjectPrompt}
-	project_name={data.project?.project_name}
-	description={data.project?.description}
-	banner={data.banner}
-/>
+<div>
+	{#if $showAboutProjectPrompt}
+		<AboutProject
+			bind:shown={$showAboutProjectPrompt}
+			project_name={data.project?.project_name}
+			description={data.project?.description}
+			banner={data.banner}
+		/>
+	{/if}
+</div>

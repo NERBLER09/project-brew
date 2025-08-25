@@ -82,10 +82,20 @@
 		$filterTags,
 		$milestoneFilter
 	);
+	const removeCompletedTaskMilestone = (task) => {
+		return task.filter((item) => {
+			if (item.milestone) {
+				return !item.milestone.completed;
+			} else {
+				return item;
+			}
+		});
+	};
+	$: filteredTasks = removeCompletedTaskMilestone(filteredTasks);
 
 	$: filteredTasks = filteredTasks.sort((a, b) => {
-		if (a.name === 'New Task' && b.name !== 'New Task') return 1;
-		else if (a.name !== 'New Task' && b.name !== 'New Task') return -1;
+		if (a.name === 'New Task' && b.name !== 'New Task') return -1;
+		else if (a.name !== 'New Task' && b.name !== 'New Task') return 1;
 		else return 0;
 	});
 

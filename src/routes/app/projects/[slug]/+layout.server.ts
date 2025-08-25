@@ -16,42 +16,32 @@ export const load = (async (event) => {
 	// Grabs project info
 	const { data: project, error: errProject } = await supabaseClient
 		.from('projects')
-		.select('*, project_members!inner(*), milestones(*)')
+		.select('*, project_members!inner(*, profiles(*)), milestones(*), lists(*, tasks(*, sub_tasks(*), milestone(*)))')
 		.eq('id', projectId)
-		.limit(1)
 		.single();
 
-	const invitedUserIds = project?.project_members?.map((item) => item.user_id) ?? [];
-
-	const { data: users } = await supabaseClient
-		.from('profiles')
-		.select()
-		.in('id', [...invitedUserIds]);
+	const lists = project.lists?.sort((a, b) => a.position - b.position) ?? [];
+	console.log(project)
+	const userProfiles = project.project_members.map(item => item.profiles)
+	const users = userProfiles.flat(Infinity)
 
 	const { data: userTeams } = await supabaseClient
 		.from('teams')
 		.select('*, team_members!inner(user_id)')
 		.eq('team_members.user_id', session.user.id);
 
-	const { data: role } = await supabaseClient
-		.from('project_members')
-		.select('role')
-		.eq('user_id', session.user.id)
-		.eq('project', projectId)
+	const { data: team } = await supabaseClient
+		.from('teams')
+		.select()
+		.eq('id', project.team)
 		.limit(1)
 		.single();
+	const team_name = team?.name ?? null
 
-	const { data: lists } = await supabaseClient
-		.from('lists')
-		.select()
-		.eq('project', projectId)
-		.order('position', { ascending: true });
-
-	const { data: tasks } = await supabaseClient
-		.from('tasks')
-		.select('*, sub_tasks(*), milestone(*)')
-		.abortSignal(AbortSignal.timeout(1000))
-		.eq('project', projectId);
+	const currentProfile = project.project_members.find((item) => item.user_id === session.user.id)
+	const role = currentProfile.role
+	let tasks = project.lists?.map(item => item.tasks)
+	tasks = tasks.flat(Infinity)
 
 	if (project) {
 		return {
@@ -60,6 +50,7 @@ export const load = (async (event) => {
 			description: project?.description,
 			banner: project?.banner,
 			role,
+			team_name,
 			lists: lists || [],
 			project: {
 				...project,

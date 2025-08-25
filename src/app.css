@@ -8,42 +8,57 @@
 	html {
 		font-family: 'Inter', sans-serif;
 	}
+
+	body * {
+		@apply transition-colors duration-500;
+	}
 }
 
 @layer components {
 	.button--primary {
 		@apply w-fit rounded-md bg-accent-light stroke-grey-200 px-xl py-md font-bold text-grey-200 hover:bg-accent-light-hover focus:stroke-accent-light-disabled-text active:bg-accent-light-disabled active:text-accent-light-disabled-text;
 	}
+
 	.button--secondary {
 		@apply box-border w-fit rounded-md border-2 border-grey-700 px-xl py-md font-bold text-grey-700 hover:border-grey-300 hover:bg-grey-300 active:border-grey-200 active:bg-grey-200 dark:border-grey-200 dark:text-grey-200 dark:hover:border-grey-800 dark:hover:bg-grey-800 dark:active:border-grey-700 dark:active:bg-grey-700;
 	}
+
 	.button--circle {
 		@apply button--primary w-fit rounded-full p-md;
 	}
+
 	.button--text {
 		@apply box-border w-fit rounded-md px-xl py-md font-bold text-grey-700 hover:underline active:bg-grey-200 active:text-grey-500 dark:text-grey-200 dark:active:bg-grey-700;
 	}
+
 	.input--label {
 		@apply mr-[0.875rem] text-base font-bold text-grey-700 dark:text-grey-300;
 	}
+
 	.input--text {
 		@apply rounded-lg border-none bg-grey-200 px-3 py-[0.675rem] text-sm font-medium text-grey-700 placeholder:text-grey-700 focus:outline-none dark:border-grey-200 dark:bg-grey-700 dark:text-grey-200 dark:placeholder:text-grey-200;
 	}
+
 	.input--search {
 		@apply box-border flex items-center gap-md rounded-lg border-2 border-solid border-grey-600 bg-grey-200 px-3 py-[0.675rem] text-sm font-bold text-grey-700 placeholder:text-grey-700 focus:outline-none dark:placeholder:text-grey-200;
 	}
+
 	.input--checkbox {
 		@apply rounded p-md checked:bg-accent-light hover:bg-grey-100 hover:checked:bg-accent-light focus:ring-0 focus:checked:bg-accent-light;
 	}
+
 	.dropdown--container {
 		@apply absolute bottom-0 left-0 flex h-fit min-h-[6.25rem] w-screen flex-col gap-4 rounded-t-3xl border border-b-0 border-grey-700 bg-grey-100 px-6 py-lg dark:border-grey-300 dark:bg-grey-800 md:left-auto md:right-xl md:top-[128px] md:min-h-min md:w-fit md:rounded-2xl md:border-b md:p-md;
 	}
+
 	.dropdown--item {
 		@apply flex items-center justify-start gap-md rounded-lg px-md py-sm hover:bg-grey-200 dark:hover:bg-grey-700;
 	}
+
 	.dropdown--label {
 		@apply font-bold text-grey-700 dark:text-grey-200;
 	}
+
 	.dropdown--icon {
 		@apply h-8 w-8 stroke-grey-700 dark:stroke-grey-200;
 	}

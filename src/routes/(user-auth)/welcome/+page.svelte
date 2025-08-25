@@ -48,8 +48,8 @@
 	<title>Project Brew - Welcome</title>
 </svelte:head>
 
-<div class="relative flex items-center gap-10 md:flex lg:gap-[10%]">
-	<div class="p-6 md:w-1/2 md:p-8 md:pr-0 lg:w-1/3">
+<div class="relative flex flex-col-reverse items-center md:flex-row md:gap-10 xl:gap-[10%]">
+	<div class="w-full p-6 md:p-8 md:pr-0 lg:w-2/3 xl:w-1/2">
 		<header>
 			<h1 class="w-fit text-lg font-semibold text-grey-800 sm:text-xl">Welcome to Project Brew!</h1>
 
@@ -58,6 +58,7 @@
 
 		<form
 			method="POST"
+			enctype="multipart/form-data"
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'failure') {
@@ -83,7 +84,7 @@
 							class="input--text w-full"
 							id="name-input"
 							name="name"
-							placeholder="Enter your name"
+							placeholder="What do you go by?"
 							required
 						/>
 					</div>
@@ -96,7 +97,7 @@
 							class="input--text w-full"
 							id="location-input"
 							name="location"
-							placeholder="Enter your location"
+							placeholder="Where are you located?"
 						/>
 					</div>
 					<div class="flex items-center">
@@ -108,7 +109,7 @@
 							class="input--text w-full"
 							id="company-input"
 							name="company"
-							placeholder="Enter your company"
+							placeholder="Who do you work for?"
 						/>
 					</div>
 					<div class="mt-sm flex items-center">
@@ -120,7 +121,7 @@
 							class="input--text w-full"
 							id="pronouns-input"
 							name="pronouns"
-							placeholder="Enter your company"
+							placeholder="What pronouns do you go by?"
 						/>
 					</div>
 					<div class="w-full">
@@ -197,20 +198,15 @@
 				</div>
 			</section>
 
-			<button class="button--primary gap-mdm flex w-full items-center justify-center md:w-fit">
+			<button class="button--primary flex w-full items-center justify-center gap-md md:w-fit">
 				Next
 				<Back className="h-8 w-8 stroke-grey-200 rotate-180" />
 			</button>
 		</form>
 	</div>
-
-	<div
-		class="rouned-lg relative top-0 my-md hidden aspect-[77/47] shadow-md md:inline lg:h-[100vh-20px] lg:w-full"
-	>
-		<img
-			src={DashboardPage}
-			alt="dashboard page"
-			class="fixed top-0 aspect-auto h-[100vh] lg:h-[100vh-20px]"
-		/>
-	</div>
+	<img
+		src={DashboardPage}
+		alt="dashboard page"
+		class="hidden w-fit object-cover md:block md:h-screen"
+	/>
 </div>

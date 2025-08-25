@@ -25,19 +25,24 @@
 	<main class="mx-lg md:mx-28 lg:mx-52">
 		<header class="items-center md:flex">
 			<div>
-				<h1 class="text-2xl font-semibold text-grey-900">Do project management right</h1>
+				<h1 class="text-xl font-semibold text-grey-900 md:text-2xl">Do project management right</h1>
 				<p class="my-md text-lg font-semibold text-grey-800">
-					Start managing project easily, today for free
+					Start managing like a pro for yourself and for your entire team, entirely for free.
 				</p>
-				<a href="/sign-up" class="button--primary">Get started (its free)</a>
+				<a href="/sign-up" class="button--primary w-full">Get started now</a>
 			</div>
 
-			<img src={Computer} alt="computer on a project's page" class="mt-md aspect-[77/47]" />
+			<img
+				src={Computer}
+				alt="computer on a project's page"
+				class="mt-md hidden aspect-[77/47] md:block"
+				loading="lazy"
+			/>
 		</header>
 
-		<section class="mt-md lg:mt-2xl">
+		<section class="mt-md flex w-full flex-col items-center justify-center lg:mt-2xl">
 			<header>
-				<h2 class="text-center text-xl font-semibold text-grey-900 lg:text-start">
+				<h2 class="text-center text-lg font-semibold text-grey-900 md:text-xl lg:text-start">
 					It's all there
 				</h2>
 			</header>
@@ -53,7 +58,8 @@
 				<img
 					src={ProjectsPage}
 					alt="the main projects page"
-					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm  shadow-grey-900"
+					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -69,6 +75,7 @@
 					src={TeamPage}
 					alt="the main projects page"
 					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -82,7 +89,8 @@
 				<img
 					src={FocusPage}
 					alt="the main projects page"
-					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm  shadow-grey-900"
+					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 		</section>
