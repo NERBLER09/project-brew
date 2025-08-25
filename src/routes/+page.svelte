@@ -36,6 +36,7 @@
 				src={Computer}
 				alt="computer on a project's page"
 				class="mt-md hidden aspect-[77/47] md:block"
+				loading="lazy"
 			/>
 		</header>
 
@@ -58,6 +59,7 @@
 					src={ProjectsPage}
 					alt="the main projects page"
 					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -73,6 +75,7 @@
 					src={TeamPage}
 					alt="the main projects page"
 					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 			<section class="mt-md items-start lg:flex">
@@ -87,6 +90,7 @@
 					src={FocusPage}
 					alt="the main projects page"
 					class="mt-md aspect-[16/10] max-h-[34.5rem] w-full max-w-[53.4375rem] rounded shadow-sm shadow-grey-900"
+					loading="lazy"
 				/>
 			</section>
 		</section>
