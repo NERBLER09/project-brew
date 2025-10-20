@@ -39,35 +39,34 @@
 	});
 </script>
 
-<div class="grid w-full grid-cols-3 items-center">
+<div class="flex w-full items-center">
 	<span
-		class="col-span-1 col-start-1 w-fit truncate text-grey-700 dark:text-grey-200 md:font-bold {status ===
-		'done'
-			? 'text-emerald-600 line-through dark:text-emerald-500'
-			: ''} {assignedUserProfiles && subTasks.length === 0 ? 'col-span-2' : 'col-span-1'}"
+		class="col-span-1 col-start-1 w-full truncate text-grey-700 dark:text-grey-200 md:font-semibold"
 		>{name}</span
 	>
 
 	{#if subTasks.length > 0}
-		<div class="col-span-1 col-start-2 w-fit max-w-[16ch] items-center gap-md whitespace-nowrap">
+		<div
+			class="col-span-1 col-start-2 ml-auto w-fit max-w-[16ch] items-center gap-md whitespace-nowrap"
+		>
 			<span class="font-bold text-grey-700 dark:text-grey-300">Sub tasks: {completed}/{total}</span>
 			<span class="sr-only">{completed}/{total} of this task's sub tasks are completed</span>
 		</div>
 	{/if}
 
-	<div class="col-span-1 col-start-3 ml-auto flex w-fit flex-row-reverse items-center">
-		{#each assignedUserProfiles as assigned}
-			{#if assigned.profile}
-				<img
-					src={assigned.profile}
-					class="-ml-md aspect-square h-8 w-8 rounded-full border border-grey-100 object-cover first:border-0 last:ml-0 dark:border-grey-800"
-					alt="{assigned.name} profile image"
-				/>
-			{:else}
-				<User
-					className="border-2 -ml-md h-8 w-8 rounded-full bg-grey-100 dark:bg-grey-800 stroke-grey-700 dark:stroke-grey-300 border-grey-300 object-cover dark:border-grey-700 last:ml-0"
-				/>
-			{/if}
-		{/each}
-	</div>
+	<!-- <div class="col-span-1 col-start-3 ml-auto flex w-fit flex-row-reverse items-center"> -->
+	<!-- 	{#each assignedUserProfiles as assigned} -->
+	<!-- 		{#if assigned.profile} -->
+	<!-- 			<img -->
+	<!-- 				src={assigned.profile} -->
+	<!-- 				class="-ml-md aspect-square h-8 w-8 rounded-full border border-grey-100 object-cover first:border-0 last:ml-0 dark:border-grey-800" -->
+	<!-- 				alt="{assigned.name} profile image" -->
+	<!-- 			/> -->
+	<!-- 		{:else} -->
+	<!-- 			<User -->
+	<!-- 				className="border-2 -ml-md h-8 w-8 rounded-full bg-grey-100 dark:bg-grey-800 stroke-grey-700 dark:stroke-grey-300 border-grey-300 object-cover dark:border-grey-700 last:ml-0" -->
+	<!-- 			/> -->
+	<!-- 		{/if} -->
+	<!-- 	{/each} -->
+	<!-- </div> -->
 </div>
